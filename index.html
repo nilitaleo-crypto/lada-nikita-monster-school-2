@@ -120,5 +120,42 @@ $('next').addEventListener('click',()=>{step=(step+1)%tasks.length;draw()});
 draw();
 })();
 </script>
+
+<!-- data-happy-medusa-patch: фиксируем радостное выражение утверждённой Горгоны -->
+<script>
+(() => {
+  const portrait = document.querySelector('#character img');
+  if (!portrait) return;
+  const smile = () => {
+    if (!portrait.naturalWidth || portrait.dataset.happyApplied === 'true') return;
+    portrait.dataset.happyApplied = 'true';
+    const c = document.createElement('canvas');
+    c.width = portrait.naturalWidth;
+    c.height = portrait.naturalHeight;
+    const ctx = c.getContext('2d');
+    if (!ctx) return;
+    ctx.drawImage(portrait, 0, 0);
+    ctx.save();
+    ctx.scale(c.width / 589, c.height / 785);
+    const shape = (path, fill, stroke, width) => {
+      const p = new Path2D(path);
+      if (fill) { ctx.fillStyle = fill; ctx.fill(p); }
+      if (stroke) { ctx.strokeStyle = stroke; ctx.lineWidth = width; ctx.lineJoin = 'round'; ctx.lineCap = 'round'; ctx.stroke(p); }
+    };
+    // Вместо удивлённого рта — широкая улыбка в цветах краснофигурной вазописи.
+    shape('M308 161 Q335 160 351 165 Q355 184 348 205 Q323 210 310 198 Q304 184 308 161Z', '#ef7e30');
+    shape('M308 166 Q332 179 352 164 Q348 187 331 198 Q316 195 308 166Z', '#2b170f', '#30180e', 3);
+    shape('M310 169 Q332 181 350 168 Q341 182 316 179Z', '#f38c43');
+    shape('M321 191 Q331 184 342 190 Q331 201 321 191Z', '#ed8241');
+    shape('M305 166 Q308 168 312 168', null, '#32190d', 2.5);
+    ctx.restore();
+    portrait.alt = 'Радующаяся крылатая Медуза со змеями на голове, в стиле античной вазописи';
+    portrait.src = c.toDataURL('image/png');
+  };
+  if (portrait.complete) smile();
+  else portrait.addEventListener('load', smile, {once: true});
+})();
+</script>
+
 </body>
 </html>
