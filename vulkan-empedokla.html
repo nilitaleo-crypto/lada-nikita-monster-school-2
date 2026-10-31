@@ -1,0 +1,135 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#f2dfb8">
+<title>Вулкан Эмпедокла — Тиввиг</title>
+<style>
+:root{--ink:#35231c;--gold:#d8a85a;--paper:#fff9ec;--rust:#a74328;--clay:#e8c78d;--good:#286841}
+*{box-sizing:border-box}
+body{margin:0;background:#d7ba8b;font-family:system-ui,-apple-system,"Trebuchet MS",sans-serif;color:var(--ink);-webkit-tap-highlight-color:transparent}
+main{max-width:1100px;margin:auto;min-height:100dvh;background:#f1e0bb;padding:clamp(12px,2.5vw,30px);border-left:2px solid #bb9465;border-right:2px solid #bb9465}
+nav{display:flex;align-items:center;justify-content:space-between;gap:12px;border-bottom:3px solid #56392a;padding-bottom:14px}
+a.back{display:inline-flex;align-items:center;justify-content:center;min-height:48px;padding:10px 15px;background:#4b3228;color:#fff5df;border-radius:14px;text-decoration:none;font-weight:900;font-size:16px}
+nav .school{font-size:clamp(12px,1.6vw,17px);font-weight:900;letter-spacing:.07em;text-align:right}
+h1{font-family:Georgia,serif;font-size:clamp(32px,5vw,56px);line-height:1.08;margin:16px 0 8px}
+.kicker{font-size:13px;letter-spacing:.16em;text-transform:uppercase;font-weight:900;color:#9d4826;margin:20px 0 0}
+.intro{font-size:clamp(16px,2.2vw,21px);line-height:1.5;max-width:790px;margin:0 0 18px}
+.game{display:grid;grid-template-columns:minmax(0,1fr) minmax(200px,.85fr);gap:20px;align-items:stretch}
+.card{background:var(--paper);border:2px solid #d0b48b;border-radius:24px;box-shadow:0 6px 0 #d7b78d;padding:clamp(18px,2.7vw,32px)}
+.step{font-size:14px;font-weight:900;letter-spacing:.09em;color:#885336}
+h2{font-family:Georgia,serif;font-size:clamp(24px,3.1vw,34px);line-height:1.2;margin:12px 0 20px}
+.options{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+.answer{min-height:92px;border:3px solid #aa7b50;border-radius:18px;background:#fff2d8;color:#35231c;font-family:inherit;font-weight:900;font-size:clamp(18px,2.3vw,25px);cursor:pointer;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;padding:12px;touch-action:manipulation;transition:background .15s,transform .15s}
+.answer .emoji{font-size:clamp(32px,4vw,46px);line-height:1.1}
+.answer:active{transform:scale(.97)}
+.answer.good{background:#d6f0d5;border-color:#3d8e54}
+.answer.miss{background:#ffe0d7;border-color:#ba5033}
+.answer:disabled{cursor:default}
+button:focus-visible,a:focus-visible{outline:4px solid #0b6198;outline-offset:3px}
+.feedback{min-height:64px;margin:12px 0 0;font-size:18px;font-weight:800;line-height:1.4;color:#874326}
+.feedback.ok{color:var(--good)}
+.next{display:none;background:#583326;color:#fff4df;border:0;border-radius:14px;min-height:54px;padding:13px 20px;font-family:inherit;font-size:19px;font-weight:900;cursor:pointer;touch-action:manipulation}
+.next.visible{display:inline-flex;align-items:center;gap:12px}
+.scene{position:relative;min-height:420px;overflow:hidden;border-radius:24px;background:radial-gradient(ellipse at 54% 18%,#fff4c6 0,#ffd68c 18%,#e18e50 46%,#793d2b 100%);border:2px solid #ba8d65}
+.sun{position:absolute;left:12%;top:9%;font-size:66px}
+.smoke{position:absolute;top:14%;left:54%;transform:translateX(-50%);font-size:90px;opacity:.7;animation:float 3s infinite ease-in-out}
+.mountain{position:absolute;bottom:-9%;left:6%;width:88%;height:74%;background:linear-gradient(105deg,#563328 0 45%,#81523c 46% 65%,#45291f 66%);clip-path:polygon(0 100%,37% 28%,44% 20%,55% 20%,63% 28%,100% 100%)}
+.lava{position:absolute;top:37%;left:46%;width:12%;height:53%;background:linear-gradient(#ffda6d,#e75925);clip-path:polygon(24% 0,80% 0,70% 23%,80% 44%,60% 66%,88% 100%,20% 100%,46% 63%,30% 38%);filter:drop-shadow(0 2px 4px #ff9b3b)}
+.stones{position:absolute;bottom:10%;width:100%;text-align:center;font-size:26px;letter-spacing:3px}
+.label{position:absolute;top:13px;right:13px;border-radius:30px;background:#fff2d7e8;padding:8px 12px;font-size:13px;font-weight:900}
+.foot{font-size:13px;line-height:1.4;color:#6c5846;margin:20px 0 0;text-align:center}
+#finish{display:none}
+#finish h2{font-size:clamp(30px,4vw,43px)}
+.result-emoji{font-size:72px}
+#sumvisual{font-size:32px;background:#f1dfb8;border:2px dashed #cca16a;padding:12px;border-radius:14px;margin:0 0 16px;display:none;text-align:center}
+@keyframes float{50%{transform:translate(-50%,-10px)}}
+@media(max-width:760px){.game{grid-template-columns:1fr}.scene{min-height:210px;order:-1}.mountain{height:85%;bottom:-22%}.smoke{font-size:55px;top:7%}.sun{font-size:43px;top:10%}.lava{top:25%;height:74%}.stones{bottom:4%}.answer{min-height:78px}.school{max-width:45%}}
+@media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+</head>
+<body>
+<main>
+<nav><a class="back" href="index.html" aria-label="Назад к карте Тиввига">← Назад к карте</a><span class="school">ШКОЛА ОХОТНИКОВ НА ЧУДОВИЩ</span></nav>
+<div class="kicker">Первая экспедиция · Тиввиг</div>
+<h1>🌋 Вулкан Эмпедокла</h1>
+<p class="intro">Эмпедокл считал, что в мире есть четыре корня вещей: огонь, вода, воздух и земля. Помоги ему исследовать вулкан!</p>
+<div class="game">
+<section class="card" aria-label="Игровое задание">
+  <div id="play">
+    <div class="step" id="step">ИСПЫТАНИЕ 1 ИЗ 3</div>
+    <h2 id="question">Какая стихия делает вулкан огненным?</h2>
+    <div id="sumvisual" aria-hidden="true">🪨🪨 + 🪨🪨🪨</div>
+    <div class="options" id="options"></div>
+    <div class="feedback" id="feedback" role="status" aria-live="polite">Нажми на правильную карточку.</div>
+    <button id="next" class="next" type="button">Следующее испытание →</button>
+  </div>
+  <div id="finish">
+    <div class="result-emoji">🏅</div>
+    <h2>Экспедиция завершена!</h2>
+    <p style="font-size:20px;line-height:1.5">Лада помогла Эмпедоклу исследовать вулкан. Медуза одобряет!</p>
+    <a class="back" href="index.html">← Вернуться на карту Тиввига</a>
+    <button type="button" id="again" class="next visible" style="margin-top:12px">Сыграть ещё раз ↻</button>
+  </div>
+</section>
+<aside class="scene" aria-label="Иллюстрация вулкана">
+  <div class="sun" aria-hidden="true">☀️</div>
+  <div class="smoke" aria-hidden="true">☁️</div>
+  <div class="mountain"></div><div class="lava"></div><div class="stones" aria-hidden="true">🔥 ✦ 🔥</div>
+  <div class="label">Тиввиг · Юг</div>
+</aside>
+</div>
+<p class="foot">Играй пальцем на iPad или мышкой на компьютере. Стрелка «Назад к карте» всегда доступна наверху.</p>
+</main>
+<script>
+(() => {
+  'use strict';
+  const tasks=[
+    {q:'Какая стихия делает вулкан огненным?',options:[['🔥','Огонь'],['💧','Вода'],['🌬️','Воздух'],['🌿','Земля']],answer:0,good:'Верно! Огонь — один из четырёх корней Эмпедокла.'},
+    {q:'Из вулкана вылетели два камня, а потом ещё три. Сколько всего?',options:[['4','Четыре'],['5','Пять'],['6','Шесть'],['3','Три']],answer:1,good:'Отлично! Два плюс три — пять камней.',math:true},
+    {q:'Как называется горячая расплавленная порода, текущая из вулкана?',options:[['💧','Вода'],['🌋','Лава'],['❄️','Снег'],['☁️','Облако']],answer:1,good:'Да! Это лава. Мы добрались до вершины!'}
+  ];
+  const $=id=>document.getElementById(id);
+  let n=0,solved=false;
+  function draw(){
+    solved=false;
+    $('play').style.display='block';$('finish').style.display='none';
+    $('step').textContent='ИСПЫТАНИЕ '+(n+1)+' ИЗ '+tasks.length;
+    $('question').textContent=tasks[n].q;
+    $('sumvisual').style.display=tasks[n].math?'block':'none';
+    $('feedback').textContent='Нажми на правильную карточку.';
+    $('feedback').className='feedback';
+    $('next').className='next';
+    $('next').textContent=n===tasks.length-1?'Завершить экспедицию ✓':'Следующее испытание →';
+    $('options').replaceChildren();
+    tasks[n].options.forEach((item,i)=>{
+      const btn=document.createElement('button');btn.type='button';btn.className='answer';
+      const emoji=document.createElement('span');emoji.className='emoji';emoji.textContent=item[0];
+      const txt=document.createElement('span');txt.textContent=item[1];
+      btn.append(emoji,txt);
+      btn.addEventListener('click',()=>{
+        if(solved)return;
+        if(i!==tasks[n].answer){btn.classList.add('miss');$('feedback').textContent='Не совсем! Попробуй ещё раз.';return;}
+        solved=true;
+        btn.classList.add('good');
+        $('options').querySelectorAll('button').forEach(b=>b.disabled=true);
+        $('feedback').textContent=tasks[n].good;
+        $('feedback').className='feedback ok';
+        $('next').className='next visible';
+      });
+      $('options').append(btn);
+    });
+  }
+  $('next').addEventListener('click',()=>{
+    if(!solved)return;
+    n++;
+    if(n>=tasks.length){$('play').style.display='none';$('finish').style.display='block';return;}
+    draw();
+  });
+  $('again').addEventListener('click',()=>{n=0;draw()});
+  draw();
+})();
+</script>
+</body>
+</html>
