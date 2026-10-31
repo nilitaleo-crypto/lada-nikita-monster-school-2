@@ -1,0 +1,103 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<meta name="theme-color" content="#f7eedf" />
+<title>Необыкновенная школа — три игры</title>
+<style>
+:root{--ink:#243640;--sub:#58666c;--paper:#f7f0e4;--white:#fffdfa;--accent:#c35837;--mint:#d8eadf;--blush:#f6d8ce;--gold:#f4df9b;--ring:#8da7a6}
+*{box-sizing:border-box}html{min-height:100%;-webkit-tap-highlight-color:transparent}
+body{margin:0;background:var(--paper);color:var(--ink);font-family:ui-rounded,"Arial Rounded MT Bold",system-ui,-apple-system,"Segoe UI",sans-serif;font-size:17px}
+button{font:inherit;cursor:pointer;touch-action:manipulation;-webkit-user-select:none;user-select:none}button:focus-visible{outline:4px solid #286988;outline-offset:4px}
+.app{max-width:1300px;margin:auto;padding:20px clamp(14px,3vw,36px) 28px}
+.header{display:flex;align-items:center;justify-content:space-between;gap:12px;border-bottom:2px solid #dbcbb8;padding-bottom:13px;margin-bottom:16px}
+.brand{font-size:clamp(21px,2.5vw,31px);letter-spacing:-.06em;font-weight:900}.brand em{font-style:normal;color:var(--accent)}
+.stamp{display:inline-block;border:1.5px solid #bdab97;border-radius:100px;padding:6px 11px;color:#675948;font-size:12px;font-weight:800;white-space:nowrap}
+.page{display:grid;grid-template-columns:minmax(0,1fr) clamp(194px,23vw,275px);gap:18px;align-items:start}
+.game-panel{min-width:0}.nav{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:13px}.tab{background:transparent;color:#56656b;border:2px solid #c4b8a9;border-radius:16px;padding:11px 14px;font-weight:800;min-height:54px}.tab[aria-selected="true"]{background:var(--ink);color:#fff;border-color:var(--ink)}
+.board{background:var(--white);border:2px solid #e2d4c4;border-radius:27px;padding:clamp(18px,2.6vw,31px);box-shadow:0 7px 0 #dfd0be;min-height:490px}
+.eyebrow{color:#a54e35;font-size:12px;font-weight:950;text-transform:uppercase;letter-spacing:.14em;margin:0 0 9px}
+.h1{font-size:clamp(30px,4.2vw,50px);line-height:1.08;letter-spacing:-.055em;margin:0 0 7px;font-weight:950}
+.desc{color:var(--sub);margin:0 0 14px;font-size:clamp(15px,1.6vw,18px);line-height:1.5}
+.progress{height:9px;border-radius:15px;background:#e9e1d7;overflow:hidden;margin:17px 0 19px}.progress div{height:100%;width:0;background:#80ac94;border-radius:15px;transition:width .3s}
+.question-wrap{background:#f5efe7;border:1.5px solid #ebdfd1;border-radius:21px;padding:15px 18px;margin-bottom:16px;text-align:center;min-height:145px;display:flex;flex-direction:column;justify-content:center;align-items:center;gap:6px}
+.question-pic{font-size:clamp(52px,7vw,82px);line-height:1.14}.question-title{font-size:clamp(20px,2.3vw,27px);font-weight:900}.small{color:var(--sub);font-weight:650;font-size:14px}
+.choices{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:11px}
+.choice{min-height:89px;border:2px solid #e1d5c8;border-radius:20px;background:#fff;display:flex;align-items:center;justify-content:center;gap:10px;font-weight:850;font-size:clamp(18px,2.25vw,25px);padding:10px 7px;transition:transform .1s,background .1s,border-color .1s}.choice:active{transform:scale(.975)}.choice:hover:not(:disabled){border-color:#9fb8ae}.choice .emoji{font-size:clamp(25px,3vw,39px)}.choice.correct{background:#d7ebdd;border-color:#699f7c}.choice.wrong{background:#f9dbd5;border-color:#d58d7d}.choice:disabled{cursor:default}
+.status{display:flex;justify-content:space-between;align-items:center;min-height:55px;gap:12px;margin-top:13px}.feedback{font-weight:900;color:#276842;line-height:1.3}.feedback.try{color:#a55236}.next{border:0;background:#c35a3d;border-radius:16px;color:#fff;font-weight:900;padding:13px 22px;min-height:52px;box-shadow:0 4px 0 #8e3c28}.next:active{transform:translateY(2px);box-shadow:0 2px 0 #8e3c28}.next[hidden]{display:none}
+.video{position:sticky;top:16px;min-height:190px;border:2px dashed #a9b0a6;border-radius:23px;background:#e9e9df;padding:18px;display:flex;flex-direction:column;justify-content:space-between;align-items:center;text-align:center;gap:8px}.video-icon{font-size:43px}.video-title{font-size:17px;font-weight:900}.video-copy{font-size:12px;line-height:1.45;color:#666c64}.aside-note{font-size:12px;color:#62746b;line-height:1.5;margin:15px 4px}
+.snakes{display:flex;justify-content:center;align-items:center;gap:13px;flex-wrap:wrap;font-size:clamp(28px,3.6vw,45px);line-height:1.2;min-height:70px}.snakes .group{display:flex;gap:0;max-width:100%;flex-wrap:wrap;justify-content:center}.plus{color:#9d6246;font-weight:900;font-size:34px}
+.syllable-line{display:flex;gap:9px;align-items:center;justify-content:center;flex-wrap:wrap;margin:12px 0}.syllable{display:inline-flex;align-items:center;justify-content:center;background:#fff;border:2px solid #decbb6;min-width:90px;min-height:74px;border-radius:16px;font-size:clamp(30px,4.7vw,48px);font-weight:950;letter-spacing:.03em}.syllable.q{background:#f6d8ce;border-color:#cd907a}.join{font-size:24px;font-weight:900;color:#987e66}.word-hint{font-size:42px;margin:4px}
+.choice.number{font-size:36px;min-height:90px}.choice.syll{font-size:33px;min-height:89px}
+.final-box{text-align:center;display:flex;align-items:center;justify-content:center;flex-direction:column;min-height:360px;gap:15px}.final-icon{font-size:100px;line-height:1}.final-title{font-size:clamp(26px,3vw,42px);font-weight:950;letter-spacing:-.04em}.final-sub{font-size:19px;color:var(--sub);max-width:420px;line-height:1.4}
+.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+@media(max-width:690px){.app{padding:10px 10px 30px}.header{padding:5px 3px 11px}.stamp{font-size:10px}.page{display:flex;flex-direction:column}.game-panel{width:100%}.video{position:static;order:-1;min-height:auto;width:100%;padding:9px 11px;display:flex;flex-direction:row;text-align:left;gap:10px}.video-icon{font-size:25px}.video-title{font-size:13px}.video-copy{font-size:11px}.aside-note{display:none}.board{min-height:490px;padding:17px}.tab{font-size:13px;padding:9px;flex:1;min-height:46px}.choice{min-height:80px}.question-wrap{min-height:128px}}
+@media(prefers-reduced-motion:reduce){*{transition:none!important}}
+
+.backlink{display:inline-block;color:#fff;background:#c35837;text-decoration:none;border-radius:12px;padding:9px 12px;font-weight:900;font-size:13px;white-space:nowrap}
+</style>
+</head>
+<body>
+<main class="app">
+<header class="header"><div class="brand">НЕОБЫКНОВЕННАЯ <em>ШКОЛА</em></div><a class="backlink" href="index.html">← Медуза</a></header>
+<div class="page">
+ <section class="game-panel" aria-label="Обучающие игры">
+  <nav class="nav" role="tablist" aria-label="Выбрать игру">
+    <button class="tab" role="tab" type="button" aria-selected="true" data-game="elements">🌋 Стихии</button>
+    <button class="tab" role="tab" type="button" aria-selected="false" data-game="math">🐍 Змеи Горгоны</button>
+    <button class="tab" role="tab" type="button" aria-selected="false" data-game="syllables">🧛 Потерянные слоги</button>
+  </nav>
+  <div class="board"><div id="content" aria-live="polite"></div></div>
+ </section>
+ <aside><div class="video" aria-label="Место, куда можно переместить плавающее окно видеозвонка"><div class="video-icon" aria-hidden="true">📹</div><div class="video-title">Место для твоего учителя</div><div class="video-copy">Перетащи сюда плавающее окно Zoom или Телемоста. Сама игра не управляет видеозвонком.</div></div><p class="aside-note">Для iPad удобнее горизонтальная ориентация. Нажимай на крупные карточки — ничего перетаскивать не нужно.</p></aside>
+</div>
+</main>
+<script>
+(()=>{
+'use strict';
+const gameData={
+ elements:{eyebrow:'ИГРА 1 · МИР ЭМПЕДОКЛА',title:'Четыре стихии',desc:'Эмпедокл исследует мир. Помоги узнать, какая стихия скрывается в каждом предмете.',questions:[
+ {emoji:'🔥',title:'Пламя костра',answer:'Огонь',explain:'Костёр горит — это огонь.'},
+ {emoji:'🌊',title:'Морская волна',answer:'Вода',explain:'Волна состоит из воды.'},
+ {emoji:'🪨',title:'Большой камень',answer:'Земля',explain:'Камни — часть земной стихии.'},
+ {emoji:'🌬️',title:'Сильный ветер',answer:'Воздух',explain:'Ветер — движущийся воздух.'},
+ {emoji:'🌋',title:'Огненная лава вулкана',answer:'Огонь',explain:'Лава горячая и светится, как огонь. Но это ещё и расплавленные горные породы — интересный случай!'},
+ {emoji:'🏞️',title:'Горное озеро',answer:'Вода',explain:'В озере много воды.'},
+ {emoji:'⛰️',title:'Высокая гора',answer:'Земля',explain:'Гора состоит из горных пород.'},
+ {emoji:'💨',title:'Порыв ветра',answer:'Воздух',explain:'Мы не видим воздух, но чувствуем ветер.'}
+ ]},
+ math:{eyebrow:'ИГРА 2 · ЛОГОВО ГОРГОНЫ',title:'Змеи Горгоны',desc:'На голове Медузы появляются змейки. Посчитай, сколько их стало вместе.',questions:[[2,1],[3,2],[1,4],[4,2],[2,5],[3,3],[5,3],[4,4]].map(([a,b])=>({a,b,answer:a+b}))},
+ syllables:{eyebrow:'ИГРА 3 · ВАМПИРСКАЯ БИБЛИОТЕКА',title:'Потерянные слоги',desc:'Маленький вампир перепутал карточки. Найди недостающий слог и прочитай целое слово.',questions:[
+ {a:'ГО',b:'РА',word:'ГОРА',emoji:'⛰️',opts:['РА','НА','МА']},
+ {a:'ЛУ',b:'НА',word:'ЛУНА',emoji:'🌙',opts:['МА','НА','ТА']},
+ {a:'ВО',b:'ДА',word:'ВОДА',emoji:'💧',opts:['ДА','РА','НА']},
+ {a:'РУ',b:'КА',word:'РУКА',emoji:'✋',opts:['ТА','КА','МА']},
+ {a:'ЛИ',b:'СА',word:'ЛИСА',emoji:'🦊',opts:['НА','СА','ЛА']},
+ {a:'КО',b:'ЗА',word:'КОЗА',emoji:'🐐',opts:['СА','РА','ЗА']},
+ {a:'НО',b:'РА',word:'НОРА',emoji:'🕳️',opts:['РА','НА','ЛА']},
+ {a:'ВА',b:'ЗА',word:'ВАЗА',emoji:'🏺',opts:['ТА','ЗА','СА']}
+ ]}
+};
+const eOptions=[{n:'Огонь',ico:'🔥'},{n:'Вода',ico:'💧'},{n:'Воздух',ico:'🌬️'},{n:'Земля',ico:'🌿'}];
+const state={game:'elements',step:0,correct:0,locked:false,wrong:false,lastAnswer:null};
+const root=document.getElementById('content');
+const esc=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+function shuffled(arr,seed){let a=[...arr];for(let i=a.length-1;i>0;i--){let j=(seed*7+i*17+3)%(i+1);[a[i],a[j]]=[a[j],a[i]]}return a}
+function questionChoices(q){if(state.game==='elements')return eOptions.map(o=>({label:o.n,ico:o.ico,value:o.n}));if(state.game==='math'){let n=q.answer;let choices=[n,Math.max(0,n-1),Math.min(10,n+2)];if(new Set(choices).size<3)choices=[n,Math.min(10,n+1),Math.max(0,n-2)];return shuffled(choices,state.step+4).map(x=>({label:String(x),value:x}))}return shuffled(q.opts,state.step+3).map(x=>({label:x,value:x}))}
+function render(){const d=gameData[state.game],n=d.questions.length;if(state.step>=n){root.innerHTML=`<div class="final-box"><div class="final-icon">${state.game==='elements'?'🌋':state.game==='math'?'🐍':'🧛'}</div><div class="final-title">Приключение завершено!</div><div class="final-sub">Ты прошла ${n} заданий! Можно сыграть ещё раз или выбрать другое приключение.</div><button class="next" type="button" id="restart">Играть ещё раз ↻</button></div>`;document.getElementById('restart').addEventListener('click',()=>selectGame(state.game));return}
+const q=d.questions[state.step];let pic='';if(state.game==='elements')pic=`<div class="question-pic">${q.emoji}</div><div class="question-title">${esc(q.title)}</div><div class="small">Выбери одну из четырёх стихий</div>`;
+if(state.game==='math'){const snakes=n=>'🐍'.repeat(n);pic=`<div class="snakes"><span class="group">${snakes(q.a)}</span><span class="plus">+</span><span class="group">${snakes(q.b)}</span></div><div class="question-title">${q.a} + ${q.b} = ?</div><div class="small">Сколько всего змеек?</div>`}
+if(state.game==='syllables')pic=`<div class="word-hint">${q.emoji}</div><div class="syllable-line"><span class="syllable">${q.a}</span><span class="join">+</span><span class="syllable q">?</span></div><div class="small">Найди второй слог</div>`;
+const options=questionChoices(q);const cls=state.game==='math'?'number':state.game==='syllables'?'syll':'';
+root.innerHTML=`<p class="eyebrow">${d.eyebrow} · ${state.step+1} ИЗ ${n}</p><h1 class="h1">${d.title}</h1><p class="desc">${d.desc}</p><div class="progress" role="progressbar" aria-valuemin="0" aria-valuemax="${n}" aria-valuenow="${state.step}"><div style="width:${state.step/n*100}%"></div></div><div class="question-wrap">${pic}</div><div class="choices">${options.map((o,i)=>`<button type="button" class="choice ${cls}" data-index="${i}">${o.ico?`<span class="emoji" aria-hidden="true">${o.ico}</span>`:''}<span>${esc(o.label)}</span></button>`).join('')}</div><div class="status"><div id="feedback" class="feedback" role="status" aria-live="polite"></div><button type="button" id="next" class="next" hidden>${state.step===n-1?'Закончить ✓':'Дальше →'}</button></div>`;
+root.querySelectorAll('.choice').forEach(b=>b.addEventListener('click',()=>answer(options[Number(b.dataset.index)].value,b)));
+root.querySelector('#next').addEventListener('click',()=>{state.step++;state.locked=false;state.wrong=false;render()});
+}
+function answer(value,btn){if(state.locked)return;const q=gameData[state.game].questions[state.step];const answer=state.game==='syllables'?q.b:q.answer;const correct=value===answer;root.querySelectorAll('.choice').forEach(el=>el.classList.remove('wrong'));if(correct){state.locked=true;state.correct++;btn.classList.add('correct');root.querySelectorAll('.choice').forEach(el=>el.disabled=true);let message=state.game==='elements'?q.explain:state.game==='math'?`Верно! ${q.a} + ${q.b} = ${q.answer}.`:`Верно! Получилось слово «${q.word}». Прочитай его вслух.`;root.querySelector('#feedback').textContent='✨ '+message;root.querySelector('#feedback').classList.remove('try');root.querySelector('#next').hidden=false}else{btn.classList.add('wrong');root.querySelector('#feedback').textContent='Ещё попытка! Можно посчитать или подумать вместе.';root.querySelector('#feedback').classList.add('try')}}
+function selectGame(game){state.game=game;state.step=0;state.correct=0;state.locked=false;state.wrong=false;document.querySelectorAll('.tab').forEach(b=>b.setAttribute('aria-selected',String(b.dataset.game===game)));render()}
+document.querySelectorAll('.tab').forEach(b=>b.addEventListener('click',()=>selectGame(b.dataset.game)));render();
+})();
+</script>
+</body>
+</html>
