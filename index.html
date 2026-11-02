@@ -3,185 +3,155 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<meta name="theme-color" content="#2e201b">
-<meta name="description" content="Тиввиг — волшебный атлас приключений школы охотников на чудовищ Лады и Никиты.">
-<title>Тиввиг — Атлас приключений</title>
+<meta name="theme-color" content="#321a20">
+<meta name="description" content="Тиввиг — книга приключений школы охотников на чудовищ Лады и Никиты.">
+<title>Тиввиг — атлас приключений</title>
 <style>
-:root{
-  --ink:#34261b; --faded:#765c3f; --line:#ad8454; --paper:#f0dfb7;
-  --wood:#2e1c16; --gold:#d2a15e; --deep:#482e26;
-}
+:root{--wine:#50232b;--wine-dark:#2d181e;--gold:#c29a62;--ink:#39221d;--parchment:#eed4a5}
 *{box-sizing:border-box}
-html{background:#201713}
-body{margin:0;min-height:100dvh;color:var(--ink);font-family:Georgia,"Times New Roman",serif;
-  background:radial-gradient(ellipse at 50% 42%,#73513c 0%,#463025 46%,#201612 100%);overflow-x:hidden}
-body::before{content:"";position:fixed;inset:0;pointer-events:none;opacity:.27;background:
- repeating-linear-gradient(94deg,transparent 0 35px,#120e0b22 35px 37px,transparent 37px 77px),
- repeating-linear-gradient(0deg,transparent 0 138px,#dfb88511 138px 141px);mix-blend-mode:multiply}
+html,body{margin:0;min-height:100%;background:#1c1115}
+body{font-family:Georgia,"Times New Roman",serif;color:var(--ink);overflow-x:hidden;background:
+ radial-gradient(ellipse at 50% 25%,#65363c 0,#3e2029 45%,#190f13 100%)}
+body::before{content:"";position:fixed;inset:0;pointer-events:none;opacity:.14;background:repeating-linear-gradient(93deg,transparent 0 4px,#d39d8016 4px 5px,transparent 5px 13px),repeating-linear-gradient(0deg,#0b060514 0 2px,transparent 2px 7px)}
 a{color:inherit}
 button{font:inherit}
-button:focus-visible,a:focus-visible{outline:3px solid #f6c35f;outline-offset:4px}
-.atlas-stage{width:100%;min-height:100dvh;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:clamp(12px,2.2vw,30px) clamp(20px,3.2vw,60px) 24px}
-.school-mark{text-align:center;color:#d9bc8d;font-size:clamp(11px,1.1vw,15px);letter-spacing:.18em;font-weight:bold;text-transform:uppercase;text-shadow:0 2px 3px #190d09;margin-bottom:clamp(14px,2vw,24px)}
-.book{position:relative;width:min(100%,1350px);padding:18px 19px 18px 38px;background:linear-gradient(90deg,#2b1714 0,#6e4330 2.2%,#3a231e 3.6%,#70472f 5%,#563529 94%,#2b1814 100%);
-  border:3px solid #986b41;border-radius:16px 26px 27px 16px;box-shadow:0 10px 0 #281915,0 16px 0 #714b31,0 26px 30px #0b0807aa,0 35px 80px #080504a0,inset 0 0 0 3px #301e18,inset 0 0 0 6px #a37347;
-  animation:arrive .7s ease-out both}
-@keyframes arrive{from{opacity:0;transform:translateY(12px) scale(.99)}to{opacity:1;transform:none}}
-.book::before{content:"";position:absolute;top:11px;bottom:10px;left:11px;width:20px;border-radius:8px;background:repeating-linear-gradient(90deg,#2d1915 0 3px,#865c3e 3px 5px,#38241d 5px 9px);box-shadow:inset -4px 0 7px #1e1210,5px 0 6px #1d120f88}
-.book::after{content:"";position:absolute;left:36px;right:11px;bottom:10px;height:10px;border-radius:0 0 17px 10px;background:repeating-linear-gradient(180deg,#f5e4c5 0 2px,#bfa276 2px 3px,#ead4a9 3px 5px);z-index:0;pointer-events:none}
-.bookpages{position:relative;isolation:isolate;display:grid;grid-template-columns:53% 47%;min-height:560px;border:1px solid #a6814f;
-  background:#e6d1a6;box-shadow:0 3px 0 #bda072,0 6px 0 #ebd8ad,inset 0 0 25px #674a27a3;overflow:hidden;border-radius:4px 12px 15px 5px}
-.bookpages::after{content:"";position:absolute;z-index:5;pointer-events:none;left:52.6%;top:0;bottom:0;width:22px;transform:translateX(-50%);background:linear-gradient(90deg,transparent 0,#7354352f 15%,#52371c60 42%,#f8e8c433 60%,transparent 100%)}
-.page{position:relative;min-width:0;min-height:0;background:
- radial-gradient(ellipse at 14% 20%,#fff4d78c,transparent 52%),
- radial-gradient(ellipse at 90% 91%,#986f3b29,transparent 65%),
- repeating-linear-gradient(0deg,transparent 0 4px,#865e3112 4px 5px,transparent 5px 9px),#edddb7;
- box-shadow:inset 0 0 25px #99744844}
-.left-page{padding:clamp(14px,2vw,30px) clamp(11px,1.6vw,24px) clamp(18px,2vw,28px) clamp(15px,2vw,29px);
- display:flex;align-items:center;justify-content:center;border-right:1px solid #a68457}
-.right-page{padding:clamp(16px,2.7vw,38px) clamp(21px,3vw,44px);display:flex;flex-direction:column;align-items:center;text-align:center;justify-content:center}
-.map-frame{position:relative;width:min(100%,650px);box-shadow:1px 3px 12px #4d321e65;border:2px solid #8d6740;background:#173c4b;
-  transform:rotate(-.35deg)}
-.map-frame::before{content:"";position:absolute;inset:-7px;border:1px solid #8f6c40;pointer-events:none;z-index:2}
-.world-map{display:block;width:100%;aspect-ratio:1/1;height:auto;user-select:none;-webkit-user-drag:none}
-.map-hit{position:absolute;transform:translate(-50%,-50%);display:block;border:0;padding:0;margin:0;background:transparent;cursor:pointer;border-radius:45%;touch-action:manipulation;-webkit-tap-highlight-color:transparent;appearance:none}
-.map-hit:focus-visible{outline:3px solid #fff0ad;outline-offset:-2px;background:#ffc46a22}
-/* Invisible map hotspots. The volcano's subtle halo is decorative, not a button. */
+button:focus-visible,a:focus-visible{outline:3px solid #f5cb77;outline-offset:3px}
+.world{max-width:1580px;min-height:100dvh;margin:auto;padding:clamp(12px,2vw,30px) clamp(18px,2.7vw,45px) 20px;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:12px}
+.masthead{font-size:clamp(10px,1.18vw,15px);letter-spacing:.22em;color:#dfb9a0;text-shadow:0 2px 3px #15090e;text-align:center;font-weight:bold;text-transform:uppercase}
+.book{width:min(100%,1460px);aspect-ratio:1024/602;position:relative;isolation:isolate;filter:drop-shadow(0 22px 22px #08050695);background:transparent}
+/* Page-and-binding fallback remains beneath the licensed book artwork. */
+.book-fallback{position:absolute;inset:0;background:url("images/book-fallback.webp") center/100% 100% no-repeat;pointer-events:none}
+.book-fallback::after{display:none}
+.book-art{position:absolute;inset:0;display:block;width:100%;height:100%;object-fit:fill;z-index:1;pointer-events:none;filter:sepia(.14) saturate(.88) hue-rotate(-9deg)}
+.book-toning{position:absolute;inset:3.5% 5.5% 2.5%;z-index:2;pointer-events:none;opacity:.42;border-radius:22px;background:linear-gradient(90deg,rgba(89,27,43,.14),transparent 12%,transparent 86%,rgba(89,27,43,.13)),radial-gradient(ellipse at 52% 120%,rgba(91,33,42,.18),transparent 55%)}
+.spread{position:absolute;z-index:3;inset:8.8% 9.8% 9.2% 9.8%;display:grid;grid-template-columns:49.8% 50.2%;align-items:stretch;pointer-events:none}
+.page{position:relative;min-width:0;min-height:0;display:flex;align-items:center;justify-content:center;pointer-events:auto}
+.page--left{padding:2.6% 6.5% 2.7% 3.5%}
+.page--right{padding:2.6% 3.8% 2.7% 9%;display:flex;flex-direction:column;text-align:center;justify-content:center;gap:0}
+.map-frame{position:relative;width:100%;max-width:min(100%,660px);border:3px solid #8b5b39;box-shadow:0 3px 0 #c99b5b,0 6px 18px rgba(64,30,27,.38);background:#2b4a53;transform:rotate(-.3deg)}
+.map-frame::after{content:"";position:absolute;inset:-6px;box-shadow:inset 0 0 0 1px #6e442a;pointer-events:none}
+.map-frame img{display:block;width:100%;height:auto;aspect-ratio:1/1;user-select:none;-webkit-user-drag:none}
+.map-hit{position:absolute;display:block;transform:translate(-50%,-50%);background:transparent;border:0;padding:0;margin:0;cursor:pointer;border-radius:46%;touch-action:manipulation;appearance:none;-webkit-appearance:none}
+.map-hit:focus-visible{outline:3px solid #f4c75d;outline-offset:-2px;background:#fcb64e24}
 .map-hit.astraluna{left:24%;top:32%;width:29%;height:29%}
 .map-hit.tristalia{left:66%;top:31%;width:31%;height:25%}
 .map-hit.ladaburg{left:50%;top:54%;width:23%;height:23%}
 .map-hit.forest{left:76%;top:72%;width:30%;height:26%}
 .map-hit.vulcano{left:35%;top:77%;width:29%;height:27%}
-.map-hit.vulcano::after{content:"";position:absolute;left:53%;top:52%;width:48%;aspect-ratio:1;transform:translate(-50%,-50%);border:1px solid #ffe2a6a9;border-radius:50%;background:radial-gradient(circle,#ffe1a555 0,#ffb34538 34%,#ff862322 55%,transparent 75%);box-shadow:0 0 9px 5px #ffc76970,0 0 18px 11px #fb9c485b;animation:beacon 2.7s ease-in-out infinite;pointer-events:none}
-@keyframes beacon{0%,100%{opacity:.55;box-shadow:0 0 9px 3px #ffc76955,0 0 16px 7px #fb9c483d}50%{opacity:1;box-shadow:0 0 17px 8px #ffc769a1,0 0 27px 15px #fb9c4869}}
-.book-ornament{width:100%;max-width:310px;display:flex;gap:12px;align-items:center;color:#9b7346;font-size:19px;margin-bottom:clamp(8px,1.5vw,19px)}
-.book-ornament::before,.book-ornament::after{content:"";flex:1;height:1px;background:linear-gradient(90deg,transparent,#9e7648 45%,#9e7648 80%,transparent)}
-.eyebrow{font-size:clamp(10px,1vw,13px);font-weight:bold;letter-spacing:.17em;text-transform:uppercase;color:#795b3f;margin:0 0 8px}
-h1{font-size:clamp(27px,3.5vw,48px);font-weight:normal;line-height:1.06;color:#50351f;margin:0 0 5px}
-.chapter-title{font-size:clamp(14px,1.5vw,20px);color:#785331;margin:0 0 11px;font-style:italic}
-.meduza-halo{width:min(100%,280px);height:clamp(155px,19vw,265px);position:relative;display:flex;align-items:center;justify-content:center;margin:0 auto 8px}
-.meduza-halo::before{content:"";position:absolute;width:75%;aspect-ratio:1;top:3%;left:13%;border:1px solid #b38a5366;border-radius:50%;background:radial-gradient(circle,#d7bd8847,transparent 70%);box-shadow:inset 0 0 0 8px #efd7a447}
-.meduza-halo img{display:block;position:relative;z-index:1;max-height:100%;max-width:90%;object-fit:contain;filter:drop-shadow(0 6px 4px #6a49397a)}
-.sep{display:flex;gap:10px;align-items:center;width:min(100%,330px);color:#aa7a47;font-size:17px;margin:3px auto 16px}
-.sep::before,.sep::after{content:"";height:1px;flex:1;background:#a78355}
-.expedition{width:min(100%,385px);padding:clamp(14px,1.6vw,22px) clamp(14px,2vw,24px);border:4px double #b48c56;position:relative;background:linear-gradient(180deg,#f6e8c02e,#f4d8a32c);box-shadow:0 0 0 4px #ddc39538}
-.expedition::before,.expedition::after{content:"✥";position:absolute;top:-12px;color:#b08753;background:#edddb7;font-size:17px;padding:0 10px}
-.expedition::before{left:9px}.expedition::after{right:9px}
-.expedition h2{font-size:clamp(21px,2.6vw,32px);font-weight:normal;line-height:1.15;margin:8px 0 9px;color:#593723}
-.expedition p{font-size:clamp(14px,1.25vw,17px);line-height:1.45;margin:0 auto 16px;max-width:310px}
-.go{display:inline-flex;justify-content:center;align-items:center;gap:12px;min-height:47px;padding:9px 26px;background:linear-gradient(180deg,#6c4030,#48291f);color:#faeac7;border:1px solid #a5794c;text-decoration:none;text-transform:uppercase;letter-spacing:.08em;font-family:Georgia,serif;font-size:clamp(13px,1.3vw,16px);box-shadow:0 3px 0 #977148,0 7px 10px #4d2c2033;transition:transform .16s ease,filter .16s ease}
-.go:hover{filter:brightness(1.13)}.go:active{transform:translateY(2px);box-shadow:0 1px 0 #977148}
-.status-line{min-height:22px;margin:14px 0 0;color:#76573a;font-style:italic;font-size:clamp(12px,1vw,14px)}
-.collection-tab{position:absolute;z-index:10;left:-19px;top:50%;transform:translateY(-50%);width:55px;min-height:155px;padding:12px 5px 11px 3px;display:flex;flex-direction:column;justify-content:center;align-items:center;gap:12px;border:2px solid #c79d61;border-right:0;border-radius:11px 0 0 11px;text-decoration:none;color:#ffe0a9;background:linear-gradient(90deg,#2d1714,#744834 45%,#4b291f);box-shadow:-5px 7px 14px #11090799,inset 3px 0 0 #a3764a}
-.collection-tab:hover{filter:brightness(1.14)}
-.collection-tab .book-symbol{font-size:25px;line-height:1}
-.collection-tab .book-label{writing-mode:vertical-rl;transform:rotate(180deg);font-size:13px;letter-spacing:.11em;font-weight:bold}
-.collection-tab .col-count{font:11px system-ui,sans-serif;background:#2c1c18;border-radius:50%;min-width:24px;height:24px;display:grid;place-items:center}
-.book-footer{color:#d3b387;margin:22px 0 0;font-size:12px;letter-spacing:.12em;text-align:center;text-shadow:0 2px 2px #1c0d0a}
-@media(max-width:1100px){
- .atlas-stage{padding:20px 34px}
- .book{padding:13px 13px 13px 32px}
- .right-page{padding:17px 22px}
- .left-page{padding:17px 14px}
- .meduza-halo{height:clamp(150px,18vw,230px)}
- .bookpages{min-height:0}
- .expedition{padding:14px}
- .book-ornament{margin-bottom:8px}
- .sep{margin-bottom:10px}
+.map-hit.vulcano::after{content:"";position:absolute;left:53%;top:52%;width:49%;aspect-ratio:1;transform:translate(-50%,-50%);border-radius:50%;border:1px solid #ffd395b9;background:radial-gradient(circle,#ffdbaa5c 0,#ffbd6e3d 39%,transparent 76%);box-shadow:0 0 12px 7px #ffa93c65;animation:glow 2.6s ease-in-out infinite;pointer-events:none}
+@keyframes glow{0%,100%{opacity:.6;box-shadow:0 0 9px 3px #ffa93c5e}50%{opacity:1;box-shadow:0 0 20px 12px #ffa93c93}}
+.booktitle{font-size:clamp(21px,3.35vw,51px);color:#542b29;font-weight:normal;margin:0 0 .1em;line-height:1.03;letter-spacing:.03em}
+.toprule{width:68%;max-width:250px;display:flex;align-items:center;gap:8px;color:#9e6f47;font-size:15px;margin:0 auto clamp(5px,.55vw,9px)}
+.toprule::before,.toprule::after{content:"";height:1px;flex:1;background:#aa774c}
+.subtitle{margin:0 0 clamp(5px,.75vw,13px);font-size:clamp(10px,1.1vw,15px);color:#7e5743;letter-spacing:.12em;text-transform:uppercase;font-weight:bold}
+.meduza{display:block;position:relative;width:min(62%,220px);height:clamp(105px,16vw,217px);margin:0 auto clamp(5px,.6vw,11px);display:flex;align-items:center;justify-content:center}
+.meduza::before{content:"";position:absolute;border:1px solid #ab754b80;border-radius:50%;width:77%;aspect-ratio:1;background:radial-gradient(circle,#d8b88769 0,transparent 65%)}
+.meduza img{max-height:100%;max-width:100%;object-fit:contain;display:block;position:relative;filter:drop-shadow(1px 4px 3px #69463278)}
+.divider{display:flex;align-items:center;gap:8px;width:70%;max-width:260px;color:#9f6841;margin:2px auto clamp(4px,.65vw,11px);font-size:17px}
+.divider::before,.divider::after{content:"";height:1px;flex:1;background:linear-gradient(90deg,transparent,#9d704c,transparent)}
+.quest{position:relative;width:100%;max-width:360px;margin:0 auto;padding:clamp(9px,1.15vw,17px) clamp(6px,1.4vw,21px);border:2px double #a37a54;background:linear-gradient(180deg,#f9edce20,#e6be8526);box-shadow:inset 0 0 0 3px #e2be9230}
+.quest::before{content:"✣";position:absolute;left:50%;top:-14px;transform:translateX(-50%);color:#a47147;background:#ebcd9b;padding:0 8px;font-size:14px}
+.quest-label{font-size:clamp(10px,1.1vw,14px);color:#805536;font-weight:bold;letter-spacing:.12em;text-transform:uppercase}
+.quest h2{font-size:clamp(17px,2.15vw,30px);font-weight:normal;line-height:1.1;margin:6px 0;color:#5b3129}
+.quest p{font-size:clamp(11px,1.18vw,16px);line-height:1.36;margin:0 auto clamp(7px,.75vw,12px);max-width:300px}
+.go{display:inline-flex;align-items:center;justify-content:center;min-height:clamp(34px,3.7vw,47px);padding:6px clamp(13px,1.6vw,22px);background:linear-gradient(180deg,#783e41,#4d242e);color:#f8e6c8;text-decoration:none;text-transform:uppercase;letter-spacing:.09em;font-size:clamp(11px,1.16vw,15px);border:1px solid #b38757;box-shadow:0 3px 0 #9f754d}
+.go:active{transform:translateY(2px);box-shadow:0 1px 0 #9f754d}
+.status{min-height:17px;margin:clamp(5px,.65vw,10px) auto 0;color:#875c45;font-size:clamp(10px,.92vw,13px);font-style:italic}
+.collection{position:absolute;z-index:6;left:3.8%;top:50%;transform:translate(-5%,-50%);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:7px;width:clamp(37px,4.3vw,61px);min-height:clamp(116px,16vw,190px);background:linear-gradient(100deg,#27131b 0%,#75404b 45%,#3d1b26 100%);border:2px solid #bf9765;border-radius:10px 4px 4px 10px;text-decoration:none;color:#f7d7a3;box-shadow:inset 3px 0 0 #a97857,-3px 8px 12px #0c080a77}
+.collection .symbol{font-size:clamp(17px,2vw,25px)}
+.collection .label{writing-mode:vertical-rl;transform:rotate(180deg);font-size:clamp(10px,1.15vw,14px);letter-spacing:.13em;font-weight:bold}
+.collection .count{background:#2c1722;font:11px system-ui,sans-serif;padding:4px;border-radius:7px}
+.credit{font-size:10px;color:#c49e82;text-align:center;opacity:.8;margin:6px 0 0;line-height:1.4;letter-spacing:.02em}
+.credit a{color:#e0bf8c}
+@media(max-width:1050px){
+ .world{padding:14px 15px 22px}
+ .page--left{padding:2.8% 7.6% 2.8% 3.3%}
+ .page--right{padding:2.6% 4.7% 2.5% 8.3%}
+ .meduza{height:clamp(88px,14.4vw,165px)}
+ .quest{padding:9px 9px}
 }
-@media(max-width:780px){
- .atlas-stage{padding:18px 22px 20px;justify-content:flex-start}
- .book{padding:12px 11px 14px 27px}
- .book::before{left:8px;width:13px}
- .bookpages{display:flex;flex-direction:column;overflow:hidden}
- .bookpages::after{left:0;top:auto;bottom:0;width:0;height:0}
- .left-page{border-right:0;border-bottom:2px solid #b08d61;padding:24px 22px 20px}
- .right-page{padding:24px 22px 32px}
- .map-frame{width:min(100%,650px)}
- .meduza-halo{height:190px}
- .collection-tab{left:-16px;width:45px;min-height:137px}
- .collection-tab .book-symbol{font-size:22px}
- .expedition{width:min(100%,390px)}
+@media(max-width:760px){
+ .world{padding:14px 15px 22px}
+ .book{width:min(100%,520px);aspect-ratio:auto;filter:drop-shadow(0 14px 15px #10080c9c);background:linear-gradient(90deg,#31191f 0,#70404c 4%,#4a242c 97%,#29191e 100%);border:3px solid #9d6c56;border-radius:12px 19px 23px 13px;padding:22px 21px 27px 29px;box-shadow:0 9px 0 #a07c61,0 15px 0 #49262a}
+ .book-art,.book-toning,.book-fallback{display:none}
+ .book::after{content:"";position:absolute;bottom:9px;left:25px;right:11px;height:10px;background:repeating-linear-gradient(0deg,#e2c898 0 2px,#af8c66 2px 3px,#f1d7ab 3px 5px)}
+ .spread{position:relative;inset:auto;display:block;background:linear-gradient(90deg,#edd7b0 0,#f7e7c5 50%,#dec092 100%);border:1px solid #ac825a;box-shadow:inset 0 0 24px #8b5c3450}
+ .page--left{padding:24px 17px;border-bottom:2px solid #b18b63}
+ .page--right{padding:23px 16px 29px}
+ .map-frame{max-width:440px}
+ .booktitle{font-size:clamp(32px,7vw,43px)}
+ .subtitle{font-size:12px}
+ .meduza{height:185px}
+ .quest{max-width:360px;padding:14px}
+ .quest h2{font-size:27px}
+ .quest p{font-size:15px}
+ .go{font-size:14px;min-height:43px}
+ .collection{left:-14px;top:31%;width:42px;min-height:135px}
+ .collection .label{font-size:11px}
+ .status{font-size:12px}
 }
-@media(max-width:450px){
- .atlas-stage{padding:12px 16px 20px}
- .school-mark{font-size:10px;line-height:1.5;margin-bottom:14px}
- .left-page{padding:17px 14px 19px}
- .right-page{padding:24px 13px 28px}
- .book{padding-left:23px}
- .collection-tab{left:-14px;min-height:120px;width:38px}
- .collection-tab .book-label{font-size:11px}
- .collection-tab .book-symbol{font-size:18px}
- .collection-tab .col-count{font-size:10px;min-width:20px;height:20px}
-}
-@media(prefers-reduced-motion:reduce){.book,.map-hit.vulcano::after{animation:none!important}.go{transition:none}}
+@media(prefers-reduced-motion:reduce){.map-hit.vulcano::after{animation:none}}
 </style>
 </head>
 <body>
-<main class="atlas-stage">
-  <div class="school-mark">✦ Школа охотников на чудовищ Лады и Никиты ✦</div>
-  <article class="book" aria-label="Книга-атлас Тиввига">
-    <a class="collection-tab" href="collection.html" aria-label="Открыть коллекцию наград">
-      <span class="book-symbol" aria-hidden="true">✵</span>
-      <span class="book-label">Коллекция</span>
-      <span class="col-count" id="collectionCount" aria-label="Количество открытых наград">0/4</span>
+<main class="world">
+  <div class="masthead">✦ Школа охотников на чудовищ Лады и Никиты ✦</div>
+  <article class="book" aria-label="Старинный атлас Тиввига">
+    <div class="book-fallback" aria-hidden="true"></div>
+    <img class="book-art" src="https://opengameart.org/sites/default/files/book_12.png" referrerpolicy="no-referrer" onerror="this.onerror=null;this.src='images/book-fallback.webp'" alt="" aria-hidden="true">
+    <div class="book-toning" aria-hidden="true"></div>
+    <a class="collection" href="collection.html" aria-label="Открыть коллекцию наград">
+      <span class="symbol" aria-hidden="true">✧</span>
+      <span class="label">Коллекция</span>
+      <span class="count" id="collectionCount">0/4</span>
     </a>
-    <div class="bookpages">
-      <section class="page left-page" aria-label="Интерактивная карта Тиввига">
+    <div class="spread">
+      <section class="page page--left" aria-label="Интерактивная карта Тиввига">
         <div class="map-frame">
-          <img class="world-map" src="images/tivvig-map.webp" alt="Старинная иллюстрированная карта мира Тиввиг" draggable="false">
+          <img src="images/tivvig-map.webp" alt="Карта Тиввига" draggable="false">
           <button class="map-hit astraluna" type="button" data-place="astraluna" aria-label="Исследовать Астралуну"></button>
           <button class="map-hit tristalia" type="button" data-place="tristalia" aria-label="Исследовать Тристалию"></button>
           <button class="map-hit ladaburg" type="button" data-place="ladaburg" aria-label="Исследовать Ладабург"></button>
-          <a class="map-hit vulcano" href="vulkan-empedokla.html" aria-label="Отправиться к Вулкану Эмпедокла"></a>
-          <button class="map-hit forest" type="button" data-place="forest" aria-label="Исследовать Лес Майкла Джексона"></button>
+          <a class="map-hit vulcano" href="vulkan-empedokla.html" aria-label="Начать экспедицию на вулкан Эмпедокла"></a>
+          <button class="map-hit forest" type="button" data-place="forest" aria-label="Исследовать лес Майкла Джексона"></button>
         </div>
       </section>
-      <section class="page right-page" aria-label="Экспедиция на сегодня">
-        <div class="book-ornament" aria-hidden="true">✦</div>
-        <p class="eyebrow">Атлас чудес и путешествий</p>
-        <h1>Тиввиг</h1>
-        <p class="chapter-title">Книга открытых земель</p>
-        <div class="meduza-halo"><img src="images/meduza-happy.webp" alt="Радостная крылатая Медуза — проводница по Тиввигу"></div>
-        <div class="sep" aria-hidden="true">❦</div>
-        <div class="expedition">
-          <div class="eyebrow">✧ Экспедиция на сегодня ✧</div>
+      <section class="page page--right" aria-label="Экспедиция на сегодня">
+        <div class="toprule" aria-hidden="true">✥</div>
+        <h1 class="booktitle">Тиввиг</h1>
+        <p class="subtitle">Атлас неведомых земель</p>
+        <div class="meduza"><img src="images/meduza-happy.webp" alt="Медуза — проводница по Тиввигу"></div>
+        <div class="divider" aria-hidden="true">❦</div>
+        <div class="quest">
+          <div class="quest-label">Экспедиция на сегодня</div>
           <h2>Вулкан Эмпедокла</h2>
-          <p>Отправимся к огненным горам, встретим чудовищ и раскроем тайны древнего мира.</p>
-          <a class="go" href="vulkan-empedokla.html">Отправиться <span aria-hidden="true">➜</span></a>
+          <p>Огненные горы, древние тайны и чудовища ждут нас.</p>
+          <a class="go" href="vulkan-empedokla.html">Отправиться →</a>
         </div>
-        <p class="status-line" id="mapStatus" aria-live="polite">Прикоснись к земле на карте…</p>
+        <p class="status" id="mapStatus" aria-live="polite">Выбери землю на карте…</p>
       </section>
     </div>
   </article>
-  <div class="book-footer">✧ Атлас приключений ✧</div>
+  <p class="credit">Книжный ассет: MELLE (Melissa Krautheim), <a href="https://opengameart.org/content/epic-collection-book">CC0</a>.</p>
 </main>
 <script>
-(() => {
-  'use strict';
-  const status = document.getElementById('mapStatus');
-  const places = {
-    astraluna: 'Астралуна пока ждёт исследователей.',
-    tristalia: 'Тристалия пока хранит свои тайны.',
-    ladaburg: 'Ладабург ещё готовится встречать гостей.',
-    forest: 'Лес Майкла Джексона откроется позже.'
-  };
-  document.querySelectorAll('[data-place]').forEach(button => {
-    button.addEventListener('click', () => {
-      const message = places[button.dataset.place];
-      if (message) status.textContent = message;
-    });
-  });
-  const rewards = [
-    'tivvig_reward_empedocles_v1',
-    'tivvig_reward_forge_v1',
-    'tivvig_reward_sword_v1',
-    'tivvig_reward_hydra_v1'
-  ];
-  try {
-    const count = rewards.filter(key => localStorage.getItem(key) === 'unlocked').length;
-    document.getElementById('collectionCount').textContent = count + '/' + rewards.length;
-  } catch (_) { /* сайт остаётся рабочим без хранилища */ }
+(()=>{
+ 'use strict';
+ const status=document.getElementById('mapStatus');
+ const places={
+  astraluna:'Астралуна пока ждёт исследователей.',
+  tristalia:'Тристалия ещё хранит свои тайны.',
+  ladaburg:'Ладабург готовится встречать гостей.',
+  forest:'Лес Майкла Джексона откроется позже.'
+ };
+ document.querySelectorAll('[data-place]').forEach(btn=>btn.addEventListener('click',()=>{
+  const msg=places[btn.dataset.place];if(msg)status.textContent=msg;
+ }));
+ try{
+  const keys=['tivvig_reward_empedocles_v1','tivvig_reward_forge_v1','tivvig_reward_sword_v1','tivvig_reward_hydra_v1'];
+  const unlocked=keys.filter(k=>localStorage.getItem(k)==='unlocked').length;
+  document.getElementById('collectionCount').textContent=unlocked+'/'+keys.length;
+ }catch(e){}
 })();
 </script>
 </body>
