@@ -1,267 +1,188 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="ru">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<meta name="theme-color" content="#f1e0bc">
-<title>Тиввиг — Школа охотников на чудовищ Лады и Никиты</title>
+<meta name="theme-color" content="#2e201b">
+<meta name="description" content="Тиввиг — волшебный атлас приключений школы охотников на чудовищ Лады и Никиты.">
+<title>Тиввиг — Атлас приключений</title>
 <style>
-:root{--ink:#2d1e1a;--accent:#9c4728;--sand:#f1e0bc;--paper:#fff8ea;--forest:#486548;--gold:#c48a39;--sea:#294f67;--edge:#d8c29b;--soft:#f9f0dc;}
+:root{
+  --ink:#34261b; --faded:#765c3f; --line:#ad8454; --paper:#f0dfb7;
+  --wood:#2e1c16; --gold:#d2a15e; --deep:#482e26;
+}
 *{box-sizing:border-box}
-html,body{margin:0;padding:0;background:#dcbf90;color:var(--ink);font-family:system-ui,-apple-system,"Trebuchet MS",sans-serif;-webkit-tap-highlight-color:transparent}
+html{background:#201713}
+body{margin:0;min-height:100dvh;color:var(--ink);font-family:Georgia,"Times New Roman",serif;
+  background:radial-gradient(ellipse at 50% 42%,#73513c 0%,#463025 46%,#201612 100%);overflow-x:hidden}
+body::before{content:"";position:fixed;inset:0;pointer-events:none;opacity:.27;background:
+ repeating-linear-gradient(94deg,transparent 0 35px,#120e0b22 35px 37px,transparent 37px 77px),
+ repeating-linear-gradient(0deg,transparent 0 138px,#dfb88511 138px 141px);mix-blend-mode:multiply}
 a{color:inherit}
-body{min-height:100dvh}
-main{max-width:1400px;margin:0 auto;background:linear-gradient(180deg,#f4e7ca,#ecd2a7);min-height:100dvh;padding:clamp(10px,1.8vw,24px);border-left:1px solid #c9aa80;border-right:1px solid #c9aa80}
-header{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:8px 0 14px;border-bottom:3px solid #43281d}
-.brand{font-weight:900;letter-spacing:.07em;font-size:clamp(14px,1.6vw,20px)}
-.badge{display:inline-flex;align-items:center;gap:8px;border-radius:999px;padding:8px 14px;background:#43281d;color:#fff4df;font-weight:800;font-size:14px}
-.layout{display:grid;grid-template-columns:minmax(300px,420px) minmax(0,1fr);gap:clamp(14px,2vw,26px);padding-top:18px;align-items:start}
-.panel{background:var(--paper);border:2px solid var(--edge);border-radius:26px;box-shadow:0 7px 0 #dbc197;padding:clamp(18px,2vw,28px)}
-.welcome{display:flex;flex-direction:column;gap:14px;position:sticky;top:10px}
-.kicker{font-size:13px;letter-spacing:.15em;text-transform:uppercase;color:var(--accent);font-weight:900}
-h1{margin:0;font-family:Georgia,serif;font-size:clamp(34px,4vw,56px);line-height:1;letter-spacing:.02em}
-.subtitle{margin:0;font-size:clamp(17px,1.6vw,21px);line-height:1.45}
-.meduza-wrap{display:grid;grid-template-columns:120px 1fr;gap:12px;align-items:center;background:var(--soft);border-radius:22px;padding:12px 14px;border:1.5px dashed #cfb486}
-.meduza-wrap img{width:100%;height:auto;display:block;filter:drop-shadow(2px 4px 1px #9b5f3e33)}
-.callout{margin:0;font-size:15px;line-height:1.45}
-.today{background:#fff5e2;border:2px solid #e5c88f;border-radius:20px;padding:14px 16px;display:flex;flex-direction:column;gap:8px}
-.today h2,.info h2{margin:0;font-size:22px;font-family:Georgia,serif}
-.today p,.info p{margin:0;line-height:1.45}
-.actions{display:flex;flex-wrap:wrap;gap:10px;margin-top:8px}
-.btn{display:inline-flex;align-items:center;justify-content:center;min-height:48px;padding:11px 16px;border-radius:14px;border:none;text-decoration:none;font-weight:900;font-size:15px;cursor:pointer;transition:transform .12s ease, background .12s ease}
-.btn:active{transform:scale(.98)}
-.btn.primary{background:#4b2f22;color:#fff0d5}
-.btn.secondary{background:#e7d0a4;color:#44291d}
-.mini-note{font-size:12px;color:#6d5c4f}
-.map-panel{display:flex;flex-direction:column;gap:12px}
-.map-shell{position:relative;background:#183142;border:4px solid #5a3a29;border-radius:28px;padding:10px;box-shadow:0 10px 0 #b68f5f;overflow:hidden}
-.map-shell img{display:block;width:100%;height:auto;border-radius:18px}
-/* Невидимые области атласа: крупные зоны нажатия, никакой надписи поверх рисунка. */
-.hotspot{position:absolute;transform:translate(-50%,-50%);display:block;width:clamp(64px,22%,192px);aspect-ratio:1.45/1;padding:0;margin:0;cursor:pointer;background:transparent;border:0;border-radius:50%;box-shadow:none;appearance:none;-webkit-appearance:none;touch-action:manipulation}
-.hotspot:focus-visible{outline:3px solid #f7ce67;outline-offset:3px;background:rgba(255,204,88,.09)}
-.hotspot--volcano{width:clamp(75px,23%,210px);aspect-ratio:1.35/1}
-.hotspot--volcano::after{content:"";position:absolute;left:50%;top:50%;width:44%;aspect-ratio:1;border-radius:50%;transform:translate(-50%,-50%);pointer-events:none;border:2px solid rgba(255,201,91,.94);background:radial-gradient(circle,rgba(255,198,72,.28),rgba(255,126,44,.06) 70%,transparent 100%);box-shadow:0 0 16px 8px rgba(255,158,49,.3),0 0 0 3px rgba(255,210,111,.11);animation:volcano-beacon 2.6s ease-in-out infinite}
-@keyframes volcano-beacon{0%,100%{opacity:.75;box-shadow:0 0 10px 3px rgba(255,156,47,.27),0 0 0 2px rgba(255,210,111,.1)}50%{opacity:1;box-shadow:0 0 24px 12px rgba(255,156,47,.5),0 0 0 7px rgba(255,210,111,.2)}}
-@media(prefers-reduced-motion:reduce){.hotspot--volcano::after{animation:none;opacity:1}}
-
-.legend{display:flex;flex-wrap:wrap;gap:8px}
-.tag{background:#ead5ae;border:1px solid #c7a877;padding:7px 10px;border-radius:999px;font-size:13px;font-weight:800}
-.info{display:grid;grid-template-columns:1.2fr .8fr;gap:14px;align-items:start}
-.info .card{background:var(--paper);border:2px solid var(--edge);border-radius:22px;padding:18px;box-shadow:0 6px 0 #dbc197}
-.info ul{margin:8px 0 0 18px;padding:0;line-height:1.45}
-.status{display:inline-flex;align-items:center;gap:6px;font-size:13px;font-weight:900;text-transform:uppercase;letter-spacing:.08em;color:#88522f}
-.route{font-weight:800;font-size:14px;color:#685341}
-.call-space{background:#ecddc0;border:2px dashed #b79b72;border-radius:18px;padding:13px;text-align:center;font-size:14px;color:#67584a;line-height:1.35}
-footer{padding:18px 4px 8px;color:#624e40;font-size:12px;text-align:center}
-@media(max-width:1050px){.layout{grid-template-columns:1fr}.welcome{position:relative;top:auto}.info{grid-template-columns:1fr}}
-@media(max-width:760px){main{padding:8px}.meduza-wrap{grid-template-columns:96px 1fr}.map-shell{padding:7px;border-radius:22px}.info .card{padding:14px}header{align-items:flex-start;flex-direction:column}}
-@media(max-width:480px){.meduza-wrap{grid-template-columns:82px 1fr}h1{font-size:34px}.subtitle{font-size:15px}.badge{font-size:12px}.actions{flex-direction:column}.btn{width:100%}}
-
-.header-actions{display:flex;align-items:center;gap:12px;flex-wrap:wrap;justify-content:flex-end}
-.collection-book{min-height:49px;display:inline-flex;align-items:center;gap:10px;padding:9px 16px;border-left:8px solid #d6aa65;border-radius:6px 15px 15px 6px;background:linear-gradient(140deg,#75432e,#442822);box-shadow:2px 4px 0 #b99465,inset 0 0 0 2px #bf935c;color:#fff1d2;text-decoration:none;font-weight:900;white-space:nowrap}
-.collection-book .bookicon{font-size:26px}
-.collection-book .count{font-size:12px;border-left:1px solid #a97955;padding-left:8px;color:#f0cf96}
-.collection-book:focus-visible{outline:4px solid #006fad;outline-offset:3px}
-@media(max-width:760px){.header-actions{justify-content:flex-start}.collection-book{min-height:45px}}
+button{font:inherit}
+button:focus-visible,a:focus-visible{outline:3px solid #f6c35f;outline-offset:4px}
+.atlas-stage{width:100%;min-height:100dvh;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:clamp(12px,2.2vw,30px) clamp(20px,3.2vw,60px) 24px}
+.school-mark{text-align:center;color:#d9bc8d;font-size:clamp(11px,1.1vw,15px);letter-spacing:.18em;font-weight:bold;text-transform:uppercase;text-shadow:0 2px 3px #190d09;margin-bottom:clamp(14px,2vw,24px)}
+.book{position:relative;width:min(100%,1350px);padding:18px 19px 18px 38px;background:linear-gradient(90deg,#2b1714 0,#6e4330 2.2%,#3a231e 3.6%,#70472f 5%,#563529 94%,#2b1814 100%);
+  border:3px solid #986b41;border-radius:16px 26px 27px 16px;box-shadow:0 10px 0 #281915,0 16px 0 #714b31,0 26px 30px #0b0807aa,0 35px 80px #080504a0,inset 0 0 0 3px #301e18,inset 0 0 0 6px #a37347;
+  animation:arrive .7s ease-out both}
+@keyframes arrive{from{opacity:0;transform:translateY(12px) scale(.99)}to{opacity:1;transform:none}}
+.book::before{content:"";position:absolute;top:11px;bottom:10px;left:11px;width:20px;border-radius:8px;background:repeating-linear-gradient(90deg,#2d1915 0 3px,#865c3e 3px 5px,#38241d 5px 9px);box-shadow:inset -4px 0 7px #1e1210,5px 0 6px #1d120f88}
+.book::after{content:"";position:absolute;left:36px;right:11px;bottom:10px;height:10px;border-radius:0 0 17px 10px;background:repeating-linear-gradient(180deg,#f5e4c5 0 2px,#bfa276 2px 3px,#ead4a9 3px 5px);z-index:0;pointer-events:none}
+.bookpages{position:relative;isolation:isolate;display:grid;grid-template-columns:53% 47%;min-height:560px;border:1px solid #a6814f;
+  background:#e6d1a6;box-shadow:0 3px 0 #bda072,0 6px 0 #ebd8ad,inset 0 0 25px #674a27a3;overflow:hidden;border-radius:4px 12px 15px 5px}
+.bookpages::after{content:"";position:absolute;z-index:5;pointer-events:none;left:52.6%;top:0;bottom:0;width:22px;transform:translateX(-50%);background:linear-gradient(90deg,transparent 0,#7354352f 15%,#52371c60 42%,#f8e8c433 60%,transparent 100%)}
+.page{position:relative;min-width:0;min-height:0;background:
+ radial-gradient(ellipse at 14% 20%,#fff4d78c,transparent 52%),
+ radial-gradient(ellipse at 90% 91%,#986f3b29,transparent 65%),
+ repeating-linear-gradient(0deg,transparent 0 4px,#865e3112 4px 5px,transparent 5px 9px),#edddb7;
+ box-shadow:inset 0 0 25px #99744844}
+.left-page{padding:clamp(14px,2vw,30px) clamp(11px,1.6vw,24px) clamp(18px,2vw,28px) clamp(15px,2vw,29px);
+ display:flex;align-items:center;justify-content:center;border-right:1px solid #a68457}
+.right-page{padding:clamp(16px,2.7vw,38px) clamp(21px,3vw,44px);display:flex;flex-direction:column;align-items:center;text-align:center;justify-content:center}
+.map-frame{position:relative;width:min(100%,650px);box-shadow:1px 3px 12px #4d321e65;border:2px solid #8d6740;background:#173c4b;
+  transform:rotate(-.35deg)}
+.map-frame::before{content:"";position:absolute;inset:-7px;border:1px solid #8f6c40;pointer-events:none;z-index:2}
+.world-map{display:block;width:100%;aspect-ratio:1/1;height:auto;user-select:none;-webkit-user-drag:none}
+.map-hit{position:absolute;transform:translate(-50%,-50%);display:block;border:0;padding:0;margin:0;background:transparent;cursor:pointer;border-radius:45%;touch-action:manipulation;-webkit-tap-highlight-color:transparent;appearance:none}
+.map-hit:focus-visible{outline:3px solid #fff0ad;outline-offset:-2px;background:#ffc46a22}
+/* Invisible map hotspots. The volcano's subtle halo is decorative, not a button. */
+.map-hit.astraluna{left:24%;top:32%;width:29%;height:29%}
+.map-hit.tristalia{left:66%;top:31%;width:31%;height:25%}
+.map-hit.ladaburg{left:50%;top:54%;width:23%;height:23%}
+.map-hit.forest{left:76%;top:72%;width:30%;height:26%}
+.map-hit.vulcano{left:35%;top:77%;width:29%;height:27%}
+.map-hit.vulcano::after{content:"";position:absolute;left:53%;top:52%;width:48%;aspect-ratio:1;transform:translate(-50%,-50%);border:1px solid #ffe2a6a9;border-radius:50%;background:radial-gradient(circle,#ffe1a555 0,#ffb34538 34%,#ff862322 55%,transparent 75%);box-shadow:0 0 9px 5px #ffc76970,0 0 18px 11px #fb9c485b;animation:beacon 2.7s ease-in-out infinite;pointer-events:none}
+@keyframes beacon{0%,100%{opacity:.55;box-shadow:0 0 9px 3px #ffc76955,0 0 16px 7px #fb9c483d}50%{opacity:1;box-shadow:0 0 17px 8px #ffc769a1,0 0 27px 15px #fb9c4869}}
+.book-ornament{width:100%;max-width:310px;display:flex;gap:12px;align-items:center;color:#9b7346;font-size:19px;margin-bottom:clamp(8px,1.5vw,19px)}
+.book-ornament::before,.book-ornament::after{content:"";flex:1;height:1px;background:linear-gradient(90deg,transparent,#9e7648 45%,#9e7648 80%,transparent)}
+.eyebrow{font-size:clamp(10px,1vw,13px);font-weight:bold;letter-spacing:.17em;text-transform:uppercase;color:#795b3f;margin:0 0 8px}
+h1{font-size:clamp(27px,3.5vw,48px);font-weight:normal;line-height:1.06;color:#50351f;margin:0 0 5px}
+.chapter-title{font-size:clamp(14px,1.5vw,20px);color:#785331;margin:0 0 11px;font-style:italic}
+.meduza-halo{width:min(100%,280px);height:clamp(155px,19vw,265px);position:relative;display:flex;align-items:center;justify-content:center;margin:0 auto 8px}
+.meduza-halo::before{content:"";position:absolute;width:75%;aspect-ratio:1;top:3%;left:13%;border:1px solid #b38a5366;border-radius:50%;background:radial-gradient(circle,#d7bd8847,transparent 70%);box-shadow:inset 0 0 0 8px #efd7a447}
+.meduza-halo img{display:block;position:relative;z-index:1;max-height:100%;max-width:90%;object-fit:contain;filter:drop-shadow(0 6px 4px #6a49397a)}
+.sep{display:flex;gap:10px;align-items:center;width:min(100%,330px);color:#aa7a47;font-size:17px;margin:3px auto 16px}
+.sep::before,.sep::after{content:"";height:1px;flex:1;background:#a78355}
+.expedition{width:min(100%,385px);padding:clamp(14px,1.6vw,22px) clamp(14px,2vw,24px);border:4px double #b48c56;position:relative;background:linear-gradient(180deg,#f6e8c02e,#f4d8a32c);box-shadow:0 0 0 4px #ddc39538}
+.expedition::before,.expedition::after{content:"✥";position:absolute;top:-12px;color:#b08753;background:#edddb7;font-size:17px;padding:0 10px}
+.expedition::before{left:9px}.expedition::after{right:9px}
+.expedition h2{font-size:clamp(21px,2.6vw,32px);font-weight:normal;line-height:1.15;margin:8px 0 9px;color:#593723}
+.expedition p{font-size:clamp(14px,1.25vw,17px);line-height:1.45;margin:0 auto 16px;max-width:310px}
+.go{display:inline-flex;justify-content:center;align-items:center;gap:12px;min-height:47px;padding:9px 26px;background:linear-gradient(180deg,#6c4030,#48291f);color:#faeac7;border:1px solid #a5794c;text-decoration:none;text-transform:uppercase;letter-spacing:.08em;font-family:Georgia,serif;font-size:clamp(13px,1.3vw,16px);box-shadow:0 3px 0 #977148,0 7px 10px #4d2c2033;transition:transform .16s ease,filter .16s ease}
+.go:hover{filter:brightness(1.13)}.go:active{transform:translateY(2px);box-shadow:0 1px 0 #977148}
+.status-line{min-height:22px;margin:14px 0 0;color:#76573a;font-style:italic;font-size:clamp(12px,1vw,14px)}
+.collection-tab{position:absolute;z-index:10;left:-19px;top:50%;transform:translateY(-50%);width:55px;min-height:155px;padding:12px 5px 11px 3px;display:flex;flex-direction:column;justify-content:center;align-items:center;gap:12px;border:2px solid #c79d61;border-right:0;border-radius:11px 0 0 11px;text-decoration:none;color:#ffe0a9;background:linear-gradient(90deg,#2d1714,#744834 45%,#4b291f);box-shadow:-5px 7px 14px #11090799,inset 3px 0 0 #a3764a}
+.collection-tab:hover{filter:brightness(1.14)}
+.collection-tab .book-symbol{font-size:25px;line-height:1}
+.collection-tab .book-label{writing-mode:vertical-rl;transform:rotate(180deg);font-size:13px;letter-spacing:.11em;font-weight:bold}
+.collection-tab .col-count{font:11px system-ui,sans-serif;background:#2c1c18;border-radius:50%;min-width:24px;height:24px;display:grid;place-items:center}
+.book-footer{color:#d3b387;margin:22px 0 0;font-size:12px;letter-spacing:.12em;text-align:center;text-shadow:0 2px 2px #1c0d0a}
+@media(max-width:1100px){
+ .atlas-stage{padding:20px 34px}
+ .book{padding:13px 13px 13px 32px}
+ .right-page{padding:17px 22px}
+ .left-page{padding:17px 14px}
+ .meduza-halo{height:clamp(150px,18vw,230px)}
+ .bookpages{min-height:0}
+ .expedition{padding:14px}
+ .book-ornament{margin-bottom:8px}
+ .sep{margin-bottom:10px}
+}
+@media(max-width:780px){
+ .atlas-stage{padding:18px 22px 20px;justify-content:flex-start}
+ .book{padding:12px 11px 14px 27px}
+ .book::before{left:8px;width:13px}
+ .bookpages{display:flex;flex-direction:column;overflow:hidden}
+ .bookpages::after{left:0;top:auto;bottom:0;width:0;height:0}
+ .left-page{border-right:0;border-bottom:2px solid #b08d61;padding:24px 22px 20px}
+ .right-page{padding:24px 22px 32px}
+ .map-frame{width:min(100%,650px)}
+ .meduza-halo{height:190px}
+ .collection-tab{left:-16px;width:45px;min-height:137px}
+ .collection-tab .book-symbol{font-size:22px}
+ .expedition{width:min(100%,390px)}
+}
+@media(max-width:450px){
+ .atlas-stage{padding:12px 16px 20px}
+ .school-mark{font-size:10px;line-height:1.5;margin-bottom:14px}
+ .left-page{padding:17px 14px 19px}
+ .right-page{padding:24px 13px 28px}
+ .book{padding-left:23px}
+ .collection-tab{left:-14px;min-height:120px;width:38px}
+ .collection-tab .book-label{font-size:11px}
+ .collection-tab .book-symbol{font-size:18px}
+ .collection-tab .col-count{font-size:10px;min-width:20px;height:20px}
+}
+@media(prefers-reduced-motion:reduce){.book,.map-hit.vulcano::after{animation:none!important}.go{transition:none}}
 </style>
 </head>
 <body>
-<main>
-  <header>
-    <div class="brand">ШКОЛА ОХОТНИКОВ НА ЧУДОВИЩ ЛАДЫ И НИКИТЫ ✦</div>
-    <div class="header-actions"><a class="collection-book" href="collection.html"><span class="bookicon" aria-hidden="true">📖</span> Коллекция <span class="count" id="collectionCount">0/4</span></a><div class="badge">🗺️ Мир открыт вручную • одна экспедиция за раз</div></div>
-  </header>
-
-  <div class="layout">
-    <section class="welcome panel" aria-label="Вступление">
-      <div class="kicker">Главная карта мира</div>
-      <h1>Тиввиг</h1>
-      <p class="subtitle">Это наш общий атлас приключений. Каждый день мы выбираем одну локацию и отправляемся в новую экспедицию — с чтением, математикой, историей и чудовищами.</p>
-
-      <div class="meduza-wrap">
-        <img src="images/meduza-happy.webp" alt="Радующаяся Медуза, проводница по Тиввигу">
-        <p class="callout"><strong>Медуза рада тебя видеть!</strong><br>Нажимай на места на карте. Сегодня активна новая экспедиция: <strong>Вулкан Эмпедокла</strong>.</p>
-      </div>
-
-      <div class="today">
-        <div class="status">★ Сегодняшняя экспедиция</div>
-        <h2 id="active-title">Вулкан Эмпедокла</h2>
-        <p id="active-desc">В южной части Тиввига проснулся вулкан. Мы отправимся смотреть на лаву, считать огненные камни и говорить о стихиях.</p>
-        <div class="route" id="active-route">Маршрут: карта → вулкан → задания → возвращение на карту</div>
-        <div class="actions">
-          <a id="active-link" class="btn primary" href="vulkan-empedokla.html">Открыть экспедицию</a>
-          <a class="btn secondary" href="vulkan-slogi.html">🌋 Игра 2: Мост слогов</a>
-          <a class="btn secondary" href="vulkan-kuznica.html">⚒ Игра 3: Кузница Вулкана</a>
-          <a class="btn secondary" href="vulkan-hydra.html">⚔ Игра 4: Битва с гидрой</a>
-          <a class="btn secondary" href="igry.html">Тренировочный зал</a>
+<main class="atlas-stage">
+  <div class="school-mark">✦ Школа охотников на чудовищ Лады и Никиты ✦</div>
+  <article class="book" aria-label="Книга-атлас Тиввига">
+    <a class="collection-tab" href="collection.html" aria-label="Открыть коллекцию наград">
+      <span class="book-symbol" aria-hidden="true">✵</span>
+      <span class="book-label">Коллекция</span>
+      <span class="col-count" id="collectionCount" aria-label="Количество открытых наград">0/4</span>
+    </a>
+    <div class="bookpages">
+      <section class="page left-page" aria-label="Интерактивная карта Тиввига">
+        <div class="map-frame">
+          <img class="world-map" src="images/tivvig-map.webp" alt="Старинная иллюстрированная карта мира Тиввиг" draggable="false">
+          <button class="map-hit astraluna" type="button" data-place="astraluna" aria-label="Исследовать Астралуну"></button>
+          <button class="map-hit tristalia" type="button" data-place="tristalia" aria-label="Исследовать Тристалию"></button>
+          <button class="map-hit ladaburg" type="button" data-place="ladaburg" aria-label="Исследовать Ладабург"></button>
+          <a class="map-hit vulcano" href="vulkan-empedokla.html" aria-label="Отправиться к Вулкану Эмпедокла"></a>
+          <button class="map-hit forest" type="button" data-place="forest" aria-label="Исследовать Лес Майкла Джексона"></button>
         </div>
-        <div class="mini-note">Новые экспедиции открываем вручную. Старые локации можно пересматривать в любой момент.</div>
-      </div>
-
-      <div class="call-space">📹 Здесь остаётся удобная область для плавающего окна Zoom или Телемоста на iPad.</div>
-    </section>
-
-    <section class="map-panel">
-      <div class="map-shell panel" style="padding:10px">
-        <img src="images/tivvig-map.webp" alt="Карта мира Тиввиг">
-        <button class="hotspot" style="left:24%; top:29%" data-key="astraluna" aria-label="Исследовать Астралуну"></button>
-        <button class="hotspot" style="left:64%; top:29%" data-key="tristalia" aria-label="Исследовать Тристалию"></button>
-        <button class="hotspot" style="left:51%; top:53%" data-key="ladaburg" aria-label="Исследовать Ладабург"></button>
-        <a class="hotspot hotspot--volcano active" style="left:35%; top:73%" data-key="vulkan" href="vulkan-empedokla.html" aria-label="Открыть экспедицию на Вулкан Эмпедокла"></a>
-        <button class="hotspot" style="left:71%; top:73%" data-key="forest" aria-label="Исследовать Лес Майкла Джексона"></button>
-      </div>
-
-      <div class="legend">
-        <span class="tag">Активная экспедиция: Вулкан Эмпедокла</span>
-        <span class="tag">Скоро: Астралуна</span>
-        <span class="tag">Скоро: Тристалия</span>
-        <span class="tag">Скоро: Ладабург</span>
-        <span class="tag">Скоро: Лес Майкла Джексона</span>
-      </div>
-
-      <div class="info" aria-live="polite">
-        <div class="card">
-          <div class="status" id="info-status">★ Активно сегодня</div>
-          <h2 id="info-title">Вулкан Эмпедокла</h2>
-          <div style="display:grid;gap:14px;align-items:start;grid-template-columns:minmax(0,1fr);margin-top:10px">
-            <img id="moreau-image" src="https://commons.wikimedia.org/wiki/Special:Redirect/file/Gustave%20Moreau%20-%20l%27Apparition.jpg" alt="Картина Гюстава Моро" style="width:100%;height:auto;display:block;border-radius:18px;border:2px solid #d7c19d;box-shadow:0 6px 0 #dbc197;background:#f7edd8;max-height:430px;object-fit:cover;object-position:center top;">
-            <div style="background:#fff5e2;border:2px solid #e5c88f;border-radius:18px;padding:16px;display:grid;gap:8px;">
-              <div class="status">✦ Открой новую землю</div>
-              <p id="info-text" style="margin:0;line-height:1.45;">Выбери место на карте Тиввига, чтобы узнать, что там происходит. Каждая новая экспедиция приносит открытия, игры и награды.</p>
-            </div>
-          </div>
-          <div class="actions" style="margin-top:14px;">
-            <a id="info-link" class="btn primary" href="vulkan-empedokla.html">Отправиться</a>
-          </div>
+      </section>
+      <section class="page right-page" aria-label="Экспедиция на сегодня">
+        <div class="book-ornament" aria-hidden="true">✦</div>
+        <p class="eyebrow">Атлас чудес и путешествий</p>
+        <h1>Тиввиг</h1>
+        <p class="chapter-title">Книга открытых земель</p>
+        <div class="meduza-halo"><img src="images/meduza-happy.webp" alt="Радостная крылатая Медуза — проводница по Тиввигу"></div>
+        <div class="sep" aria-hidden="true">❦</div>
+        <div class="expedition">
+          <div class="eyebrow">✧ Экспедиция на сегодня ✧</div>
+          <h2>Вулкан Эмпедокла</h2>
+          <p>Отправимся к огненным горам, встретим чудовищ и раскроем тайны древнего мира.</p>
+          <a class="go" href="vulkan-empedokla.html">Отправиться <span aria-hidden="true">➜</span></a>
         </div>
-        <div class="card">
-          <h2>Как исследовать Тиввиг</h2>
-          <p>Нажимай на страны, города и чудесные места на карте: выбирай маршрут, отправляйся в приключения и возвращайся за новыми открытиями.</p>
-          <ul>
-            <li>одна большая экспедиция активна вручную</li>
-            <li>остальные территории уже можно выбирать и рассматривать</li>
-            <li>позже добавим отдельные материалы для каждой страны</li>
-          </ul>
-        </div>
-      </div>
-    </section>
-  </div>
-  <footer>Тиввиг • интерактивная карта школы • создано для занятий Лады и Никиты</footer>
+        <p class="status-line" id="mapStatus" aria-live="polite">Прикоснись к земле на карте…</p>
+      </section>
+    </div>
+  </article>
+  <div class="book-footer">✧ Атлас приключений ✧</div>
 </main>
 <script>
 (() => {
-  const data = {
-    vulkan: {
-      title: 'Вулкан Эмпедокла',
-      status: '★ Активно сегодня',
-      text: 'Южная огненная область Тиввига. Здесь можно изучать вулканы, считать вспышки лавы, находить слова про огонь и говорить о четырёх стихиях.',
-      bullets: [
-        'математика через счёт и сравнение',
-        'чтение через слоги и короткие слова',
-        'разговор о стихиях и вулканах'
-      ],
-      link: 'vulkan-empedokla.html',
-      cta: 'Отправиться',
-      desc: 'В южной части Тиввига проснулся вулкан. Мы отправимся смотреть на лаву, считать огненные камни и говорить о стихиях.',
-      route: 'Маршрут: карта → вулкан → задания → возвращение на карту'
-    },
-    astraluna: {
-      title: 'Астралуна',
-      status: '✦ Откроем позже',
-      text: 'Снежная северо-западная земля. Здесь напрашиваются истории про лёд, следы, белые города, ночное небо и чтение загадочных надписей.',
-      bullets: [
-        'зимние приключения и наблюдение',
-        'чтение названий и коротких фраз',
-        'поиск деталей на карте'
-      ],
-      link: '#',
-      cta: 'Скоро откроем',
-      desc: 'Астралуна ждёт своей первой экспедиции.',
-      route: 'Маршрут появится позже'
-    },
-    tristalia: {
-      title: 'Тристалия',
-      status: '✦ Откроем позже',
-      text: 'Каменная и горная область на севере. Здесь можно устроить археологические поиски, истории про древние города и маршруты через перевалы.',
-      bullets: [
-        'история и древние находки',
-        'поиск пути по горам',
-        'разговор о времени и прошлом'
-      ],
-      link: '#',
-      cta: 'Скоро откроем',
-      desc: 'Тристалия пока только ждёт исследования.',
-      route: 'Маршрут появится позже'
-    },
-    ladaburg: {
-      title: 'Ладабург',
-      status: '✦ Столица Тиввига',
-      text: 'Сердце мира и столица нашей школы. Здесь будут дневник экспедиций, карта открытий, встречи с Медузой и выбор новых путешествий.',
-      bullets: [
-        'главная площадь школы',
-        'архив пройденных экспедиций',
-        'будущие награды и флажки'
-      ],
-      link: '#',
-      cta: 'Скоро откроем',
-      desc: 'Ладабург станет центральным узлом путешествий.',
-      route: 'Маршрут: карта → выбор новой цели'
-    },
-    forest: {
-      title: 'Лес Майкла Джексона',
-      status: '✦ Откроем позже',
-      text: 'Густой зелёный лес на юго-востоке. Здесь можно искать следы существ, рисовать монстров, слушать ритмы и придумывать танцевальные задания.',
-      bullets: [
-        'искусство, ритм и чудовища',
-        'наблюдение за природой',
-        'сочинение собственных историй'
-      ],
-      link: '#',
-      cta: 'Скоро откроем',
-      desc: 'Лес Майкла Джексона ждёт отдельного дня.',
-      route: 'Маршрут появится позже'
-    }
+  'use strict';
+  const status = document.getElementById('mapStatus');
+  const places = {
+    astraluna: 'Астралуна пока ждёт исследователей.',
+    tristalia: 'Тристалия пока хранит свои тайны.',
+    ladaburg: 'Ладабург ещё готовится встречать гостей.',
+    forest: 'Лес Майкла Джексона откроется позже.'
   };
-  const qs = sel => document.querySelector(sel);
-  const qsa = sel => Array.from(document.querySelectorAll(sel));
-  const title = qs('#info-title');
-  const text = qs('#info-text');
-  const list = qs('#info-list');
-  const link = qs('#info-link');
-  const status = qs('#info-status');
-  const activeTitle = qs('#active-title');
-  const activeDesc = qs('#active-desc');
-  const activeRoute = qs('#active-route');
-  const activeLink = qs('#active-link');
-  const moreau = qs('#moreau-image');
-  const moreauImages = {
-    vulkan: 'https://commons.wikimedia.org/wiki/Special:Redirect/file/Gustave%20Moreau%20-%20l%27Apparition.jpg',
-    astraluna: 'https://commons.wikimedia.org/wiki/Special:Redirect/file/Gustave_Moreau_003.jpg',
-    tristalia: 'https://commons.wikimedia.org/wiki/Special:Redirect/file/Gustave_Moreau_-_Jupiter_and_Semele.jpg',
-    ladaburg: 'https://commons.wikimedia.org/wiki/Special:Redirect/file/Gustave_Moreau_-_Oedipus_and_the_Sphinx_-_Google_Art_Project.jpg',
-    forest: 'https://commons.wikimedia.org/wiki/Special:Redirect/file/Gustave_Moreau_-_The_Unicorns.jpg'
-  };
-  qsa('.hotspot').forEach(btn => btn.addEventListener('click', () => {
-    if (btn.dataset.key === 'vulkan') return; // ссылка ведёт непосредственно к игровой экспедиции
-    const item = data[btn.dataset.key];
-    if (!item) return;
-    title.textContent = item.title;
-    text.textContent = item.text;
-    status.textContent = item.status;
-    if (list) list.replaceChildren(...item.bullets.map(t => { const li=document.createElement('li'); li.textContent=t; return li; }));
-    link.textContent = item.cta;
-    link.href = item.link;
-    qsa('.hotspot').forEach(x => x.classList.remove('active'));
-    btn.classList.add('active');
-    activeTitle.textContent = item.title;
-    activeDesc.textContent = item.desc;
-    activeRoute.textContent = item.route;
-    activeLink.textContent = item.cta === 'Отправиться' ? 'Открыть экспедицию' : item.cta;
-    activeLink.href = item.link;
-    if (moreau && moreauImages[btn.dataset.key]) moreau.src = moreauImages[btn.dataset.key];
-  }));
+  document.querySelectorAll('[data-place]').forEach(button => {
+    button.addEventListener('click', () => {
+      const message = places[button.dataset.place];
+      if (message) status.textContent = message;
+    });
+  });
+  const rewards = [
+    'tivvig_reward_empedocles_v1',
+    'tivvig_reward_forge_v1',
+    'tivvig_reward_sword_v1',
+    'tivvig_reward_hydra_v1'
+  ];
+  try {
+    const count = rewards.filter(key => localStorage.getItem(key) === 'unlocked').length;
+    document.getElementById('collectionCount').textContent = count + '/' + rewards.length;
+  } catch (_) { /* сайт остаётся рабочим без хранилища */ }
 })();
 </script>
-<script>try{let n=0;for(const k of ['tivvig_reward_empedocles_v1','tivvig_reward_forge_v1','tivvig_reward_sword_v1','tivvig_reward_hydra_v1'])if(localStorage.getItem(k)==='unlocked')n++;document.getElementById('collectionCount').textContent=n+'/4'}catch(e){}</script>
 </body>
 </html>
