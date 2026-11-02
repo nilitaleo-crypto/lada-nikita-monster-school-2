@@ -1,0 +1,276 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#5d231c">
+<title>Битва с гидрой — Тиввиг</title>
+<style>
+:root{
+  --paper:#f4e7c9; --paper2:#ead2a0; --edge:#b98549; --ink:#301d17; --dark:#491f18;
+  --gold:#d1a154; --gold2:#f6dca5; --red:#9e241a; --green:#56724e; --bg:#261413;
+}
+*{box-sizing:border-box}
+body{margin:0;background:radial-gradient(circle at top,#6e2e22 0,#2a1614 60%,#170d0c 100%);font-family:system-ui,-apple-system,Segoe UI,Arial,sans-serif;color:var(--ink);-webkit-tap-highlight-color:transparent}
+main{max-width:1260px;min-height:100dvh;margin:0 auto;padding:clamp(10px,2vw,22px);background:linear-gradient(180deg,var(--paper),var(--paper2));border-left:2px solid #8e6236;border-right:2px solid #8e6236}
+nav{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;padding-bottom:12px;border-bottom:3px solid #5c3822}
+.back{display:inline-flex;align-items:center;justify-content:center;min-height:46px;padding:10px 16px;border-radius:14px;background:#503124;color:#fff3de;text-decoration:none;font-weight:900}
+.small{background:#77543a}
+.kicker{margin:14px 0 4px;color:#8f3a24;font-size:13px;font-weight:900;letter-spacing:.14em;text-transform:uppercase}
+h1{margin:0 0 8px;font-family:Georgia,serif;font-size:clamp(30px,4.5vw,56px);line-height:1}
+.sub{margin:0 0 16px;font-size:clamp(16px,1.8vw,21px);line-height:1.45;max-width:980px}
+.card{background:#fff8ea;border:2px solid var(--edge);border-radius:24px;box-shadow:0 6px 0 #d7bb8c}
+.topbar{display:flex;gap:12px;align-items:center;justify-content:space-between;flex-wrap:wrap;padding:14px 16px;margin-bottom:14px}
+.counter,.heads{display:inline-flex;align-items:center;gap:8px;padding:8px 14px;border-radius:999px;background:#4b2d23;color:#fff1d2;font-weight:900}
+.heads .dot{width:18px;height:18px;border-radius:50%;background:#ffb247;box-shadow:0 0 0 2px rgba(255,255,255,.12) inset}
+.heads .dot.off{background:#6d4e46;opacity:.45}
+.scene{position:relative;overflow:hidden;padding:18px;background:linear-gradient(180deg,#432422,#251311 72%,#140b0b);min-height:720px}
+.stage{position:relative;display:grid;grid-template-columns:minmax(0,32%) minmax(0,35%) minmax(0,33%);gap:0;align-items:end;min-height:610px}
+.hero-zone,.hydra-zone,.battle-zone{position:relative;min-height:610px}
+.hero-zone img,.hydra-zone img{display:block;max-width:100%;height:auto;filter:drop-shadow(0 12px 20px rgba(0,0,0,.38))}
+.hero-zone{display:flex;align-items:flex-end;justify-content:flex-start}
+.hero-zone img{width:100%;max-height:610px;object-fit:contain;transform-origin:60% 65%;transition:transform .45s ease, filter .3s ease}
+.hero-zone.attack img{transform:translateX(22px) rotate(-7deg) scale(1.02)}
+.hero-glow{position:absolute;inset:auto 5% 4% 0;height:52%;background:radial-gradient(circle at 50% 50%,rgba(255,231,171,.26) 0,rgba(255,180,101,.09) 40%,rgba(0,0,0,0) 75%);pointer-events:none}
+.hydra-zone{display:flex;align-items:stretch;justify-content:flex-end;overflow:hidden}
+.hydra-zone img{width:100%;height:100%;max-height:none;object-fit:cover;object-position:63% center;mask-image:linear-gradient(to right,transparent 0%,black 15%);transform-origin:40% 75%;transition:transform .35s ease, filter .35s ease, opacity .35s ease}
+.hydra-zone.hit img{transform:translateX(6px) rotate(2deg) scale(.985);filter:brightness(1.18) saturate(1.1) drop-shadow(0 0 28px rgba(255,100,40,.32))}
+.hydra-fire{position:absolute;inset:auto 5% 24% auto;width:170px;height:170px;background:radial-gradient(circle,rgba(255,126,55,.48),rgba(255,86,32,.12) 42%,rgba(0,0,0,0) 72%);pointer-events:none;opacity:.55}
+.battle-zone{display:flex;align-items:center;justify-content:center}
+.center-panel{position:relative;z-index:3;width:min(100%,460px);padding:clamp(9px,1.2vw,16px);border-radius:26px;background:linear-gradient(180deg,rgba(255,248,231,.95),rgba(241,223,186,.93));border:2px solid #c99958;box-shadow:0 14px 40px rgba(0,0,0,.22)}
+.wordline{font-family:Georgia,serif;font-size:clamp(25px,3vw,38px);text-align:center;margin:4px 0 8px}
+.prompt{text-align:center;font-size:15px;font-weight:900;letter-spacing:.1em;text-transform:uppercase;color:#89472d}
+.answer{display:flex;justify-content:center;gap:8px;flex-wrap:wrap;min-height:64px;padding:12px 8px;margin:12px 0;border-radius:18px;background:#fff3d8;border:2px dashed #d6ab71}
+.slot{width:48px;height:48px;border-radius:14px;border:2px solid #cb985a;background:#fffaf0;display:grid;place-items:center;font-size:28px;font-weight:900;font-family:Georgia,serif;color:#48261b;box-shadow:0 2px 0 rgba(0,0,0,.08)}
+.letters{display:flex;justify-content:center;gap:clamp(4px,.5vw,10px);flex-wrap:wrap;margin-top:10px}
+.letter{width:clamp(42px,4.2vw,56px);height:clamp(46px,4.2vw,56px);border:none;border-radius:18px;background:linear-gradient(180deg,#fffef9,#f0ddb2);border:2px solid #d0a35e;color:#3e2418;font-size:30px;font-weight:900;font-family:Georgia,serif;cursor:pointer;box-shadow:0 4px 0 rgba(146,100,49,.3);touch-action:manipulation;transition:transform .12s ease,background .2s ease,opacity .2s ease}
+.letter:active{transform:translateY(2px)}
+.letter.used{opacity:.36;pointer-events:none}
+.controls{display:flex;justify-content:center;gap:10px;flex-wrap:wrap;margin-top:14px}
+.btn{min-height:46px;padding:10px 16px;border:none;border-radius:14px;background:#533124;color:#fff2d5;font-family:inherit;font-size:16px;font-weight:900;cursor:pointer}
+.btn.alt{background:#84613e}
+.status{min-height:42px;margin-top:12px;text-align:center;font-size:17px;font-weight:700;color:#533124}
+.slash{position:absolute;left:35%;top:35%;width:250px;height:14px;background:linear-gradient(90deg,rgba(255,255,255,0),rgba(255,250,230,.98) 18%,rgba(255,184,112,.9) 50%,rgba(255,245,220,.98) 78%,rgba(255,255,255,0));transform:rotate(-25deg) scaleX(.35);filter:blur(.4px);opacity:0;pointer-events:none;box-shadow:0 0 18px rgba(255,227,162,.8)}
+.scene.slashing .slash{animation:slash .65s ease-out 1}
+@keyframes slash{0%{opacity:0;transform:translate(-40px,24px) rotate(-28deg) scaleX(.15)}18%{opacity:1}100%{opacity:0;transform:translate(130px,-46px) rotate(-21deg) scaleX(1.15)}}
+.win{position:fixed;inset:0;background:rgba(20,11,9,.78);display:none;align-items:center;justify-content:center;padding:18px;z-index:40}
+.win.show{display:flex}
+.win-card{width:min(980px,96vw);max-height:92dvh;overflow:auto;padding:18px;background:linear-gradient(180deg,#fff4de,#f0d6a3);border:3px solid #d09c59;border-radius:26px;box-shadow:0 20px 60px rgba(0,0,0,.45)}
+.flash{position:fixed;inset:0;background:white;opacity:0;pointer-events:none;z-index:60}
+.flash.go{animation:flash .92s ease-out 1}
+@keyframes flash{0%{opacity:0}18%{opacity:1}100%{opacity:0}}
+.win h2{margin:6px 0 8px;font-family:Georgia,serif;font-size:clamp(30px,4.2vw,50px)}
+.win p{margin:0 0 14px;font-size:clamp(16px,2vw,21px)}
+.win img{display:block;width:100%;height:auto;border-radius:18px;border:2px solid #c79559;box-shadow:0 6px 0 #d6ba90}
+.actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:16px}
+.note{text-align:center;font-size:13px;color:#72573f;margin-top:10px}
+@media (max-width:950px){
+  .scene{padding:8px;min-height:560px}
+  .stage,.hero-zone,.hydra-zone,.battle-zone{min-height:530px}
+  .hero-zone img{max-height:520px}
+  .hydra-zone img{max-height:none}
+  .center-panel{padding:10px}
+  .letter{font-size:27px}
+  .letters{gap:5px}
+  .slot{width:clamp(32px,4.8vw,48px);height:clamp(36px,4.8vw,48px);font-size:25px}
+  .slash{left:25%;width:180px}
+}
+@media (max-width:610px){
+  .scene{min-height:auto;padding:10px}
+  .stage{display:grid;grid-template-columns:1fr 1fr;grid-template-rows:auto auto;min-height:auto;gap:6px}
+  .hero-zone,.hydra-zone{min-height:250px;max-height:285px}
+  .hero-zone img{max-height:275px;width:auto;max-width:100%;margin:auto auto 0}
+  .hydra-zone img{max-height:none;width:100%;height:100%;object-fit:cover;object-position:58% center;margin:auto}
+  .hero-zone{grid-column:1;grid-row:1}
+  .hydra-zone{grid-column:2;grid-row:1}
+  .battle-zone{grid-column:1/3;grid-row:2;min-height:auto;margin-top:-6px;z-index:3}
+  .center-panel{width:100%;padding:12px}
+  .letter{width:50px;height:54px}
+  .slash{left:25%;top:18%;width:165px}
+}
+</style>
+</head>
+<body>
+<div class="flash" id="flash"></div>
+<div class="win" id="win" hidden>
+  <div class="win-card">
+    <h2>Победа над гидрой!</h2>
+    <p>Ты собрала все слова, и дама с мечом победила чудовище.</p>
+    <img src="images/hydra-victory.webp" alt="Победа над гидрой">
+    <div class="actions">
+      <button class="btn" id="restartWin">Сыграть ещё раз ↻</button>
+      <a class="back" href="index.html">← На карту</a>
+      <a class="back small" href="collection.html">📖 Коллекция</a>
+    </div>
+    <div class="note">Награда открыта и добавлена в коллекцию Тиввига.</div>
+  </div>
+</div>
+<main>
+  <nav>
+    <a class="back" href="index.html">← На карту</a>
+    <div style="font-weight:900;letter-spacing:.08em">ШКОЛА ОХОТНИКОВ НА ЧУДОВИЩ • БИТВА С ГИДРОЙ</div>
+    <a class="back small" href="collection.html">📖 Коллекция</a>
+  </nav>
+  <div class="kicker">Экспедиция 4 • составляем слова</div>
+  <h1>Дама с мечом против гидры</h1>
+  <p class="sub">Собери слово из букв. После каждого правильного слова дама наносит гидре <strong>один удар мечом</strong>. Сегодня слова простые: мама, папа, лада, нос, сон.</p>
+
+  <section class="card topbar">
+    <div class="counter" id="progress">Слово 1 из 5</div>
+    <div class="heads" id="heads"></div>
+  </section>
+
+  <section class="card scene" id="scene">
+    <div class="slash"></div>
+    <div class="stage">
+      <div class="hero-zone" id="heroZone">
+        <div class="hero-glow"></div>
+        <img src="images/hydra-hero.webp" alt="Дама с мечом">
+      </div>
+      <div class="battle-zone">
+        <div class="center-panel">
+          <div class="prompt">Собери слово</div>
+          <div class="wordline" id="targetWord">МАМА</div>
+          <div class="answer" id="answerSlots"></div>
+          <div class="letters" id="letters"></div>
+          <div class="controls">
+            <button class="btn alt" id="resetBtn" type="button">Сбросить</button>
+            <button class="btn" id="checkBtn" type="button">Проверить</button>
+          </div>
+          <div class="status" id="status">Нажимай на буквы по порядку.</div>
+        </div>
+      </div>
+      <div class="hydra-zone" id="hydraZone">
+        <div class="hydra-fire"></div>
+        <img src="images/hydra-beast.webp" alt="Гидра">
+      </div>
+    </div>
+  </section>
+</main>
+<script>
+const TASKS = [
+  {word:'МАМА', extras:['Н','Р']},
+  {word:'ПАПА', extras:['Л','С']},
+  {word:'ЛАДА', extras:['М','Т']},
+  {word:'НОС', extras:['К','П']},
+  {word:'СОН', extras:['Д','А']},
+];
+let step = 0;
+let chosen = [];
+const usedIndices = new Set();
+let lettersBag = [];
+let locked = false;
+let pending = null;
+const progress = document.getElementById('progress');
+const targetWord = document.getElementById('targetWord');
+const answerSlots = document.getElementById('answerSlots');
+const lettersEl = document.getElementById('letters');
+const statusEl = document.getElementById('status');
+const scene = document.getElementById('scene');
+const heroZone = document.getElementById('heroZone');
+const hydraZone = document.getElementById('hydraZone');
+const win = document.getElementById('win');
+const flash = document.getElementById('flash');
+const heads = document.getElementById('heads');
+
+function shuffle(arr){return [...arr].sort(()=>Math.random()-0.5)}
+function current(){return TASKS[step]}
+function buildHeads(){
+  heads.innerHTML='';
+  for(let i=0;i<TASKS.length;i++){
+    const d=document.createElement('span');
+    d.className='dot'+(i<step?' off':'');
+    d.setAttribute('aria-label',i<step?'Победа '+(i+1):'Голова '+(i+1));
+    heads.appendChild(d);
+  }
+}
+function setupTask(){
+  locked = false;
+  if(pending){clearTimeout(pending); pending=null;}
+  chosen=[]; usedIndices.clear();
+  const t=current();
+  progress.textContent=`Слово ${step+1} из ${TASKS.length}`;
+  targetWord.textContent=t.word;
+  lettersBag=shuffle([...t.word.split(''), ...t.extras]);
+  renderAnswer(); renderLetters(); buildHeads();
+  statusEl.textContent='Нажимай на буквы по порядку.';
+}
+function renderAnswer(){
+  const need=current().word.length;
+  answerSlots.innerHTML='';
+  for(let i=0;i<need;i++){
+    const slot=document.createElement('div');
+    slot.className='slot';
+    slot.textContent=chosen[i]||'';
+    answerSlots.appendChild(slot);
+  }
+}
+function renderLetters(){
+  lettersEl.innerHTML='';
+  lettersBag.forEach((letter, idx)=>{
+    const b=document.createElement('button');
+    b.type='button'; b.className='letter'+(usedIndices.has(idx)?' used':'');
+    b.textContent=letter;
+    b.addEventListener('click',()=>pickLetter(idx));
+    lettersEl.appendChild(b);
+  })
+}
+function pickLetter(idx){
+  if(locked || usedIndices.has(idx)) return;
+  if(chosen.length>=current().word.length) return;
+  usedIndices.add(idx);
+  chosen.push(lettersBag[idx]);
+  renderAnswer(); renderLetters();
+  statusEl.textContent='';
+  if(chosen.length===current().word.length){ autoCheck(); }
+}
+function resetChoice(){
+  if(locked)return;
+  if(pending){clearTimeout(pending);pending=null;}
+  chosen=[]; usedIndices.clear(); renderAnswer(); renderLetters();
+  statusEl.textContent='Попробуй ещё раз.';
+}
+function autoCheck(){ if(pending)clearTimeout(pending); pending=setTimeout(()=>{pending=null;checkWord()},220); }
+function checkWord(){
+  if(locked || chosen.length!==current().word.length)return;
+  const made=chosen.join('');
+  if(made===current().word){
+    locked=true;
+    statusEl.textContent='Верно! Удар мечом!';
+    slashHit();
+  } else {
+    statusEl.textContent='Пока нет. Сбрось и попробуй снова.';
+  }
+}
+function slashHit(){
+  scene.classList.remove('slashing'); heroZone.classList.remove('attack'); hydraZone.classList.remove('hit');
+  void scene.offsetWidth;
+  scene.classList.add('slashing'); heroZone.classList.add('attack'); hydraZone.classList.add('hit');
+  setTimeout(()=>{ heroZone.classList.remove('attack'); hydraZone.classList.remove('hit'); }, 620);
+  setTimeout(()=>advance(), 760);
+}
+function advance(){
+  step += 1;
+  if(step >= TASKS.length){
+    try{ localStorage.setItem('tivvig_reward_hydra_v1','unlocked'); }catch(e){}
+    flash.classList.remove('go'); void flash.offsetWidth; flash.classList.add('go');
+    setTimeout(()=>{ win.hidden=false; win.classList.add('show'); }, 360);
+    buildHeads();
+    return;
+  }
+  setupTask();
+}
+function restartGame(){
+  if(pending){clearTimeout(pending);pending=null;}
+  locked=false;
+  step=0; win.hidden=true; win.classList.remove('show'); setupTask();
+}
+
+document.getElementById('resetBtn').addEventListener('click', resetChoice);
+document.getElementById('checkBtn').addEventListener('click', checkWord);
+document.getElementById('restartWin').addEventListener('click', restartGame);
+win.addEventListener('click', e=>{ if(e.target===win){ win.hidden=true; win.classList.remove('show'); }});
+setupTask();
+</script>
+</body>
+</html>
