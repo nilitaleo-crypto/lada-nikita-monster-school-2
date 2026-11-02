@@ -48,7 +48,7 @@ body.viewing{overflow:hidden}
   <div class="eyebrow">Книга открытий · Том первый</div>
   <h1>Коллекция Тиввига</h1>
   <p class="subtitle">Каждая завершённая экспедиция оставляет здесь новую картину. Собирай свою галерею странных чудес.</p>
-  <div class="counter" id="counter" aria-live="polite">Открыто иллюстраций: 0 из 1</div>
+  <div class="counter" id="counter" aria-live="polite">Открыто иллюстраций: 0 из 2</div>
   <div class="pages">
     <article class="page" id="opened" hidden>
       <div class="status">✦ Открыто · экспедиция № 1</div>
@@ -66,28 +66,54 @@ body.viewing{overflow:hidden}
       <p>Пройди шесть арифметических испытаний, чтобы получить первую награду.</p>
       <a class="back" href="vulkan-empedokla.html">🌋 К вулкану</a>
     </article>
-    <article class="page locked"><div class="status">🔒 Будущая экспедиция</div><div class="sealed" aria-hidden="true">❄</div><h2>Тайны Астралуны</h2><p>Эта страница ещё ждёт своего открытия.</p></article>
+
+    <article class="page" id="forgeOpened" hidden>
+      <div class="status">✦ Открыто · вулканическая экспедиция II</div>
+      <button type="button" class="art-thumb" data-open-reward="forge" aria-label="Открыть Кузницу Вулкана на весь экран"><img src="images/forge-of-vulcan.webp" alt="Диего Веласкес, Кузница Вулкана, 1630"></button>
+      <h2>Кузница Вулкана</h2>
+      <p>Медуза преодолела мост из тринадцати слогов и пришла в кузницу. Диего Веласкес, 1630.</p>
+      <div class="note">Нажми на картину, чтобы раскрыть её на весь экран.</div>
+    </article>
+    <article class="page locked" id="forgeSealed">
+      <div class="status">🔒 Пока не открыто · Экспедиция II</div><div class="sealed" aria-hidden="true">⚒</div>
+      <h2>Кузница Вулкана</h2>
+      <p>Помоги Медузе построить мост между вулканами, собирая четыре слова.</p>
+      <a class="back" href="vulkan-slogi.html">🌋 Мост слогов</a>
+    </article>
+        <article class="page locked"><div class="status">🔒 Будущая экспедиция</div><div class="sealed" aria-hidden="true">❄</div><h2>Тайны Астралуны</h2><p>Эта страница ещё ждёт своего открытия.</p></article>
     <article class="page locked"><div class="status">🔒 Будущая экспедиция</div><div class="sealed" aria-hidden="true">✺</div><h2>Лес Майкла Джексона</h2><p>Эта страница ещё ждёт своего открытия.</p></article>
   </div>
   <p class="note">Открытые награды хранятся в браузере этого устройства. На другом устройстве или после очистки данных их потребуется открыть заново.</p>
 </main>
 <div class="viewer" id="viewer" role="dialog" aria-modal="true" aria-label="Иллюстрация на весь экран" hidden>
-  <div class="viewer-bar"><strong>✦ Апофеоз вулкана Эмпедокла</strong><button type="button" class="close" id="close">✕ Закрыть</button></div>
-  <img class="large" src="images/empedocles-olympians.webp" alt="Шесть олимпийских богов Тиввига">
+  <div class="viewer-bar"><strong id="viewerTitle">✦ Апофеоз вулкана Эмпедокла</strong><button type="button" class="close" id="close">✕ Закрыть</button></div>
+  <img class="large" id="viewerImage" src="images/empedocles-olympians.webp" alt="Шесть олимпийских богов Тиввига">
   <span class="viewer-hint">Нажми «Закрыть» или коснись фона, чтобы вернуться в альбом.</span>
 </div>
 <script>
 (()=>{
- const KEY='tivvig_reward_empedocles_v1';
- let unlocked=false;
- try{unlocked=localStorage.getItem(KEY)==='unlocked'}catch(e){}
- document.getElementById('opened').hidden=!unlocked;
- document.getElementById('sealed').hidden=unlocked;
- document.getElementById('counter').textContent='Открыто иллюстраций: '+(unlocked?'1':'0')+' из 1';
- const viewer=document.getElementById('viewer');
- function open(){if(!unlocked)return;viewer.hidden=false;document.body.classList.add('viewing');document.getElementById('close').focus({preventScroll:true})}
- function close(){viewer.hidden=true;document.body.classList.remove('viewing');document.getElementById('enlarge').focus({preventScroll:true})}
+ const read=k=>{try{return localStorage.getItem(k)==='unlocked'}catch(e){return false}};
+ const first=read('tivvig_reward_empedocles_v1'),forge=read('tivvig_reward_forge_v1');
+ document.getElementById('opened').hidden=!first;
+ document.getElementById('sealed').hidden=first;
+ document.getElementById('forgeOpened').hidden=!forge;
+ document.getElementById('forgeSealed').hidden=forge;
+ document.getElementById('counter').textContent='Открыто иллюстраций: '+(Number(first)+Number(forge))+' из 2';
+ const viewer=document.getElementById('viewer'),viewerImage=document.getElementById('viewerImage'),viewerTitle=document.getElementById('viewerTitle');
+ let lastOpener=null;
+ function open(e){
+   const forgeItem=e.currentTarget.dataset.openReward==='forge';
+   if(forgeItem&&!forge||!forgeItem&&!first)return;
+   lastOpener=e.currentTarget;
+   viewerImage.src=forgeItem?'images/forge-of-vulcan.webp':'images/empedocles-olympians.webp';
+   viewerImage.alt=forgeItem?'Диего Веласкес, Кузница Вулкана':'Шесть олимпийских богов Тиввига';
+   viewerTitle.textContent=forgeItem?'✦ Кузница Вулкана':'✦ Апофеоз вулкана Эмпедокла';
+   viewer.hidden=false;document.body.classList.add('viewing');
+   document.getElementById('close').focus({preventScroll:true});
+ }
+ function close(){viewer.hidden=true;document.body.classList.remove('viewing');if(lastOpener)lastOpener.focus({preventScroll:true})}
  document.getElementById('enlarge').addEventListener('click',open);
+ document.querySelector('[data-open-reward="forge"]').addEventListener('click',open);
  document.getElementById('close').addEventListener('click',close);
  viewer.addEventListener('click',e=>{if(e.target===viewer)close()});
  document.addEventListener('keydown',e=>{if(e.key==='Escape'&&!viewer.hidden)close()});

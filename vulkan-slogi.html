@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#4a394f">
+<title>Мост слогов — Вулкан Эмпедокла · Тиввиг</title>
+<style>
+:root{--ink:#382631;--paper:#f6e1bb;--gold:#c79a5e;--outline:#8e6745;--violet:#4b3b55;--success:#2c704a}
+*{box-sizing:border-box}
+html,body{margin:0;min-height:100%;font-family:system-ui,-apple-system,"Trebuchet MS",sans-serif;background:#40394d;color:#352634}
+body{background-image:radial-gradient(ellipse at 20% 0,#746477,transparent 50%),linear-gradient(#504255,#252b3d)}
+button,a{touch-action:manipulation}
+button:focus-visible,a:focus-visible{outline:4px solid #2e91d1;outline-offset:3px}
+main{max-width:1230px;margin:auto;padding:clamp(10px,2vw,26px)}
+.top{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
+.back{display:inline-flex;align-items:center;justify-content:center;min-height:48px;border:2px solid #c99f6e;border-radius:11px;padding:9px 15px;background:#f5ddb4;color:#473035;text-decoration:none;font-weight:900;font-size:15px}
+.chapter{font-size:13px;color:#fbe5be;font-weight:900;letter-spacing:.1em}
+.ribbon{text-align:center;max-width:730px;margin:12px auto 0;position:relative;padding:14px 36px;background:linear-gradient(175deg,#ffe7be,#dfb77f);border:4px double #895b43;border-radius:48% 52% 12px 12px/20px 20px 9px 9px;box-shadow:0 6px 0 #302336}
+.ribbon:before,.ribbon:after{content:'✦';position:absolute;top:22%;font-size:29px;color:#7e4a32}.ribbon:before{left:16px}.ribbon:after{right:16px}
+h1{font:700 clamp(30px,4.7vw,60px)/1 Georgia,serif;margin:0;letter-spacing:.02em}
+.lead{text-align:center;font:clamp(16px,1.7vw,21px)/1.35 Georgia,serif;color:#ffedcd;margin:15px auto 18px;max-width:830px}
+.card{border:3px solid #bd9468;border-radius:22px;background:#f9e8cb;box-shadow:0 8px 0 #2a2132,0 14px 35px #0003}
+.stage{position:relative;isolation:isolate;width:100%;height:clamp(280px,40vw,470px);overflow:hidden;border:6px solid #be946b;border-radius:20px;background:#4b4e69}
+.terrain{position:absolute;inset:0;width:100%;height:100%;z-index:-2}
+.stage::after{content:"";pointer-events:none;position:absolute;inset:0;box-shadow:inset 0 0 28px #211929a6;border-radius:12px;z-index:5}
+.volcano-label{position:absolute;top:10px;font-weight:900;font-size:clamp(10px,1.35vw,15px);color:#fff2d8;text-shadow:0 2px 2px #291f2e;background:#49364388;padding:6px 9px;border:1px solid #f2c98b99;border-radius:999px}
+.volcano-label.start{left:1.5%}.volcano-label.finish{right:1.5%}
+.plank{position:absolute;top:60%;width:4.75%;height:8.6%;z-index:2;display:grid;place-items:center;transform:rotate(1.5deg);background:#b6a08c33;border:2px dashed #ebd0a57a;border-radius:5px;opacity:.64;transition:background .28s ease,opacity .28s ease,transform .2s ease;color:#443021;font-size:clamp(9px,1.25vw,15px);font-weight:900;text-shadow:0 1px #fbeac8;pointer-events:none}
+.plank.placed{opacity:1;background:linear-gradient(150deg,#e7c18d,#ad7744);border:2px solid #74472f;box-shadow:2px 4px 0 #482b2490;transform:rotate(-2deg)}
+.plank.placed::before,.plank.placed::after{content:"";position:absolute;width:3px;height:3px;background:#67422e;border-radius:50%;top:14%}.plank.placed::before{left:7%}.plank.placed::after{right:7%}
+.plank.last{background:linear-gradient(150deg,#fbe59d,#d6a04f);border-color:#fff2c0}
+.walker{position:absolute;z-index:4;width:clamp(76px,13%,156px);height:41%;bottom:35.5%;left:11.4%;transition:left .82s cubic-bezier(.22,.74,.21,1);pointer-events:none;display:flex;justify-content:center;align-items:flex-end;filter:drop-shadow(0 5px 2px #30243688)}
+.walker img{height:100%;max-width:100%;object-fit:contain;object-position:bottom;display:block}
+.walker.hopping img{animation:hop .78s ease-in-out}
+.walker.shiver img{animation:shiver .4s ease-in-out}
+@keyframes hop{0%,100%{transform:translateY(0) rotate(0)}42%{transform:translateY(-25px) rotate(-7deg)}}
+@keyframes shiver{0%,100%{transform:translateX(0)}22%{transform:translateX(-7px)}46%{transform:translateX(6px)}70%{transform:translateX(-3px)}}
+.meduza-caption{position:absolute;z-index:4;left:1.5%;bottom:10px;max-width:70%;background:#f7e3bddb;color:#483021;border:1px solid #a57956;border-radius:10px;padding:7px 10px;font-size:clamp(11px,1.3vw,15px);font-weight:800}
+.passage{margin:12px 0 0;display:grid;grid-template-columns:1fr minmax(300px,1.2fr);gap:13px}
+.parchment{background:linear-gradient(140deg,#fff1d3,#efcf9e);border:3px solid #b98f62;border-radius:17px;padding:clamp(14px,2.5vw,23px);box-shadow:0 6px 0 #2d2437}
+.eyebrow{font-size:13px;font-weight:900;letter-spacing:.11em;text-transform:uppercase;color:#8b5238}
+.progressbar{height:12px;overflow:hidden;border:2px solid #ad8059;border-radius:20px;background:#dac4a7;margin-top:11px}
+.progressfill{height:100%;width:0;background:linear-gradient(90deg,#98634a,#e5a751);transition:width .6s}
+.words{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;margin-top:13px}
+.word{border:1px solid #bda17a;border-radius:12px;padding:8px 9px;background:#f4e1bc;font-weight:900;font-size:13px;color:#735342;display:flex;align-items:center;gap:7px}
+.word.done{background:#dcf0d3;color:#376347;border-color:#60916b}
+.word.active{border:2px solid #ae6e42;background:#ffe1a5;color:#553820}
+.word .check{font-size:17px}
+.question{margin:0 0 6px;font-size:clamp(24px,2.9vw,33px);font-family:Georgia,serif}
+.hint{margin:0 0 13px;font-size:clamp(14px,1.5vw,17px);line-height:1.35}
+.slotboard{display:flex;align-items:center;justify-content:center;gap:8px;flex-wrap:wrap;margin:5px 0 16px;min-height:58px}
+.slot{min-width:clamp(53px,7vw,83px);height:55px;display:grid;place-items:center;border:3px dashed #bb986a;border-radius:12px;background:#f2dfbf;font:bold clamp(19px,2.4vw,25px) Georgia,serif;color:#74523c}
+.slot.filled{border-style:solid;border-color:#94643e;background:#e8c18a;color:#473027}
+.slot.target{border-color:#b64f32;box-shadow:0 0 0 3px #f0c88c}
+.choices{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:9px}
+.choice{min-height:64px;border:3px solid #ae7d4f;border-radius:15px;background:linear-gradient(#fce6ba,#e1b87e);font:900 clamp(19px,2.5vw,29px) Georgia,serif;cursor:pointer;color:#49301f}
+.choice:active{transform:scale(.97)}
+.choice:disabled{opacity:.65;cursor:default}
+.choice.wrong{background:#f6c6b8;border-color:#bd4d47}
+.feedback{min-height:26px;margin:12px 0 0;color:#6e4e3b;font-size:15px;font-weight:800}
+.feedback.wrong{color:#a13932}.feedback.correct{color:#28673e}
+.next{border:2px solid #704632;background:#57352e;color:#fbe8c4;border-radius:12px;min-height:47px;padding:8px 15px;font-size:16px;font-weight:900;cursor:pointer;margin-top:12px}
+.next[hidden],.choices[hidden]{display:none}
+.completed-word{margin-top:14px;font:700 clamp(18px,2vw,23px) Georgia,serif;color:#2d6a41;min-height:28px}
+.flash{position:fixed;inset:0;background:#fff5c9;z-index:60;pointer-events:none;opacity:0}
+.flash.go{animation:burst .95s ease-out forwards}
+@keyframes burst{0%{opacity:0}27%{opacity:1}55%{opacity:.9}100%{opacity:0}}
+.reward[hidden],.lightbox[hidden]{display:none}
+.reward{position:fixed;inset:0;z-index:75;display:flex;align-items:center;justify-content:center;padding:12px;background:#1b1826e8;overflow-y:auto}
+.reward-card{width:min(880px,100%);max-height:95dvh;overflow:auto;background:linear-gradient(#f7e7c4,#e8c18d);border:5px double #a87948;border-radius:19px;padding:clamp(13px,3vw,25px);box-shadow:0 25px 90px #0009;text-align:center}
+.reward h2{font:700 clamp(26px,3.8vw,47px) Georgia,serif;margin:3px 0 9px}
+.reward .painting{display:block;width:100%;max-height:55dvh;object-fit:contain;cursor:zoom-in;border:5px ridge #9d7546;box-shadow:0 7px 17px #5a382c5c}
+.reward p{font:17px/1.35 Georgia,serif;margin:10px 0 14px}
+.reward-actions{display:flex;flex-wrap:wrap;gap:9px;justify-content:center}
+.reward-actions a,.reward-actions button{padding:11px 15px;border-radius:12px;min-height:48px;border:2px solid #815c3f;background:#593b31;color:#fff0d6;text-decoration:none;font-weight:900;font-size:15px;cursor:pointer}
+.lightbox{position:fixed;inset:0;background:#14111ff5;z-index:100;display:flex;justify-content:center;align-items:center;flex-direction:column;gap:12px;padding:13px}
+.lightbox img{max-width:100%;max-height:calc(100dvh - 95px);object-fit:contain;border:4px solid #b6915e}
+.lightbox button{align-self:end;border:2px solid #cfa36d;background:#f9e4be;color:#473128;font-weight:900;padding:9px 15px;border-radius:10px;cursor:pointer}
+body.modal{overflow:hidden}
+.note{color:#d7c0a0;font-size:12px;text-align:center;margin-top:12px}
+@media(max-width:740px){.passage{grid-template-columns:1fr}.stage{height:clamp(265px,48vw,400px)}.volcano-label{font-size:11px}.walker{bottom:36%;width:13%}.words{grid-template-columns:repeat(4,minmax(0,1fr))}.choice{min-height:65px}}
+@media(max-width:520px){.words{grid-template-columns:repeat(2,minmax(0,1fr))}.stage{height:275px}.walker{width:17%;left:10.2%;bottom:36%;height:41%}.plank{font-size:9px;border-width:1px}.word{font-size:12px}.choices{gap:6px}.choice{min-height:60px;font-size:21px}.volcano-label{display:none}.meduza-caption{font-size:12px}.ribbon{padding:13px 32px}.back{min-height:46px}}
+@media(prefers-reduced-motion:reduce){.walker,.plank,.progressfill{transition:none}.walker.hopping img,.walker.shiver img{animation:none}.flash.go{animation:none}}
+</style>
+</head>
+<body>
+<main>
+  <nav class="top">
+    <a class="back" href="vulkan-empedokla.html">← К первой игре</a>
+    <span class="chapter">ТИВВИГ ✦ ВУЛКАНИЧЕСКАЯ ЭКСПЕДИЦИЯ II</span>
+    <a class="back" href="index.html">К карте Тиввига</a>
+  </nav>
+  <header class="ribbon"><h1>Мост слогов</h1></header>
+  <p class="lead">Медузе страшно переходить между вулканами. Построй мост из слогов: каждая верная дощечка помогает ей сделать шаг!</p>
+  <div class="stage card" id="scene" aria-label="Медуза идёт по мосту между двумя вулканами">
+    <svg class="terrain" viewBox="0 0 1000 460" preserveAspectRatio="none" aria-hidden="true" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <linearGradient id="sky" x2="0" y2="1"><stop stop-color="#57536d"/><stop offset=".53" stop-color="#b57d81"/><stop offset="1" stop-color="#f7c888"/></linearGradient>
+        <linearGradient id="rock" x2=".8" y2="1"><stop stop-color="#bb835d"/><stop offset=".35" stop-color="#7b5361"/><stop offset="1" stop-color="#352c3a"/></linearGradient>
+        <linearGradient id="lava" x2="0" y2="1"><stop stop-color="#ffdf79"/><stop offset=".45" stop-color="#f78243"/><stop offset="1" stop-color="#ab3b39"/></linearGradient>
+        <pattern id="grain" width="15" height="19" patternUnits="userSpaceOnUse"><path d="M2 5l4 1 M10 14l2 -2" stroke="#fcdfab" opacity=".16" stroke-width="1"/></pattern>
+      </defs>
+      <rect width="1000" height="460" fill="url(#sky)"/><rect width="1000" height="460" fill="url(#grain)"/>
+      <circle cx="515" cy="83" r="57" fill="#f6d393" opacity=".85"/>
+      <circle cx="515" cy="83" r="65" fill="none" stroke="#fbe5b0" stroke-width="2" opacity=".55" stroke-dasharray="7 8"/>
+      <g stroke="#ffdfaf" opacity=".7" stroke-width="3"><path d="M515 6v14M515 146v14M435 83h19M577 83h19M460 28l10 10M562 128l10 10M573 28l-11 10M470 128l-10 10"/></g>
+      <path d="M0 170L80 130 160 161 255 122 350 174 455 149 540 173 642 131 739 168 848 131 941 158 1000 123V460H0Z" fill="#57526a" opacity=".5"/>
+      <path d="M0 225L52 123 85 66 118 134 153 212 222 270H0Z" fill="url(#rock)" stroke="#3d303e" stroke-width="5"/>
+      <path d="M35 202L85 66 101 111 139 213" fill="none" stroke="#dca575" stroke-width="8" opacity=".65"/>
+      <path d="M83 70L92 113 113 160" fill="none" stroke="#ed784b" stroke-width="10"/>
+      <path d="M0 274L68 236 160 240 222 277 222 461H0Z" fill="#5e4546" stroke="#3d3137" stroke-width="5"/>
+      <path d="M0 297L83 273 173 284 217 294" stroke="#e2b87c" stroke-width="12" fill="none"/>
+      <path d="M1000 220L957 133 902 67 849 142 790 213 751 275H1000Z" fill="url(#rock)" stroke="#3d303e" stroke-width="5"/>
+      <path d="M965 222L902 67 881 106 851 180" fill="none" stroke="#deaa81" stroke-width="7" opacity=".65"/>
+      <path d="M902 69L913 123 940 176" fill="none" stroke="#f26a44" stroke-width="11"/>
+      <path d="M1000 271L931 238 853 246 763 276 763 461H1000Z" fill="#60484a" stroke="#3d3137" stroke-width="5"/>
+      <path d="M763 288L856 269 945 270 1000 295" stroke="#e1af79" stroke-width="12" fill="none"/>
+      <path d="M0 355Q240 315 483 352T1000 346V460H0Z" fill="url(#lava)"/>
+      <g fill="none" stroke="#ffce72" stroke-width="6" opacity=".7"><path d="M0 383Q126 362 253 398T511 390T771 380T1000 407"/><path d="M25 422Q201 401 358 430T680 423T995 429"/></g>
+      <g fill="#f6dcc7" opacity=".53"><ellipse cx="74" cy="57" rx="34" ry="11"/><ellipse cx="105" cy="47" rx="55" ry="18"/><ellipse cx="151" cy="57" rx="36" ry="12"/><ellipse cx="900" cy="40" rx="62" ry="17"/><ellipse cx="958" cy="54" rx="47" ry="11"/></g>
+      <path d="M193 292Q500 263 812 288" stroke="#53382f" stroke-width="7" fill="none" opacity=".9"/>
+      <path d="M193 324Q500 301 812 318" stroke="#55392e" stroke-width="7" fill="none" opacity=".9"/>
+      <path d="M0 449h1000" stroke="#6a3544" stroke-width="7" opacity=".6"/>
+    </svg>
+    <div class="volcano-label start">Первый вулкан</div><div class="volcano-label finish">Вулкан Вулкана</div>
+    <div id="planks" aria-hidden="true"></div>
+    <div class="walker" id="walker" aria-label="Испуганная Медуза стоит у моста"><img id="meduza" src="images/meduza-fear.webp" alt="Испуганная Медуза Горгона"></div>
+    <div class="meduza-caption" id="mood">Медузе страшно. Помоги ей сделать первый шаг!</div>
+  </div>
+  <section class="passage">
+    <div class="parchment">
+      <div class="eyebrow">Путешествие по четырём словам</div>
+      <div class="progressbar"><div class="progressfill" id="progressfill"></div></div>
+      <div class="words" id="words"></div>
+      <p class="feedback" style="margin-top:18px" id="total">Пройдено: 0 из 13 дощечек</p>
+    </div>
+    <div class="parchment" id="play" aria-live="polite">
+      <div class="eyebrow" id="chapter">Слово 1 из 4</div>
+      <h2 class="question" id="question">Кого встретила Медуза?</h2>
+      <p class="hint" id="hint">Выбирай слоги по порядку, чтобы собрать слово.</p>
+      <div class="slotboard" id="slots"></div>
+      <div class="choices" id="choices"></div>
+      <p class="feedback" id="feedback" role="status" aria-live="polite">Нажми на первый слог!</p>
+      <div class="completed-word" id="completed"></div>
+      <button class="next" id="nextWord" type="button" hidden>Следующее слово →</button>
+    </div>
+  </section>
+  <p class="note">Четыре слова: КО-РО-ВА · КА-НИ-КУ-ЛЫ · КРО-КО-ДИЛ · КА-ЧЕ-ЛИ. Новая иллюстрация появится в коллекции после последней дощечки.</p>
+</main>
+<div class="flash" id="flash" aria-hidden="true"></div>
+<div class="reward" id="reward" role="dialog" aria-modal="true" aria-label="Награда: кузница Вулкана" hidden>
+  <div class="reward-card">
+    <div class="eyebrow">✦ Открыта новая страница альбома ✦</div>
+    <h2>Ты пришла в кузницу Вулкана!</h2>
+    <img class="painting" id="rewardImg" src="images/forge-of-vulcan.webp" alt="Диего Веласкес, «Кузница Вулкана», 1630. Аполлон приходит в кузницу к Вулкану" tabindex="0" role="button" aria-label="Рассмотреть картину на весь экран">
+    <p>Ты помогла Медузе построить мост и добраться до кузницы бога-кузнеца. Эта картина теперь в твоей коллекции!</p>
+    <div class="reward-actions"><a href="collection.html">📖 Открыть коллекцию</a><button id="closeReward" type="button">Остаться в игре</button><a href="index.html">← На карту</a></div>
+  </div>
+</div>
+<div class="lightbox" id="lightbox" hidden role="dialog" aria-modal="true" aria-label="Кузница Вулкана на весь экран">
+  <button type="button" id="closeLightbox">✕ Закрыть</button>
+  <img src="images/forge-of-vulcan.webp" alt="Кузница Вулкана, Диего Веласкес, 1630">
+</div>
+<script>
+(()=>{
+  'use strict';
+  const DATA=[
+    {word:'КОРОВА',prompt:'🐄 Кто пасётся на лугу?',syllables:['КО','РО','ВА'],distractors:['КА','РА','ВЫ','ЛА']},
+    {word:'КАНИКУЛЫ',prompt:'🏖️ Как называются дни отдыха от школы?',syllables:['КА','НИ','КУ','ЛЫ'],distractors:['КО','НА','КЫ','ЛИ']},
+    {word:'КРОКОДИЛ',prompt:'🐊 Кто живёт в реке и любит греться на солнце?',syllables:['КРО','КО','ДИЛ'],distractors:['КРА','КУ','ДЫ','ДИ']},
+    {word:'КАЧЕЛИ',prompt:'🛝 На чём качаются в парке?',syllables:['КА','ЧЕ','ЛИ'],distractors:['КО','ЧИ','ЛО','ЛЫ']}
+  ];
+  const TOTAL=DATA.reduce((a,w)=>a+w.syllables.length,0);
+  const FEAR='images/meduza-fear.webp', HAPPY='images/meduza-smile.webp';
+  const $=id=>document.getElementById(id);
+  let wordIndex=0,slotIndex=0,steps=0,busy=false,wordComplete=false,completed=false;
+  const planks=[];
+  for(let i=0;i<TOTAL;i++){
+    const b=document.createElement('div');b.className='plank';b.style.left=(18+i*4.9)+'%';
+    b.textContent='·';$('planks').append(b);planks.push(b);
+  }
+  function progress(){
+    $('progressfill').style.width=(steps/TOTAL*100)+'%';
+    $('total').textContent='Пройдено: '+steps+' из '+TOTAL+' дощечек';
+    $('words').replaceChildren();
+    DATA.forEach((w,i)=>{
+      const tag=document.createElement('div');tag.className='word'+(i<wordIndex?' done':i===wordIndex?' active':'');
+      const c=document.createElement('span');c.className='check';c.textContent=i<wordIndex?'✓':i===wordIndex?'✦':'○';
+      tag.append(c,document.createTextNode(i<wordIndex?w.word:('Слово '+(i+1))));$('words').append(tag);
+    });
+  }
+  function choicesFor(target,w){
+    const choices=[target,...w.distractors.filter(x=>x!==target).slice((slotIndex%2), (slotIndex%2)+3)];
+    while(choices.length<4){const v=w.distractors.find(x=>!choices.includes(x)&&x!==target);if(!v)break;choices.push(v)}
+    return choices.map((v,i)=>({v,sort:(i*7+slotIndex*3+wordIndex*5)%11})).sort((a,b)=>a.sort-b.sort).map(x=>x.v);
+  }
+  function draw(){
+    if(completed)return;
+    const w=DATA[wordIndex];wordComplete=false;busy=false;
+    $('chapter').textContent='Слово '+(wordIndex+1)+' из 4';
+    $('question').textContent=w.prompt;
+    $('hint').textContent='Собери слово по слогам. Следующая дощечка — следующий слог.';
+    $('nextWord').hidden=true;
+    $('completed').textContent='';
+    $('choices').hidden=false;
+    $('slots').replaceChildren();
+    w.syllables.forEach((sl,i)=>{const e=document.createElement('div');e.className='slot'+(i<slotIndex?' filled':i===slotIndex?' target':'');e.textContent=i<slotIndex?sl:'?';$('slots').append(e)});
+    $('choices').replaceChildren();
+    choicesFor(w.syllables[slotIndex],w).forEach(syl=>{
+      const button=document.createElement('button');button.className='choice';button.type='button';button.textContent=syl;
+      button.addEventListener('click',()=>select(syl,button));$('choices').append(button);
+    });
+    $('meduza').src=FEAR;$('meduza').alt='Испуганная Медуза Горгона';
+    $('walker').setAttribute('aria-label','Медуза готовится к следующему шагу');
+    $('mood').textContent=steps?'Медуза волнуется перед следующим шагом.':'Медузе страшно. Помоги ей сделать первый шаг!';
+    $('feedback').textContent='Выбери следующий слог!';$('feedback').className='feedback';
+    progress();
+  }
+  function select(syl,button){
+    if(busy||wordComplete||completed)return;
+    const w=DATA[wordIndex],correct=w.syllables[slotIndex];
+    if(syl!==correct){
+      button.classList.add('wrong');$('feedback').textContent='Попробуй ещё раз. Медуза пока стоит на месте.';
+      $('feedback').className='feedback wrong';
+      $('walker').classList.remove('shiver');void $('walker').offsetWidth;$('walker').classList.add('shiver');return;
+    }
+    busy=true;
+    $('choices').querySelectorAll('button').forEach(x=>x.disabled=true);
+    $('feedback').textContent='Верно! Медуза улыбается и делает шаг.';$('feedback').className='feedback correct';
+    planks[steps].textContent=correct;planks[steps].classList.add('placed');
+    if((slotIndex+1)===w.syllables.length)planks[steps].classList.add('last');
+    steps++;slotIndex++;
+    $('walker').classList.remove('shiver');$('walker').classList.add('hopping');
+    $('meduza').src=HAPPY;$('meduza').alt='Улыбающаяся Медуза Горгона';
+    $('walker').style.left=(steps>0?11.4+steps*4.9:11.4)+'%';
+    $('walker').setAttribute('aria-label','Медуза улыбается и шагает по мосту');
+    $('mood').textContent='Ура! Получилась дощечка '+correct+'!';
+    progress();
+    setTimeout(()=>{
+      $('walker').classList.remove('hopping');
+      if(slotIndex>=w.syllables.length){
+        wordComplete=true;
+        $('slots').replaceChildren(...w.syllables.map(sl=>{const e=document.createElement('div');e.className='slot filled';e.textContent=sl;return e}));
+        $('choices').hidden=true;
+        $('completed').textContent='✦ Слово собрано: '+w.word+'!';
+        $('feedback').textContent=wordIndex===DATA.length-1?'Мост готов! Ты дошла до кузницы!':'Медуза прошла ещё один участок моста!';
+        if(wordIndex===DATA.length-1){finish()}else{const n=$('nextWord');n.textContent='Следующее слово →';n.hidden=false}
+      }else{draw()}
+    },1120);
+  }
+  $('nextWord').addEventListener('click',()=>{if(!wordComplete||wordIndex>=DATA.length-1)return;wordIndex++;slotIndex=0;draw()});
+  function finish(){
+    completed=true;
+    try{localStorage.setItem('tivvig_reward_forge_v1','unlocked')}catch(e){}
+    $('meduza').src=HAPPY;$('mood').textContent='Медуза счастлива: мост пройден!';
+    setTimeout(()=>{
+      const f=$('flash');f.classList.remove('go');void f.offsetWidth;f.classList.add('go');
+      setTimeout(()=>{ $('reward').hidden=false;document.body.classList.add('modal');$('closeReward').focus({preventScroll:true});},350);
+    },650);
+  }
+  function closeReward(){$('reward').hidden=true;document.body.classList.remove('modal');$('completed').textContent='✦ Награда открыта! Посмотреть её можно в коллекции.';$('nextWord').hidden=false;$('nextWord').textContent='✨ Показать награду ещё раз';}
+  $('closeReward').addEventListener('click',closeReward);
+  $('nextWord').addEventListener('click',()=>{if(completed){$('reward').hidden=false;document.body.classList.add('modal')}});
+  $('rewardImg').addEventListener('click',()=>{$('lightbox').hidden=false;document.body.classList.add('modal')});
+  $('rewardImg').addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();$('rewardImg').click()}});
+  $('closeLightbox').addEventListener('click',()=>{$('lightbox').hidden=true;$('closeReward').focus()});
+  $('lightbox').addEventListener('click',e=>{if(e.target===$('lightbox'))$('closeLightbox').click()});
+  document.addEventListener('keydown',e=>{if(e.key==='Escape'){if(!$('lightbox').hidden)$('closeLightbox').click();else if(!$('reward').hidden)closeReward()}});
+  progress();draw();
+})();
+</script>
+</body>
+</html>
