@@ -1,0 +1,181 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#dfc495">
+<title>Кузница Вулкана — найди и кликни</title>
+<style>
+:root{--bg:#d4b27a;--paper:#fbf3df;--ink:#34261a;--edge:#c59a65;--dark:#4d3523;--gold:#c88d2a;--glow:#ffdf91;}
+*{box-sizing:border-box}
+body{margin:0;background:linear-gradient(180deg,#cba166,#8d5f34);font-family:system-ui,-apple-system,Segoe UI,Arial,sans-serif;color:var(--ink);-webkit-tap-highlight-color:transparent}
+main{max-width:1220px;min-height:100dvh;margin:0 auto;padding:clamp(10px,2vw,24px);background:linear-gradient(180deg,#f4e7c5,#ead2a3);border-left:2px solid #a97847;border-right:2px solid #a97847}
+nav{display:flex;justify-content:space-between;align-items:center;gap:12px;padding-bottom:12px;border-bottom:3px solid #55382a;flex-wrap:wrap}
+.back{display:inline-flex;align-items:center;justify-content:center;min-height:46px;padding:10px 16px;background:#4c3124;color:#fff4de;text-decoration:none;border-radius:14px;font-weight:900}
+.smallbtn{background:#705137}
+.kicker{margin:14px 0 4px;color:#914c1f;font-size:13px;font-weight:900;letter-spacing:.14em;text-transform:uppercase}
+h1{margin:0 0 8px;font-family:Georgia,serif;font-size:clamp(30px,4.8vw,56px)}
+.sub{margin:0 0 16px;font-size:clamp(16px,1.8vw,21px);line-height:1.45;max-width:980px}
+.layout{display:grid;grid-template-columns:minmax(0,1fr);gap:18px;align-items:start}
+.frame,.side{background:var(--paper);border:2px solid var(--edge);border-radius:24px;box-shadow:0 6px 0 #d7b88b}
+.frame{padding:16px}
+.side{padding:16px}
+.scene-wrap{position:relative;background:#111;border-radius:18px;overflow:hidden;box-shadow:inset 0 0 0 3px #2b1d14}
+.scene{position:relative;aspect-ratio:1280/994;background:url('images/forge-bg.webp') center/contain no-repeat;background-color:#111}
+.hotspot{position:absolute;display:block;background:transparent;border:none;cursor:pointer;padding:0}
+.hotspot:focus-visible{outline:4px solid #3aa7ff;outline-offset:2px;border-radius:16px}
+.hotspot.found{pointer-events:none}
+.ring{position:absolute;border:4px solid rgba(255,224,120,.95);background:rgba(255,222,111,.18);border-radius:24px;pointer-events:none;box-shadow:0 0 0 2px rgba(96,60,12,.45),0 0 28px rgba(255,208,80,.45);opacity:0;transform:scale(.85);transition:all .32s ease}
+.ring.show{opacity:1;transform:scale(1)}
+.miss{position:absolute;pointer-events:none;width:42px;height:42px;margin:-21px 0 0 -21px;border-radius:50%;border:3px solid rgba(255,255,255,.9);box-shadow:0 0 0 2px rgba(90,20,10,.35);opacity:0;animation:miss 0.6s ease-out forwards}
+@keyframes miss{0%{opacity:0;transform:scale(.5)}20%{opacity:1}100%{opacity:0;transform:scale(1.2)}}
+.toolbar{display:flex;justify-content:space-between;gap:10px;align-items:center;flex-wrap:wrap;margin:0 0 10px}
+.counter{background:#4b3024;color:#fff0d0;border-radius:999px;padding:8px 14px;font-weight:900;font-size:14px}
+.tip{background:#fff7e7;border:2px dashed #d4a76f;border-radius:16px;padding:10px 12px;font-size:14px;line-height:1.45}
+.items{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;margin-top:14px}
+.item{display:flex;flex-direction:column;gap:8px;align-items:stretch;padding:10px;border-radius:18px;border:2px solid #d8b27c;background:#fff8ea;transition:opacity .2s ease, background .2s ease,border-color .2s ease}
+.item img{width:100%;height:95px;object-fit:cover;border-radius:12px;opacity:.42;filter:saturate(.9);box-shadow:0 2px 0 rgba(0,0,0,.1)}
+.item strong{font-size:16px}
+.item .mark{width:32px;height:32px;border-radius:50%;display:grid;place-items:center;background:#ecd5ac;color:#7a5f44;font-weight:900}
+.item.found{background:#e8f7e2;border-color:#7fb16d}
+.item.found img{opacity:1;filter:none}
+.item.found .mark{background:#4a8b54;color:white}
+.legend{font-size:14px;line-height:1.45;color:#604935;margin-top:8px}
+.reward{position:fixed;inset:0;background:rgba(16,10,6,.74);display:none;align-items:center;justify-content:center;padding:18px;z-index:50}
+.reward.show{display:flex}
+.reward-card{width:min(980px,96vw);max-height:92dvh;overflow:auto;background:linear-gradient(180deg,#fff6e5,#eed2a4);border:3px solid #d19d5a;border-radius:24px;box-shadow:0 18px 60px rgba(0,0,0,.45);padding:18px}
+.flash{position:fixed;inset:0;background:white;opacity:0;pointer-events:none;z-index:60}
+.flash.go{animation:flash .9s ease-out 1}
+@keyframes flash{0%{opacity:0}15%{opacity:1}100%{opacity:0}}
+.reward h2{margin:8px 0 6px;font-family:Georgia,serif;font-size:clamp(30px,4.2vw,50px)}
+.reward p{margin:0 0 16px;font-size:clamp(16px,2vw,22px)}
+.reward img{display:block;width:100%;height:auto;border-radius:18px;border:2px solid #c99b61;box-shadow:0 6px 0 #d9bd94}
+.actions{display:flex;gap:12px;flex-wrap:wrap;margin-top:16px}
+button.action{min-height:48px;padding:10px 16px;border:none;border-radius:14px;background:#4c3124;color:#fff4de;font-weight:900;font-family:inherit;font-size:16px;cursor:pointer}
+button.secondary{background:#7b593a}
+.note{font-size:13px;color:#705742;margin-top:12px;text-align:center}
+@media (max-width:900px){.layout{grid-template-columns:1fr}.items{grid-template-columns:repeat(2,minmax(0,1fr))}.item img{height:85px}}
+</style>
+</head>
+<body>
+<div class="flash" id="flash"></div>
+<div class="reward" id="reward" hidden>
+  <div class="reward-card">
+    <h2>Тебе выковали меч!</h2>
+    <p>Ты помогла Вулкану в кузнице и нашла все нужные предметы.</p>
+    <img src="images/joan-sword.webp" alt="Дама с мечом">
+    <div class="actions">
+      <button class="action" id="restart">Сыграть ещё раз ↻</button>
+      <a class="back" href="index.html">← На карту</a>
+      <a class="back smallbtn" href="collection.html">📖 Коллекция</a>
+    </div>
+    <div class="note">Награда теперь хранится в книге «Коллекция» на этом устройстве.</div>
+  </div>
+</div>
+<main>
+  <nav>
+    <a class="back" href="index.html">← На карту</a>
+    <div style="font-weight:900;letter-spacing:.08em">ШКОЛА ОХОТНИКОВ НА ЧУДОВИЩ • КУЗНИЦА ВУЛКАНА</div>
+    <a class="back smallbtn" href="collection.html">📖 Коллекция</a>
+  </nav>
+  <div class="kicker">Экспедиция 3 • найди и кликни</div>
+  <h1>Помоги Вулкану в кузнице</h1>
+  <p class="sub">На картине спрятаны четыре важные детали. Найди их все: <strong>белый кувшин, кочергу, венок</strong> и <strong>раскалённую часть</strong> в центре кузницы.</p>
+  <div class="layout">
+    <section class="frame">
+      <div class="toolbar">
+        <div class="counter" id="counter">Найдено: 0 / 4</div>
+        <div class="tip" id="status">Нажимай на картину и ищи нужные предметы.</div>
+      </div>
+      <div class="scene-wrap">
+        <div class="scene" id="scene">
+          <!-- hotspots injected by JS -->
+        </div>
+      </div>
+    </section>
+    <aside class="side">
+      <h2 style="margin:4px 0 10px;font-family:Georgia,serif;font-size:30px">Что ищем</h2>
+      <div class="items" id="items"></div>
+      <div class="legend">Внизу показаны полупрозрачные подсказки. Когда предмет найден, карточка становится яркой и отмечается галочкой.</div>
+    </aside>
+  </div>
+</main>
+<script>
+const DATA=[{"id": "venok", "label": "Венок", "hint": "Найди венок на голове юноши.", "pos": {"left": 13.2, "top": 11.8, "width": 14.8, "height": 17.8}}, {"id": "kuvshin", "label": "Белый кувшин", "hint": "Найди белый кувшин на полке.", "pos": {"left": 79.6, "top": 10.5, "width": 11.5, "height": 12.8}}, {"id": "ognevo", "label": "Раскалённая часть", "hint": "Найди центральную раскалённую часть в кузнице.", "pos": {"left": 32.9, "top": 54.5, "width": 23.0, "height": 14.6}}, {"id": "kocherga", "label": "Кочерга", "hint": "Найди длинную кочергу внизу слева.", "pos": {"left": 2.7, "top": 76.0, "width": 29.3, "height": 19.5}}];
+const IMAGES={
+  venok:'images/venok.webp',
+  kuvshin:'images/kuvshin.webp',
+  ognevo:'images/ognevo.webp',
+  kocherga:'images/kocherga.webp'
+};
+const found=new Set();
+const scene=document.getElementById('scene');
+const itemsEl=document.getElementById('items');
+const statusEl=document.getElementById('status');
+const counterEl=document.getElementById('counter');
+const reward=document.getElementById('reward');
+const flash=document.getElementById('flash');
+
+function render(){
+  scene.innerHTML='';
+  itemsEl.innerHTML='';
+  for(const item of DATA){
+    const btn=document.createElement('button');
+    btn.className='hotspot'+(found.has(item.id)?' found':'');
+    btn.setAttribute('aria-label','Найти: '+item.label);
+    Object.assign(btn.style,{left:item.pos.left+'%',top:item.pos.top+'%',width:item.pos.width+'%',height:item.pos.height+'%'});
+    btn.addEventListener('click',(e)=>{e.stopPropagation(); findItem(item);});
+    scene.appendChild(btn);
+
+    const ring=document.createElement('div');
+    ring.id='ring-'+item.id;
+    ring.className='ring'+(found.has(item.id)?' show':'');
+    Object.assign(ring.style,{left:item.pos.left+'%',top:item.pos.top+'%',width:item.pos.width+'%',height:item.pos.height+'%'});
+    scene.appendChild(ring);
+
+    const card=document.createElement('div');
+    card.className='item'+(found.has(item.id)?' found':'');
+    card.id='card-'+item.id;
+    card.innerHTML=`<img src="${IMAGES[item.id]}" alt="${item.label}"><div><strong>${item.label}</strong><div style="font-size:13px;color:#715c4b;margin-top:4px">${item.hint}</div></div><div class="mark">${found.has(item.id)?'✓':'?'}</div>`;
+    itemsEl.appendChild(card);
+  }
+  counterEl.textContent=`Найдено: ${found.size} / ${DATA.length}`;
+}
+
+function findItem(item){
+  if(found.has(item.id)) return;
+  found.add(item.id);
+  render();
+  statusEl.textContent='Нашла: '+item.label+'!';
+  if(found.size===DATA.length){
+    statusEl.textContent='Все предметы найдены! Вулкан кует тебе награду...';
+    try{localStorage.setItem('tivvig_reward_sword_v1','unlocked')}catch(e){}
+    setTimeout(()=>{flash.classList.remove('go'); void flash.offsetWidth; flash.classList.add('go');},120);
+    setTimeout(()=>{reward.hidden=false; reward.classList.add('show');},420);
+  }
+}
+
+scene.addEventListener('click',(e)=>{
+  if(e.target!==scene) return;
+  const rect=scene.getBoundingClientRect();
+  const miss=document.createElement('div');
+  miss.className='miss';
+  miss.style.left=(e.clientX-rect.left)+'px';
+  miss.style.top=(e.clientY-rect.top)+'px';
+  scene.appendChild(miss);
+  setTimeout(()=>miss.remove(),650);
+  statusEl.textContent='Пока мимо. Ищи отмеченные предметы.';
+});
+
+document.getElementById('restart').addEventListener('click',()=>{
+  found.clear();
+  reward.hidden=true; reward.classList.remove('show');
+  statusEl.textContent='Нажимай на картину и ищи нужные предметы.';
+  render();
+});
+
+reward.addEventListener('click',(e)=>{if(e.target===reward){reward.hidden=true; reward.classList.remove('show');}});
+render();
+</script>
+</body>
+</html>

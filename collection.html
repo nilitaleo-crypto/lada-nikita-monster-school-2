@@ -48,7 +48,7 @@ body.viewing{overflow:hidden}
   <div class="eyebrow">Книга открытий · Том первый</div>
   <h1>Коллекция Тиввига</h1>
   <p class="subtitle">Каждая завершённая экспедиция оставляет здесь новую картину. Собирай свою галерею странных чудес.</p>
-  <div class="counter" id="counter" aria-live="polite">Открыто иллюстраций: 0 из 2</div>
+  <div class="counter" id="counter" aria-live="polite">Открыто иллюстраций: 0 из 3</div>
   <div class="pages">
     <article class="page" id="opened" hidden>
       <div class="status">✦ Открыто · экспедиция № 1</div>
@@ -80,7 +80,24 @@ body.viewing{overflow:hidden}
       <p>Помоги Медузе построить мост между вулканами, собирая четыре слова.</p>
       <a class="back" href="vulkan-slogi.html">🌋 Мост слогов</a>
     </article>
-        <article class="page locked"><div class="status">🔒 Будущая экспедиция</div><div class="sealed" aria-hidden="true">❄</div><h2>Тайны Астралуны</h2><p>Эта страница ещё ждёт своего открытия.</p></article>
+    
+    <article class="page" id="swordOpened" hidden>
+      <div class="status">✦ Открыто · вулканическая экспедиция III</div>
+      <button type="button" class="art-thumb" data-open-reward="sword" aria-label="Открыть награду с мечом во весь экран">
+        <img src="images/joan-sword.webp" alt="Дама с мечом, награда за поиски в кузнице">
+      </button>
+      <h2>Тебе выковали меч!</h2>
+      <p>Ты помогла Вулкану найти четыре предмета в его кузнице и получила волшебный меч.</p>
+      <div class="note">Нажми на картину для полноэкранного просмотра.</div>
+    </article>
+    <article class="page locked" id="swordSealed">
+      <div class="status">🔒 Пока не открыто · Экспедиция III</div>
+      <div class="sealed" aria-hidden="true">⚔</div>
+      <h2>Тебе выковали меч!</h2>
+      <p>Найди на картине кузницы четыре спрятанных предмета, чтобы открыть награду.</p>
+      <a class="back" href="vulkan-kuznica.html">⚒ Найти предметы</a>
+    </article>
+    <article class="page locked"><div class="status">🔒 Будущая экспедиция</div><div class="sealed" aria-hidden="true">❄</div><h2>Тайны Астралуны</h2><p>Эта страница ещё ждёт своего открытия.</p></article>
     <article class="page locked"><div class="status">🔒 Будущая экспедиция</div><div class="sealed" aria-hidden="true">✺</div><h2>Лес Майкла Джексона</h2><p>Эта страница ещё ждёт своего открытия.</p></article>
   </div>
   <p class="note">Открытые награды хранятся в браузере этого устройства. На другом устройстве или после очистки данных их потребуется открыть заново.</p>
@@ -92,31 +109,47 @@ body.viewing{overflow:hidden}
 </div>
 <script>
 (()=>{
- const read=k=>{try{return localStorage.getItem(k)==='unlocked'}catch(e){return false}};
- const first=read('tivvig_reward_empedocles_v1'),forge=read('tivvig_reward_forge_v1');
- document.getElementById('opened').hidden=!first;
- document.getElementById('sealed').hidden=first;
- document.getElementById('forgeOpened').hidden=!forge;
- document.getElementById('forgeSealed').hidden=forge;
- document.getElementById('counter').textContent='Открыто иллюстраций: '+(Number(first)+Number(forge))+' из 2';
- const viewer=document.getElementById('viewer'),viewerImage=document.getElementById('viewerImage'),viewerTitle=document.getElementById('viewerTitle');
- let lastOpener=null;
- function open(e){
-   const forgeItem=e.currentTarget.dataset.openReward==='forge';
-   if(forgeItem&&!forge||!forgeItem&&!first)return;
-   lastOpener=e.currentTarget;
-   viewerImage.src=forgeItem?'images/forge-of-vulcan.webp':'images/empedocles-olympians.webp';
-   viewerImage.alt=forgeItem?'Диего Веласкес, Кузница Вулкана':'Шесть олимпийских богов Тиввига';
-   viewerTitle.textContent=forgeItem?'✦ Кузница Вулкана':'✦ Апофеоз вулкана Эмпедокла';
-   viewer.hidden=false;document.body.classList.add('viewing');
-   document.getElementById('close').focus({preventScroll:true});
- }
- function close(){viewer.hidden=true;document.body.classList.remove('viewing');if(lastOpener)lastOpener.focus({preventScroll:true})}
- document.getElementById('enlarge').addEventListener('click',open);
- document.querySelector('[data-open-reward="forge"]').addEventListener('click',open);
- document.getElementById('close').addEventListener('click',close);
- viewer.addEventListener('click',e=>{if(e.target===viewer)close()});
- document.addEventListener('keydown',e=>{if(e.key==='Escape'&&!viewer.hidden)close()});
+  const read=key=>{try{return localStorage.getItem(key)==='unlocked'}catch(e){return false}};
+  const unlocked={
+    empedocles:read('tivvig_reward_empedocles_v1'),
+    forge:read('tivvig_reward_forge_v1'),
+    sword:read('tivvig_reward_sword_v1')
+  };
+  for(const [kind,opened,sealed] of [
+    ['empedocles','opened','sealed'],['forge','forgeOpened','forgeSealed'],['sword','swordOpened','swordSealed']
+  ]){
+    document.getElementById(opened).hidden=!unlocked[kind];
+    document.getElementById(sealed).hidden=unlocked[kind];
+  }
+  document.getElementById('counter').textContent='Открыто иллюстраций: '+Object.values(unlocked).filter(Boolean).length+' из 3';
+  const viewer=document.getElementById('viewer');
+  const viewerImage=document.getElementById('viewerImage');
+  const viewerTitle=document.getElementById('viewerTitle');
+  const artworks={
+    empedocles:{src:'images/empedocles-olympians.webp',title:'Апофеоз вулкана Эмпедокла',alt:'Друзья Лады — боги Олимпа'},
+    forge:{src:'images/forge-of-vulcan.webp',title:'Кузница Вулкана',alt:'Диего Веласкес, Кузница Вулкана'},
+    sword:{src:'images/joan-sword.webp',title:'Тебе выковали меч!',alt:'Дама с мечом'}
+  };
+  let opener=null;
+  function open(e){
+    const kind=e.currentTarget.dataset.openReward||'empedocles';
+    if(!unlocked[kind])return;
+    opener=e.currentTarget;
+    viewerImage.src=artworks[kind].src;
+    viewerImage.alt=artworks[kind].alt;
+    viewerTitle.textContent='✦ '+artworks[kind].title;
+    viewer.hidden=false;document.body.classList.add('viewing');
+    document.getElementById('close').focus({preventScroll:true});
+  }
+  function close(){
+    viewer.hidden=true;document.body.classList.remove('viewing');
+    if(opener)opener.focus({preventScroll:true});
+  }
+  document.getElementById('enlarge').addEventListener('click',open);
+  document.querySelectorAll('[data-open-reward]').forEach(b=>b.addEventListener('click',open));
+  document.getElementById('close').addEventListener('click',close);
+  viewer.addEventListener('click',e=>{if(e.target===viewer)close()});
+  document.addEventListener('keydown',e=>{if(e.key==='Escape'&&!viewer.hidden)close()});
 })();
 </script>
 </body>
