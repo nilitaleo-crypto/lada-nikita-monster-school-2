@@ -36,10 +36,14 @@ h1{margin:0;font-family:Georgia,serif;font-size:clamp(34px,4vw,56px);line-height
 .map-panel{display:flex;flex-direction:column;gap:12px}
 .map-shell{position:relative;background:#183142;border:4px solid #5a3a29;border-radius:28px;padding:10px;box-shadow:0 10px 0 #b68f5f;overflow:hidden}
 .map-shell img{display:block;width:100%;height:auto;border-radius:18px}
-.hotspot{position:absolute;transform:translate(-50%,-50%);background:rgba(255,248,227,.86);border:2px solid #5b3827;color:#351f17;border-radius:999px;padding:9px 12px;font-weight:900;font-size:14px;cursor:pointer;box-shadow:0 3px 0 #b58353;backdrop-filter: blur(2px);max-width:160px;text-align:center}
-.hotspot.active{background:#ffefb4;border-color:#9d4a25;box-shadow:0 0 0 4px rgba(255,208,98,.35),0 3px 0 #b58353;animation:pulse 1.8s infinite}
-.hotspot:hover{background:#fff5d3}
-@keyframes pulse{0%{box-shadow:0 0 0 0 rgba(255,208,98,.5),0 3px 0 #b58353}70%{box-shadow:0 0 0 12px rgba(255,208,98,0),0 3px 0 #b58353}100%{box-shadow:0 0 0 0 rgba(255,208,98,0),0 3px 0 #b58353}}
+/* Невидимые области атласа: крупные зоны нажатия, никакой надписи поверх рисунка. */
+.hotspot{position:absolute;transform:translate(-50%,-50%);display:block;width:clamp(64px,22%,192px);aspect-ratio:1.45/1;padding:0;margin:0;cursor:pointer;background:transparent;border:0;border-radius:50%;box-shadow:none;appearance:none;-webkit-appearance:none;touch-action:manipulation}
+.hotspot:focus-visible{outline:3px solid #f7ce67;outline-offset:3px;background:rgba(255,204,88,.09)}
+.hotspot--volcano{width:clamp(75px,23%,210px);aspect-ratio:1.35/1}
+.hotspot--volcano::after{content:"";position:absolute;left:50%;top:50%;width:44%;aspect-ratio:1;border-radius:50%;transform:translate(-50%,-50%);pointer-events:none;border:2px solid rgba(255,201,91,.94);background:radial-gradient(circle,rgba(255,198,72,.28),rgba(255,126,44,.06) 70%,transparent 100%);box-shadow:0 0 16px 8px rgba(255,158,49,.3),0 0 0 3px rgba(255,210,111,.11);animation:volcano-beacon 2.6s ease-in-out infinite}
+@keyframes volcano-beacon{0%,100%{opacity:.75;box-shadow:0 0 10px 3px rgba(255,156,47,.27),0 0 0 2px rgba(255,210,111,.1)}50%{opacity:1;box-shadow:0 0 24px 12px rgba(255,156,47,.5),0 0 0 7px rgba(255,210,111,.2)}}
+@media(prefers-reduced-motion:reduce){.hotspot--volcano::after{animation:none;opacity:1}}
+
 .legend{display:flex;flex-wrap:wrap;gap:8px}
 .tag{background:#ead5ae;border:1px solid #c7a877;padding:7px 10px;border-radius:999px;font-size:13px;font-weight:800}
 .info{display:grid;grid-template-columns:1.2fr .8fr;gap:14px;align-items:start}
@@ -50,8 +54,8 @@ h1{margin:0;font-family:Georgia,serif;font-size:clamp(34px,4vw,56px);line-height
 .call-space{background:#ecddc0;border:2px dashed #b79b72;border-radius:18px;padding:13px;text-align:center;font-size:14px;color:#67584a;line-height:1.35}
 footer{padding:18px 4px 8px;color:#624e40;font-size:12px;text-align:center}
 @media(max-width:1050px){.layout{grid-template-columns:1fr}.welcome{position:relative;top:auto}.info{grid-template-columns:1fr}}
-@media(max-width:760px){main{padding:8px}.meduza-wrap{grid-template-columns:96px 1fr}.map-shell{padding:7px;border-radius:22px}.hotspot{font-size:11px;padding:7px 9px;max-width:120px}.info .card{padding:14px}header{align-items:flex-start;flex-direction:column}}
-@media(max-width:480px){.meduza-wrap{grid-template-columns:82px 1fr}h1{font-size:34px}.subtitle{font-size:15px}.hotspot{font-size:10px;padding:6px 8px;max-width:98px}.badge{font-size:12px}.actions{flex-direction:column}.btn{width:100%}}
+@media(max-width:760px){main{padding:8px}.meduza-wrap{grid-template-columns:96px 1fr}.map-shell{padding:7px;border-radius:22px}.info .card{padding:14px}header{align-items:flex-start;flex-direction:column}}
+@media(max-width:480px){.meduza-wrap{grid-template-columns:82px 1fr}h1{font-size:34px}.subtitle{font-size:15px}.badge{font-size:12px}.actions{flex-direction:column}.btn{width:100%}}
 
 .header-actions{display:flex;align-items:center;gap:12px;flex-wrap:wrap;justify-content:flex-end}
 .collection-book{min-height:49px;display:inline-flex;align-items:center;gap:10px;padding:9px 16px;border-left:8px solid #d6aa65;border-radius:6px 15px 15px 6px;background:linear-gradient(140deg,#75432e,#442822);box-shadow:2px 4px 0 #b99465,inset 0 0 0 2px #bf935c;color:#fff1d2;text-decoration:none;font-weight:900;white-space:nowrap}
@@ -100,11 +104,11 @@ footer{padding:18px 4px 8px;color:#624e40;font-size:12px;text-align:center}
     <section class="map-panel">
       <div class="map-shell panel" style="padding:10px">
         <img src="images/tivvig-map.webp" alt="Карта мира Тиввиг">
-        <button class="hotspot" style="left:24%; top:29%" data-key="astraluna">Астралуна</button>
-        <button class="hotspot" style="left:64%; top:29%" data-key="tristalia">Тристалия</button>
-        <button class="hotspot" style="left:51%; top:53%" data-key="ladaburg">Ладабург</button>
-        <a class="hotspot active" style="left:35%; top:73%;text-decoration:none;" data-key="vulkan" href="vulkan-empedokla.html" aria-label="Открыть экспедицию на Вулкан Эмпедокла">🌋 Вулкан Эмпедокла</a>
-        <button class="hotspot" style="left:71%; top:73%" data-key="forest">Лес Майкла Джексона</button>
+        <button class="hotspot" style="left:24%; top:29%" data-key="astraluna" aria-label="Исследовать Астралуну"></button>
+        <button class="hotspot" style="left:64%; top:29%" data-key="tristalia" aria-label="Исследовать Тристалию"></button>
+        <button class="hotspot" style="left:51%; top:53%" data-key="ladaburg" aria-label="Исследовать Ладабург"></button>
+        <a class="hotspot hotspot--volcano active" style="left:35%; top:73%" data-key="vulkan" href="vulkan-empedokla.html" aria-label="Открыть экспедицию на Вулкан Эмпедокла"></a>
+        <button class="hotspot" style="left:71%; top:73%" data-key="forest" aria-label="Исследовать Лес Майкла Джексона"></button>
       </div>
 
       <div class="legend">
