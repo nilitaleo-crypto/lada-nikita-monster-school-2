@@ -52,13 +52,20 @@ footer{padding:18px 4px 8px;color:#624e40;font-size:12px;text-align:center}
 @media(max-width:1050px){.layout{grid-template-columns:1fr}.welcome{position:relative;top:auto}.info{grid-template-columns:1fr}}
 @media(max-width:760px){main{padding:8px}.meduza-wrap{grid-template-columns:96px 1fr}.map-shell{padding:7px;border-radius:22px}.hotspot{font-size:11px;padding:7px 9px;max-width:120px}.info .card{padding:14px}header{align-items:flex-start;flex-direction:column}}
 @media(max-width:480px){.meduza-wrap{grid-template-columns:82px 1fr}h1{font-size:34px}.subtitle{font-size:15px}.hotspot{font-size:10px;padding:6px 8px;max-width:98px}.badge{font-size:12px}.actions{flex-direction:column}.btn{width:100%}}
+
+.header-actions{display:flex;align-items:center;gap:12px;flex-wrap:wrap;justify-content:flex-end}
+.collection-book{min-height:49px;display:inline-flex;align-items:center;gap:10px;padding:9px 16px;border-left:8px solid #d6aa65;border-radius:6px 15px 15px 6px;background:linear-gradient(140deg,#75432e,#442822);box-shadow:2px 4px 0 #b99465,inset 0 0 0 2px #bf935c;color:#fff1d2;text-decoration:none;font-weight:900;white-space:nowrap}
+.collection-book .bookicon{font-size:26px}
+.collection-book .count{font-size:12px;border-left:1px solid #a97955;padding-left:8px;color:#f0cf96}
+.collection-book:focus-visible{outline:4px solid #006fad;outline-offset:3px}
+@media(max-width:760px){.header-actions{justify-content:flex-start}.collection-book{min-height:45px}}
 </style>
 </head>
 <body>
 <main>
   <header>
     <div class="brand">ШКОЛА ОХОТНИКОВ НА ЧУДОВИЩ ЛАДЫ И НИКИТЫ ✦</div>
-    <div class="badge">🗺️ Мир открыт вручную • одна экспедиция за раз</div>
+    <div class="header-actions"><a class="collection-book" href="collection.html"><span class="bookicon" aria-hidden="true">📖</span> Коллекция <span class="count" id="collectionCount">0/1</span></a><div class="badge">🗺️ Мир открыт вручную • одна экспедиция за раз</div></div>
   </header>
 
   <div class="layout">
@@ -250,5 +257,6 @@ footer{padding:18px 4px 8px;color:#624e40;font-size:12px;text-align:center}
   }));
 })();
 </script>
+<script>try{if(localStorage.getItem('tivvig_reward_empedocles_v1')==='unlocked')document.getElementById('collectionCount').textContent='1/1'}catch(e){}</script>
 </body>
 </html>

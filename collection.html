@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#503b44">
+<title>Коллекция Тиввига — Атлас открытий</title>
+<style>
+:root{--cream:#f8e9c8;--brown:#503a31;--gold:#bb8d55;--dark:#302632}
+*{box-sizing:border-box}
+body{margin:0;min-height:100dvh;padding:clamp(10px,2.5vw,28px);font-family:system-ui,-apple-system,sans-serif;color:var(--brown);background:radial-gradient(ellipse at top left,#7d6265,#282638 80%)}
+button,a{touch-action:manipulation}
+.top{max-width:1160px;margin:auto auto 22px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px}
+.back{display:inline-flex;align-items:center;justify-content:center;min-height:48px;border-radius:11px;background:#fae4b8;padding:11px 17px;color:#50352c;text-decoration:none;font-weight:900;border:2px solid #bc905c}
+.tag{color:#ffe7ba;font-size:13px;font-weight:900;letter-spacing:.14em}
+.album{max-width:1160px;min-height:70vh;margin:auto;padding:clamp(20px,4.2vw,54px);border:7px double #caa36d;border-radius:12px 29px 29px 12px;box-shadow:0 22px 0 #281f27,0 30px 70px #0008,inset 0 0 0 3px #f2d7aa;background:linear-gradient(90deg,#533a32 0 18px,#a07750 19px 30px,transparent 31px),linear-gradient(135deg,#f1d6a8,#fff1d5 58%,#d9b781);position:relative}
+.album:before{content:"";position:absolute;left:31px;top:0;bottom:0;border-left:2px solid #81573f;box-shadow:5px 0 10px #895b3c45}
+.eyebrow{text-align:center;font-size:13px;font-weight:900;letter-spacing:.17em;color:#8d5543}
+h1{font:700 clamp(35px,6vw,66px) Georgia,serif;text-align:center;margin:9px 0}
+.subtitle{font:400 clamp(16px,2vw,22px)/1.45 Georgia,serif;text-align:center;max-width:650px;margin:0 auto 17px}
+.counter{display:table;margin:0 auto 25px;border:1px solid #aa845b;border-radius:40px;background:#ebd09f;padding:9px 17px;font-size:14px;font-weight:900}
+.pages{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:clamp(15px,2.5vw,28px)}
+.page{min-width:0;background:#fff8e8;border:2px solid #c3a174;border-radius:9px;box-shadow:0 6px 0 #d9b888;padding:14px}
+.page[hidden]{display:none!important}
+.page .status{font-size:13px;font-weight:900;color:#426342;letter-spacing:.08em;text-transform:uppercase}
+.page.locked .status{color:#8c6b58}
+.page h2{font:700 clamp(22px,2.6vw,30px) Georgia,serif;margin:11px 0 6px}
+.page p{line-height:1.4;font-size:14px;margin:5px 0 12px}
+.art-thumb{cursor:pointer;width:100%;border:5px ridge #956b44;border-radius:7px;background:#b18e60;padding:5px;display:block}
+.art-thumb img{width:100%;aspect-ratio:3/2;object-fit:cover;display:block}
+.art-thumb:focus-visible,.close:focus-visible{outline:4px solid #0088be;outline-offset:3px}
+.sealed{display:grid;place-items:center;aspect-ratio:3/2;border:7px ridge #a8885f;background:repeating-linear-gradient(32deg,#b2a084 0 5px,#a69375 5px 10px);font:700 clamp(80px,11vw,145px) Georgia,serif;color:#6b5749}
+.note{font-size:12px;color:#6f5849;line-height:1.5;text-align:center;margin:30px 0 0}
+.viewer[hidden]{display:none!important}
+.viewer{position:fixed;inset:0;z-index:1200;background:#130f17f5;display:flex;align-items:center;justify-content:center;flex-direction:column;padding:12px;gap:16px}
+.viewer-bar{width:min(1120px,100%);display:flex;align-items:center;justify-content:space-between;gap:12px}
+.viewer-bar strong{color:#f9dfb7;font:700 clamp(16px,2.2vw,26px) Georgia,serif}
+.viewer .large{width:auto;height:auto;max-width:100%;max-height:calc(100dvh - 130px);object-fit:contain;box-shadow:0 0 0 4px #b99864,0 15px 70px #0009}
+.close{min-height:48px;padding:11px 16px;border-radius:12px;border:2px solid #b78b5c;background:#f2dab3;color:#3c2a2a;font-weight:900;cursor:pointer}
+.viewer-hint{color:#d6bea3;font-size:12px;text-align:center}
+body.viewing{overflow:hidden}
+@media(max-width:690px){.pages{grid-template-columns:1fr}.album{padding:26px 16px 28px 29px}.top{margin-bottom:13px}}
+</style>
+</head>
+<body>
+<header class="top"><a class="back" href="index.html">← К карте Тиввига</a><div class="tag">Школа охотников на чудовищ ✦</div></header>
+<main class="album">
+  <div class="eyebrow">Книга открытий · Том первый</div>
+  <h1>Коллекция Тиввига</h1>
+  <p class="subtitle">Каждая завершённая экспедиция оставляет здесь новую картину. Собирай свою галерею странных чудес.</p>
+  <div class="counter" id="counter" aria-live="polite">Открыто иллюстраций: 0 из 1</div>
+  <div class="pages">
+    <article class="page" id="opened" hidden>
+      <div class="status">✦ Открыто · экспедиция № 1</div>
+      <button type="button" class="art-thumb" id="enlarge" aria-label="Открыть картину во весь экран">
+        <img src="images/empedocles-olympians.webp" alt="Друзья Лады в образах олимпийских богов">
+      </button>
+      <h2>Апофеоз вулкана Эмпедокла</h2>
+      <p>Шесть друзей стали богами Олимпа после прыжка в вулкан.</p>
+      <div class="note">Нажми на картину для полноэкранного просмотра.</div>
+    </article>
+    <article class="page locked" id="sealed">
+      <div class="status">🔒 Пока не открыто</div>
+      <div class="sealed" aria-hidden="true">♜</div>
+      <h2>Апофеоз вулкана Эмпедокла</h2>
+      <p>Пройди шесть арифметических испытаний, чтобы получить первую награду.</p>
+      <a class="back" href="vulkan-empedokla.html">🌋 К вулкану</a>
+    </article>
+    <article class="page locked"><div class="status">🔒 Будущая экспедиция</div><div class="sealed" aria-hidden="true">❄</div><h2>Тайны Астралуны</h2><p>Эта страница ещё ждёт своего открытия.</p></article>
+    <article class="page locked"><div class="status">🔒 Будущая экспедиция</div><div class="sealed" aria-hidden="true">✺</div><h2>Лес Майкла Джексона</h2><p>Эта страница ещё ждёт своего открытия.</p></article>
+  </div>
+  <p class="note">Открытые награды хранятся в браузере этого устройства. На другом устройстве или после очистки данных их потребуется открыть заново.</p>
+</main>
+<div class="viewer" id="viewer" role="dialog" aria-modal="true" aria-label="Иллюстрация на весь экран" hidden>
+  <div class="viewer-bar"><strong>✦ Апофеоз вулкана Эмпедокла</strong><button type="button" class="close" id="close">✕ Закрыть</button></div>
+  <img class="large" src="images/empedocles-olympians.webp" alt="Шесть олимпийских богов Тиввига">
+  <span class="viewer-hint">Нажми «Закрыть» или коснись фона, чтобы вернуться в альбом.</span>
+</div>
+<script>
+(()=>{
+ const KEY='tivvig_reward_empedocles_v1';
+ let unlocked=false;
+ try{unlocked=localStorage.getItem(KEY)==='unlocked'}catch(e){}
+ document.getElementById('opened').hidden=!unlocked;
+ document.getElementById('sealed').hidden=unlocked;
+ document.getElementById('counter').textContent='Открыто иллюстраций: '+(unlocked?'1':'0')+' из 1';
+ const viewer=document.getElementById('viewer');
+ function open(){if(!unlocked)return;viewer.hidden=false;document.body.classList.add('viewing');document.getElementById('close').focus({preventScroll:true})}
+ function close(){viewer.hidden=true;document.body.classList.remove('viewing');document.getElementById('enlarge').focus({preventScroll:true})}
+ document.getElementById('enlarge').addEventListener('click',open);
+ document.getElementById('close').addEventListener('click',close);
+ viewer.addEventListener('click',e=>{if(e.target===viewer)close()});
+ document.addEventListener('keydown',e=>{if(e.key==='Escape'&&!viewer.hidden)close()});
+})();
+</script>
+</body>
+</html>
