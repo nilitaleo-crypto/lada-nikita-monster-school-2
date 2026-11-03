@@ -92,8 +92,8 @@ body.modal{overflow:hidden}
     <a class="back" href="index.html">К карте Тиввига</a>
   </nav>
   <header class="ribbon"><h1>Мост слогов</h1></header>
-  <p class="lead">Медузе страшно переходить между вулканами. Построй мост из слогов: каждая верная дощечка помогает ей сделать шаг!</p>
-  <div class="stage card" id="scene" aria-label="Медуза идёт по мосту между двумя вулканами">
+  <p class="lead">Ладе предстоит перейти между вулканами. Построй мост из слогов: каждая верная дощечка помогает ей сделать шаг!</p>
+  <div class="stage card" id="scene" aria-label="Лада идёт по мосту между двумя вулканами">
     <svg class="terrain" viewBox="0 0 1000 460" preserveAspectRatio="none" aria-hidden="true" xmlns="http://www.w3.org/2000/svg">
       <defs>
         <linearGradient id="sky" x2="0" y2="1"><stop stop-color="#57536d"/><stop offset=".53" stop-color="#b57d81"/><stop offset="1" stop-color="#f7c888"/></linearGradient>
@@ -125,8 +125,8 @@ body.modal{overflow:hidden}
     </svg>
     <div class="volcano-label start">Первый вулкан</div><div class="volcano-label finish">Вулкан Вулкана</div>
     <div id="planks" aria-hidden="true"></div>
-    <div class="walker" id="walker" aria-label="Испуганная Медуза стоит у моста"><img id="meduza" src="images/meduza-fear.webp" alt="Испуганная Медуза Горгона"></div>
-    <div class="meduza-caption" id="mood">Медузе страшно. Помоги ей сделать первый шаг!</div>
+    <div class="walker" id="walker" aria-label="Испуганная Лада стоит у моста"><img id="meduza" src="images/lada-cutout.webp" alt="Лада готовится к переходу"></div>
+    <div class="meduza-caption" id="mood">Помоги Ладе сделать первый шаг!</div>
   </div>
   <section class="passage">
     <div class="parchment">
@@ -137,7 +137,7 @@ body.modal{overflow:hidden}
     </div>
     <div class="parchment" id="play" aria-live="polite">
       <div class="eyebrow" id="chapter">Слово 1 из 4</div>
-      <h2 class="question" id="question">Кого встретила Медуза?</h2>
+      <h2 class="question" id="question">Кого встретила Лада?</h2>
       <p class="hint" id="hint">Выбирай слоги по порядку, чтобы собрать слово.</p>
       <div class="slotboard" id="slots"></div>
       <div class="choices" id="choices"></div>
@@ -154,7 +154,7 @@ body.modal{overflow:hidden}
     <div class="eyebrow">✦ Открыта новая страница альбома ✦</div>
     <h2>Ты пришла в кузницу Вулкана!</h2>
     <img class="painting" id="rewardImg" src="images/forge-of-vulcan.webp" alt="Диего Веласкес, «Кузница Вулкана», 1630. Аполлон приходит в кузницу к Вулкану" tabindex="0" role="button" aria-label="Рассмотреть картину на весь экран">
-    <p>Ты помогла Медузе построить мост и добраться до кузницы бога-кузнеца. Эта картина теперь в твоей коллекции!</p>
+    <p>Ты помогла Ладе построить мост и добраться до кузницы бога-кузнеца. Эта картина теперь в твоей коллекции!</p>
     <div class="reward-actions"><a href="vulkan-kuznica.html">⚒ Игра 3: Кузница Вулкана →</a><a href="collection.html">📖 Открыть коллекцию</a><button id="closeReward" type="button">Остаться в игре</button><a href="index.html">← На карту</a></div>
   </div>
 </div>
@@ -172,7 +172,7 @@ body.modal{overflow:hidden}
     {word:'КАЧЕЛИ',prompt:'🛝 На чём качаются в парке?',syllables:['КА','ЧЕ','ЛИ'],distractors:['КО','ЧИ','ЛО','ЛЫ']}
   ];
   const TOTAL=DATA.reduce((a,w)=>a+w.syllables.length,0);
-  const FEAR='images/meduza-fear.webp', HAPPY='images/meduza-smile.webp';
+  const FEAR='images/lada-cutout.webp', HAPPY='images/lada-cutout.webp';
   const $=id=>document.getElementById(id);
   let wordIndex=0,slotIndex=0,steps=0,busy=false,wordComplete=false,completed=false;
   const planks=[];
@@ -211,9 +211,9 @@ body.modal{overflow:hidden}
       const button=document.createElement('button');button.className='choice';button.type='button';button.textContent=syl;
       button.addEventListener('click',()=>select(syl,button));$('choices').append(button);
     });
-    $('meduza').src=FEAR;$('meduza').alt='Испуганная Медуза Горгона';
-    $('walker').setAttribute('aria-label','Медуза готовится к следующему шагу');
-    $('mood').textContent=steps?'Медуза волнуется перед следующим шагом.':'Медузе страшно. Помоги ей сделать первый шаг!';
+    $('meduza').src=FEAR;$('meduza').alt='Лада готовится к переходу';
+    $('walker').setAttribute('aria-label','Лада готовится к следующему шагу');
+    $('mood').textContent=steps?'Лада готова к следующему шагу.':'Помоги Ладе сделать первый шаг!';
     $('feedback').textContent='Выбери следующий слог!';$('feedback').className='feedback';
     progress();
   }
@@ -221,20 +221,20 @@ body.modal{overflow:hidden}
     if(busy||wordComplete||completed)return;
     const w=DATA[wordIndex],correct=w.syllables[slotIndex];
     if(syl!==correct){
-      button.classList.add('wrong');$('feedback').textContent='Попробуй ещё раз. Медуза пока стоит на месте.';
+      button.classList.add('wrong');$('feedback').textContent='Попробуй ещё раз. Лада пока стоит на месте.';
       $('feedback').className='feedback wrong';
       $('walker').classList.remove('shiver');void $('walker').offsetWidth;$('walker').classList.add('shiver');return;
     }
     busy=true;
     $('choices').querySelectorAll('button').forEach(x=>x.disabled=true);
-    $('feedback').textContent='Верно! Медуза улыбается и делает шаг.';$('feedback').className='feedback correct';
+    $('feedback').textContent='Верно! Лада делает шаг!';$('feedback').className='feedback correct';
     planks[steps].textContent=correct;planks[steps].classList.add('placed');
     if((slotIndex+1)===w.syllables.length)planks[steps].classList.add('last');
     steps++;slotIndex++;
     $('walker').classList.remove('shiver');$('walker').classList.add('hopping');
-    $('meduza').src=HAPPY;$('meduza').alt='Улыбающаяся Медуза Горгона';
+    $('meduza').src=HAPPY;$('meduza').alt='Улыбающаяся Лада';
     $('walker').style.left=(steps>0?11.4+steps*4.9:11.4)+'%';
-    $('walker').setAttribute('aria-label','Медуза улыбается и шагает по мосту');
+    $('walker').setAttribute('aria-label','Лада шагает по мосту');
     $('mood').textContent='Ура! Получилась дощечка '+correct+'!';
     progress();
     setTimeout(()=>{
@@ -244,7 +244,7 @@ body.modal{overflow:hidden}
         $('slots').replaceChildren(...w.syllables.map(sl=>{const e=document.createElement('div');e.className='slot filled';e.textContent=sl;return e}));
         $('choices').hidden=true;
         $('completed').textContent='✦ Слово собрано: '+w.word+'!';
-        $('feedback').textContent=wordIndex===DATA.length-1?'Мост готов! Ты дошла до кузницы!':'Медуза прошла ещё один участок моста!';
+        $('feedback').textContent=wordIndex===DATA.length-1?'Мост готов! Ты дошла до кузницы!':'Лада прошла ещё один участок моста!';
         if(wordIndex===DATA.length-1){finish()}else{const n=$('nextWord');n.textContent='Следующее слово →';n.hidden=false}
       }else{draw()}
     },1120);
@@ -253,7 +253,7 @@ body.modal{overflow:hidden}
   function finish(){
     completed=true;
     try{localStorage.setItem('tivvig_reward_forge_v1','unlocked')}catch(e){}
-    $('meduza').src=HAPPY;$('mood').textContent='Медуза счастлива: мост пройден!';
+    $('meduza').src=HAPPY;$('mood').textContent='Лада добралась до кузницы!';
     setTimeout(()=>{
       const f=$('flash');f.classList.remove('go');void f.offsetWidth;f.classList.add('go');
       setTimeout(()=>{ $('reward').hidden=false;document.body.classList.add('modal');$('closeReward').focus({preventScroll:true});},350);
