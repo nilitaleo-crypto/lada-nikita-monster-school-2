@@ -48,8 +48,25 @@ body.viewing{overflow:hidden}
   <div class="eyebrow">Книга открытий · Том первый</div>
   <h1>Коллекция Тиввига</h1>
   <p class="subtitle">Каждая завершённая экспедиция оставляет здесь новую картину. Собирай свою галерею странных чудес.</p>
-  <div class="counter" id="counter" aria-live="polite">Открыто иллюстраций: 0 из 4</div>
+  <div class="counter" id="counter" aria-live="polite">Открыто иллюстраций: 0 из 5</div>
   <div class="pages">
+    <article class="page" id="mazeOpened" hidden>
+      <div class="status">✦ Открыто · путь к вулкану</div>
+      <button type="button" class="art-thumb" data-open-reward="maze" aria-label="Посмотреть награду с золотыми монетами">
+        <img src="images/coins-reward.webp" alt="Золотые монеты падают с блюда">
+      </button>
+      <h2>Горсть золотых монет</h2>
+      <p>По пути через болото ты собрала горсть монет и провела Ладу к вулкану Эмпедокла.</p>
+      <div class="note">Нажми на изображение, чтобы открыть его во весь экран.</div>
+    </article>
+    <article class="page locked" id="mazeSealed">
+      <div class="status">🔒 Пока не открыто · Вход в экспедицию</div>
+      <div class="sealed" aria-hidden="true">✦</div>
+      <h2>Горсть золотых монет</h2>
+      <p>Найди путь через заросли и болото, собирая монеты на дороге к вулкану.</p>
+      <a class="back" href="vulkan-labirint.html">🌿 Пройти лабиринт</a>
+    </article>
+
     <article class="page" id="opened" hidden>
       <div class="status">✦ Открыто · экспедиция № 1</div>
       <button type="button" class="art-thumb" id="enlarge" aria-label="Открыть картину во весь экран">
@@ -71,13 +88,13 @@ body.viewing{overflow:hidden}
       <div class="status">✦ Открыто · вулканическая экспедиция II</div>
       <button type="button" class="art-thumb" data-open-reward="forge" aria-label="Открыть Кузницу Вулкана на весь экран"><img src="images/forge-of-vulcan.webp" alt="Диего Веласкес, Кузница Вулкана, 1630"></button>
       <h2>Кузница Вулкана</h2>
-      <p>Медуза преодолела мост из тринадцати слогов и пришла в кузницу. Диего Веласкес, 1630.</p>
+      <p>Лада преодолела мост из тринадцати слогов и пришла в кузницу. Диего Веласкес, 1630.</p>
       <div class="note">Нажми на картину, чтобы раскрыть её на весь экран.</div>
     </article>
     <article class="page locked" id="forgeSealed">
       <div class="status">🔒 Пока не открыто · Экспедиция II</div><div class="sealed" aria-hidden="true">⚒</div>
       <h2>Кузница Вулкана</h2>
-      <p>Помоги Медузе построить мост между вулканами, собирая четыре слова.</p>
+      <p>Помоги Ладе построить мост между вулканами, собирая четыре слова.</p>
       <a class="back" href="vulkan-slogi.html">🌋 Мост слогов</a>
     </article>
     
@@ -128,22 +145,24 @@ body.viewing{overflow:hidden}
 (()=>{
   const read=key=>{try{return localStorage.getItem(key)==='unlocked'}catch(e){return false}};
   const unlocked={
+    maze:read('tivvig_reward_maze_coins_v1'),
     empedocles:read('tivvig_reward_empedocles_v1'),
     forge:read('tivvig_reward_forge_v1'),
     sword:read('tivvig_reward_sword_v1'),
     hydra:read('tivvig_reward_hydra_v1')
   };
   for(const [kind,opened,sealed] of [
-    ['empedocles','opened','sealed'],['forge','forgeOpened','forgeSealed'],['sword','swordOpened','swordSealed'],['hydra','hydraOpened','hydraSealed']
+    ['maze','mazeOpened','mazeSealed'],['empedocles','opened','sealed'],['forge','forgeOpened','forgeSealed'],['sword','swordOpened','swordSealed'],['hydra','hydraOpened','hydraSealed']
   ]){
     document.getElementById(opened).hidden=!unlocked[kind];
     document.getElementById(sealed).hidden=unlocked[kind];
   }
-  document.getElementById('counter').textContent='Открыто иллюстраций: '+Object.values(unlocked).filter(Boolean).length+' из 4';
+  document.getElementById('counter').textContent='Открыто иллюстраций: '+Object.values(unlocked).filter(Boolean).length+' из 5';
   const viewer=document.getElementById('viewer');
   const viewerImage=document.getElementById('viewerImage');
   const viewerTitle=document.getElementById('viewerTitle');
   const artworks={
+    maze:{src:'images/coins-reward.webp',title:'Горсть золотых монет',alt:'Награда за путь через болото'},
     empedocles:{src:'images/empedocles-olympians.webp',title:'Апофеоз вулкана Эмпедокла',alt:'Друзья Лады — боги Олимпа'},
     forge:{src:'images/forge-of-vulcan.webp',title:'Кузница Вулкана',alt:'Диего Веласкес, Кузница Вулкана'},
     sword:{src:'images/joan-sword.webp',title:'Тебе выковали меч!',alt:'Дама с мечом'},
