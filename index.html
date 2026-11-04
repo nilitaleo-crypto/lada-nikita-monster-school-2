@@ -103,7 +103,7 @@ button:focus-visible,a:focus-visible{outline:3px solid #f5cb77;outline-offset:3p
     <a class="collection" href="collection.html" aria-label="Открыть коллекцию наград">
       <span class="symbol" aria-hidden="true">✧</span>
       <span class="label">Коллекция</span>
-      <span class="count" id="collectionCount">0/4</span>
+      <span class="count" id="collectionCount">0/6</span>
     </a>
     <div class="spread">
       <section class="page page--left" aria-label="Интерактивная карта Тиввига">
@@ -148,7 +148,7 @@ button:focus-visible,a:focus-visible{outline:3px solid #f5cb77;outline-offset:3p
   const msg=places[btn.dataset.place];if(msg)status.textContent=msg;
  }));
  try{
-  const keys=['tivvig_reward_maze_coins_v1','tivvig_reward_empedocles_v1','tivvig_reward_forge_v1','tivvig_reward_sword_v1','tivvig_reward_hydra_v1'];
+  const keys=['tivvig_reward_maze_coins_v1','tivvig_reward_empedocles_v1','tivvig_reward_forge_v1','tivvig_reward_sword_v1','tivvig_reward_hydra_v1','tivvig_reward_jungle_friends_v1'];
   const unlocked=keys.filter(k=>localStorage.getItem(k)==='unlocked').length;
   document.getElementById('collectionCount').textContent=unlocked+'/'+keys.length;
  }catch(e){}
