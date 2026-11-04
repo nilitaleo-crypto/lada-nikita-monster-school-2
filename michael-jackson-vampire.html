@@ -1,0 +1,118 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#261623"><meta name="description" content="Побег от вампира — сложение и вычитание, превращения и кристалл-лекарство в лесу Майкла Джексона.">
+<title>Побег от вампира — Мир Тиввиг</title>
+<style>
+:root{--cream:#ffeac2;--plum:#321c31;--gold:#dca86a;--berry:#5e273e}
+*{box-sizing:border-box}html,body{margin:0;min-height:100%;background:#140d1b}
+body{font-family:Georgia,"Times New Roman",serif;color:var(--cream);background:radial-gradient(ellipse at 50% 8%,#75445a,#211825 67%,#140d1b);overflow-x:hidden}
+button,a{font:inherit;-webkit-tap-highlight-color:transparent;touch-action:manipulation}button{cursor:pointer}a{text-decoration:none;color:inherit}button:focus-visible,a:focus-visible{outline:3px solid #fff6a0;outline-offset:3px}
+main{display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:100dvh;padding:8px 10px 13px;gap:8px}
+.head{width:min(1280px,100%);display:flex;gap:10px;justify-content:space-between;align-items:center}.head h1{font-size:clamp(19px,2.8vw,36px);margin:0;text-align:center;font-weight:normal;text-shadow:0 3px 5px #0009;letter-spacing:.035em}
+.link,.reset{display:inline-grid;place-items:center;min-height:40px;border:1px solid #d6a978;border-radius:10px;background:linear-gradient(#f6e3b6,#bb986b);color:#382222;padding:6px 12px;font-size:clamp(11px,1.4vw,15px);font-weight:bold;box-shadow:0 3px 0 #0005}
+.arena{position:relative;aspect-ratio:16/9;width:min(100%,calc((100dvh - 115px)*1.77777),1280px);min-height:0;border:5px ridge #c7a16e;border-radius:15px;overflow:hidden;isolation:isolate;box-shadow:0 4px 0 #523023,0 22px 50px #000a;background:#1b3030;touch-action:manipulation}
+.land{position:absolute;inset:0;width:100%;height:100%;z-index:0;pointer-events:none}
+.arena::after{content:"";pointer-events:none;position:absolute;inset:0;z-index:16;box-shadow:inset 0 0 55px #0e0716a8}
+.trail{position:absolute;inset:0;z-index:2;width:100%;height:100%;overflow:visible;pointer-events:none}
+.trail path{fill:none;stroke:#30251e;stroke-width:7;stroke-linecap:round;stroke-linejoin:round}.trail .rim{stroke:#cf9469;stroke-width:6.2}.trail .inner{stroke:#956d59;stroke-width:5.2;stroke-dasharray:0.7 0.1}
+.stone{position:absolute;z-index:3;transform:translate(-50%,-50%) rotate(-8deg);width:7.4%;height:5.8%;border-radius:53% 47% 49% 51%;background:linear-gradient(160deg,#d8ba90,#927355 66%,#513d3a);box-shadow:inset -2px -3px 3px #483e3b99,0 4px 0 #251919,0 5px 13px #0008;border:1px solid #edca9d88;opacity:.87;pointer-events:none}
+.stone.goal{box-shadow:0 0 13px #ffa6de,0 4px 0 #2a1720;border-color:#f0d8b0}
+.crystal{position:absolute;z-index:7;left:91%;top:39%;height:18%;width:12%;transform:translate(-50%,-90%);filter:drop-shadow(0 0 11px #ff9dee) drop-shadow(0 0 23px #ee79ff);animation:levitate 3s ease-in-out infinite;pointer-events:none}
+.crystal svg{height:100%;width:100%;overflow:visible}
+@keyframes levitate{0%,100%{transform:translate(-50%,-90%)}50%{transform:translate(-50%,-104%)}}
+.spark{position:absolute;z-index:6;width:5px;height:5px;left:var(--x);top:var(--y);border-radius:50%;background:#fff2c6;box-shadow:0 0 10px #ffc8e4;animation:shimmer var(--t) ease-in-out infinite alternate;pointer-events:none}
+@keyframes shimmer{from{opacity:.14;transform:scale(.5)}to{opacity:1;transform:scale(1.7)}}
+.sprite{position:absolute;z-index:8;transform:translate(-50%,-92%);pointer-events:none;transition:left .78s cubic-bezier(.25,.8,.29,1),top .78s cubic-bezier(.25,.8,.29,1),filter .4s;will-change:left,top;filter:drop-shadow(2px 7px 4px #000b)}
+.sprite.lada{width:clamp(47px,8.5%,118px);height:clamp(80px,27%,200px)}
+.lada .photo{width:100%;height:100%;display:block;object-fit:contain;object-position:bottom;filter:drop-shadow(0 6px 5px #0a1512dd)}
+.lada .cape{position:absolute;z-index:-1;inset:14% -22% 11%;background:linear-gradient(120deg,#702544 0%,#b44273 39%,#280e28 89%);clip-path:polygon(44% 2%,68% 0,99% 96%,48% 74%,0 96%);transform:rotate(7deg);opacity:0;filter:drop-shadow(0 0 5px #fc98bd)}
+.lada.vampirized .cape{opacity:.98}
+.lada.vampirized .photo{object-fit:contain;filter:drop-shadow(0 7px 4px #000a)}
+.sprite.enemy{width:clamp(62px,10.2%,149px);height:clamp(93px,30%,211px);z-index:7;filter:drop-shadow(0 0 8px #dd409b) drop-shadow(3px 7px 5px #000e)}
+.enemy .portrait{display:block;width:100%;height:100%;object-fit:cover;object-position:center 23%;border:3px solid #dfb475;border-radius:43% 43% 13% 13%;box-shadow:inset 0 0 19px #000,0 0 13px #f75daf9e;background:#161322;mask-image:linear-gradient(to bottom,black 0% 84%,transparent 100%)}
+.enemy .wing{position:absolute;z-index:-1;top:13%;width:68%;height:57%;background:linear-gradient(110deg,#942d6d,#2c122e);border:2px solid #c45a8f;clip-path:polygon(0 35%,88% 0,100% 88%,63% 65%,36% 98%);filter:drop-shadow(0 0 4px #b3418a)}
+.enemy .wing.left{right:74%;transform:scaleX(-1) rotate(12deg)}.enemy .wing.right{left:75%;transform:rotate(-12deg)}
+.enemy.mid .wing{filter:brightness(.72)}
+.question{position:absolute;z-index:12;top:3.5%;left:50%;transform:translateX(-50%);min-width:28%;max-width:64%;display:flex;flex-direction:column;align-items:center;gap:clamp(4px,.7vw,9px)}
+.parchment{min-width:min(100%,330px);padding:clamp(7px,1.2vw,15px) clamp(22px,3vw,43px);white-space:nowrap;text-align:center;color:#2d1a20;background:linear-gradient(140deg,#fceac8,#e4bf89 53%,#f2d6aa);border:3px double #a77452;border-radius:8px 16px 11px 19px;box-shadow:inset 0 0 10px #9e734a7a,0 4px 0 #493224,0 6px 15px #0008;font:bold clamp(30px,6vw,76px)/1.04 Georgia,serif;text-shadow:0 1px #ffefdb;letter-spacing:.02em}
+.choices{display:flex;justify-content:center;gap:clamp(7px,1.4vw,19px);width:100%}
+.answer{min-width:clamp(55px,7.2vw,88px);min-height:clamp(47px,6.1vw,75px);padding:4px 12px;font:bold clamp(25px,4vw,45px) Georgia,serif;color:#2c1b21;background:linear-gradient(140deg,#f9e7c6,#d8af75);border:3px solid #99704e;border-radius:9px;box-shadow:0 4px 0 #40271e,0 5px 12px #0009;transition:filter .15s,transform .15s}
+.answer:active{transform:translateY(3px);box-shadow:0 1px 0 #40271e}.answer[disabled]{cursor:default}.answer.right{background:#bfe8af}.answer.wrong{background:#f9b9b8}
+.hud{position:absolute;z-index:12;left:2.5%;top:3.5%;display:flex;gap:3px;align-items:center;color:#fff3cf;text-shadow:0 2px 4px #000;letter-spacing:.17em;font-size:clamp(13px,2.3vw,26px)}
+.status{position:absolute;bottom:1.8%;left:50%;transform:translateX(-50%);z-index:11;min-width:42%;max-width:89%;padding:4px 16px;text-align:center;font-size:clamp(12px,1.4vw,19px);color:#f9dba7;text-shadow:0 2px 4px #000;background:#180c1e91;border-radius:25px}
+.magic{position:absolute;z-index:14;font-size:clamp(30px,5vw,70px);transform:translate(-50%,-50%);pointer-events:none;animation:burst .85s both;color:#ffc7ff;text-shadow:0 0 20px #f785ee,0 0 36px #fff}
+@keyframes burst{0%{opacity:0;scale:.1;rotate:-45deg}42%{opacity:1;scale:1.4}100%{opacity:0;scale:2.5;rotate:50deg}}
+.panel[hidden]{display:none}.panel{position:fixed;inset:0;z-index:45;display:flex;justify-content:center;align-items:center;padding:10px;background:#110e1be9;backdrop-filter:blur(6px);overflow-y:auto}
+.card{width:min(640px,100%);max-height:95dvh;overflow-y:auto;text-align:center;border:5px ridge #d5a770;border-radius:17px;background:linear-gradient(155deg,#f3deb8,#c79777 70%,#e9c18c);color:#342029;padding:clamp(12px,2.6vw,24px);box-shadow:0 20px 60px #000a}
+.card h2{font-size:clamp(26px,4.8vw,41px);margin:2px 0 9px;font-weight:normal}.card p{margin:5px 0 13px;font-size:clamp(15px,1.8vw,20px)}
+.actions{display:flex;justify-content:center;gap:9px;flex-wrap:wrap;margin-top:13px}.action{display:inline-flex;align-items:center;justify-content:center;min-height:46px;padding:9px 17px;background:#50283d;border:2px solid #a87653;border-radius:10px;color:#ffe9bd;font-size:16px;font-weight:bold}.action.secondary{background:#e8c793;color:#3b2628}
+.hug{position:relative;max-width:520px;height:clamp(200px,38vw,330px);overflow:hidden;border:4px solid #8f5d49;border-radius:16px;background:radial-gradient(ellipse at 50% 34%,#bc7485,#502d58 58%,#161d28 100%);margin:0 auto;isolation:isolate}
+.hug:before{content:"✦ ✧ ✦";font-size:30px;letter-spacing:24px;position:absolute;top:13px;left:25%;color:#ffdca6;z-index:5;text-shadow:0 0 10px #fff1bf}
+.hug .healed{height:93%;width:56%;object-fit:contain;object-position:bottom;position:absolute;right:2%;bottom:-1%;filter:drop-shadow(2px 5px 9px #0008);border-radius:23%}
+.hug .little{height:87%;width:45%;object-fit:contain;object-position:bottom;position:absolute;left:14%;bottom:-2%;z-index:4;filter:drop-shadow(2px 5px 4px #0007)}
+.hug .embrace{position:absolute;z-index:5;width:38%;height:13%;border:11px solid #b5a2ce;border-color:#baa5cb transparent transparent transparent;border-radius:50%;right:25%;top:61%;transform:rotate(13deg);opacity:.9;pointer-events:none}
+.reward-img{width:auto;max-width:100%;max-height:48dvh;object-fit:contain;display:block;margin:0 auto;border:5px ridge #745c50;filter:grayscale(1);box-shadow:0 5px 25px #382528aa}
+@media(max-width:760px){.head h1{font-size:clamp(16px,3vw,24px)}.link,.reset{font-size:11px;min-height:37px;padding:6px 7px}.arena{width:100%;aspect-ratio:4/3}.parchment{font-size:clamp(26px,6vw,50px);padding:8px 17px}.question{top:4%;min-width:39%}.answer{min-width:50px;min-height:45px;font-size:25px}.sprite.lada{height:23%;width:10.4%}.sprite.enemy{width:13%;height:25%}.stone{width:8.3%;height:5%}.status{font-size:12px}.crystal{height:14%}}
+@media(max-height:520px){.head h1{font-size:20px}.arena{width:min(100%,calc((100dvh - 74px)*1.77777))}.head{gap:6px}.link,.reset{min-height:32px}.answer{min-height:40px}.parchment{font-size:32px}}
+@media(prefers-reduced-motion:reduce){.sprite{transition-duration:.05s}.spark,.crystal{animation:none}.magic{animation-duration:.05s}}
+</style>
+</head>
+<body>
+<main>
+ <header class="head"><a class="link" href="michael-jackson-merman.html">← Русал</a><h1>✦ Побег от вампира ✦</h1><button class="reset" id="reset" type="button">↻ Сначала</button></header>
+ <section class="arena" id="arena" aria-label="Волшебные джунгли, десять клеток пути и кристалл-лекарство">
+  <svg class="land" viewBox="0 0 1200 675" preserveAspectRatio="none" aria-hidden="true"><defs><linearGradient id="sky" x1="0" y1="0" x2="0" y2="1"><stop stop-color="#be658d"/><stop offset=".42" stop-color="#633f72"/><stop offset="1" stop-color="#1b433e"/></linearGradient><linearGradient id="water" x1="0" y1="0" x2="1" y2="0"><stop stop-color="#9ad3c6" stop-opacity=".1"/><stop offset=".5" stop-color="#e9c9dd" stop-opacity=".9"/><stop offset="1" stop-color="#92dbcf" stop-opacity=".08"/></linearGradient><radialGradient id="glow"><stop stop-color="#f5a6c3"/><stop offset="1" stop-color="#dc6ba0" stop-opacity="0"/></radialGradient><pattern id="grain" width="31" height="31" patternUnits="userSpaceOnUse"><circle cx="4" cy="3" r="1" fill="#f4d7a2" opacity=".07"/><circle cx="20" cy="18" r="1" fill="#ffdfad" opacity=".06"/></pattern></defs>
+  <path fill="url(#sky)" d="M0 0H1200V675H0Z"/><circle cx="1035" cy="125" r="124" fill="url(#glow)"/><circle cx="1035" cy="125" r="64" fill="#ffd6c5" opacity=".6"/>
+  <path d="M0 345 170 195 260 280 415 190 530 301 700 214 808 286 973 190 1120 286 1200 210V675H0" fill="#473a54" opacity=".8"/><path d="M0 420 124 273 290 324 391 245 570 363 709 280 815 330 991 220 1200 304V675H0" fill="#2b4146"/>
+  <path fill="#233e39" d="M0 394Q178 340 370 392T710 391 910 356 1200 360V675H0Z"/><path fill="#172e30" d="M0 486Q180 422 340 468T620 452 890 422 1200 447V675H0Z"/>
+  <path d="M736 304Q759 348 741 398L745 510 797 510 812 398 805 310Z" fill="#252e36"/><path d="M755 316Q770 371 752 459L750 494 780 506 787 380 781 311Z" fill="url(#water)" opacity=".7"/><path d="M710 499Q764 481 819 493" stroke="#cad5bd" stroke-width="4" opacity=".32" fill="none"/>
+  <path d="M0 560Q230 467 421 544T710 510 1200 479V675H0" fill="#1e2b2c"/><path d="M0 623Q230 559 420 614T772 557 1200 543V675H0" fill="#132927"/>
+  <g fill="#1b3228"><path d="M40 615Q71 446 92 250L108 265Q115 448 84 675H40"/><path d="M1054 675Q1093 435 1125 248L1144 254 1113 675Z"/><path d="M0 110Q160 30 332 0H0Z"/><path d="M1200 0 1050 0Q1100 77 1200 130Z"/></g>
+  <g fill="#112925" opacity=".9"><path d="M80 380Q-30 305 1 213Q109 249 80 380M80 380Q172 285 234 272Q207 379 80 380M80 380Q177 359 247 438Q118 461 80 380"/><path d="M1107 378Q994 250 973 256Q983 374 1107 378M1107 378Q1150 275 1200 284Q1221 367 1107 378M1107 378Q1081 377 960 435Q1083 492 1107 378"/></g>
+  <g fill="#1d4038" stroke="#315044" stroke-width="2"><path d="M164 595Q87 521 12 540Q75 617 164 595M164 595Q196 502 296 502Q252 602 164 595M992 583Q899 505 845 536Q875 614 992 583M992 583Q1082 489 1177 498Q1137 589 992 583"/></g>
+  <g fill="#9d4569" opacity=".9"><circle cx="146" cy="583" r="13"/><circle cx="136" cy="571" r="13"/><circle cx="160" cy="570" r="13"/><circle cx="149" cy="560" r="13"/><circle cx="1100" cy="554" r="14"/><circle cx="1086" cy="544" r="14"/><circle cx="1117" cy="542" r="14"/><circle cx="1102" cy="531" r="14"/></g><g fill="#f3c58f"><circle cx="147" cy="571" r="8"/><circle cx="1103" cy="545" r="8"/></g><rect width="1200" height="675" fill="url(#grain)"/>
+ </svg>
+ <svg class="trail" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true"><path class="rim" d="M9 82 Q 23 86 36 73 T 58 64 T 79 52 T 91 39"/><path class="inner" d="M9 82 Q 23 86 36 73 T 58 64 T 79 52 T 91 39"/></svg>
+ <div id="stones"></div>
+ <div class="crystal" id="crystal" aria-hidden="true"><svg viewBox="0 0 110 160"><g stroke="#ffd7f7" stroke-width="2"><path d="M55 0 85 35 103 100 56 156 7 100 25 35Z" fill="#ad54db"/><path d="M55 0 55 156 25 35Z" fill="#f8b5ed"/><path d="M55 0 85 35 55 156Z" fill="#9455cf"/><path d="M7 100 55 156 25 35Z" fill="#8e66f2"/><path d="M55 156 103 100 85 35Z" fill="#c868e7"/><path d="M25 35 85 35 55 0Z" fill="#fff1ef"/></g><path d="M55 15 47 98 64 87Z" fill="#fff" opacity=".62"/></svg></div>
+ <div id="enemy" class="sprite enemy" aria-label="Преследующий вампир"><span class="wing left"></span><span class="wing right"></span><img id="enemyImg" class="portrait" src="images/vampire-1.svg" alt="Первая форма вампира, огромный крылатый демон" draggable="false"></div>
+ <div id="lada" class="sprite lada" aria-label="Лада"><span class="cape"></span><img id="ladaImg" class="photo" src="images/lada-cutout.webp" alt="Лада бежит по тропинке" draggable="false"></div>
+ <div class="hud" id="hud" aria-label="Осталось пройти шесть шагов">✦ ✦ ✦ ✦ ✦ ✦</div>
+ <div class="question"><div class="parchment" id="equation" aria-live="polite">8 − 3 = ?</div><div class="choices" id="choices" aria-label="Ответы"></div></div>
+ <div class="status" id="status" role="status" aria-live="polite">Добеги до волшебного кристалла!</div>
+ </section>
+</main>
+<div id="lose" class="panel" role="dialog" aria-modal="true" aria-labelledby="loseTitle" hidden><div class="card"><h2 id="loseTitle">Вампир догнал Ладу!</h2><p>Попробуем убежать ещё раз?</p><div class="actions"><button class="action" id="retry" type="button">↻ Начать заново</button><a class="action secondary" href="michael-jackson-merman.html">← К русалу</a></div></div></div>
+<div id="win" class="panel" role="dialog" aria-modal="true" aria-labelledby="winTitle" hidden><div class="card"><h2 id="winTitle">✦ Вампир исцелён! ✦</h2><div class="hug" aria-label="Лада обнимает исцелённого вампира"><img class="healed" src="images/vampire-3.svg" alt="Исцелённый добрый вампир" draggable="false"><img class="little" src="images/lada-vampire.svg" alt="Настоящая фотография улыбающейся Лады с клыками" draggable="false"><div class="embrace" aria-hidden="true"></div></div><p>Лада нашла волшебный кристалл и вылечила вампира.</p><div class="actions"><button type="button" id="openPrize" class="action">✦ Награда</button><button type="button" id="replayWin" class="action secondary">↻ Ещё раз</button></div></div></div>
+<div id="prize" class="panel" role="dialog" aria-modal="true" aria-labelledby="prizeTitle" hidden><div class="card"><h2 id="prizeTitle">Награда — Носферату</h2><img class="reward-img" src="images/nosferatu.svg" alt="Оригинальный чёрно-белый кадр из фильма Носферату, 1922: граф Орлок на корабле"><p>«Носферату. Симфония ужаса», Ф. В. Мурнау, 1922</p><div class="actions"><a class="action" href="collection.html">✦ В коллекцию</a><button type="button" id="replayPrize" class="action secondary">↻ Ещё раз</button><a class="action secondary" href="index.html">Карта</a></div></div></div>
+<script>
+(()=>{'use strict';
+const P=[{x:9,y:82},{x:18,y:82},{x:27,y:78},{x:36,y:73},{x:45,y:69},{x:55,y:64},{x:65,y:59},{x:75,y:53},{x:84,y:47},{x:91,y:39}];
+const el=id=>document.getElementById(id), arena=el('arena'), enemy=el('enemy'), lada=el('lada'), enemyImg=el('enemyImg'), ladaImg=el('ladaImg'), choices=el('choices');
+const reduced=matchMedia('(prefers-reduced-motion: reduce)').matches, pause=ms=>new Promise(resolve=>setTimeout(resolve,reduced?Math.min(80,ms):ms));
+let pL=3,pV=0,ladaForm=1,enemyForm=1,busy=false,over=false,turn=0,answer=0,lastSignature='';
+const stoneHost=el('stones');P.forEach((p,i)=>{let s=document.createElement('i');s.className='stone'+(i===9?' goal':'');s.style.left=p.x+'%';s.style.top=p.y+'%';stoneHost.appendChild(s)});
+for(let j=0;j<22;j++){let i=document.createElement('i');i.className='spark';i.style.setProperty('--x',((j*31+7)%92)+'%');i.style.setProperty('--y',((j*19+18)%75)+'%');i.style.setProperty('--t',(2+j%5*.65)+'s');i.style.animationDelay=(-j*.38)+'s';arena.appendChild(i)}
+function at(node,n){let p=P[Math.max(0,Math.min(9,n))];node.style.left=p.x+'%';node.style.top=p.y+'%'}
+function sync(){at(lada,pL);at(enemy,pV);el('hud').textContent='✦ '.repeat(Math.max(0,9-pL)).trim() || '✦';el('hud').setAttribute('aria-label','До кристалла '+(9-pL)+' шагов')}
+function rand(n){return Math.floor(Math.random()*n)}
+function makeTask(){let a,b,operator,result,sig;for(let i=0;i<10;i++){if(Math.random()<.5){a=rand(10);b=rand(11-a);operator='+';result=a+b}else{a=rand(11);b=rand(a+1);operator='−';result=a-b}sig=a+operator+b;if(sig!==lastSignature)break}lastSignature=sig;answer=result;el('equation').textContent=a+' '+operator+' '+b+' = ?';
+ const opts=new Set([result]);const tryPool=[result+1,result-1,result+2,result-2,result+3,result-3,rand(11),rand(11)].filter(n=>n>=0&&n<=10&&n!==result);
+ while(opts.size<3&&tryPool.length)opts.add(tryPool.splice(rand(tryPool.length),1)[0]);while(opts.size<3)opts.add(rand(11));const arr=[...opts].sort(()=>Math.random()-.5);
+ choices.replaceChildren();for(const value of arr){const b=document.createElement('button');b.className='answer';b.type='button';b.textContent=value;b.setAttribute('aria-label','Ответ '+value);b.addEventListener('click',()=>play(value,b));choices.append(b)}}
+function flash(n,char='✧'){let p=P[Math.min(9,n)];let f=document.createElement('span');f.className='magic';f.textContent=char;f.style.left=p.x+'%';f.style.top=(p.y-12)+'%';arena.appendChild(f);setTimeout(()=>f.remove(),1000)}
+async function transformLada(){ladaForm=2;flash(pL,'✦');lada.classList.add('vampirized');await pause(300);ladaImg.src='images/lada-vampire.svg';ladaImg.alt='Настоящая фотография Лады с вампирскими клыками';el('status').textContent='Лада тоже стала вампиром!';await pause(490)}
+async function transformEnemy(){enemyForm=2;flash(pV,'✧');enemy.classList.add('mid');await pause(300);enemyImg.src='images/vampire-2.svg';enemyImg.alt='Вторая форма вампира, синие лицо и горящие глаза';await pause(490)}
+function show(id){el(id).hidden=false;el(id).querySelector('button')?.focus({preventScroll:true})}function hide(){for(const id of ['lose','win','prize'])el(id).hidden=true}
+async function play(value,button){if(busy||over)return;busy=true;const correct=value===answer;button.classList.add(correct?'right':'wrong');[...choices.children].forEach(b=>b.disabled=true);el('status').textContent=correct?'Верно! ✨':'Упс! Вампир приближается!';await pause(230);pL=Math.min(9,pL+1);pV=Math.min(9,pV+(correct?1:2));sync();await pause(820);
+ if(pV>=pL){over=true;show('lose');return}
+ if(ladaForm===1&&pL>=6)await transformLada();if(enemyForm===1&&pV>=4)await transformEnemy();
+ if(pL>=9){over=true;el('status').textContent='Кристалл найден!';flash(9,'✦');el('crystal').style.opacity='0';await pause(600);enemyImg.src='images/vampire-3.svg';enemyImg.alt='Исцелённый вампир';enemy.classList.remove('mid');flash(pV,'✧');await pause(650);try{localStorage.setItem('tivvig_reward_vampire_nosferatu_v1','unlocked')}catch(e){}show('win');return}
+ turn++;makeTask();busy=false;el('status').textContent='Добеги до волшебного кристалла!'}
+function reset(){pL=3;pV=0;ladaForm=1;enemyForm=1;turn=0;busy=false;over=false;lastSignature='';enemy.classList.remove('mid');lada.classList.remove('vampirized');ladaImg.src='images/lada-cutout.webp';enemyImg.src='images/vampire-1.svg';el('crystal').style.opacity='';el('status').textContent='Добеги до волшебного кристалла!';hide();sync();makeTask()}
+el('reset').addEventListener('click',reset);el('retry').addEventListener('click',reset);el('replayWin').addEventListener('click',reset);el('replayPrize').addEventListener('click',reset);el('openPrize').addEventListener('click',()=>{el('win').hidden=true;show('prize')});document.addEventListener('keydown',e=>{if(e.key==='Escape'&&!el('prize').hidden){el('prize').hidden=true;show('win')}});reset();
+})();
+</script>
+</body></html>
