@@ -1,0 +1,71 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#41232b">
+<title>Играем вместе — Мир Тиввиг</title>
+<style>
+:root{--paper:#f5e7c8;--wine:#542a32;--gold:#c99959;--ink:#442b28}
+*{box-sizing:border-box}
+body{margin:0;min-height:100dvh;background:radial-gradient(ellipse at top,#70414b,#24131a 78%);color:var(--ink);font-family:Georgia,"Times New Roman",serif}
+a{color:inherit}
+button,input{font:inherit}
+button{cursor:pointer}
+button:focus-visible,a:focus-visible,input:focus-visible{outline:3px solid #d29a40;outline-offset:3px}
+.wrap{max-width:1240px;margin:auto;padding:16px clamp(12px,3vw,28px) 42px}
+header{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:16px;color:#f7e9d4}
+header a{font-weight:700;text-decoration:none;border:1px solid #b99063;border-radius:14px;padding:11px 15px;background:#4d2a30}
+h1{font-size:clamp(28px,4vw,47px);margin:0;font-weight:normal}
+.card{background:linear-gradient(160deg,#fcf4df,#ead2a9);border:2px solid #b89160;border-radius:22px;padding:clamp(18px,3vw,30px);box-shadow:0 8px 0 #2e1720,0 16px 32px #0c060a55}
+.intro{max-width:720px;margin:5vh auto 0}
+h2{font-size:clamp(26px,3.2vw,39px);font-weight:normal;margin:0 0 12px}
+p{line-height:1.5}
+.actions{display:flex;flex-wrap:wrap;gap:10px;margin-top:16px}
+.btn{min-height:46px;background:#582c32;color:#fff1dc;border:2px solid #b78c59;border-radius:14px;padding:10px 17px;font-weight:700}
+.btn.secondary{background:#f7e7c5;color:#4d2a30}
+.btn[disabled]{opacity:.55;cursor:wait}
+.note{font-size:14px;color:#765640}
+.error{color:#982d2d;font-weight:bold;white-space:pre-wrap}
+#message{min-height:24px}
+#lesson{margin-top:12px}
+.sessionbar{display:flex;justify-content:space-between;gap:14px;align-items:flex-start;flex-wrap:wrap}
+.sessionbar h2{margin-bottom:4px}
+.invite{display:flex;gap:8px;flex-wrap:wrap;margin:14px 0}
+.invite input{flex:1;min-width:190px;border:1px solid #bb946a;border-radius:12px;background:#fff9ea;padding:11px 12px;color:#513528;font:14px system-ui,sans-serif}
+.online{font-weight:700;color:#32553c}
+.iframe{display:block;width:100%;height:min(1060px,95dvh);min-height:600px;border:2px solid #b78b57;border-radius:18px;background:#f5e7cb;margin-top:15px}
+.kicker{color:#93663f;font-size:13px;letter-spacing:.14em;text-transform:uppercase;font-weight:700}
+[hidden]{display:none!important}
+@media(max-width:700px){header{align-items:flex-start;flex-direction:column}.iframe{height:85dvh;min-height:560px}.card{padding:15px}.sessionbar{display:block}}
+</style>
+</head>
+<body>
+<main class="wrap">
+<header><a href="index.html">← Атлас Тиввига</a><span>Школа охотников на чудовищ</span></header>
+<section id="entry" class="card intro">
+<div class="kicker">Совместная экспедиция</div>
+<h1>Вместе к вулкану Эмпедокла</h1>
+<p id="welcome">Создай закрытое занятие и пригласи Ладу по специальной ссылке. Ты будешь видеть её движения и сможешь рисовать подсказки на лабиринте.</p>
+<div class="actions"><button id="teacherStart" class="btn" type="button">Я преподаватель — войти через Google</button><button id="studentStart" class="btn" type="button" hidden>Я Лада — войти в игру</button></div>
+<p class="note">Для ребёнка не нужны почта и пароль. Пригласительная ссылка содержит секретный код комнаты — не публикуй её открыто.</p>
+<p id="message" role="status" aria-live="polite"></p>
+</section>
+<section id="lesson" class="card" hidden>
+<div class="sessionbar">
+<div><div class="kicker">Экспедиция в прямом эфире</div><h2 id="sessionTitle">Лабиринт Эмпедокла</h2><p id="connectionStatus" class="online" role="status" aria-live="polite">Подключаемся…</p></div>
+<div class="actions" id="teacherControls" hidden><button id="clearHint" class="btn secondary" type="button">Стереть подсказку</button><button id="resetGame" class="btn secondary" type="button">Начать лабиринт заново</button></div>
+</div>
+<div id="shareBox" hidden>
+<label for="inviteLink"><strong>Ссылка для Лады</strong></label>
+<div class="invite"><input id="inviteLink" readonly aria-label="Ссылка-приглашение"><button id="copyInvite" class="btn" type="button">Скопировать ссылку</button></div>
+<p class="note">Отправь ссылку родителям Лады. Ты рисуешь подсказки красной линией, она ведёт свою линию по тропе. Для проверки на одном компьютере открой детскую ссылку в другом браузере или приватном окне.</p>
+</div>
+<p id="studentNote" class="note" hidden>Веди Ладу пальцем по светлой дорожке. Красная линия — подсказка преподавателя.</p>
+<iframe id="mazeFrame" class="iframe" title="Совместный лабиринт Эмпедокла" src="about:blank"></iframe>
+<p id="lessonMessage" role="status" aria-live="polite" class="note"></p>
+</section>
+</main>
+<script type="module" src="coop.js"></script>
+</body>
+</html>
