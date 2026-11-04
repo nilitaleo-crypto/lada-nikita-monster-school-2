@@ -48,7 +48,7 @@ body.viewing{overflow:hidden}
   <div class="eyebrow">Книга открытий · Том первый</div>
   <h1>Коллекция Тиввига</h1>
   <p class="subtitle">Каждая завершённая экспедиция оставляет здесь новую картину. Собирай свою галерею странных чудес.</p>
-  <div class="counter" id="counter" aria-live="polite">Открыто иллюстраций: 0 из 6</div>
+  <div class="counter" id="counter" aria-live="polite">Открыто иллюстраций: 0 из 7</div>
   <div class="pages">
     <article class="page" id="mazeOpened" hidden>
       <div class="status">✦ Открыто · путь к вулкану</div>
@@ -147,6 +147,22 @@ body.viewing{overflow:hidden}
       <p>Открой джунгли и найди двух подруг среди двойников.</p>
       <a class="back" href="michael-jackson-jungle.html">🌿 Искать подруг</a>
     </article>
+    <article class="page" id="mermanOpened" hidden>
+      <div class="status">✦ Открыто · Джунгли Майкла Джексона II</div>
+      <button type="button" class="art-thumb" data-open-reward="merman" aria-label="Открыть картину Джона Уильяма Уотерхауса Русалка">
+        <img src="images/waterhouse-mermaid-original.webp" alt="Оригинальная картина Уотерхауса Русалка, 1900" loading="lazy">
+      </button>
+      <h2>Спасение русала</h2>
+      <p>Восемь вёдер оживили русала. Награда — «Русалка» Дж. У. Уотерхауса (1900).</p>
+      <a class="back" href="michael-jackson-merman.html">🌊 Пройти ещё раз</a>
+    </article>
+    <article class="page locked" id="mermanSealed">
+      <div class="status">🔒 Пока не открыто · Джунгли Майкла Джексона II</div>
+      <div class="sealed" aria-hidden="true">🌊</div>
+      <h2>Спасение русала</h2>
+      <p>Вылей восемь вёдер воды со слогами, чтобы оживить русала.</p>
+      <a class="back" href="michael-jackson-merman.html">💧 Спасти русала</a>
+    </article>
   </div>
   <p class="note">Открытые награды хранятся в браузере этого устройства. На другом устройстве или после очистки данных их потребуется открыть заново.</p>
 </main>
@@ -164,15 +180,16 @@ body.viewing{overflow:hidden}
     forge:read('tivvig_reward_forge_v1'),
     sword:read('tivvig_reward_sword_v1'),
     hydra:read('tivvig_reward_hydra_v1'),
-    jungle:read('tivvig_reward_jungle_friends_v1')
+    jungle:read('tivvig_reward_jungle_friends_v1'),
+    merman:read('tivvig_reward_merman_waterhouse_v1')
   };
   for(const [kind,opened,sealed] of [
-    ['maze','mazeOpened','mazeSealed'],['empedocles','opened','sealed'],['forge','forgeOpened','forgeSealed'],['sword','swordOpened','swordSealed'],['hydra','hydraOpened','hydraSealed'],['jungle','jungleOpened','jungleSealed']
+    ['maze','mazeOpened','mazeSealed'],['empedocles','opened','sealed'],['forge','forgeOpened','forgeSealed'],['sword','swordOpened','swordSealed'],['hydra','hydraOpened','hydraSealed'],['jungle','jungleOpened','jungleSealed'],['merman','mermanOpened','mermanSealed']
   ]){
     document.getElementById(opened).hidden=!unlocked[kind];
     document.getElementById(sealed).hidden=unlocked[kind];
   }
-  document.getElementById('counter').textContent='Открыто иллюстраций: '+Object.values(unlocked).filter(Boolean).length+' из 6';
+  document.getElementById('counter').textContent='Открыто иллюстраций: '+Object.values(unlocked).filter(Boolean).length+' из 7';
   const viewer=document.getElementById('viewer');
   const viewerImage=document.getElementById('viewerImage');
   const viewerTitle=document.getElementById('viewerTitle');
@@ -182,7 +199,8 @@ body.viewing{overflow:hidden}
     forge:{src:'images/forge-of-vulcan.webp',title:'Кузница Вулкана',alt:'Диего Веласкес, Кузница Вулкана'},
     sword:{src:'images/joan-sword.webp',title:'Тебе выковали меч!',alt:'Дама с мечом'},
     hydra:{src:'images/hydra-victory.webp',title:'Победа над гидрой',alt:'Иллюстрация победы над Лернейской гидрой'},
-    jungle:{src:'images/jackson-jungle-reward.webp',title:'Команда в сборе!',alt:'Лада и две её подруги в джунглях Майкла Джексона'}
+    jungle:{src:'images/jackson-jungle-reward.webp',title:'Команда в сборе!',alt:'Лада и две её подруги в джунглях Майкла Джексона'},
+    merman:{src:'images/waterhouse-mermaid-original.webp',title:'Русалка (1900) · Джон Уильям Уотерхаус',alt:'Оригинальная картина Русалка Джона Уильяма Уотерхауса'}
   };
   let opener=null;
   function open(e){
