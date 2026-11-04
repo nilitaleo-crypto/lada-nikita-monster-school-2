@@ -239,7 +239,7 @@ window.addEventListener("message",e=>{
  if(type==="ready"){frameIsReady();return;}
  if(type==="actionApplied"){
   remoteActionCount++;
-  report('✓ Применено действий: '+remoteActionCount+' · оба устройства получают их через Firebase');
+  report('✓ Применено на этом устройстве: '+remoteActionCount+' · через Firebase');
   return;
  }
  if(type==="actionMissing"){
