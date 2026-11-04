@@ -10,7 +10,7 @@
   ];
   const CATALOG=[
     {id:'default',name:'Обычный наряд',description:'Платье с цветами',src:null,available:'always'},
-    {id:'mermaid',name:'Наряд русалки',description:'Лес Майкла Джексона',src:'images/mermaid-outfit.svg',available:'mermaid'}
+    {id:'mermaid',name:'Наряд русалки',description:'Лес Майкла Джексона',src:'images/mermaid-outfit.webp',available:'mermaid'}
   ];
   function get(key){try{return window.localStorage.getItem(key)}catch(e){return null}}
   function set(key,value){try{window.localStorage.setItem(key,value);return true}catch(e){return false}}
