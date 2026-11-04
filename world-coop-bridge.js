@@ -41,14 +41,18 @@ document.addEventListener("click",e=>{
  const anchor=e.target.closest("a[href]");
  if(anchor){
   const page=routeFor(anchor);
-  if(page){e.preventDefault();send("navigate",page);}
+  if(page){e.preventDefault();e.stopImmediatePropagation();send("navigate",page);}
   return;
  }
  if(isMaze)return;
  const target=e.target.closest("button,[role=button],[data-open-reward],#rewardImg,#scene,#reward,#win,#viewer,#lightbox,#rewardReveal");
  if(!target || target.matches("button[disabled]"))return;
  const selector=pathOf(target);
- if(selector && selector.length<=450)send("click",{selector});
+ if(selector && selector.length<=450){
+   // Firebase is authoritative: execute this click only after it is received from the room.
+   e.preventDefault();e.stopImmediatePropagation();
+   send("click",{selector});
+ }
 },true);
 document.addEventListener("pointermove",e=>{
  if(isMaze||!e.isTrusted)return;
@@ -98,6 +102,11 @@ window.addEventListener("message",e=>{
  if(e.source!==window.parent||e.origin!==location.origin||e.data?.from!=="tivvig-parent")return;
  const {type,value}=e.data;
  if(type==="role"){role=value==="teacher"?"teacher":"student";return;}
+ if(type==="inventory"){
+   if(current==="wardrobe.html")window.dispatchEvent(new Event("pageshow"));
+   if(current==="index.html")window.dispatchEvent(new CustomEvent("tivvig-outfit-changed"));
+   return;
+ }
  if(type==="teacherCursor"||type==="studentCursor"){showRemoteCursor(value);return;}
  if(type==="scroll"&&role==="teacher"&&Number.isFinite(value?.y)){
   replaying=true;scrollTo(0,Math.max(0,Math.min(1,value.y))*(document.documentElement.scrollHeight-innerHeight));replaying=false;return;

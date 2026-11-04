@@ -24,7 +24,45 @@ const validRoom=/^[A-Za-z0-9_-]{32,}$/;
 let role=null,room=null,uid=null,owner=null,sessionStarted=false;
 let currentPage=null,currentEpoch=null,frameReady=false,lastVersion=null,localCursorAt=0,lastProgressAt=0;
 let latestHint=null,latestProgress=null,latestStudentCursor=null,latestTeacherCursor=null,latestScroll=null,studentPresence=null;
-let eventBuffer=[],appliedEvents=new Set(),localEvents=new Set(),unsubs=[],offEvents=null,offConnect=null;
+let eventBuffer=[],appliedEvents=new Set(),unsubs=[],offEvents=null,offConnect=null,connected=false;
+const rewardKeys=[
+ 'tivvig_reward_maze_coins_v1','tivvig_reward_empedocles_v1','tivvig_reward_forge_v1',
+ 'tivvig_reward_sword_v1','tivvig_reward_hydra_v1','tivvig_reward_jungle_friends_v1',
+ 'tivvig_reward_merman_waterhouse_v1','tivvig_reward_vampire_nosferatu_v1',
+ 'tivvig_outfit_mermaid_unlocked_v1'
+];
+const rewardSet=new Set(rewardKeys),selectedKey='tivvig_outfit_selected_v1';
+let remoteActionCount=0;
+function pushReward(key){if(!room||!rewardSet.has(key))return;set(dbref('state/rewards/'+key),'unlocked').catch(e=>report(explain(e)))}
+function pushSelected(value){if(!room||!['default','mermaid'].includes(value))return;set(dbref('state/selected'),value).catch(e=>report(explain(e)))}
+window.addEventListener('storage',e=>{
+ if(!sessionStarted||!room||!e.key)return;
+ if(rewardSet.has(e.key)&&e.newValue==='unlocked')pushReward(e.key);
+ else if(e.key===selectedKey&&['default','mermaid'].includes(e.newValue))pushSelected(e.newValue);
+});
+async function seedStudentState(){
+ if(role!=='student')return;
+ const promises=[];
+ for(const key of rewardKeys){
+  try{if(localStorage.getItem(key)==='unlocked')promises.push(set(dbref('state/rewards/'+key),'unlocked'))}catch(e){}
+ }
+ try{const outfit=localStorage.getItem(selectedKey);if(outfit==='mermaid'||outfit==='default')promises.push(set(dbref('state/selected'),outfit))}catch(e){}
+ await Promise.allSettled(promises);
+}
+function applySharedRewards(values){
+ if(!values)return;
+ for(const key of rewardKeys){
+  if(values[key]!=='unlocked')continue;
+  try{if(localStorage.getItem(key)!=='unlocked')localStorage.setItem(key,'unlocked')}catch(e){}
+ }
+ sendToFrame('inventory',{kind:'rewards'});
+}
+function applySharedSelection(value){
+ if(value!=='mermaid'&&value!=='default')return;
+ try{if(localStorage.getItem(selectedKey)!==value)localStorage.setItem(selectedKey,value)}catch(e){}
+ sendToFrame('inventory',{kind:'selection',value});
+}
+
 const $frame=$("mazeFrame");
 function message(text,err=false){$("message").textContent=text;$("message").className=err?"error":"";}
 function report(text){$("lessonMessage").textContent=text;}
@@ -47,7 +85,7 @@ function sendToFrame(type,value){
 }
 function updatePresence(){
  const visible=role==="student"?"Ты подключена к занятию":studentPresence?"Лада в игре":"ожидаем Ладу";
- $("connectionStatus").textContent="● "+visible+" · "+(titles[currentPage]||"Мир Тиввиг");
+ $("connectionStatus").textContent=(connected?"● ":"◌ Нет соединения · ")+visible+" · "+(titles[currentPage]||"Мир Тиввиг");
 }
 function showLesson(){
  $("entry").hidden=true;$("lesson").hidden=false;
@@ -61,7 +99,7 @@ function showLesson(){
 }
 function syncExistingData(){
  if(!frameReady)return;
- sendToFrame("role",role);
+ sendToFrame("role",role);sendToFrame("inventory",{kind:"refresh"});
  if(currentPage==="vulkan-labirint.html"){
   if(latestHint)sendToFrame("hint",latestHint);else sendToFrame("hint",{points:[]});
   if(role==="teacher"&&latestProgress)sendToFrame("progress",latestProgress);
@@ -73,9 +111,14 @@ function syncExistingData(){
 function applyEvent(e){
  if(!frameReady||!e||appliedEvents.has(e.key))return;
  appliedEvents.add(e.key);
- if(localEvents.has(e.key))return;
+ if(e.value?.kind==="click"&&e.value?.selector==='#tivvig-connection-check'){
+  report(e.value.by===uid?'✓ Firebase подтвердил твою проверку связи.':'✓ Получен сигнал со второго устройства. Двусторонняя связь работает.');
+  return;
+ }
  if(e.value?.kind==="click"&&e.value?.selector&&currentPage!=="vulkan-labirint.html"){
   sendToFrame("click",{selector:e.value.selector});
+  remoteActionCount++;
+  report('✓ Синхронизировано действий: '+remoteActionCount+(e.value.by===uid?' · твой ход':' · ход другого участника'));
  }
 }
 function frameIsReady(){
@@ -87,7 +130,7 @@ function startPage(path,epoch){
  if(!allowedPages.has(path)||typeof epoch!=="string"||epoch.length<12)return;
  if(path===currentPage&&epoch===currentEpoch)return;
  currentPage=path;currentEpoch=epoch;frameReady=false;
- eventBuffer=[];appliedEvents.clear();localEvents.clear();
+ eventBuffer=[];appliedEvents.clear();
  if(offEvents){offEvents();offEvents=null;}
  $("sessionTitle").textContent=titles[path]||"Мир Тиввиг";
  $("pageSelect").value=path;
@@ -113,6 +156,9 @@ function observe(path,fn){
  unsubs.push(unsub);
 }
 function watchRoom(){
+ offConnect=onValue(ref(db,'.info/connected'),s=>{connected=s.val()===true;updatePresence();});
+ observe("state/rewards",applySharedRewards);
+ observe("state/selected",applySharedSelection);
  observe("page",p=>{if(p&&allowedPages.has(p.path))startPage(p.path,p.epoch);else report("Не удалось открыть страницу занятия.");});
  observe("studentPresence",p=>{studentPresence=p;updatePresence();});
  observe("progress",p=>{latestProgress=p;if(role==="teacher"&&currentPage==="vulkan-labirint.html")sendToFrame("progress",p);});
@@ -125,7 +171,7 @@ function watchRoom(){
    lastVersion=v;
  });
  if(role==="student"){
-  offConnect=onValue(ref(db,".info/connected"),async s=>{
+  onValue(ref(db,".info/connected"),async s=>{
    if(s.val()!==true)return;
    try{
     const presence=dbref("studentPresence");
@@ -169,6 +215,7 @@ student.addEventListener("click",async()=>{
   if(!initial.exists())throw new Error("Комната не найдена. Попроси преподавателя создать новую.");
   owner=initial.child("owner").val();
   initClient();
+  seedStudentState().catch(e=>report(explain(e)));
  }catch(e){message(explain(e),true);}
  finally{student.disabled=false;}
 });
@@ -195,8 +242,7 @@ window.addEventListener("message",e=>{
  if(type==="navigate"&&allowedPages.has(value)){navigate(value);return;}
  if(type==="click"&&currentPage!=="vulkan-labirint.html"&&typeof value?.selector==="string"&&value.selector.length<450){
   const action=push(dbref("actions/"+currentEpoch));
-  localEvents.add(action.key);
-  set(action,{by:uid,kind:"click",selector:value.selector,at:Date.now()}).catch(e=>report(explain(e)));
+  set(action,{by:uid,kind:"click",selector:value.selector,at:Date.now()}).catch(e=>report('Не удалось передать нажатие: '+explain(e)));
  }
  if(type==="scroll"&&role==="student"&&Number.isFinite(value?.y)){
   set(dbref("viewport"),{y:Math.max(0,Math.min(1,value.y)),epoch:currentEpoch,at:Date.now()}).catch(e=>report(explain(e)));
@@ -216,4 +262,12 @@ window.addEventListener("message",e=>{
   const points=value.points.filter(validPoint).slice(0,150).map(p=>({x:p.x,y:p.y}));
   set(dbref("hint"),{points}).catch(e=>report(explain(e)));
  }
+});
+
+$("checkSync").addEventListener("click",()=>{
+ if(!sessionStarted||!currentEpoch||!room){report("Сначала подключись к комнате.");return;}
+ const action=push(dbref("actions/"+currentEpoch));
+ report("Проверяем запись в Firebase…");
+ set(action,{by:uid,kind:"click",selector:"#tivvig-connection-check",at:Date.now()})
+ .catch(e=>report("Проверка не прошла: "+explain(e)));
 });

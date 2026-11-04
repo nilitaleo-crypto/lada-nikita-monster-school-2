@@ -78,8 +78,9 @@ p{line-height:1.5}
 <div id="shareBox" hidden>
 <label for="inviteLink"><strong>Ссылка для Лады</strong></label>
 <div class="invite"><input id="inviteLink" readonly aria-label="Ссылка-приглашение"><button id="copyInvite" class="btn" type="button">Скопировать ссылку</button></div>
-<p class="note">Отправь ссылку родителям Лады. На карте и в остальных заданиях вы видите одни и те же страницы и нажатия. В лабиринте ты рисуешь красную подсказку, Лада ведёт свою линию. Для проверки на одном компьютере открой детскую ссылку в другом браузере или приватном окне.</p>
+<p class="note">Отправь ссылку родителям Лады. Все нажатия на игровые кнопки проходят через общую комнату Firebase и выполняются на обоих устройствах. В лабиринте ты рисуешь красную подсказку, Лада ведёт свою линию. Для проверки на одном компьютере открой детскую ссылку в другом браузере или приватном окне.</p>
 </div>
+<div class="actions"><button id="checkSync" class="btn secondary" type="button">↔ Проверить синхронизацию</button></div>
 <p id="studentNote" class="note" hidden>Веди Ладу пальцем по светлой дорожке. Красная линия — подсказка преподавателя.</p>
 <iframe id="mazeFrame" class="iframe" title="Совместный лабиринт Эмпедокла" src="about:blank"></iframe>
 <p id="lessonMessage" role="status" aria-live="polite" class="note"></p>
