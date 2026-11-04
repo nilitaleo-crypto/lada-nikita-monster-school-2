@@ -1,0 +1,159 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#142b22">
+<title>Джунгли Майкла Джексона — Найди подруг</title>
+<style>
+:root{color-scheme:dark;--gold:#f7d98d;--shadow:#081a17;--pink:#ffc0ba}
+*{box-sizing:border-box}
+html,body{margin:0;min-height:100%;background:#0e221b;color:#f7e6be}
+body{font-family:Georgia,'Times New Roman',serif;overscroll-behavior:contain;background:
+ radial-gradient(ellipse at 50% 18%,#345749 0%,#142d24 58%,#0c1915 100%)}
+button,a{-webkit-tap-highlight-color:transparent;touch-action:manipulation}
+button:focus-visible,a:focus-visible{outline:3px solid var(--gold);outline-offset:3px}
+main{min-height:100dvh;max-width:1600px;margin:0 auto;display:grid;align-content:center;gap:12px;padding:clamp(8px,1.6vw,24px)}
+.top{display:flex;justify-content:center;align-items:center;position:relative;min-height:28px}
+h1{font-size:clamp(15px,2.3vw,30px);font-weight:400;letter-spacing:.06em;margin:0;text-align:center;color:#fce7ba;text-shadow:0 2px 5px #091a17}
+.chapter{font-size:clamp(10px,1.35vw,15px);letter-spacing:.18em;color:#e4c9a4;text-align:center;line-height:1.3}
+.stage{position:relative;width:min(100%,calc(85dvh * 1.5),1440px);aspect-ratio:3 / 2;margin:auto;overflow:hidden;isolation:isolate;border:clamp(3px,.4vw,6px) solid #a97643;border-radius:clamp(10px,1.8vw,24px);box-shadow:0 0 0 2px #261a14,0 18px 36px #08120bb0;background:#14251b;touch-action:manipulation;user-select:none;-webkit-user-select:none}
+.jungle{width:100%;height:100%;display:block;object-fit:fill;pointer-events:none}
+.stage:after{content:'';position:absolute;inset:0;z-index:1;pointer-events:none;box-shadow:inset 0 0 50px #101b1a75}
+.hotspot{position:absolute;z-index:5;border:0;background:transparent;border-radius:50%;cursor:pointer;touch-action:manipulation;outline-offset:2px;transition:filter .2s ease}
+.hotspot:active{background:#fff8bd13}
+.hotspot.found{pointer-events:none}
+.hotspot.found:after{content:'✦';position:absolute;left:50%;top:39%;transform:translate(-50%,-50%);color:#fff5ba;text-shadow:0 0 14px #fff9a2,0 0 30px #f4b653;font-size:clamp(32px,5vw,80px);animation:starPop .9s both}
+.hotspot.found:before{content:'';position:absolute;inset:7%;border:clamp(3px,.5vw,7px) solid #ffe3a1b8;border-radius:50%;box-shadow:0 0 0 10px #f3c46a22,0 0 30px 7px #efc86480;animation:ringIn .6s ease-out both}
+@keyframes starPop{from{opacity:0;transform:translate(-50%,-50%) scale(.2) rotate(-65deg)}to{opacity:1;transform:translate(-50%,-50%) scale(1) rotate(0)}}
+@keyframes ringIn{from{opacity:0;transform:scale(.3)}to{opacity:1;transform:scale(1)}}
+.f-1{left:28%;top:35%;width:24%;height:30%}
+.f-2{left:55.8%;top:13.5%;width:20.5%;height:31.5%}
+.cloud{position:absolute;z-index:3;pointer-events:none;border-radius:50%;background:radial-gradient(ellipse,#ffcaaf8c 0,#ffcaa75d 30%,#f7a99621 62%,transparent 75%);filter:blur(clamp(3px,.9vw,13px));mix-blend-mode:screen;animation:drift 7s ease-in-out infinite alternate;transition:opacity 1.4s ease,transform 1.4s ease}
+.cloud.c1{left:25%;top:35%;width:33%;height:33%;animation-delay:-2s}
+.cloud.c2{left:51%;top:14%;width:34%;height:34%;animation-delay:-4.2s}
+.cloud.c3{left:70%;top:43%;width:30%;height:21%;opacity:.6;animation-duration:9s}
+.stage[data-first='true'] .c1,.stage[data-second='true'] .c2{opacity:0;transform:scale(1.45);animation:none}
+@keyframes drift{from{transform:translate(-2%,2%) scale(.97)}to{transform:translate(3%,-2%) scale(1.1)}}
+.home,.sound{position:absolute;z-index:10;top:.7%;width:8%;height:12%;border:0;border-radius:20px;cursor:pointer;background:transparent}
+.home{left:.4%}.sound{right:.4%}
+.sound[aria-pressed='false']:after{content:'';position:absolute;left:12%;top:57%;width:76%;height:3px;background:#542c2b;border-top:2px solid #fff4d3;transform:rotate(-32deg);border-radius:4px;filter:drop-shadow(0 2px 1px #442b22)}
+.token{position:absolute;z-index:7;bottom:2.3%;width:8%;height:12%;display:grid;place-items:center;pointer-events:none;opacity:0;transform:scale(.35);transition:transform .55s cubic-bezier(.18,1.4,.25,1),opacity .3s}
+.token.left{left:41.2%}.token.right{left:50.3%}
+.token.found{opacity:1;transform:scale(1)}
+.token .icon{display:grid;place-items:center;width:68%;aspect-ratio:1;border-radius:50%;background:radial-gradient(circle at 30% 25%,#fff4bb,#e6a657);border:2px solid #a35a34;box-shadow:0 0 11px #fae1a9;color:#5c3b22;font-size:clamp(15px,3.1vw,39px)}
+.particle{position:absolute;z-index:8;pointer-events:none;color:#ffe7a2;font-size:clamp(13px,2.1vw,34px);text-shadow:0 0 10px #ffef9d;animation:floatUp 1.05s ease-out forwards}
+@keyframes floatUp{0%{transform:translate(-50%,-50%) scale(.5);opacity:0}30%{opacity:1}100%{transform:translate(-50%,-155%) scale(1.3) rotate(35deg);opacity:0}}
+.bottom{display:flex;justify-content:center;align-items:center;gap:14px;min-height:45px}
+.bottombtn{border:1px solid #c6a071;background:#4b352b;color:#f5deb0;border-radius:999px;padding:10px 19px;min-height:43px;font:bold 17px Georgia,serif;cursor:pointer;box-shadow:0 4px 0 #0b1511}
+.bottombtn:active{transform:translateY(2px)}
+#dots{display:flex;gap:10px;align-items:center}
+#dots i{width:12px;height:12px;border:2px solid #d8b881;border-radius:50%;display:block;transition:background .3s,transform .3s}
+#dots i.ok{background:#f2cc72;transform:scale(1.3)}
+#celebration{position:fixed;inset:0;z-index:30;display:none;align-items:center;justify-content:center;background:#071e1aba;backdrop-filter:blur(8px);padding:18px}
+#celebration.show{display:flex}
+.prize{width:min(92vw,540px);border:4px double #ab7739;background:linear-gradient(#fff3d5,#e5c48b);border-radius:27px;color:#5d3e29;text-align:center;padding:26px 18px;box-shadow:0 25px 55px #020d0bba;animation:prizeIn .5s ease-out}
+@keyframes prizeIn{from{transform:translateY(50px) scale(.8);opacity:0}to{transform:translateY(0) scale(1);opacity:1}}
+.prize h2{margin:0 0 12px;font-size:clamp(30px,6vw,55px);font-weight:normal}
+.prize .friends{font-size:clamp(67px,11vw,125px);letter-spacing:0;line-height:1.4;display:flex;justify-content:center;gap:20px}
+.prize p{font-size:clamp(16px,3vw,24px);margin:7px 0 19px}
+.prize button,.prize a{font:700 clamp(17px,2.4vw,23px) Georgia,serif;text-decoration:none;display:inline-flex;justify-content:center;align-items:center;background:#56352c;color:#fff1d6;border:2px solid #b88e55;border-radius:16px;min-height:52px;padding:12px 17px;margin:4px;cursor:pointer}
+.visually-hidden{position:absolute!important;width:1px!important;height:1px!important;overflow:hidden!important;clip:rect(0,0,0,0)!important;white-space:nowrap!important}
+@media(max-width:730px){main{min-height:100dvh;align-content:center;gap:8px;padding:5px}.stage{width:100%;border-radius:9px}.top h1{font-size:17px}.chapter{font-size:11px}.home,.sound{min-height:40px;min-width:40px}.f-1{left:25.8%;width:28%}.f-2{left:53.5%;width:25%}}
+@media(prefers-reduced-motion:reduce){*,*:before,*:after{animation:none!important;transition:none!important}}
+</style>
+</head>
+<body>
+<main>
+ <div class="top"><h1>✦ Джунгли Майкла Джексона ✦</h1></div>
+ <div class="chapter" aria-hidden="true">🌸　✦　🌿　✦　🦋</div>
+ <section class="stage" id="stage" aria-label="Джунгли: найди двух подружек">
+  <picture><source srcset="images/jackson-jungle.avif" type="image/avif"><img class="jungle" src="images/jackson-jungle.webp" alt="Сказочные джунгли с двумя спрятавшимися подружками и обманчивыми лесными фигурами" draggable="false"></picture>
+  <div class="cloud c1" aria-hidden="true"></div><div class="cloud c2" aria-hidden="true"></div><div class="cloud c3" aria-hidden="true"></div>
+  <button class="hotspot f-1" id="friend1" type="button" aria-label="Найти первую подружку"></button>
+  <button class="hotspot f-2" id="friend2" type="button" aria-label="Найти вторую подружку"></button>
+  <a href="index.html" class="home" aria-label="Вернуться на карту Тиввига"></a>
+  <button class="sound" id="sound" type="button" aria-pressed="true" aria-label="Отключить голосовые подсказки"></button>
+  <div class="token left" id="token1" aria-hidden="true"><span class="icon">🌺</span></div>
+  <div class="token right" id="token2" aria-hidden="true"><span class="icon">🦋</span></div>
+ </section>
+ <div class="bottom"><button class="bottombtn" id="replayVoice" type="button" aria-label="Послушать задание">🔊</button><div id="dots" aria-label="Найдено 0 из 2 подруг"><i></i><i></i></div><button class="bottombtn" id="reset" type="button" aria-label="Начать поиски сначала">↻</button></div>
+ <div class="visually-hidden" id="status" role="status" aria-live="polite"></div>
+</main>
+<div id="celebration" role="dialog" aria-modal="true" aria-labelledby="prizeTitle">
+ <div class="prize">
+  <h2 id="prizeTitle">Ура! ✨</h2>
+  <div class="friends" aria-hidden="true"><span>🌺</span><span>🦋</span></div>
+  <p>Подружки найдены!</p>
+  <button id="again" type="button">↻ Ещё раз</button>
+  <a href="index.html">🗺️ На карту</a>
+ </div>
+</div>
+<script>
+(()=>{
+'use strict';
+const stage=document.getElementById('stage');
+const spots=[document.getElementById('friend1'),document.getElementById('friend2')];
+const tokens=[document.getElementById('token1'),document.getElementById('token2')];
+const dots=[...document.querySelectorAll('#dots i')];
+const status=document.getElementById('status');
+const modal=document.getElementById('celebration');
+const sound=document.getElementById('sound');
+const synth=('speechSynthesis' in window)?window.speechSynthesis:null;
+let voice=true,found=new Set(),lastMiss=0;
+function speak(text){
+ if(!voice||!synth)return;
+ try{synth.cancel();const u=new SpeechSynthesisUtterance(text);u.lang='ru-RU';u.rate=.87;u.pitch=1.12;synth.speak(u)}catch(e){}
+}
+function sparkle(x,y,big=false){
+ const n=big?14:5;
+ for(let i=0;i<n;i++){
+  const dot=document.createElement('span');dot.className='particle';dot.textContent=i%3?'✦':'✧';
+  const angle=i/n*2*Math.PI,rad=(big?10:4)+(big?12:7)*Math.random();
+  dot.style.left=`${Math.min(96,Math.max(3,x+Math.cos(angle)*rad))}%`;
+  dot.style.top=`${Math.min(96,Math.max(3,y+Math.sin(angle)*rad))}%`;
+  dot.style.animationDelay=(Math.random()*.18)+'s';
+  stage.append(dot);setTimeout(()=>dot.remove(),1500);
+ }
+}
+function sync(){
+ tokens.forEach((el,i)=>el.classList.toggle('found',found.has(i)));
+ spots.forEach((el,i)=>el.classList.toggle('found',found.has(i)));
+ dots.forEach((el,i)=>el.classList.toggle('ok',found.has(i)));
+ stage.dataset.first=String(found.has(0));stage.dataset.second=String(found.has(1));
+ document.getElementById('dots').setAttribute('aria-label',`Найдено ${found.size} из 2 подруг`);
+ status.textContent=found.size===2?'Обе подружки найдены!':`Найдено ${found.size} из двух подруг`;
+}
+function reveal(i){
+ if(found.has(i))return;
+ found.add(i);sync();
+ const pos=i===0?[40,50]:[66,29];sparkle(...pos,true);
+ speak(i===0?'Ура! Ты нашла первую подружку!':'Ура! Ты нашла вторую подружку!');
+ if(found.size===2){
+  try{localStorage.setItem('tivvig_reward_jungle_friends_v1','unlocked')}catch(e){}
+  setTimeout(()=>{modal.classList.add('show');speak('Ура! Ты нашла всех подружек! Теперь вы команда!');document.getElementById('again').focus({preventScroll:true});},1250);
+ }
+}
+spots.forEach((el,i)=>el.addEventListener('click',e=>{e.stopPropagation();reveal(i)}));
+stage.addEventListener('click',e=>{
+ if(e.target.closest('.home,.sound,.hotspot'))return;
+ const now=Date.now();if(now-lastMiss<250)return;lastMiss=now;
+ const r=stage.getBoundingClientRect();const x=(e.clientX-r.left)/r.width*100,y=(e.clientY-r.top)/r.height*100;
+ sparkle(x,y,false);
+ if(found.size<2)status.textContent='Пыльца кружится. Ищи подруг среди листьев!';
+});
+function reset(){found.clear();modal.classList.remove('show');sync();speak('Найди двух подружек! Они спрятались среди растений и цветочной пыльцы.');}
+document.getElementById('reset').addEventListener('click',reset);
+document.getElementById('again').addEventListener('click',reset);
+document.getElementById('replayVoice').addEventListener('click',()=>speak('Найди двух подружек среди цветов! Присмотрись, кто похож на настоящих подруг.'));
+sound.addEventListener('click',()=>{
+ voice=!voice;sound.setAttribute('aria-pressed',String(voice));sound.setAttribute('aria-label',voice?'Отключить голосовые подсказки':'Включить голосовые подсказки');
+ if(!voice&&synth)synth.cancel();else speak('Найди подружек!');
+});
+modal.addEventListener('click',e=>{if(e.target===modal)modal.classList.remove('show')});
+document.addEventListener('keydown',e=>{if(e.key==='Escape'&&modal.classList.contains('show'))modal.classList.remove('show')});
+sync();
+})();
+</script>
+</body>
+</html>
