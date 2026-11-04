@@ -39,7 +39,7 @@ function randomId(bytesCount=24){
  const a=new Uint8Array(bytesCount);crypto.getRandomValues(a);
  return btoa(String.fromCharCode(...a)).replace(/\+/g,"-").replace(/\//g,"_").replace(/=+$/g,"");
 }
-function dbref(path){return ref(db,"rooms/"+room+"/"+path);}
+function dbref(path){return ref(db,"rooms/"+room+(path?"/"+path:""));}
 function sendToFrame(type,value){
  if(!frameReady||!$frame.contentWindow)return;
  $frame.contentWindow.postMessage({from:"tivvig-parent",type,value},location.origin);
