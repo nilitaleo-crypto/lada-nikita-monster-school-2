@@ -5,6 +5,7 @@ if(q.get("coop")!=="1"||window.parent===window)return;
 const allowed=new Set(["index.html","vulkan-labirint.html","vulkan-empedokla.html","vulkan-slogi.html","vulkan-kuznica.html","vulkan-hydra.html","collection.html","igry.html"]);
 const current=location.pathname.split("/").pop()||"index.html";
 if(!allowed.has(current))return;
+if(current==="index.html")document.querySelectorAll('a[href="coop.html"]').forEach(a=>{a.style.display="none";});
 const isMaze=current==="vulkan-labirint.html";
 let role=q.get("role")==="teacher"?"teacher":"student",replaying=false,lastCursor=0,lastScroll=0;
 const tag="[data-tivvig-online]";
