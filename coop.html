@@ -25,6 +25,8 @@ p{line-height:1.5}
 .btn{min-height:46px;background:#582c32;color:#fff1dc;border:2px solid #b78c59;border-radius:14px;padding:10px 17px;font-weight:700}
 .btn.secondary{background:#f7e7c5;color:#4d2a30}
 .btn[disabled]{opacity:.55;cursor:wait}
+.navLabel{display:flex;align-items:center;flex-direction:column;gap:4px;font-size:13px;font-weight:bold}
+.navLabel select{max-width:min(320px,75vw);min-height:46px;border-radius:12px;padding:8px;background:#fff5df;color:#4a2931;border:2px solid #b78c59;font:14px system-ui,sans-serif}
 .note{font-size:14px;color:#765640}
 .error{color:#982d2d;font-weight:bold;white-space:pre-wrap}
 #message{min-height:24px}
@@ -46,7 +48,7 @@ p{line-height:1.5}
 <section id="entry" class="card intro">
 <div class="kicker">Совместная экспедиция</div>
 <h1>Вместе к вулкану Эмпедокла</h1>
-<p id="welcome">Создай закрытое занятие и пригласи Ладу по специальной ссылке. Ты будешь видеть её движения и сможешь рисовать подсказки на лабиринте.</p>
+<p id="welcome">Создай занятие и пригласи Ладу по специальной ссылке. Вы будете вместе путешествовать по карте Тиввига, выполнять задания и рисовать подсказки в лабиринте.</p>
 <div class="actions"><button id="teacherStart" class="btn" type="button">Я преподаватель — войти через Google</button><button id="studentStart" class="btn" type="button" hidden>Я Лада — войти в игру</button></div>
 <p class="note">Для ребёнка не нужны почта и пароль. Пригласительная ссылка содержит секретный код комнаты — не публикуй её открыто.</p>
 <p id="message" role="status" aria-live="polite"></p>
@@ -54,12 +56,25 @@ p{line-height:1.5}
 <section id="lesson" class="card" hidden>
 <div class="sessionbar">
 <div><div class="kicker">Экспедиция в прямом эфире</div><h2 id="sessionTitle">Лабиринт Эмпедокла</h2><p id="connectionStatus" class="online" role="status" aria-live="polite">Подключаемся…</p></div>
-<div class="actions" id="teacherControls" hidden><button id="clearHint" class="btn secondary" type="button">Стереть подсказку</button><button id="resetGame" class="btn secondary" type="button">Начать лабиринт заново</button></div>
+<div class="actions" id="teacherControls" hidden>
+<label class="navLabel" for="pageSelect">Открыть страницу
+<select id="pageSelect">
+<option value="index.html">🗺️ Карта Тиввига</option>
+<option value="vulkan-labirint.html">🪙 Лабиринт Эмпедокла</option>
+<option value="vulkan-empedokla.html">🌋 Прыжки в вулкан</option>
+<option value="vulkan-slogi.html">🔤 Кузница слогов</option>
+<option value="vulkan-kuznica.html">🛠️ Поиск предметов</option>
+<option value="vulkan-hydra.html">🐉 Гидра и буквы</option>
+<option value="collection.html">🏅 Коллекция</option>
+<option value="igry.html">🧩 Другие игры</option>
+</select></label>
+<button id="clearHint" class="btn secondary" type="button">Стереть подсказку</button><button id="resetGame" class="btn secondary" type="button">Начать лабиринт заново</button>
+</div>
 </div>
 <div id="shareBox" hidden>
 <label for="inviteLink"><strong>Ссылка для Лады</strong></label>
 <div class="invite"><input id="inviteLink" readonly aria-label="Ссылка-приглашение"><button id="copyInvite" class="btn" type="button">Скопировать ссылку</button></div>
-<p class="note">Отправь ссылку родителям Лады. Ты рисуешь подсказки красной линией, она ведёт свою линию по тропе. Для проверки на одном компьютере открой детскую ссылку в другом браузере или приватном окне.</p>
+<p class="note">Отправь ссылку родителям Лады. На карте и в остальных заданиях вы видите одни и те же страницы и нажатия. В лабиринте ты рисуешь красную подсказку, Лада ведёт свою линию. Для проверки на одном компьютере открой детскую ссылку в другом браузере или приватном окне.</p>
 </div>
 <p id="studentNote" class="note" hidden>Веди Ладу пальцем по светлой дорожке. Красная линия — подсказка преподавателя.</p>
 <iframe id="mazeFrame" class="iframe" title="Совместный лабиринт Эмпедокла" src="about:blank"></iframe>
