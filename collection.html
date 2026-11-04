@@ -43,7 +43,7 @@ body.viewing{overflow:hidden}
 </style>
 </head>
 <body>
-<header class="top"><a class="back" href="index.html">← К карте Тиввига</a><div class="tag">Школа охотников на чудовищ ✦</div></header>
+<header class="top"><a class="back" href="index.html">← К карте Тиввига</a><a class="back" href="wardrobe.html">♛ Наряды</a><div class="tag">Школа охотников на чудовищ ✦</div></header>
 <main class="album">
   <div class="eyebrow">Книга открытий · Том первый</div>
   <h1>Коллекция Тиввига</h1>
@@ -163,6 +163,20 @@ body.viewing{overflow:hidden}
       <p>Вылей восемь вёдер воды со слогами, чтобы оживить русала.</p>
       <a class="back" href="michael-jackson-merman.html">💧 Спасти русала</a>
     </article>
+    <article class="page" id="mermaidOutfitOpened" hidden>
+      <div class="status">✦ Открыто · Костюм за завершение главы</div>
+      <div class="art-thumb" style="background:#e6d2b0;cursor:default;text-align:center"><img style="object-fit:contain" src="images/mermaid-outfit.svg" alt="Наряд русалки — сменный костюм Лады"></div>
+      <h2>Наряд русалки</h2>
+      <p>Все три испытания леса Майкла Джексона завершены. Новый наряд можно надеть и снять в любой момент.</p>
+      <a class="back" href="wardrobe.html">♛ Переодеться</a>
+    </article>
+    <article class="page locked" id="mermaidOutfitSealed">
+      <div class="status">🔒 Награда за завершение главы</div>
+      <div class="sealed" aria-hidden="true">♛</div>
+      <h2>Наряд русалки</h2>
+      <p>Пройди все три игры джунглей Майкла Джексона, чтобы открыть костюм.</p>
+      <a class="back" href="wardrobe.html">♛ Гардероб</a>
+    </article>
     <article class="page" id="vampireOpened" hidden>
       <div class="status">✦ Открыто · Джунгли Майкла Джексона III</div>
       <button type="button" class="art-thumb" data-open-reward="vampire" aria-label="Открыть Носферату">
@@ -200,6 +214,9 @@ body.viewing{overflow:hidden}
     merman:read('tivvig_reward_merman_waterhouse_v1'),
     vampire:read('tivvig_reward_vampire_nosferatu_v1')
   };
+  const outfitUnlocked=['tivvig_reward_jungle_friends_v1','tivvig_reward_merman_waterhouse_v1','tivvig_reward_vampire_nosferatu_v1'].every(read);
+  document.getElementById('mermaidOutfitOpened').hidden=!outfitUnlocked;
+  document.getElementById('mermaidOutfitSealed').hidden=outfitUnlocked;
   for(const [kind,opened,sealed] of [
     ['maze','mazeOpened','mazeSealed'],['empedocles','opened','sealed'],['forge','forgeOpened','forgeSealed'],['sword','swordOpened','swordSealed'],['hydra','hydraOpened','hydraSealed'],['jungle','jungleOpened','jungleSealed'],['merman','mermanOpened','mermanSealed'],['vampire','vampireOpened','vampireSealed']
   ]){
