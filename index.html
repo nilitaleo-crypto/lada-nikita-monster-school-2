@@ -58,6 +58,9 @@ button:focus-visible,a:focus-visible{outline:3px solid #f5cb77;outline-offset:3p
 .go:active{transform:translateY(2px);box-shadow:0 1px 0 #9f754d}
 .status{min-height:17px;margin:clamp(5px,.65vw,10px) auto 0;color:#875c45;font-size:clamp(10px,.92vw,13px);font-style:italic}
 .collection{position:absolute;z-index:6;left:3.8%;top:50%;transform:translate(-5%,-50%);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:7px;width:clamp(37px,4.3vw,61px);min-height:clamp(116px,16vw,190px);background:linear-gradient(100deg,#27131b 0%,#75404b 45%,#3d1b26 100%);border:2px solid #bf9765;border-radius:10px 4px 4px 10px;text-decoration:none;color:#f7d7a3;box-shadow:inset 3px 0 0 #a97857,-3px 8px 12px #0c080a77}
+.wardrobe-tab{position:absolute;z-index:7;right:3.8%;top:50%;transform:translate(5%,-50%);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:7px;width:clamp(37px,4.3vw,61px);min-height:clamp(116px,16vw,190px);background:linear-gradient(100deg,#27131b,#75404b 45%,#3d1b26);border:2px solid #bf9765;border-radius:4px 10px 10px 4px;text-decoration:none;color:#f7d7a3;box-shadow:inset -3px 0 0 #a97857,3px 8px 12px #0c080a77}
+.wardrobe-tab .symbol{font-size:clamp(17px,2vw,25px)}.wardrobe-tab .label{writing-mode:vertical-rl;font-size:clamp(10px,1.15vw,14px);letter-spacing:.13em;font-weight:bold}
+.home-lada img{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;max-height:none;max-width:none}.home-lada [data-outfit-layer][hidden]{display:none}
 .collection .symbol{font-size:clamp(17px,2vw,25px)}
 .collection .label{writing-mode:vertical-rl;transform:rotate(180deg);font-size:clamp(10px,1.15vw,14px);letter-spacing:.13em;font-weight:bold}
 .collection .count{background:#2c1722;font:11px system-ui,sans-serif;padding:4px;border-radius:7px}
@@ -86,7 +89,7 @@ button:focus-visible,a:focus-visible{outline:3px solid #f5cb77;outline-offset:3p
  .quest h2{font-size:27px}
  .quest p{font-size:15px}
  .go{font-size:14px;min-height:43px}
- .collection{left:-14px;top:31%;width:42px;min-height:135px}
+ .collection{left:-14px;top:31%;width:42px;min-height:135px}.wardrobe-tab{right:-14px;top:31%;width:42px;min-height:135px}
  .collection .label{font-size:11px}
  .status{font-size:12px}
 }
@@ -103,8 +106,9 @@ button:focus-visible,a:focus-visible{outline:3px solid #f5cb77;outline-offset:3p
     <a class="collection" href="collection.html" aria-label="Открыть коллекцию наград">
       <span class="symbol" aria-hidden="true">✧</span>
       <span class="label">Коллекция</span>
-      <span class="count" id="collectionCount">0/4</span>
+      <span class="count" id="collectionCount">0/8</span>
     </a>
+    <a class="wardrobe-tab" href="wardrobe.html" aria-label="Открыть наряды Лады"><span class="symbol" aria-hidden="true">♛</span><span class="label">Наряды</span></a>
     <div class="spread">
       <section class="page page--left" aria-label="Интерактивная карта Тиввига">
         <div class="map-frame">
@@ -113,21 +117,21 @@ button:focus-visible,a:focus-visible{outline:3px solid #f5cb77;outline-offset:3p
           <button class="map-hit tristalia" type="button" data-place="tristalia" aria-label="Исследовать Тристалию"></button>
           <button class="map-hit ladaburg" type="button" data-place="ladaburg" aria-label="Исследовать Ладабург"></button>
           <a class="map-hit vulcano" href="vulkan-labirint.html" aria-label="Начать экспедицию на вулкан Эмпедокла"></a>
-          <button class="map-hit forest" type="button" data-place="forest" aria-label="Исследовать лес Майкла Джексона"></button>
+          <a class="map-hit forest" href="michael-jackson-jungle.html" aria-label="Открыть джунгли Майкла Джексона и найти подруг"></a>
         </div>
       </section>
       <section class="page page--right" aria-label="Экспедиция на сегодня">
         <div class="toprule" aria-hidden="true">✥</div>
         <h1 class="booktitle">Мир Тиввиг</h1>
         <p class="subtitle">Атлас неведомых земель</p>
-        <div class="meduza lada"><img src="images/lada-cutout.webp" alt="Лада — проводница по Тиввигу"></div>
+        <div class="meduza lada home-lada" id="homeLada"><img src="images/lada-cutout.webp" alt="Лада — проводница по Тиввигу"><img data-outfit-layer alt="" hidden></div>
         <div class="divider" aria-hidden="true">❦</div>
         <div class="quest">
           <div class="quest-label">Экспедиция на сегодня</div>
-          <h2>Вулкан Эмпедокла</h2>
-          <p>Огненные горы, древние тайны и чудовища ждут нас.</p>
-          <a class="go" href="vulkan-labirint.html">Отправиться →</a>
-          <a class="go" style="margin-top:9px;background:linear-gradient(180deg,#665169,#3e2c4d)" href="coop.html">✦ Играть вместе</a>
+          <h2>Джунгли Майкла Джексона</h2>
+          <p>🌸 🌿 Найди подруг среди цветов и волшебной пыльцы!</p>
+          <a class="go" href="michael-jackson-jungle.html">Искать подруг →</a>
+          <a class="go" href="coop.html" style="margin-top:9px;background:linear-gradient(180deg,#665169,#3e2c4d)">✦ Играть вместе</a>
         </div>
         <p class="status" id="mapStatus" aria-live="polite">Выбери землю на карте…</p>
       </section>
@@ -135,10 +139,13 @@ button:focus-visible,a:focus-visible{outline:3px solid #f5cb77;outline-offset:3p
   </article>
   <p class="credit">Книжный ассет: MELLE (Melissa Krautheim), <a href="https://opengameart.org/content/epic-collection-book">CC0</a>.</p>
 </main>
+<script src="wardrobe.js"></script>
 <script>
 (()=>{
  'use strict';
  const status=document.getElementById('mapStatus');
+ const setOutfit=()=>window.TivvigWardrobe?.equip(document.getElementById('homeLada'));
+ setOutfit();window.addEventListener('pageshow',setOutfit);window.addEventListener('tivvig-outfit-changed',setOutfit);
  const places={
   astraluna:'Астралуна пока ждёт исследователей.',
   tristalia:'Тристалия ещё хранит свои тайны.',
@@ -149,7 +156,7 @@ button:focus-visible,a:focus-visible{outline:3px solid #f5cb77;outline-offset:3p
   const msg=places[btn.dataset.place];if(msg)status.textContent=msg;
  }));
  try{
-  const keys=['tivvig_reward_maze_coins_v1','tivvig_reward_empedocles_v1','tivvig_reward_forge_v1','tivvig_reward_sword_v1','tivvig_reward_hydra_v1'];
+  const keys=['tivvig_reward_maze_coins_v1','tivvig_reward_empedocles_v1','tivvig_reward_forge_v1','tivvig_reward_sword_v1','tivvig_reward_hydra_v1','tivvig_reward_jungle_friends_v1','tivvig_reward_merman_waterhouse_v1','tivvig_reward_vampire_nosferatu_v1'];
   const unlocked=keys.filter(k=>localStorage.getItem(k)==='unlocked').length;
   document.getElementById('collectionCount').textContent=unlocked+'/'+keys.length;
  }catch(e){}

@@ -1,0 +1,170 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#163323">
+<meta name="description" content="Найди настоящих подруг среди двойников в джунглях Майкла Джексона — игра для Лады.">
+<title>Джунгли Майкла Джексона — Найди настоящих подруг</title>
+<style>
+:root{--cream:#ffe9b3;--brown:#462a20;--leaf:#193b2d;--gold:#eac175}
+*{box-sizing:border-box}
+html,body{margin:0;min-height:100%;background:#10261e}
+body{color:var(--cream);font-family:Georgia,'Times New Roman',serif;background:radial-gradient(ellipse at 50% 15%,#315741,#132d24 65%,#0e1c19);overscroll-behavior:contain}
+button,a{font:inherit;-webkit-tap-highlight-color:transparent;touch-action:manipulation}
+button:focus-visible,a:focus-visible{outline:3px solid #fff9b4;outline-offset:4px}
+main{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;min-height:100dvh;padding:10px 12px 16px}
+.top{width:min(100%,1140px);display:flex;gap:12px;align-items:center;justify-content:space-between}
+.top h1{font-size:clamp(17px,2vw,28px);font-weight:normal;text-align:center;margin:0;text-shadow:0 2px 7px #081d17}
+.return,.restart{display:inline-flex;align-items:center;justify-content:center;gap:7px;min-width:49px;min-height:45px;border-radius:14px;background:linear-gradient(#fff0c4,#d3ac75);color:var(--brown);border:2px solid #835734;text-decoration:none;font-weight:700;box-shadow:0 4px 0 #081b16aa;cursor:pointer;padding:7px 12px;white-space:nowrap}
+.stage{position:relative;width:min(100%,calc((100dvh - 155px) * 1.333333),1448px);aspect-ratio:4/3;overflow:hidden;border:clamp(3px,.42vw,7px) ridge #c99e54;border-radius:clamp(9px,1.4vw,17px);box-shadow:0 0 0 2px #37231b,0 18px 34px #06130fa6;isolation:isolate;background:#244b36;user-select:none;-webkit-user-select:none;touch-action:manipulation}
+.stage img{position:absolute;inset:0;width:100%;height:100%;object-fit:fill;display:block;pointer-events:none}
+.stage:after{content:'';position:absolute;inset:0;pointer-events:none;z-index:3;box-shadow:inset 0 0 32px #11251c4c}
+.spot{position:absolute;z-index:5;background:transparent;border:0;border-radius:35%;cursor:pointer;padding:0;appearance:none;-webkit-appearance:none}
+.spot:focus-visible{outline:3px solid #ffffbc;outline-offset:-3px;background:#ffea661e}
+.spot.true.found{pointer-events:none}
+.spot.true.found:before{content:'';position:absolute;inset:8%;border:4px solid #ffeb9d;border-radius:48%;box-shadow:0 0 0 8px #f1c86034,0 0 19px #f7d68cc9;animation:pop .5s ease-out both}
+.spot.true.found:after{content:'✦';position:absolute;left:50%;top:34%;font-size:clamp(34px,6vw,75px);color:#fff5ad;filter:drop-shadow(0 0 9px #ff9a16);animation:appear .55s both}
+@keyframes pop{from{transform:scale(.65);opacity:0}to{transform:scale(1);opacity:1}}
+@keyframes appear{from{transform:translate(-50%,-50%) scale(.25) rotate(-45deg);opacity:0}to{transform:translate(-50%,-50%) scale(1);opacity:1}}
+.puff{position:absolute;z-index:9;border-radius:50%;pointer-events:none;width:clamp(35px,5vw,72px);height:clamp(35px,5vw,72px);transform:translate(-50%,-50%);display:grid;place-items:center;font-size:clamp(28px,4vw,48px);color:#fff2bb;text-shadow:0 0 13px #e69c33;animation:puff .8s ease-out forwards}
+.puff.wrong{color:#fac4be;text-shadow:0 0 16px #773c64}
+@keyframes puff{0%{opacity:0;scale:.35}25%{opacity:1;scale:1.13}100%{opacity:0;scale:1.8;translate:0 -14px}}
+.pollen{position:absolute;z-index:2;pointer-events:none;width:6px;height:6px;left:var(--x);top:var(--y);border-radius:50%;background:#ffeba7a9;box-shadow:0 0 12px #ffcf84a8;animation:float var(--d) ease-in-out infinite alternate}
+@keyframes float{from{transform:translate(-8px,8px);opacity:.14}to{transform:translate(12px,-13px);opacity:.65}}
+.bottom{display:flex;align-items:center;justify-content:space-between;gap:12px;width:min(100%,1140px)}
+.progress{display:flex;align-items:center;gap:12px;min-height:46px;border:1px solid #bb9766;background:#e9d0a2;padding:5px 12px;border-radius:30px;color:#57372b;font-weight:700}
+.medal{display:grid;place-items:center;width:34px;height:34px;border-radius:50%;background:#82664b;color:#ebdab8;border:2px solid #aa8e69;font-size:18px;transition:background .4s}
+.medal.found{background:#3c7250;color:#fff6ae;border-color:#e6c17a}
+.num{min-width:38px;text-align:center;font-size:clamp(17px,2vw,23px)}
+.status{font-size:clamp(12px,1.8vw,17px);color:#e2d1ad;text-align:right;margin:0}
+.reward{position:fixed;inset:0;z-index:50;background:#06120ff0;display:none;align-items:center;justify-content:center;padding:12px;backdrop-filter:blur(7px)}
+.reward.show{display:flex}
+.reward-card{width:min(980px,100%);max-height:96dvh;overflow:auto;border:5px ridge #c89d5c;background:linear-gradient(#f7e7c8,#dfc294);border-radius:19px;padding:clamp(12px,2vw,22px);color:#442a23;box-shadow:0 18px 45px #0008;text-align:center}
+.reward-card h2{font-weight:normal;font-size:clamp(22px,3.2vw,38px);margin:0 0 8px}
+.reward-card img{display:block;width:auto;max-width:100%;max-height:min(67dvh,720px);aspect-ratio:4/3;object-fit:contain;margin:0 auto;border:4px solid #9f7845;border-radius:10px;background:#254632}
+.reward-actions{display:flex;justify-content:center;flex-wrap:wrap;gap:9px;margin-top:14px}
+.reward-actions a,.reward-actions button{display:inline-flex;align-items:center;justify-content:center;min-height:45px;border:2px solid #8b5a33;color:#fff1d0;background:#57372b;padding:8px 16px;border-radius:12px;text-decoration:none;font-weight:700;cursor:pointer}
+.visually-hidden{position:absolute!important;clip:rect(0,0,0,0);clip-path:inset(50%);white-space:nowrap;width:1px;height:1px;overflow:hidden}
+@media(max-width:720px){main{padding:6px 6px 12px;gap:7px}.top h1{font-size:clamp(14px,3vw,20px)}.return,.restart{font-size:13px;min-height:42px;padding:6px 9px}.stage{width:min(100%,calc((100dvh - 135px) * 1.333333))}.bottom{gap:5px}.status{font-size:12px}.progress{gap:5px;padding:4px 6px}.medal{width:28px;height:28px;font-size:16px}}
+@media(max-aspect-ratio:1/1){main{justify-content:flex-start;padding-top:12px}}
+@media(prefers-reduced-motion:reduce){.pollen,.spot.true.found:before,.spot.true.found:after,.puff{animation:none}.pollen{opacity:.3}}
+</style>
+</head>
+<body>
+<main>
+ <header class="top">
+   <a class="return" href="index.html" aria-label="Вернуться к карте Тиввига">← Карта</a>
+   <h1>🌿 Джунгли Майкла Джексона</h1>
+   <button class="restart" id="reset" type="button" aria-label="Играть сначала">↻ Заново</button>
+ </header>
+ <section class="stage" id="stage" aria-label="Найди двух настоящих подруг среди двойников">
+   <img src="images/jackson-jungle-find.webp" width="1448" height="1086" alt="Рисованные джунгли с пятнадцатью похожими девочками и двумя портретами-образцами наверху" draggable="false">
+   <!-- Двойники: при нажатии появляется неверная подсказка, но правильные фигурки не выдаются. -->
+   <button class="spot false" style="left:5%;top:8%;width:16%;height:21%" type="button" aria-label="Девочка с крылышками на дереве"></button>
+   <button class="spot false" style="left:23%;top:20%;width:15%;height:16%" type="button" aria-label="Девочка в очках среди цветов"></button>
+   <button class="spot false" style="left:41%;top:25%;width:15%;height:22%" type="button" aria-label="Девочка с бабочкой"></button>
+   <button class="spot false" style="left:83%;top:9%;width:17%;height:26%" type="button" aria-label="Девочка с картой"></button>
+   <button class="spot false" style="left:20%;top:36%;width:13%;height:22%" type="button" aria-label="Девочка с цветочными волосами"></button>
+   <button class="spot false" style="left:37%;top:43%;width:18%;height:33%" type="button" aria-label="Девочка в перьях"></button>
+   <button class="spot false" style="left:58%;top:42%;width:17%;height:22%" type="button" aria-label="Девочка в соломенной шляпе"></button>
+   <button class="spot false" style="left:78%;top:42%;width:16%;height:24%" type="button" aria-label="Девочка с крыльями и очками"></button>
+   <button class="spot false" style="left:11%;top:53%;width:20%;height:31%" type="button" aria-label="Девочка в зелёных очках"></button>
+   <button class="spot false" style="left:66%;top:58%;width:17%;height:24%" type="button" aria-label="Девочка с наушниками"></button>
+   <button class="spot false" style="left:47%;top:72%;width:24%;height:25%" type="button" aria-label="Девочка с красными очками у камня"></button>
+   <!-- Настоящие подруги — повторяют отличительные детали двух верхних портретов. -->
+   <button class="spot true" id="friend1" style="left:2.6%;top:30.8%;width:15.8%;height:29.5%" type="button" aria-label="Первая настоящая подруга — зелёный цветок в волосах и цветные бусы"></button>
+   <button class="spot true" id="friend2" style="left:63.2%;top:25%;width:14%;height:23%" type="button" aria-label="Вторая настоящая подруга — красные очки и зелёно-розовая куртка"></button>
+ </section>
+ <footer class="bottom">
+   <div class="progress" id="progress" role="status" aria-live="polite" aria-label="Найдено 0 из 2 подруг">
+      <span class="medal" id="medal1">?</span><span class="medal" id="medal2">?</span><span class="num" id="count">0/2</span>
+   </div>
+   <p class="status" id="status">🌸 Найди двух настоящих подруг среди двойников</p>
+ </footer>
+</main>
+<div class="reward" id="reward" role="dialog" aria-modal="true" aria-labelledby="rewardTitle" aria-hidden="true">
+  <div class="reward-card">
+    <h2 id="rewardTitle">✨ Команда в сборе! ✨</h2>
+    <img src="images/jackson-jungle-reward.webp" width="1448" height="1086" alt="Лада рядом с двумя найденными подругами в джунглях Майкла Джексона">
+    <div class="reward-actions">
+      <a href="michael-jackson-merman.html">🌊 Следующая игра — спасти русала →</a>
+      <a href="collection.html">✦ В коллекцию</a>
+      <button type="button" id="again">↻ Сыграть ещё раз</button>
+      <a href="index.html">← На карту</a>
+    </div>
+  </div>
+</div>
+<script>
+(()=>{
+ 'use strict';
+ const stage=document.getElementById('stage');
+ const correct=[document.getElementById('friend1'),document.getElementById('friend2')];
+ const medallions=[document.getElementById('medal1'),document.getElementById('medal2')];
+ const reward=document.getElementById('reward');
+ const count=document.getElementById('count');
+ const status=document.getElementById('status');
+ const found=new Set();
+ let pendingReward=null;
+ function puff(x,y,isCorrect){
+   const mark=document.createElement('span');
+   mark.className='puff'+(isCorrect?'':' wrong');
+   mark.textContent=isCorrect?'✦':'✧';
+   mark.style.left=x+'%';mark.style.top=y+'%';
+   mark.setAttribute('aria-hidden','true');
+   stage.appendChild(mark);
+   mark.addEventListener('animationend',()=>mark.remove(),{once:true});
+   setTimeout(()=>mark.remove(),1100);
+ }
+ function fromEvent(e){
+   const box=stage.getBoundingClientRect();
+   return {x:Math.max(2,Math.min(98,(e.clientX-box.left)/box.width*100)),y:Math.max(2,Math.min(98,(e.clientY-box.top)/box.height*100))};
+ }
+ function sync(){
+   correct.forEach((el,i)=>{el.classList.toggle('found',found.has(i));medallions[i].classList.toggle('found',found.has(i));medallions[i].textContent=found.has(i)?'✦':'?';});
+   count.textContent=found.size+'/2';
+   document.getElementById('progress').setAttribute('aria-label','Найдено '+found.size+' из 2 подруг');
+   status.textContent=found.size===2?'🌸 Все подруги найдены!':'🌸 Найди двух настоящих подруг среди двойников';
+ }
+ function openReward(){
+   reward.classList.add('show');reward.setAttribute('aria-hidden','false');
+   document.getElementById('again').focus({preventScroll:true});
+ }
+ correct.forEach((el,i)=>el.addEventListener('click',e=>{
+   e.stopPropagation();if(found.has(i))return;
+   found.add(i);const pos=fromEvent(e);puff(pos.x,pos.y,true);sync();
+   if(found.size===2){
+     try{localStorage.setItem('tivvig_reward_jungle_friends_v1','unlocked');}catch(e){}
+     pendingReward=setTimeout(openReward,1150);
+   }
+ }));
+ stage.querySelectorAll('.spot.false').forEach(el=>el.addEventListener('click',e=>{
+   e.stopPropagation();const pos=fromEvent(e);puff(pos.x,pos.y,false);
+   if(found.size<2)status.textContent='🌸 Это двойник! Сравни с портретами наверху.';
+ }));
+ stage.addEventListener('click',e=>{const pos=fromEvent(e);puff(pos.x,pos.y,false);});
+ function reset(){
+   if(pendingReward!==null)clearTimeout(pendingReward);pendingReward=null;
+   found.clear();reward.classList.remove('show');reward.setAttribute('aria-hidden','true');sync();
+ }
+ document.getElementById('reset').addEventListener('click',reset);
+ document.getElementById('again').addEventListener('click',reset);
+ reward.addEventListener('click',e=>{if(e.target===reward){reward.classList.remove('show');reward.setAttribute('aria-hidden','true');}});
+ document.addEventListener('keydown',e=>{if(e.key==='Escape'&&reward.classList.contains('show')){reward.classList.remove('show');reward.setAttribute('aria-hidden','true');}});
+ // Лёгкие частицы пыльцы — только декоративный слой. Никаких звуковых API.
+ if(!window.matchMedia('(prefers-reduced-motion: reduce)').matches){
+   for(let i=0;i<16;i++){
+     const mote=document.createElement('i');mote.className='pollen';
+     mote.style.setProperty('--x',(7+(i*37)%86)+'%');
+     mote.style.setProperty('--y',(18+(i*29)%68)+'%');
+     mote.style.setProperty('--d',(3.4+(i%5)*1.13)+'s');
+     mote.style.animationDelay=(-i*.43)+'s';
+     stage.appendChild(mote);
+   }
+ }
+ sync();
+})();
+</script>
+<script src="world-coop-bridge.js" defer></script>
+</body>
+</html>

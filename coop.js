@@ -12,12 +12,13 @@ const config={
 const app=initializeApp(config),auth=getAuth(app),db=getDatabase(app);
 const $=id=>document.getElementById(id);
 const params=new URLSearchParams(location.search),incomingRoom=params.get("room"),isStudentInvite=params.get("role")==="student";
-const allowedPages=new Set(["index.html","vulkan-labirint.html","vulkan-empedokla.html","vulkan-slogi.html","vulkan-kuznica.html","vulkan-hydra.html","collection.html","igry.html"]);
+const allowedPages=new Set(["index.html","vulkan-labirint.html","vulkan-empedokla.html","vulkan-slogi.html","vulkan-kuznica.html","vulkan-hydra.html","collection.html","igry.html","michael-jackson-jungle.html","michael-jackson-merman.html","michael-jackson-vampire.html","wardrobe.html"]);
 const titles={
  "index.html":"Карта Тиввига","vulkan-labirint.html":"Лабиринт Эмпедокла",
  "vulkan-empedokla.html":"Прыжки в вулкан","vulkan-slogi.html":"Кузница слогов",
  "vulkan-kuznica.html":"Поиск предметов","vulkan-hydra.html":"Гидра и буквы",
- "collection.html":"Коллекция наград","igry.html":"Другие игры"
+ "collection.html":"Коллекция наград","igry.html":"Другие игры",
+"michael-jackson-jungle.html":"Джунгли: подруги","michael-jackson-merman.html":"Спасение русала","michael-jackson-vampire.html":"Побег от вампира","wardrobe.html":"Наряды Лады"
 };
 const validRoom=/^[A-Za-z0-9_-]{32,}$/;
 let role=null,room=null,uid=null,owner=null,sessionStarted=false;
@@ -93,7 +94,7 @@ function startPage(path,epoch){
  $("clearHint").hidden=path!=="vulkan-labirint.html";
  $("resetGame").hidden=path!=="vulkan-labirint.html";
  updatePresence();
- const url=new URL(path,location.href);url.searchParams.set("coop","1");url.searchParams.set("role",role);
+ const url=new URL(path,location.href);url.searchParams.set("coop","1");url.searchParams.set("role",role);url.searchParams.set("seed",epoch);
  $frame.src=url.href;
  offEvents=onChildAdded(query(dbref("actions/"+epoch),orderByKey(),limitToLast(160)),snapshot=>{
    const action={key:snapshot.key,value:snapshot.val()};

@@ -111,7 +111,7 @@
           ".write": "auth != null && (auth.uid === root.child('rooms').child($roomId).child('owner').val() || auth.token.firebase.sign_in_provider === 'anonymous')",
           ".validate": "newData.hasChildren(['path','epoch','by','at']) && newData.child('by').val() === auth.uid",
           "path": {
-            ".validate": "newData.isString() && (newData.val() === 'index.html' || newData.val() === 'vulkan-labirint.html' || newData.val() === 'vulkan-empedokla.html' || newData.val() === 'vulkan-slogi.html' || newData.val() === 'vulkan-kuznica.html' || newData.val() === 'vulkan-hydra.html' || newData.val() === 'collection.html' || newData.val() === 'igry.html')"
+            ".validate": "newData.isString() && (newData.val() === 'index.html' || newData.val() === 'vulkan-labirint.html' || newData.val() === 'vulkan-empedokla.html' || newData.val() === 'vulkan-slogi.html' || newData.val() === 'vulkan-kuznica.html' || newData.val() === 'vulkan-hydra.html' || newData.val() === 'collection.html' || newData.val() === 'igry.html' || newData.val() === 'michael-jackson-jungle.html' || newData.val() === 'michael-jackson-merman.html' || newData.val() === 'michael-jackson-vampire.html' || newData.val() === 'wardrobe.html')"
           },
           "epoch": {
             ".validate": "newData.isString() && newData.val().matches(/^[A-Za-z0-9_-]{16,}$/)"
