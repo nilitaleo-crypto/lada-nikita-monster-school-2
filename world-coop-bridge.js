@@ -78,6 +78,21 @@ function showRemoteCursor(value){
  clearTimeout(cursorTimeout);
  cursorTimeout=setTimeout(()=>{pointer.style.display="none"},2500);
 }
+const replayQueue=[];
+let processing=false;
+function replayNext(){
+ if(!replayQueue.length){processing=false;return;}
+ processing=true;
+ const task=replayQueue[0],el=elementFor(task.selector);
+ if(el&&!el.matches(":disabled")&&el.getClientRects().length){
+   replayQueue.shift();
+   replaying=true;
+   try{el.click();}finally{replaying=false;}
+   setTimeout(replayNext,70);
+ }else if(Date.now()-task.since>6500){
+   replayQueue.shift();setTimeout(replayNext,10);
+ }else setTimeout(replayNext,140);
+}
 window.addEventListener("message",e=>{
  if(e.source!==window.parent||e.origin!==location.origin||e.data?.from!=="tivvig-parent")return;
  const {type,value}=e.data;
@@ -86,10 +101,9 @@ window.addEventListener("message",e=>{
  if(type==="scroll"&&role==="teacher"&&Number.isFinite(value?.y)){
   replaying=true;scrollTo(0,Math.max(0,Math.min(1,value.y))*(document.documentElement.scrollHeight-innerHeight));replaying=false;return;
  }
- if(type==="click"&&!isMaze){
-  const el=elementFor(value?.selector);if(!el)return;
-  replaying=true;
-  try{el.click();}finally{replaying=false;}
+ if(type==="click"&&!isMaze&&typeof value?.selector==="string"){
+  replayQueue.push({selector:value.selector,since:Date.now()});
+  if(!processing)replayNext();
  }
 });
 send("ready",{page:current});
