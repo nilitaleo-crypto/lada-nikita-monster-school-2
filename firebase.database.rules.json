@@ -106,6 +106,64 @@
         },
         "$other": {
           ".validate": false
+        },
+        "page": {
+          ".write": "auth != null && (auth.uid === root.child('rooms').child($roomId).child('owner').val() || auth.token.firebase.sign_in_provider === 'anonymous')",
+          ".validate": "newData.hasChildren(['path','epoch','by','at']) && newData.child('by').val() === auth.uid",
+          "path": {
+            ".validate": "newData.isString() && (newData.val() === 'index.html' || newData.val() === 'vulkan-labirint.html' || newData.val() === 'vulkan-empedokla.html' || newData.val() === 'vulkan-slogi.html' || newData.val() === 'vulkan-kuznica.html' || newData.val() === 'vulkan-hydra.html' || newData.val() === 'collection.html' || newData.val() === 'igry.html')"
+          },
+          "epoch": {
+            ".validate": "newData.isString() && newData.val().matches(/^[A-Za-z0-9_-]{16,}$/)"
+          },
+          "by": {
+            ".validate": "newData.isString() && newData.val() === auth.uid"
+          },
+          "at": {
+            ".validate": "newData.isNumber() && newData.val() > 0"
+          },
+          "$other": {
+            ".validate": false
+          }
+        },
+        "viewport": {
+          ".write": "auth != null && auth.token.firebase.sign_in_provider === 'anonymous'",
+          ".validate": "newData.hasChildren(['y','epoch','at'])",
+          "y": {
+            ".validate": "newData.isNumber() && newData.val() >= 0 && newData.val() <= 1"
+          },
+          "epoch": {
+            ".validate": "newData.isString() && newData.val() === root.child('rooms').child($roomId).child('page').child('epoch').val()"
+          },
+          "at": {
+            ".validate": "newData.isNumber() && newData.val() > 0"
+          },
+          "$other": {
+            ".validate": false
+          }
+        },
+        "actions": {
+          "$epoch": {
+            "$eventId": {
+              ".write": "auth != null && !data.exists() && $epoch === root.child('rooms').child($roomId).child('page').child('epoch').val() && (auth.uid === root.child('rooms').child($roomId).child('owner').val() || auth.token.firebase.sign_in_provider === 'anonymous')",
+              ".validate": "newData.hasChildren(['by','kind','selector','at'])",
+              "by": {
+                ".validate": "newData.isString() && newData.val() === auth.uid"
+              },
+              "kind": {
+                ".validate": "newData.isString() && newData.val() === 'click'"
+              },
+              "selector": {
+                ".validate": "newData.isString() && newData.val().length > 0 && newData.val().length <= 450"
+              },
+              "at": {
+                ".validate": "newData.isNumber() && newData.val() > 0"
+              },
+              "$other": {
+                ".validate": false
+              }
+            }
+          }
         }
       }
     }
