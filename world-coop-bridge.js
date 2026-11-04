@@ -92,10 +92,12 @@ function replayNext(){
  if(el&&!el.matches(":disabled")&&el.getClientRects().length){
    replayQueue.shift();
    replaying=true;
-   try{el.click();}finally{replaying=false;}
+   try{el.click();send("actionApplied",{selector:task.selector});}
+   catch(e){send("actionMissing",{selector:task.selector});}
+   finally{replaying=false;}
    setTimeout(replayNext,70);
  }else if(Date.now()-task.since>6500){
-   replayQueue.shift();setTimeout(replayNext,10);
+   replayQueue.shift();send("actionMissing",{selector:task.selector});setTimeout(replayNext,10);
  }else setTimeout(replayNext,140);
 }
 window.addEventListener("message",e=>{

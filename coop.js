@@ -117,8 +117,6 @@ function applyEvent(e){
  }
  if(e.value?.kind==="click"&&e.value?.selector&&currentPage!=="vulkan-labirint.html"){
   sendToFrame("click",{selector:e.value.selector});
-  remoteActionCount++;
-  report('✓ Синхронизировано действий: '+remoteActionCount+(e.value.by===uid?' · твой ход':' · ход другого участника'));
  }
 }
 function frameIsReady(){
@@ -239,10 +237,22 @@ window.addEventListener("message",e=>{
  if(data.from==="tivvig-world"&&data.page!==currentPage)return;
  const type=data.type,value=data.value;
  if(type==="ready"){frameIsReady();return;}
+ if(type==="actionApplied"){
+  remoteActionCount++;
+  report('✓ Применено действий: '+remoteActionCount+' · оба устройства получают их через Firebase');
+  return;
+ }
+ if(type==="actionMissing"){
+  report('⚠ Не удалось повторить действие на этой странице. Вернись на карту и снова открой игру.');
+  return;
+ }
  if(type==="navigate"&&allowedPages.has(value)){navigate(value);return;}
  if(type==="click"&&currentPage!=="vulkan-labirint.html"&&typeof value?.selector==="string"&&value.selector.length<450){
   const action=push(dbref("actions/"+currentEpoch));
-  set(action,{by:uid,kind:"click",selector:value.selector,at:Date.now()}).catch(e=>report('Не удалось передать нажатие: '+explain(e)));
+  set(action,{by:uid,kind:"click",selector:value.selector,at:Date.now()}).catch(e=>{
+   report('⚠ Firebase не передал нажатие. Оно сработает только здесь: '+explain(e));
+   sendToFrame("click",{selector:value.selector});
+  });
  }
  if(type==="scroll"&&role==="student"&&Number.isFinite(value?.y)){
   set(dbref("viewport"),{y:Math.max(0,Math.min(1,value.y)),epoch:currentEpoch,at:Date.now()}).catch(e=>report(explain(e)));
