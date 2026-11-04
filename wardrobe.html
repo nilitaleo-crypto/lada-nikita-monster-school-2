@@ -1,0 +1,87 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#50232b"><meta name="description" content="Гардероб Лады — наряды из экспедиций мира Тиввиг">
+<title>Наряды Лады — Мир Тиввиг</title>
+<style>
+:root{--ink:#422a25;--wine:#50232b;--gold:#c29a62;--cream:#f8ead1}
+*{box-sizing:border-box}html,body{margin:0;min-height:100%;background:#281620}
+body{font-family:Georgia,'Times New Roman',serif;color:var(--ink);background:radial-gradient(ellipse at 50% 8%,#794b55,#301923 70%,#1b1117)}
+button,a{font:inherit;-webkit-tap-highlight-color:transparent;touch-action:manipulation}button{cursor:pointer}button:focus-visible,a:focus-visible{outline:3px solid #fff19d;outline-offset:3px}
+a{text-decoration:none;color:inherit}button:disabled{cursor:not-allowed}
+main{width:min(1200px,100%);min-height:100dvh;margin:0 auto;padding:clamp(12px,2.8vw,30px);display:flex;flex-direction:column;gap:14px}
+.top{display:flex;align-items:center;justify-content:space-between;gap:10px}.back{font-size:clamp(12px,1.4vw,16px);font-weight:bold;padding:11px 15px;color:#452d29;background:#f5deaf;border:2px solid #ac8553;box-shadow:0 3px 0 #140c0a;border-radius:9px;white-space:nowrap}
+.top span{font-size:clamp(10px,1.3vw,14px);color:#ebcda1;letter-spacing:.13em;text-align:right}
+.book{background:linear-gradient(90deg,#b58b60 0 1%,#f8e7c8 2%,#ead2aa 48%,#e5c799 51%,#faebd0 100%);border:7px double #c7a476;border-radius:16px 21px 24px 15px;box-shadow:inset 0 0 0 3px #d0ac81,0 17px 44px #0009;flex:1;padding:clamp(15px,2.9vw,36px);position:relative}
+.book:before{content:"";position:absolute;top:0;bottom:0;left:50%;width:5px;background:linear-gradient(90deg,#aa8053aa,#5f463f22,#fff8de6e);pointer-events:none}
+.eyebrow{font-size:clamp(11px,1.1vw,14px);letter-spacing:.15em;color:#8a5b45;text-transform:uppercase;text-align:center;font-weight:bold}h1{font-size:clamp(34px,5vw,60px);font-weight:normal;text-align:center;margin:6px 0 5px;line-height:1.1;color:#572c35}.intro{font-size:clamp(14px,1.5vw,18px);text-align:center;margin:0 0 18px}
+.layout{display:grid;grid-template-columns:minmax(250px,42%) minmax(0,58%);gap:clamp(15px,2.9vw,32px)}
+.preview{border:3px ridge #aa7d56;border-radius:13px;background:radial-gradient(ellipse at center,#f2dfbd 0,#e3c29a 76%,#b78870 100%);position:relative;min-height:490px;display:flex;flex-direction:column;justify-content:space-between;align-items:center;overflow:hidden;padding:14px 12px 11px}
+.preview:before{content:"";position:absolute;width:90%;aspect-ratio:1;border:2px solid #bd9471;opacity:.46;border-radius:50%;left:5%;top:17%;pointer-events:none}
+.preview small{z-index:2;color:#7b4d42;font-size:13px;letter-spacing:.13em;font-weight:bold}
+.doll{position:relative;aspect-ratio:1056/1448;flex-shrink:0;height:min(61dvh,500px);max-width:95%;min-height:240px;filter:drop-shadow(0 4px 4px #56342766)}.doll img{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;user-select:none;-webkit-user-drag:none}.doll [data-outfit-layer][hidden]{display:none}
+.preview-name{font-size:clamp(19px,2vw,25px);text-align:center;color:#5f3441;font-weight:bold;z-index:2}
+.options{display:flex;flex-direction:column;gap:12px}.options h2{font-weight:normal;font-size:clamp(20px,2.4vw,28px);margin:0 0 2px;color:#593d31}.item{background:#fff5dfa8;border:2px solid #b68c62;box-shadow:0 4px 0 #d4b384;border-radius:12px;display:grid;grid-template-columns:82px minmax(0,1fr);gap:12px;padding:11px}.thumb{position:relative;width:82px;height:108px;background:radial-gradient(#f3ddb8,#d9b792);border:1px solid #b68c62;border-radius:8px;overflow:hidden;display:flex;align-items:center;justify-content:center}.thumb img{width:100%;height:100%;object-fit:contain;position:absolute;inset:0}.item h3{font-size:clamp(16px,1.7vw,21px);margin:0 0 5px;font-weight:normal}.item p{margin:0 0 8px;color:#765a49;font-size:13px}.item button{display:inline-flex;justify-content:center;align-items:center;min-height:39px;border:2px solid #925c49;background:#633347;color:#fff2d6;border-radius:8px;padding:5px 12px;font-weight:bold;font-size:14px}.item button[disabled]{background:#a99a8d;color:#534b48;border-color:#9b8e7b}.item.active{border-color:#8c5145;background:#fff3d7;box-shadow:0 0 0 2px #cf9d68,0 4px 0 #d4b384}.item.active button{background:#436c52;border-color:#37654a}.locked .thumb{filter:saturate(.65)}.lock[hidden]{display:none}.lock{position:absolute;z-index:2;inset:0;display:grid;place-items:center;background:#3b25207d;color:white;font-size:31px;text-shadow:0 2px 4px #000}
+.message{background:#e6c99b;border:1px solid #ad805c;border-radius:8px;padding:10px 13px;font-size:clamp(13px,1.45vw,16px);line-height:1.5;margin:0}.message strong{color:#684039}.nav{display:flex;flex-wrap:wrap;gap:10px;justify-content:center;margin-top:7px}.nav a{background:#593443;color:#ffead0;border:1px solid #c29a62;border-radius:10px;padding:10px 16px;font-weight:bold}
+@media(max-width:760px){main{padding:10px}.book{padding:17px 13px}.book:before{display:none}.layout{grid-template-columns:1fr}.preview{min-height:0}.doll{height:min(45dvh,440px);min-height:210px}.options{gap:10px}.item{grid-template-columns:72px minmax(0,1fr)}.thumb{width:72px;height:95px}.intro{margin-bottom:11px}}
+</style>
+<script src="wardrobe.js" defer></script>
+</head>
+<body>
+<main>
+ <header class="top"><a href="index.html" class="back">← Атлас Тиввига</a><span>Школа охотников на чудовищ ✦</span></header>
+ <section class="book">
+  <div class="eyebrow">Том первый · Волшебный гардероб</div>
+  <h1>Наряды Лады</h1>
+  <p class="intro">После каждой завершённой главы здесь появляется новый наряд.</p>
+  <div class="layout">
+   <div class="preview" aria-label="Текущий наряд Лады">
+    <small>✦ Зеркало нарядов ✦</small>
+    <div class="doll" id="previewDoll">
+      <img src="images/lada-cutout.webp" alt="Настоящая фотография Лады, базовая модель" draggable="false">
+      <img src="images/mermaid-outfit.svg" data-outfit-layer alt="" hidden draggable="false">
+    </div>
+    <div class="preview-name" id="previewName">Обычный наряд</div>
+   </div>
+   <div class="options">
+    <h2>Выбери, что надеть</h2>
+    <article class="item" id="card-default">
+     <div class="thumb"><img src="images/lada-cutout.webp" alt="" draggable="false"></div>
+     <div><h3>Платье с цветами</h3><p>Первый наряд · доступен всегда</p><button data-choose="default" type="button">Надеть</button></div>
+    </article>
+    <article class="item locked" id="card-mermaid">
+     <div class="thumb"><img src="images/lada-cutout.webp" alt="" draggable="false"><img src="images/mermaid-outfit.svg" alt="" draggable="false"><span id="mermaidLock" class="lock" aria-hidden="true">🔒</span></div>
+     <div><h3>Наряд русалки</h3><p id="mermaidCaption">Награда за все три испытания леса Майкла Джексона</p><button data-choose="mermaid" type="button" disabled>Пока закрыто</button></div>
+    </article>
+    <p class="message" id="wardrobeStatus" role="status" aria-live="polite">Собери награды всех трёх игр леса Майкла Джексона, чтобы открыть русалку.</p>
+    <div class="nav"><a href="michael-jackson-jungle.html">🌿 К испытаниям леса</a><a href="collection.html">✦ Коллекция</a></div>
+   </div>
+  </div>
+ </section>
+</main>
+<script>
+window.addEventListener('DOMContentLoaded',()=>{
+ 'use strict';
+ const api=window.TivvigWardrobe;const $=id=>document.getElementById(id);
+ if(!api){$('wardrobeStatus').textContent='Гардероб не загрузился. Обнови страницу.';return}
+ const current=api.checkUnlock();
+ function paint(){
+  const chosen=api.selected(),open=api.unlocked('mermaid');
+  $('card-default').classList.toggle('active',chosen==='default');
+  $('card-mermaid').classList.toggle('active',chosen==='mermaid');
+  $('card-mermaid').classList.toggle('locked',!open);
+  $('mermaidLock').hidden=open;
+  $('card-default').querySelector('button').textContent=chosen==='default'?'✓ Надето':'Надеть';
+  const btn=$('card-mermaid').querySelector('button');btn.disabled=!open;btn.textContent=!open?'🔒 Пока закрыто':chosen==='mermaid'?'✓ Надето':'Надеть';
+  $('mermaidCaption').textContent=open?'Открыто! Лес Майкла Джексона завершён.':'Награда за все три испытания леса Майкла Джексона';
+  $('previewName').textContent=chosen==='mermaid'?'Лада-русалка':'Обычный наряд';
+  $('wardrobeStatus').innerHTML=open?'Все испытания леса завершены! <strong>Оба наряда доступны.</strong> Можно менять их в любой момент.':'Пройди три игры леса Майкла Джексона: найди подруг, спаси русала и убеги от вампира.';
+  api.equip($('previewDoll'));
+ }
+ document.querySelectorAll('[data-choose]').forEach(btn=>btn.addEventListener('click',()=>{if(api.select(btn.dataset.choose))paint()}));
+ window.addEventListener('pageshow',paint);
+ paint();
+});
+</script>
+</body></html>
