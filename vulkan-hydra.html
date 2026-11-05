@@ -198,7 +198,14 @@ const win = document.getElementById('win');
 const flash = document.getElementById('flash');
 const heads = document.getElementById('heads');
 
-function shuffle(arr){return [...arr].sort(()=>Math.random()-0.5)}
+function shuffle(arr){
+  if(new URLSearchParams(location.search).get("coop")==="1"){
+    const out=[...arr];let seed=0x9e3779b9+step*0x85ebca6b;
+    for(let i=out.length-1;i>0;i--){seed=(Math.imul(seed,1664525)+1013904223)>>>0;const j=seed%(i+1);[out[i],out[j]]=[out[j],out[i]];}
+    return out;
+  }
+  return [...arr].sort(()=>Math.random()-0.5);
+}
 function current(){return TASKS[step]}
 function buildHeads(){
   heads.innerHTML='';
@@ -297,5 +304,6 @@ document.getElementById('restartWin').addEventListener('click', restartGame);
 win.addEventListener('click', e=>{ if(e.target===win){ win.hidden=true; win.classList.remove('show'); }});
 setupTask();
 </script>
+<script src="world-coop-bridge.js?v=7" defer></script>
 </body>
 </html>

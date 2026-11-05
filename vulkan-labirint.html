@@ -229,6 +229,9 @@ h1{margin:5px 0 8px;font-size:clamp(30px,4vw,48px);line-height:1.02;font-weight:
     ctx.fillStyle='rgba(255,242,189,.98)';
     ctx.beginPath(); ctx.arc(last[0]*sx,last[1]*sy,Math.max(5,rect.width*0.005),0,Math.PI*2); ctx.fill();
   }
+  function publishProgress(){
+    window.dispatchEvent(new CustomEvent('tivvig:maze-progress',{detail:{index:progressIndex,total:samplePoints.length,coinMask:[...collected].reduce((mask,i)=>mask|(1<<i),0),won}}));
+  }
   function updateStats(){
     coinCountEl.textContent = collected.size;
     progressCountEl.textContent = Math.min(100, Math.round(progressIndex/(samplePoints.length-1)*100));
@@ -237,7 +240,7 @@ h1{margin:5px 0 8px;font-size:clamp(30px,4vw,48px);line-height:1.02;font-weight:
   function resetGame(soft){
     dragging = false; won = false; progressIndex = 0; collected = new Set();
     modal.classList.remove('show');
-    updateStats(); drawTrail(); positionLada(START); layoutCoins();
+    updateStats(); drawTrail(); positionLada(START); layoutCoins();publishProgress();
     if(!soft) setStatus('Нажми у нижней звезды и начинай вести Ладу по тропе.');
   }
   function nearestForwardIndex(point){
@@ -284,7 +287,7 @@ h1{margin:5px 0 8px;font-size:clamp(30px,4vw,48px);line-height:1.02;font-weight:
       const old=progressIndex;
       progressIndex=hit.index;
       for(let i=old;i<=progressIndex;i++)collectCoinsAt(samplePoints[i]);
-      drawTrail();updateStats();
+      drawTrail();updateStats();publishProgress();
       if(progressIndex>Math.floor(samplePoints.length*.92))setStatus('Почти дошли! Вулкан уже рядом.');
       if(progressIndex>=samplePoints.length-1)completeGame();
     }else if(hit.distance>tolerance){
@@ -315,11 +318,26 @@ h1{margin:5px 0 8px;font-size:clamp(30px,4vw,48px);line-height:1.02;font-weight:
   function completeGame(){
     if(won) return;
     won = true; dragging = false; progressIndex = samplePoints.length - 1; drawTrail(); updateStats();
+    publishProgress();
     setStatus('Путь найден! Лада идёт к вулкану.');
     try{ localStorage.setItem('tivvig_reward_maze_coins_v1','unlocked'); }catch(e){}
     animateLadaAlongRoute(()=>{
       setStatus('Лада добралась до вулкана Эмпедокла!');
       modal.classList.add('show');
+    });
+  }
+
+  if(new URLSearchParams(location.search).get('coop')==='1'){
+    window.addEventListener('tivvig:remote-reset',()=>resetGame(false));
+    window.addEventListener('tivvig:remote-progress',e=>{
+      const v=e.detail;
+      if(!v||!Number.isInteger(v.index)||v.total!==samplePoints.length||v.index<0||v.index>=samplePoints.length)return;
+      const newCoins=new Set();
+      for(let i=0;i<COINS.length;i++)if((Number(v.coinMask)||0)&(1<<i))newCoins.add(i);
+      collected=newCoins;
+      progressIndex=v.index;
+      if(v.won===true&&!won){completeGame();layoutCoins();return;}
+      if(!won){drawTrail();updateStats();layoutCoins();positionLada(START);}
     });
   }
 
@@ -336,5 +354,7 @@ h1{margin:5px 0 8px;font-size:clamp(30px,4vw,48px);line-height:1.02;font-weight:
   if(img.complete) resizeCanvas();
 })();
 </script>
+<script src="maze-coop-bridge.js?v=7" defer></script>
+<script src="world-coop-bridge.js?v=7" defer></script>
 </body>
 </html>

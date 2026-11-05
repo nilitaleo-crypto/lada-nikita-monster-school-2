@@ -98,10 +98,14 @@ const stoneHost=el('stones');P.forEach((p,i)=>{let s=document.createElement('i')
 for(let j=0;j<22;j++){let i=document.createElement('i');i.className='spark';i.style.setProperty('--x',((j*31+7)%92)+'%');i.style.setProperty('--y',((j*19+18)%75)+'%');i.style.setProperty('--t',(2+j%5*.65)+'s');i.style.animationDelay=(-j*.38)+'s';arena.appendChild(i)}
 function at(node,n){let p=P[Math.max(0,Math.min(9,n))];node.style.left=p.x+'%';node.style.top=p.y+'%'}
 function sync(){at(lada,pL);at(enemy,pV);el('hud').textContent='✦ '.repeat(Math.max(0,9-pL)).trim() || '✦';el('hud').setAttribute('aria-label','До кристалла '+(9-pL)+' шагов')}
-function rand(n){return Math.floor(Math.random()*n)}
-function makeTask(){let a,b,operator,result,sig;for(let i=0;i<10;i++){if(Math.random()<.5){a=rand(10);b=rand(11-a);operator='+';result=a+b}else{a=rand(11);b=rand(a+1);operator='−';result=a-b}sig=a+operator+b;if(sig!==lastSignature)break}lastSignature=sig;answer=result;el('equation').textContent=a+' '+operator+' '+b+' = ?';
+const coopSeed=new URLSearchParams(location.search).get("seed")||"";
+let rngState=2166136261;
+for(const ch of coopSeed)rngState=Math.imul(rngState^ch.charCodeAt(0),16777619)>>>0;
+function rnd(){if(!coopSeed)return Math.random();rngState^=rngState<<13;rngState^=rngState>>>17;rngState^=rngState<<5;return(rngState>>>0)/4294967296;}
+function rand(n){return Math.floor(rnd()*n)}
+function makeTask(){let a,b,operator,result,sig;for(let i=0;i<10;i++){if(rnd()<.5){a=rand(10);b=rand(11-a);operator='+';result=a+b}else{a=rand(11);b=rand(a+1);operator='−';result=a-b}sig=a+operator+b;if(sig!==lastSignature)break}lastSignature=sig;answer=result;el('equation').textContent=a+' '+operator+' '+b+' = ?';
  const opts=new Set([result]);const tryPool=[result+1,result-1,result+2,result-2,result+3,result-3,rand(11),rand(11)].filter(n=>n>=0&&n<=10&&n!==result);
- while(opts.size<3&&tryPool.length)opts.add(tryPool.splice(rand(tryPool.length),1)[0]);while(opts.size<3)opts.add(rand(11));const arr=[...opts].sort(()=>Math.random()-.5);
+ while(opts.size<3&&tryPool.length)opts.add(tryPool.splice(rand(tryPool.length),1)[0]);while(opts.size<3)opts.add(rand(11));const arr=[...opts];for(let i=arr.length-1;i>0;i--){const j=rand(i+1);[arr[i],arr[j]]=[arr[j],arr[i]];}
  choices.replaceChildren();for(const value of arr){const b=document.createElement('button');b.className='answer';b.type='button';b.textContent=value;b.setAttribute('aria-label','Ответ '+value);b.addEventListener('click',()=>play(value,b));choices.append(b)}}
 function flash(n,char='✧'){let p=P[Math.min(9,n)];let f=document.createElement('span');f.className='magic';f.textContent=char;f.style.left=p.x+'%';f.style.top=(p.y-12)+'%';arena.appendChild(f);setTimeout(()=>f.remove(),1000)}
 async function transformLada(){ladaForm=2;flash(pL,'✦');lada.classList.add('vampirized');await pause(300);ladaImg.src='images/lada-vampire.svg';ladaImg.alt='Настоящая фотография Лады с вампирскими клыками';el('status').textContent='Лада тоже стала вампиром!';await pause(490)}
@@ -119,4 +123,5 @@ function reset(){el('outfitRewardLink').hidden=true;el('winTitle').textContent='
 el('reset').addEventListener('click',reset);el('retry').addEventListener('click',reset);el('replayWin').addEventListener('click',reset);el('replayPrize').addEventListener('click',reset);el('openPrize').addEventListener('click',()=>{el('win').hidden=true;show('prize')});document.addEventListener('keydown',e=>{if(e.key==='Escape'&&!el('prize').hidden){el('prize').hidden=true;show('win')}});reset();
 })();
 </script>
+<script src="world-coop-bridge.js?v=7" defer></script>
 </body></html>

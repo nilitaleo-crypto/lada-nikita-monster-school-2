@@ -1,0 +1,183 @@
+{
+  "rules": {
+    "rooms": {
+      "$roomId": {
+        ".read": "auth != null && data.exists() && $roomId.matches(/^[A-Za-z0-9_-]{32,}$/)",
+        ".write": "auth != null && !data.exists() && $roomId.matches(/^[A-Za-z0-9_-]{32,}$/) && auth.token.firebase.sign_in_provider === 'google.com' && newData.child('owner').val() === auth.uid && newData.child('createdAt').isNumber() && newData.child('resetVersion').val() === 0",
+        "owner": {
+          ".validate": "newData.isString() && newData.val() === auth.uid"
+        },
+        "createdAt": {
+          ".validate": "newData.isNumber() && newData.val() > 0"
+        },
+        "resetVersion": {
+          ".write": "auth != null && auth.uid === root.child('rooms').child($roomId).child('owner').val()",
+          ".validate": "newData.isNumber() && newData.val() >= 0 && newData.val() <= 1000000 && (!data.exists() || newData.val() === data.val()+1 || newData.val() === 0)"
+        },
+        "progress": {
+          ".write": "auth != null && auth.token.firebase.sign_in_provider === 'anonymous'",
+          ".validate": "newData.hasChildren(['index','total','coinMask','won'])",
+          "index": {
+            ".validate": "newData.isNumber() && newData.val() >= 0 && newData.val() <= 5000 && newData.val() % 1 === 0"
+          },
+          "total": {
+            ".validate": "newData.isNumber() && newData.val() >= 1 && newData.val() <= 5000 && newData.val() % 1 === 0"
+          },
+          "coinMask": {
+            ".validate": "newData.isNumber() && newData.val() >= 0 && newData.val() <= 127 && newData.val() % 1 === 0"
+          },
+          "won": {
+            ".validate": "newData.isBoolean()"
+          },
+          "$other": {
+            ".validate": false
+          }
+        },
+        "hint": {
+          ".write": "auth != null && auth.uid === root.child('rooms').child($roomId).child('owner').val()",
+          "points": {
+            "$idx": {
+              ".validate": "newData.hasChildren(['x','y'])",
+              "x": {
+                ".validate": "newData.isNumber() && newData.val() >= 0 && newData.val() <= 1"
+              },
+              "y": {
+                ".validate": "newData.isNumber() && newData.val() >= 0 && newData.val() <= 1"
+              },
+              "$other": {
+                ".validate": false
+              }
+            }
+          },
+          "$other": {
+            ".validate": false
+          }
+        },
+        "teacherCursor": {
+          ".write": "auth != null && auth.uid === root.child('rooms').child($roomId).child('owner').val()",
+          ".validate": "newData.hasChildren(['x','y','active','at'])",
+          "x": {
+            ".validate": "newData.isNumber() && newData.val() >= 0 && newData.val() <= 1"
+          },
+          "y": {
+            ".validate": "newData.isNumber() && newData.val() >= 0 && newData.val() <= 1"
+          },
+          "active": {
+            ".validate": "newData.isBoolean()"
+          },
+          "at": {
+            ".validate": "newData.isNumber() && newData.val() > 0"
+          },
+          "$other": {
+            ".validate": false
+          }
+        },
+        "studentCursor": {
+          ".write": "auth != null && auth.token.firebase.sign_in_provider === 'anonymous'",
+          ".validate": "newData.hasChildren(['x','y','active','at'])",
+          "x": {
+            ".validate": "newData.isNumber() && newData.val() >= 0 && newData.val() <= 1"
+          },
+          "y": {
+            ".validate": "newData.isNumber() && newData.val() >= 0 && newData.val() <= 1"
+          },
+          "active": {
+            ".validate": "newData.isBoolean()"
+          },
+          "at": {
+            ".validate": "newData.isNumber() && newData.val() > 0"
+          },
+          "$other": {
+            ".validate": false
+          }
+        },
+        "studentPresence": {
+          ".write": "auth != null && auth.token.firebase.sign_in_provider === 'anonymous'",
+          ".validate": "newData.hasChildren(['uid','at']) && newData.child('uid').val() === auth.uid",
+          "uid": {
+            ".validate": "newData.isString() && newData.val() === auth.uid"
+          },
+          "at": {
+            ".validate": "newData.isNumber() && newData.val() > 0"
+          },
+          "$other": {
+            ".validate": false
+          }
+        },
+        "$other": {
+          ".validate": false
+        },
+        "page": {
+          ".write": "auth != null && (auth.uid === root.child('rooms').child($roomId).child('owner').val() || auth.token.firebase.sign_in_provider === 'anonymous')",
+          ".validate": "newData.hasChildren(['path','epoch','by','at']) && newData.child('by').val() === auth.uid",
+          "path": {
+            ".validate": "newData.isString() && (newData.val() === 'index.html' || newData.val() === 'vulkan-labirint.html' || newData.val() === 'vulkan-empedokla.html' || newData.val() === 'vulkan-slogi.html' || newData.val() === 'vulkan-kuznica.html' || newData.val() === 'vulkan-hydra.html' || newData.val() === 'collection.html' || newData.val() === 'igry.html' || newData.val() === 'michael-jackson-jungle.html' || newData.val() === 'michael-jackson-merman.html' || newData.val() === 'michael-jackson-vampire.html' || newData.val() === 'wardrobe.html')"
+          },
+          "epoch": {
+            ".validate": "newData.isString() && newData.val().matches(/^[A-Za-z0-9_-]{16,}$/)"
+          },
+          "by": {
+            ".validate": "newData.isString() && newData.val() === auth.uid"
+          },
+          "at": {
+            ".validate": "newData.isNumber() && newData.val() > 0"
+          },
+          "$other": {
+            ".validate": false
+          }
+        },
+        "viewport": {
+          ".write": "auth != null && auth.token.firebase.sign_in_provider === 'anonymous'",
+          ".validate": "newData.hasChildren(['y','epoch','at'])",
+          "y": {
+            ".validate": "newData.isNumber() && newData.val() >= 0 && newData.val() <= 1"
+          },
+          "epoch": {
+            ".validate": "newData.isString() && newData.val() === root.child('rooms').child($roomId).child('page').child('epoch').val()"
+          },
+          "at": {
+            ".validate": "newData.isNumber() && newData.val() > 0"
+          },
+          "$other": {
+            ".validate": false
+          }
+        },
+        "actions": {
+          "$epoch": {
+            "$eventId": {
+              ".write": "auth != null && !data.exists() && $epoch === root.child('rooms').child($roomId).child('page').child('epoch').val() && (auth.uid === root.child('rooms').child($roomId).child('owner').val() || auth.token.firebase.sign_in_provider === 'anonymous')",
+              ".validate": "newData.hasChildren(['by','kind','selector','at'])",
+              "by": {
+                ".validate": "newData.isString() && newData.val() === auth.uid"
+              },
+              "kind": {
+                ".validate": "newData.isString() && newData.val() === 'click'"
+              },
+              "selector": {
+                ".validate": "newData.isString() && newData.val().length > 0 && newData.val().length <= 450"
+              },
+              "at": {
+                ".validate": "newData.isNumber() && newData.val() > 0"
+              },
+              "$other": {
+                ".validate": false
+              }
+            }
+          }
+        },
+        "state": {
+          "rewards": {
+            "$key": {
+              ".write": "auth != null && (auth.uid === root.child('rooms').child($roomId).child('owner').val() || auth.token.firebase.sign_in_provider === 'anonymous') && ($key === 'tivvig_reward_maze_coins_v1' || $key === 'tivvig_reward_empedocles_v1' || $key === 'tivvig_reward_forge_v1' || $key === 'tivvig_reward_sword_v1' || $key === 'tivvig_reward_hydra_v1' || $key === 'tivvig_reward_jungle_friends_v1' || $key === 'tivvig_reward_merman_waterhouse_v1' || $key === 'tivvig_reward_vampire_nosferatu_v1' || $key === 'tivvig_outfit_mermaid_unlocked_v1') && newData.val() === 'unlocked'",
+              ".validate": "newData.isString() && newData.val() === 'unlocked'"
+            }
+          },
+          "selected": {
+            ".write": "auth != null && (auth.uid === root.child('rooms').child($roomId).child('owner').val() || auth.token.firebase.sign_in_provider === 'anonymous')",
+            ".validate": "newData.isString() && (newData.val() === 'default' || newData.val() === 'mermaid')"
+          }
+        }
+      }
+    }
+  }
+}
