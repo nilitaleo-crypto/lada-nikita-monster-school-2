@@ -33,6 +33,10 @@ function updateReadyStatus(){
  const a=readiness.teacher?'✓':'…',b=readiness.student?'✓':'…';
  el.textContent='Общая игра: '+(titles[currentPage]||currentPage)+' · компьютер '+a+' · iPad '+b;
  if(!readiness.teacher||!readiness.student)el.textContent+=' · ожидаем загрузку';
+ if(frameReady){
+   if(readiness.teacher&&readiness.student){pageGate(false);report('✓ Обе стороны открыли '+(titles[currentPage]||currentPage)+'. Можно играть вместе.');}
+   else pageGate(true,'Игра открылась здесь. Ждём подтверждения загрузки на '+(readiness.student?'компьютере':'iPad')+'…');
+ }
 }
 function pageGate(show,detail){
  const gate=$('frameGate');if(!gate)return;
@@ -144,7 +148,6 @@ function frameIsReady(value){
  if(!value||value.page!==currentPage||value.epoch!==currentEpoch)return;
  frameReady=true;
  if(frameWatchdog){clearTimeout(frameWatchdog);frameWatchdog=null;}
- pageGate(false);
  syncExistingData();
  for(const item of eventBuffer)applyEvent(item);
  const marker=readyMark[role],action=push(dbref('actions/'+currentEpoch));
