@@ -12,7 +12,15 @@ function unlockReward(key){
  window.dispatchEvent(new Event("tivvig-inventory-changed"));
  return true;
 }
-window.TivvigRegistry={
+// Preserve references held by the running Firebase controller when the registry is refreshed.
+const existing=window.TivvigRegistry;
+if(existing){
+ existing.pages=pages;existing.rewards=rewards;existing.byPath=byPath;existing.byReward=byReward;
+ existing.allowedPages.clear();pages.forEach(p=>existing.allowedPages.add(p.path));
+ for(const key of Object.keys(existing.titles))delete existing.titles[key];
+ pages.forEach(p=>{existing.titles[p.path]=p.title});
+ existing.unlockReward=unlockReward;
+}else window.TivvigRegistry={
  pages,rewards,byPath,byReward,allowedPages:new Set(pages.map(p=>p.path)),
  titles:Object.fromEntries(pages.map(p=>[p.path,p.title])),unlockReward
 };
