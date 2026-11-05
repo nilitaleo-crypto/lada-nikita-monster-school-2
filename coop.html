@@ -68,6 +68,7 @@ p{line-height:1.5}
 <div class="actions" id="teacherControls" hidden>
 <label class="navLabel" for="pageSelect">Открыть страницу
 <select id="pageSelect" aria-label="Выбрать игру из общего реестра"></select></label>
+<button id="reloadCatalog" class="btn secondary" type="button">↻ Обновить игры</button>
 <button id="clearHint" class="btn secondary" type="button">Стереть подсказку</button><button id="resetGame" class="btn secondary" type="button">Начать лабиринт заново</button>
 </div>
 </div>
@@ -87,7 +88,24 @@ p{line-height:1.5}
 <p id="lessonMessage" role="status" aria-live="polite" class="note"></p>
 </section>
 </main>
-<script src="game-registry.js?v=1"></script>
-<script type="module" src="coop.js?v=12"></script>
+<script>
+/* Fetch the current registry BEFORE loading Firebase. Works in Safari and on the desktop. */
+(()=>{
+ const loader=document.createElement("script");
+ const source=new URL("game-registry.js",location.href);
+ source.searchParams.set("fresh",String(Date.now()));
+ loader.src=source.href;
+ loader.onload=()=>{
+  const module=document.createElement("script");
+  module.type="module";module.src="coop.js?v=13";
+  document.body.append(module);
+ };
+ loader.onerror=()=>{
+  const m=document.getElementById("message");
+  if(m){m.className="error";m.textContent="Не удалось загрузить реестр новых игр. Проверь подключение и обнови страницу.";}
+ };
+ document.body.append(loader);
+})();
+</script>
 </body>
 </html>
