@@ -291,13 +291,39 @@ function updatePresence(){
  const visible=role==="student"?"Ты подключена к занятию":studentPresence?"Лада в игре":"ожидаем Ладу";
  $("connectionStatus").textContent=(connected?"● ":"◌ Нет соединения · ")+visible+" · "+(titles[currentPage]||"Мир Тиввиг");
 }
-function showLesson(){
+function rebuildGameMenu(){
  const sel=$("pageSelect");
- if(!sel.options.length)for(const game of registry.pages){
+ const previous=sel.value;
+ sel.replaceChildren();
+ for(const game of registry.pages){
   const option=document.createElement("option");
   option.value=game.path;option.textContent=game.menuLabel||game.title;
   sel.add(option);
  }
+ if(currentPage&&allowedPages.has(currentPage))sel.value=currentPage;
+ else if(previous&&allowedPages.has(previous))sel.value=previous;
+}
+function reloadGameRegistry(){
+ return new Promise((resolve,reject)=>{
+  const loader=document.createElement("script");
+  const fresh=new URL("game-registry.js",location.href);
+  fresh.searchParams.set("fresh",String(Date.now()));
+  loader.src=fresh.href;
+  loader.onload=()=>{
+   rewardKeys.splice(0,rewardKeys.length,...registry.rewards.map(r=>r.key));
+   rewardSet.clear();rewardKeys.forEach(k=>rewardSet.add(k));
+   rebuildGameMenu();
+   loader.remove();
+   resolve(registry);
+  };
+  loader.onerror=()=>{
+   loader.remove();reject(new Error("Не удалось загрузить свежий реестр игр."));
+  };
+  document.head.append(loader);
+ });
+}
+function showLesson(){
+ rebuildGameMenu();
  $("entry").hidden=true;$("lesson").hidden=false;
  $("teacherControls").hidden=role!=="teacher";
  $("shareBox").hidden=role!=="teacher";
@@ -421,10 +447,14 @@ function watchRoom(){
  offConnect=onValue(ref(db,'.info/connected'),s=>{connected=s.val()===true;updatePresence();refreshRemotePointer();});
  observe("state/rewards",applySharedRewards);
  observe("state/selected",applySharedSelection);
- observe("page",p=>{
-   const resolved=decodeRoomPage(p);
+ observe("page",async p=>{
+   let resolved=decodeRoomPage(p);
+   if(!resolved&&p?.epoch){
+    try{await reloadGameRegistry();resolved=decodeRoomPage(p);}
+    catch(e){report("⚠ Новая страница пока не загрузилась: "+explain(e));return;}
+   }
    if(p&&resolved)startPage(resolved,p.epoch);
-   else report("⚠ Firebase не прислал корректную страницу занятия.");
+   else report("⚠ Неизвестная страница в комнате. Нажми «Обновить список игр».");
  });
  observe("studentPresence",p=>{studentPresence=p;updatePresence();});
  observe("progress",p=>{latestProgress=p;if(role==="teacher"&&currentPage==="vulkan-labirint.html")sendToFrame("progress",p);});
@@ -498,6 +528,14 @@ student.addEventListener("click",async()=>{
  finally{student.disabled=false;}
 });
 $("pageSelect").addEventListener("change",e=>{if(role==="teacher")navigate(e.target.value);});
+$("reloadCatalog").addEventListener("click",async()=>{
+ const button=$("reloadCatalog");button.disabled=true;button.textContent="Обновляем…";
+ try{
+  await reloadGameRegistry();
+  report("✓ Получен актуальный список игр с GitHub Pages: "+registry.pages.length+" страниц.");
+ }catch(e){report("⚠ "+explain(e));}
+ finally{button.disabled=false;button.textContent="↻ Обновить игры";}
+});
 $("copyInvite").addEventListener("click",async()=>{
  try{await navigator.clipboard.writeText($("inviteLink").value);$("copyInvite").textContent="Скопировано ✓";}
  catch{ $("inviteLink").select();report("Выделенную ссылку можно скопировать вручную."); }
