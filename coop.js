@@ -12,14 +12,9 @@ const config={
 const app=initializeApp(config),auth=getAuth(app),db=getDatabase(app);
 const $=id=>document.getElementById(id);
 const params=new URLSearchParams(location.search),incomingRoom=params.get("room"),isStudentInvite=params.get("role")==="student";
-const allowedPages=new Set(["index.html","vulkan-labirint.html","vulkan-empedokla.html","vulkan-slogi.html","vulkan-kuznica.html","vulkan-hydra.html","collection.html","igry.html","michael-jackson-jungle.html","michael-jackson-merman.html","michael-jackson-vampire.html","wardrobe.html"]);
-const titles={
- "index.html":"Карта Тиввига","vulkan-labirint.html":"Лабиринт Эмпедокла",
- "vulkan-empedokla.html":"Прыжки в вулкан","vulkan-slogi.html":"Кузница слогов",
- "vulkan-kuznica.html":"Поиск предметов","vulkan-hydra.html":"Гидра и буквы",
- "collection.html":"Коллекция наград","igry.html":"Другие игры",
-"michael-jackson-jungle.html":"Джунгли: подруги","michael-jackson-merman.html":"Спасение русала","michael-jackson-vampire.html":"Побег от вампира","wardrobe.html":"Наряды Лады"
-};
+const registry=window.TivvigRegistry;
+if(!registry)throw new Error("Общий реестр игр не загрузился.");
+const allowedPages=registry.allowedPages,titles=registry.titles;
 const validRoom=/^[A-Za-z0-9_-]{32,}$/;
 
 /* Versioned room navigation uses a whitelist-checked path encoded in the epoch.
@@ -69,12 +64,7 @@ function pageGate(show,detail){
  if(show)$('frameGateMessage').textContent=detail||'Открываем общую игру…';
 }
 
-const rewardKeys=[
- 'tivvig_reward_maze_coins_v1','tivvig_reward_empedocles_v1','tivvig_reward_forge_v1',
- 'tivvig_reward_sword_v1','tivvig_reward_hydra_v1','tivvig_reward_jungle_friends_v1',
- 'tivvig_reward_merman_waterhouse_v1','tivvig_reward_vampire_nosferatu_v1',
- 'tivvig_outfit_mermaid_unlocked_v1'
-];
+const rewardKeys=registry.rewards.map(r=>r.key);
 const rewardSet=new Set(rewardKeys),selectedKey='tivvig_outfit_selected_v1';
 
 /* Persistent Lada collection: readable/writable only by the Google teacher.
@@ -302,6 +292,12 @@ function updatePresence(){
  $("connectionStatus").textContent=(connected?"● ":"◌ Нет соединения · ")+visible+" · "+(titles[currentPage]||"Мир Тиввиг");
 }
 function showLesson(){
+ const sel=$("pageSelect");
+ if(!sel.options.length)for(const game of registry.pages){
+  const option=document.createElement("option");
+  option.value=game.path;option.textContent=game.menuLabel||game.title;
+  sel.add(option);
+ }
  $("entry").hidden=true;$("lesson").hidden=false;
  $("teacherControls").hidden=role!=="teacher";
  $("shareBox").hidden=role!=="teacher";
@@ -534,6 +530,7 @@ window.addEventListener("message",e=>{
   return;
  }
  if(type==="navigate"&&allowedPages.has(value)){navigate(value);return;}
+ if(type==="rewardUnlocked"&&rewardSet.has(value?.key)){pushReward(value.key);return;}
  if(type==="click"&&currentPage!=="vulkan-labirint.html"&&typeof value?.selector==="string"&&value.selector.length<450){
   const action=push(dbref("actions/"+currentEpoch));
   set(action,{by:uid,kind:"click",selector:value.selector,at:Date.now()}).catch(e=>{
