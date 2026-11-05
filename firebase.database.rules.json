@@ -168,7 +168,7 @@
         "state": {
           "rewards": {
             "$key": {
-              ".write": "auth != null && (auth.uid === root.child('rooms').child($roomId).child('owner').val() || auth.token.firebase.sign_in_provider === 'anonymous') && ($key === 'tivvig_reward_maze_coins_v1' || $key === 'tivvig_reward_empedocles_v1' || $key === 'tivvig_reward_forge_v1' || $key === 'tivvig_reward_sword_v1' || $key === 'tivvig_reward_hydra_v1' || $key === 'tivvig_reward_jungle_friends_v1' || $key === 'tivvig_reward_merman_waterhouse_v1' || $key === 'tivvig_reward_vampire_nosferatu_v1' || $key === 'tivvig_outfit_mermaid_unlocked_v1') && newData.val() === 'unlocked'",
+              ".write": "auth != null && (auth.uid === root.child('rooms').child($roomId).child('owner').val() || auth.token.firebase.sign_in_provider === 'anonymous') && ($key.matches(/^tivvig_reward_[a-z0-9_]{1,70}_v[0-9]{1,2}$/) || $key.matches(/^tivvig_outfit_[a-z0-9_]{1,70}_unlocked_v[0-9]{1,2}$/)) && newData.val() === 'unlocked'",
               ".validate": "newData.isString() && newData.val() === 'unlocked'"
             }
           },
@@ -185,7 +185,7 @@
         "lada": {
           "rewards": {
             "$key": {
-              ".write": "auth != null && auth.uid === $teacherId && auth.token.firebase.sign_in_provider === 'google.com' && ($key === 'tivvig_reward_maze_coins_v1' || $key === 'tivvig_reward_empedocles_v1' || $key === 'tivvig_reward_forge_v1' || $key === 'tivvig_reward_sword_v1' || $key === 'tivvig_reward_hydra_v1' || $key === 'tivvig_reward_jungle_friends_v1' || $key === 'tivvig_reward_merman_waterhouse_v1' || $key === 'tivvig_reward_vampire_nosferatu_v1' || $key === 'tivvig_outfit_mermaid_unlocked_v1') && newData.val() === 'unlocked'",
+              ".write": "auth != null && auth.uid === $teacherId && auth.token.firebase.sign_in_provider === 'google.com' && ($key.matches(/^tivvig_reward_[a-z0-9_]{1,70}_v[0-9]{1,2}$/) || $key.matches(/^tivvig_outfit_[a-z0-9_]{1,70}_unlocked_v[0-9]{1,2}$/)) && newData.val() === 'unlocked'",
               ".validate": "newData.isString() && newData.val() === 'unlocked'"
             }
           },
