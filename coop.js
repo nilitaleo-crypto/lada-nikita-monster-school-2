@@ -329,7 +329,7 @@ function showLesson(){
  $("shareBox").hidden=role!=="teacher";
  $("studentNote").hidden=role!=="student";
  if(role==="teacher"){
-  const invitation=new URL("coop.html",location.href);invitation.search="";invitation.searchParams.set("room",room);invitation.searchParams.set("role","student");
+  const invitation=new URL("coop.html",location.href);invitation.search="";invitation.searchParams.set("room",room);invitation.searchParams.set("role","student");invitation.searchParams.set("v","13");
   $("inviteLink").value=invitation.href;
  }
 }
@@ -447,14 +447,26 @@ function watchRoom(){
  offConnect=onValue(ref(db,'.info/connected'),s=>{connected=s.val()===true;updatePresence();refreshRemotePointer();});
  observe("state/rewards",applySharedRewards);
  observe("state/selected",applySharedSelection);
- observe("page",async p=>{
+ let latestPageEpoch=null;
+ observe("page",p=>{
+  latestPageEpoch=p?.epoch||null;
+  async function applyLatestPage(tries=0){
+   if(!p||!p.epoch||latestPageEpoch!==p.epoch)return;
    let resolved=decodeRoomPage(p);
-   if(!resolved&&p?.epoch){
+   if(!resolved&&tries<12){
     try{await reloadGameRegistry();resolved=decodeRoomPage(p);}
-    catch(e){report("⚠ Новая страница пока не загрузилась: "+explain(e));return;}
+    catch(e){report("Обновляем список игр после публикации: "+explain(e));}
+    if(latestPageEpoch!==p.epoch)return;
+    if(!resolved){
+     report("Новая игра ещё публикуется. Повторяем загрузку автоматически ("+(tries+1)+"/12)...");
+     setTimeout(()=>applyLatestPage(tries+1),4000);
+     return;
+    }
    }
-   if(p&&resolved)startPage(resolved,p.epoch);
-   else report("⚠ Неизвестная страница в комнате. Нажми «Обновить список игр».");
+   if(resolved)startPage(resolved,p.epoch);
+   else report("⚠ Страница ещё не доступна. Проверь публикацию GitHub Pages и обнови список игр.");
+  }
+  applyLatestPage();
  });
  observe("studentPresence",p=>{studentPresence=p;updatePresence();});
  observe("progress",p=>{latestProgress=p;if(role==="teacher"&&currentPage==="vulkan-labirint.html")sendToFrame("progress",p);});
