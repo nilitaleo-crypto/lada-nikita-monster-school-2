@@ -139,6 +139,7 @@ button:focus-visible,a:focus-visible{outline:3px solid #f5cb77;outline-offset:3p
   </article>
   <p class="credit">Книжный ассет: MELLE (Melissa Krautheim), <a href="https://opengameart.org/content/epic-collection-book">CC0</a>.</p>
 </main>
+<script src="game-registry.js?v=1"></script>
 <script src="wardrobe.js"></script>
 <script>
 (()=>{
@@ -149,15 +150,23 @@ button:focus-visible,a:focus-visible{outline:3px solid #f5cb77;outline-offset:3p
  const places={
   astraluna:'Астралуна пока ждёт исследователей.',
   tristalia:'Тристалия ещё хранит свои тайны.',
-  ladaburg:'Ладабург готовится встречать гостей.',
   forest:'Лес Майкла Джексона откроется позже.'
  };
- document.querySelectorAll('[data-place]').forEach(btn=>btn.addEventListener('click',()=>{
-  const msg=places[btn.dataset.place];if(msg)status.textContent=msg;
- }));
+ document.querySelectorAll('[data-place]').forEach(btn=>{
+  const game=window.TivvigRegistry?.pages.find(p=>p.entry&&p.region===btn.dataset.place);
+  if(game){
+   const link=document.createElement('a');
+   link.className=btn.className;link.href=game.path;
+   link.dataset.place=btn.dataset.place;
+   link.setAttribute('aria-label','Открыть '+game.title);
+   btn.replaceWith(link);
+  }else btn.addEventListener('click',()=>{
+   const msg=places[btn.dataset.place];if(msg)status.textContent=msg;
+  });
+ });
  const updateCollectionCount=()=>{
   try{
-   const keys=['tivvig_reward_maze_coins_v1','tivvig_reward_empedocles_v1','tivvig_reward_forge_v1','tivvig_reward_sword_v1','tivvig_reward_hydra_v1','tivvig_reward_jungle_friends_v1','tivvig_reward_merman_waterhouse_v1','tivvig_reward_vampire_nosferatu_v1'];
+   const keys=window.TivvigRegistry.rewards.filter(r=>r.gallery).map(r=>r.key);
    const unlocked=keys.filter(k=>localStorage.getItem(k)==='unlocked').length;
    document.getElementById('collectionCount').textContent=unlocked+'/'+keys.length;
   }catch(e){}
@@ -167,6 +176,6 @@ button:focus-visible,a:focus-visible{outline:3px solid #f5cb77;outline-offset:3p
  window.addEventListener('tivvig-inventory-changed',updateCollectionCount);
 })();
 </script>
-<script src="world-coop-bridge.js?v=10" defer></script>
+<script src="world-coop-bridge.js?v=12" defer></script>
 </body>
 </html>
