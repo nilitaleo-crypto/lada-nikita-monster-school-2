@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="ru"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Проверка новой игры — Тиввиг</title>
+<style>
+*{box-sizing:border-box}body{min-height:100dvh;margin:0;padding:clamp(12px,3vw,32px);font-family:Georgia,serif;background:radial-gradient(ellipse at top,#71434c,#28191f);color:#50302b}
+main{max-width:750px;margin:auto;background:linear-gradient(140deg,#fdf1d4,#e8cd9c);border:7px double #c29a63;border-radius:18px;padding:clamp(18px,3.5vw,38px);text-align:center;box-shadow:0 12px 30px #160d1269}
+h1{font-size:clamp(30px,5vw,52px);margin:8px 0 14px}.eyebrow{letter-spacing:.2em;font-size:13px;text-transform:uppercase;font-weight:bold}
+p{font-size:clamp(16px,2.4vw,22px);line-height:1.45}.number{font-size:clamp(65px,16vw,150px);color:#7d324c;line-height:1.2;margin:12px 0;font-family:Georgia,serif}
+button{border:3px solid #ba8d52;background:#603441;color:#fff5dc;font:700 clamp(19px,3vw,26px) Georgia,serif;padding:17px 28px;border-radius:17px;cursor:pointer;touch-action:manipulation;min-height:58px}
+button:disabled{opacity:.7;cursor:default}.links{margin:25px auto 0;display:flex;flex-wrap:wrap;justify-content:center;gap:10px}
+.links a{padding:12px 15px;background:#eee0c0;border:2px solid #b9996d;border-radius:10px;text-decoration:none;color:#50302b;font-weight:bold}
+#message{min-height:47px;font-weight:bold}
+</style></head>
+<body><main>
+<div class="eyebrow">Тиввиг · Проверка дистанционных занятий</div>
+<h1>Новая игра: пять звёзд</h1>
+<p>Нажимай на большую кнопку. Каждое нажатие с компьютера или iPad должно появляться <strong>на обоих устройствах</strong>.</p>
+<div class="number" id="count" aria-live="polite">0 / 5</div>
+<button id="starButton" type="button">✦ Добавить звезду</button>
+<p id="message" role="status" aria-live="polite">У вас с Ладой один общий счётчик.</p>
+<p id="gameConnection" aria-live="polite"></p>
+<div class="links"><a href="index.html">← Карта Тиввига</a><a href="collection.html">Коллекция</a></div>
+</main>
+<script>
+(()=>{
+ const button=document.getElementById('starButton');
+ const count=document.getElementById('count');
+ const message=document.getElementById('message');
+ let points=0;
+ button.addEventListener('click',()=>{
+  if(points>=5)return;
+  points++;
+  count.textContent=points+' / 5';
+  if(points===5){
+   button.disabled=true;button.textContent='✓ Пять звёзд';
+   message.textContent='Оба устройства прошли новую игру! Можно вернуться к карте.';
+  }else message.textContent='Осталось '+(5-points)+' звезды до победы.';
+ });
+})();
+</script>
+<script src="game-runtime.js?v=1" defer></script>
+</body></html>
