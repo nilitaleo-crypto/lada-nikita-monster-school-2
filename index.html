@@ -139,9 +139,11 @@ button:focus-visible,a:focus-visible{outline:3px solid #f5cb77;outline-offset:3p
   </article>
   <p class="credit">Книжный ассет: MELLE (Melissa Krautheim), <a href="https://opengameart.org/content/epic-collection-book">CC0</a>.</p>
 </main>
-<script src="game-registry.js?v=2"></script>
+
 <script src="wardrobe.js"></script>
 <script>
+window.addEventListener("tivvig:registry-ready",()=>{
+
 (()=>{
  'use strict';
  const status=document.getElementById('mapStatus');
@@ -176,7 +178,9 @@ button:focus-visible,a:focus-visible{outline:3px solid #f5cb77;outline-offset:3p
  window.addEventListener('pageshow',updateCollectionCount);
  window.addEventListener('tivvig-inventory-changed',updateCollectionCount);
 })();
+
+});
 </script>
-<script src="world-coop-bridge.js?v=12" defer></script>
+<script src="game-runtime.js?v=1" defer></script>
 </body>
 </html>
