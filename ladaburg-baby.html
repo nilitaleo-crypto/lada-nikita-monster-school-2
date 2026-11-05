@@ -1,0 +1,70 @@
+<!doctype html>
+<html lang="ru"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="theme-color" content="#512831">
+<title>Ладабург — Десять чудес</title>
+<style>
+:root{--ink:#49302a;--gold:#c19b61}
+*{box-sizing:border-box}html,body{margin:0;min-height:100%}
+body{font-family:Georgia,"Times New Roman",serif;color:var(--ink);background:radial-gradient(ellipse at 50% 0,#724250,#25141d 80%);padding:clamp(8px,2.5vw,28px)}
+header{max-width:980px;margin:0 auto 15px;display:flex;justify-content:space-between;gap:12px;align-items:center;color:#ffefd7}
+header a,.actions a,.actions button{border:2px solid #ad8756;border-radius:12px;padding:11px 15px;text-decoration:none;font-weight:bold}
+header a{color:#fff1de;background:#60343c}
+main{max-width:980px;margin:auto;padding:clamp(12px,4vw,36px);text-align:center;border:7px double #bf995f;border-radius:17px;box-shadow:0 12px 38px #100a1488;background:linear-gradient(140deg,#f9e9c7,#e6c99d)}
+.kicker{letter-spacing:.17em;font-size:12px;font-weight:bold;color:#91664c;text-transform:uppercase}
+h1{font-size:clamp(28px,5vw,52px);font-weight:normal;color:#5b3137;margin:8px auto}
+.intro{max-width:590px;margin:0 auto 15px;font-size:clamp(15px,2vw,20px);line-height:1.45}
+.frame{width:min(430px,100%);margin:0 auto;padding:8px;background:#b48b60;border:8px ridge #a17b4b;border-radius:10px;box-shadow:0 8px 19px #4d2e2b65}
+button{font:inherit;cursor:pointer;touch-action:manipulation}
+#ladaTap{display:block;width:100%;border:0;background:transparent;padding:0;cursor:pointer}
+#ladaTap:disabled{cursor:default}
+#ladaTap:focus-visible{outline:4px solid #3c91b6;outline-offset:5px}
+.portrait{display:block;width:100%;aspect-ratio:280/373;object-fit:cover;border-radius:4px}
+[hidden]{display:none!important}
+#tapCount{font-size:22px;font-weight:bold;color:#633c3b;margin:12px auto 5px}
+.pips{display:flex;max-width:450px;margin:9px auto 15px;gap:5px}
+.pips span{flex:1;height:14px;border:1px solid #a88159;border-radius:9px;background:#dac5a4;transition:background .2s}
+.pips span.on{background:linear-gradient(90deg,#b26a48,#f4ce72)}
+#status{font-size:clamp(17px,2.5vw,24px);min-height:50px;color:#59363c}
+.actions{display:flex;justify-content:center;gap:9px;flex-wrap:wrap;margin-top:16px}
+.actions a,.actions button{background:#61353c;color:#ffefd4;font-size:14px}
+.actions button{background:#f6e3bf;color:#57313d}
+@media(max-width:600px){.frame{max-width:325px}main{padding:12px}header{font-size:13px}}
+</style></head><body>
+<header><a href="index.html">← Карта Тиввига</a><span>Школа охотников на чудовищ</span></header>
+<main><div class="kicker">Ладабург · Первая история</div>
+<h1>Десять чудес Лады</h1>
+<p class="intro">Кто поселится в Ладабурге? Нажми на Ладу десять раз — и узнаешь, какое чудо случится!</p>
+<div class="frame"><button id="ladaTap" type="button" aria-label="Коснуться Лады">
+<img id="before" class="portrait" src="images/ladaburg-before.webp" alt="Лада в розовых заячьих ушках без малыша">
+<img id="after" class="portrait" src="images/ladaburg-after.webp" alt="Лада с маленьким малышом на руках" hidden>
+</button></div>
+<div id="tapCount" aria-live="polite">0 из 10</div>
+<div class="pips" id="pips" aria-label="Шкала чудес"></div>
+<p id="status" role="status" aria-live="polite">Начни волшебство — прикоснись к Ладе!</p>
+<div class="actions"><a href="index.html">🗺️ Карта</a><a href="collection.html">✦ Коллекция</a><button type="button" id="restart" hidden>↻ Ещё раз</button></div>
+</main>
+<script src="game-registry.js?v=1"></script>
+<script>
+(()=>{
+ "use strict";
+ const btn=document.getElementById("ladaTap"),before=document.getElementById("before"),after=document.getElementById("after");
+ const number=document.getElementById("tapCount"),status=document.getElementById("status"),restart=document.getElementById("restart"),bar=document.getElementById("pips");
+ const cells=[];for(let i=0;i<10;i++){const span=document.createElement("span");bar.append(span);cells.push(span);}
+ let count=0;
+ function paint(){
+  const won=count===10;
+  number.textContent=count+" из 10";
+  for(let i=0;i<10;i++)cells[i].classList.toggle("on",i<count);
+  before.hidden=won;after.hidden=!won;btn.disabled=won;restart.hidden=!won;
+  status.textContent=won?"✦ Чудо свершилось! Малыш появился на руках у Лады!":count===0?"Начни волшебство — прикоснись к Ладе!":"До чуда осталось: "+(10-count);
+ }
+ btn.addEventListener("click",()=>{
+  if(count>=10)return;
+  count++;paint();
+  if(count===10)window.TivvigRegistry.unlockReward("tivvig_reward_ladaburg_baby_v1");
+ });
+ restart.addEventListener("click",()=>{count=0;paint();});
+ paint();
+})();
+</script>
+<script src="world-coop-bridge.js?v=12" defer></script>
+</body></html>
