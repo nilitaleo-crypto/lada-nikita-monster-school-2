@@ -25,6 +25,21 @@ let role=null,room=null,uid=null,owner=null,sessionStarted=false;
 let currentPage=null,currentEpoch=null,frameReady=false,lastVersion=null,localCursorAt=0,lastProgressAt=0;
 let latestHint=null,latestProgress=null,latestStudentCursor=null,latestTeacherCursor=null,latestScroll=null,studentPresence=null;
 let eventBuffer=[],appliedEvents=new Set(),unsubs=[],offEvents=null,offConnect=null,connected=false;
+let readiness={teacher:false,student:false},frameWatchdog=null;
+const readyMark={teacher:'#tivvig-ready-teacher',student:'#tivvig-ready-student'};
+function updateReadyStatus(){
+ const el=$('pageSyncStatus');if(!el)return;
+ if(!currentPage){el.textContent='Общая страница не выбрана';return;}
+ const a=readiness.teacher?'✓':'…',b=readiness.student?'✓':'…';
+ el.textContent='Общая игра: '+(titles[currentPage]||currentPage)+' · компьютер '+a+' · iPad '+b;
+ if(!readiness.teacher||!readiness.student)el.textContent+=' · ожидаем загрузку';
+}
+function pageGate(show,detail){
+ const gate=$('frameGate');if(!gate)return;
+ gate.hidden=!show;
+ if(show)$('frameGateMessage').textContent=detail||'Открываем общую игру…';
+}
+
 const rewardKeys=[
  'tivvig_reward_maze_coins_v1','tivvig_reward_empedocles_v1','tivvig_reward_forge_v1',
  'tivvig_reward_sword_v1','tivvig_reward_hydra_v1','tivvig_reward_jungle_friends_v1',
@@ -111,6 +126,10 @@ function syncExistingData(){
 function applyEvent(e){
  if(!frameReady||!e||appliedEvents.has(e.key))return;
  appliedEvents.add(e.key);
+ if(e.value?.kind==="click"&&(e.value?.selector===readyMark.teacher||e.value?.selector===readyMark.student)){
+  const who=e.value.selector===readyMark.teacher?'teacher':'student';
+  readiness[who]=true;updateReadyStatus();return;
+ }
  if(e.value?.kind==="click"&&e.value?.selector==='#tivvig-connection-check'){
   report(e.value.by===uid?'✓ Firebase подтвердил твою проверку связи.':'✓ Получен сигнал со второго устройства. Двусторонняя связь работает.');
   return;
@@ -119,23 +138,42 @@ function applyEvent(e){
   sendToFrame("click",{selector:e.value.selector});
  }
 }
-function frameIsReady(){
+function frameIsReady(value){
  if(!sessionStarted||!currentPage||frameReady)return;
- frameReady=true;syncExistingData();
+ // Never mark a newly loaded iframe ready because of an old iframe load event.
+ if(!value||value.page!==currentPage||value.epoch!==currentEpoch)return;
+ frameReady=true;
+ if(frameWatchdog){clearTimeout(frameWatchdog);frameWatchdog=null;}
+ pageGate(false);
+ syncExistingData();
  for(const item of eventBuffer)applyEvent(item);
+ const marker=readyMark[role],action=push(dbref('actions/'+currentEpoch));
+ set(action,{by:uid,kind:'click',selector:marker,at:Date.now()})
+ .catch(e=>report('Страница открылась, но сигнал готовности не передан: '+explain(e)));
+ updateReadyStatus();
 }
 function startPage(path,epoch){
  if(!allowedPages.has(path)||typeof epoch!=="string"||epoch.length<12)return;
  if(path===currentPage&&epoch===currentEpoch)return;
  currentPage=path;currentEpoch=epoch;frameReady=false;
+ readiness={teacher:false,student:false};
+ if(frameWatchdog)clearTimeout(frameWatchdog);
+ pageGate(true,'Загружаем '+(titles[path]||path)+' на обоих устройствах…');
+ frameWatchdog=setTimeout(()=>{
+   if(!frameReady){
+     pageGate(true,'Игра не подтвердила загрузку. Нажми «Перезагрузить игру» над экраном.');
+     report('⚠ Игра не запустилась полностью: не получено подтверждение от игровой страницы.');
+   }
+ },10000);
  eventBuffer=[];appliedEvents.clear();
  if(offEvents){offEvents();offEvents=null;}
  $("sessionTitle").textContent=titles[path]||"Мир Тиввиг";
  $("pageSelect").value=path;
  $("clearHint").hidden=path!=="vulkan-labirint.html";
  $("resetGame").hidden=path!=="vulkan-labirint.html";
- updatePresence();
- const url=new URL(path,location.href);url.searchParams.set("coop","1");url.searchParams.set("role",role);url.searchParams.set("seed",epoch);
+ updatePresence();updateReadyStatus();
+ report('Firebase переключает обоих участников: '+(titles[path]||path));
+ const url=new URL(path,location.href);url.searchParams.set("coop","1");url.searchParams.set("role",role);url.searchParams.set("seed",epoch);url.searchParams.set("build","4");
  $frame.src=url.href;
  offEvents=onChildAdded(query(dbref("actions/"+epoch),orderByKey(),limitToLast(160)),snapshot=>{
    const action={key:snapshot.key,value:snapshot.val()};
@@ -145,9 +183,27 @@ function startPage(path,epoch){
 }
 async function navigate(path){
  if(!allowedPages.has(path)||!room)return;
+ if(!connected){report('⚠ Нет соединения с Firebase. Проверь интернет и нажми «Перезагрузить игру».');return;}
+ report('Открываем «'+(titles[path]||path)+'» у обоих участников…');
  try{
   await set(dbref("page"),{path,epoch:randomId(12),by:uid,at:Date.now()});
- }catch(e){report(explain(e));}
+ }catch(e){
+  report('⚠ Не удалось открыть игру для двоих: '+explain(e));
+  if($('pageSelect')&&currentPage)$('pageSelect').value=currentPage;
+ }
+}
+function reloadSharedFrame(){
+ if(!currentPage||!currentEpoch){report('Общая игра ещё не открыта.');return;}
+ const url=new URL(currentPage,location.href);
+ url.searchParams.set('coop','1');url.searchParams.set('role',role);
+ url.searchParams.set('seed',currentEpoch);url.searchParams.set('build','4');
+ url.searchParams.set('retry',String(Date.now()));
+ frameReady=false;
+ pageGate(true,'Восстанавливаем подключение к общей странице…');
+ if(frameWatchdog)clearTimeout(frameWatchdog);
+ frameWatchdog=setTimeout(()=>{if(!frameReady)pageGate(true,'Не удалось открыть игру: проверь интернет и правила Firebase.')},10000);
+ $frame.src=url.href;
+ report('Перезагружаем игровое окно, не меняя комнату.');
 }
 function observe(path,fn){
  const unsub=onValue(dbref(path),s=>fn(s.val()),e=>report(explain(e)));
@@ -181,7 +237,7 @@ function watchRoom(){
 }
 function initClient(){
  showLesson();sessionStarted=true;
- $frame.addEventListener("load",frameIsReady);
+ // iframe.load is not proof that its game bridge has initialized.
  watchRoom();
 }
 const teacher=$("teacherStart"),student=$("studentStart");
@@ -236,7 +292,10 @@ window.addEventListener("message",e=>{
  if(data.from!=="tivvig-world"&&data.from!=="tivvig-maze")return;
  if(data.from==="tivvig-world"&&data.page!==currentPage)return;
  const type=data.type,value=data.value;
- if(type==="ready"){frameIsReady();return;}
+ if(type==="ready"){
+   if(data.from==='tivvig-world')frameIsReady(value);
+   return;
+ }
  if(type==="actionApplied"){
   remoteActionCount++;
   report('✓ Применено на этом устройстве: '+remoteActionCount+' · через Firebase');
@@ -274,6 +333,8 @@ window.addEventListener("message",e=>{
  }
 });
 
+$("reloadFrame").addEventListener("click",reloadSharedFrame);
+$("retryFrame").addEventListener("click",reloadSharedFrame);
 $("checkSync").addEventListener("click",()=>{
  if(!sessionStarted||!currentEpoch||!room){report("Сначала подключись к комнате.");return;}
  const action=push(dbref("actions/"+currentEpoch));

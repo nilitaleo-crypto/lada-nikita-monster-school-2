@@ -118,5 +118,5 @@ window.addEventListener("message",e=>{
   if(!processing)replayNext();
  }
 });
-send("ready",{page:current});
+send("ready",{page:current,epoch:q.get("seed")});
 })();
