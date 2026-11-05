@@ -123,5 +123,6 @@ function reset(){el('outfitRewardLink').hidden=true;el('winTitle').textContent='
 el('reset').addEventListener('click',reset);el('retry').addEventListener('click',reset);el('replayWin').addEventListener('click',reset);el('replayPrize').addEventListener('click',reset);el('openPrize').addEventListener('click',()=>{el('win').hidden=true;show('prize')});document.addEventListener('keydown',e=>{if(e.key==='Escape'&&!el('prize').hidden){el('prize').hidden=true;show('win')}});reset();
 })();
 </script>
-<script src="world-coop-bridge.js?v=10" defer></script>
+<script src="game-registry.js?v=1" defer></script>
+<script src="world-coop-bridge.js?v=12" defer></script>
 </body></html>
