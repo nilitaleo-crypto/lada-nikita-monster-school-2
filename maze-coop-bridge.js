@@ -26,7 +26,8 @@ function paint(){
  }
  for(const [name,p] of Object.entries(pointers)){
    if(!p||!p.active||Date.now()-(p.at||0)>30000)continue;
-   ctx.beginPath();ctx.arc(p.x*w,p.y*h,9,0,2*Math.PI);
+   const px=p.x*window.innerWidth-r.left,py=p.y*window.innerHeight-r.top;
+   ctx.beginPath();ctx.arc(px,py,9,0,2*Math.PI);
    ctx.fillStyle=name==="teacherCursor"?"#b72e50":"#3c95c9";ctx.fill();
    ctx.lineWidth=2;ctx.strokeStyle="#fff";ctx.stroke();
  }
@@ -43,7 +44,9 @@ if("ResizeObserver" in window)new ResizeObserver(resize).observe(img);
 img.addEventListener("load",resize);resize();
 function cursor(e,active){
  const now=Date.now();if(active&&now-lastCursor<85)return;lastCursor=now;
- const p=normalized(e);send("cursor",{...p,active});
+ // Cursor uses the SAME viewport-relative coordinates as every other game.
+ const p={x:Math.max(0,Math.min(1,e.clientX/window.innerWidth)),y:Math.max(0,Math.min(1,e.clientY/window.innerHeight))};
+ send("cursor",{...p,active});
 }
 if(role==="teacher"){
  input.style.pointerEvents="none";

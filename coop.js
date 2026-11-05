@@ -84,6 +84,48 @@ function applySharedSelection(value){
 
 const $frame=$("mazeFrame");
 
+/* The remote pointer lives OUTSIDE game iframes, so navigation never destroys it. */
+function refreshRemotePointer(){
+ const dot=$('sharedCursor'),label=$('sharedCursorLabel');
+ if(!dot||!role)return;
+ const value=role==='student'?latestTeacherCursor:latestStudentCursor;
+ if(!value||!Number.isFinite(value.x)||!Number.isFinite(value.y)||!connected){
+  dot.hidden=true;return;
+ }
+ const frameRect=$frame.getBoundingClientRect(),wrapRect=$('gameWrap').getBoundingClientRect();
+ if(frameRect.width<1||frameRect.height<1){dot.hidden=true;return;}
+ const x=Math.max(0,Math.min(1,value.x)),y=Math.max(0,Math.min(1,value.y));
+ dot.style.left=(frameRect.left-wrapRect.left+frameRect.width*x)+'px';
+ dot.style.top=(frameRect.top-wrapRect.top+frameRect.height*y)+'px';
+ dot.dataset.role=role==='student'?'teacher':'student';
+ label.textContent=role==='student'?'Никита':'Лада';
+ // Keep the last position on screen between movements and while a new page loads.
+ dot.hidden=false;
+}
+window.addEventListener('resize',refreshRemotePointer);
+window.addEventListener('scroll',refreshRemotePointer,{capture:true,passive:true});
+let outerPointerAt=0;
+function emitOuterPointer(e){
+ if(!sessionStarted||!connected||!currentPage||!role)return;
+ const rect=$frame.getBoundingClientRect();
+ if(!rect.width||!rect.height)return;
+ if(e.clientX<rect.left||e.clientX>rect.right||e.clientY<rect.top||e.clientY>rect.bottom)return;
+ const now=Date.now();
+ if(e.type==='pointermove'&&now-outerPointerAt<110)return;
+ outerPointerAt=now;
+ const data={
+  x:Math.max(0,Math.min(1,(e.clientX-rect.left)/rect.width)),
+  y:Math.max(0,Math.min(1,(e.clientY-rect.top)/rect.height)),
+  active:e.type!=='pointerup'&&e.type!=='pointercancel',
+  at:now
+ };
+ set(dbref(role==='teacher'?'teacherCursor':'studentCursor'),data).catch(err=>report(explain(err)));
+}
+window.addEventListener('pointermove',emitOuterPointer,{passive:true});
+window.addEventListener('pointerdown',emitOuterPointer,{passive:true});
+window.addEventListener('pointerup',emitOuterPointer,{passive:true});
+
+
 /* Routes are controlled from the parent as well as the iframe.
    This prevents browser-native navigation from silently escaping the shared session. */
 function routeFromFrame(anchor){
@@ -172,8 +214,7 @@ function syncExistingData(){
   if(latestHint)sendToFrame("hint",latestHint);else sendToFrame("hint",{points:[]});
   if(role==="teacher"&&latestProgress)sendToFrame("progress",latestProgress);
  }
- if(role==="teacher"&&latestStudentCursor)sendToFrame("studentCursor",latestStudentCursor);
- if(role==="student"&&latestTeacherCursor)sendToFrame("teacherCursor",latestTeacherCursor);
+ refreshRemotePointer();
  if(role==="teacher"&&latestScroll?.epoch===currentEpoch)sendToFrame("scroll",latestScroll);
 }
 function applyEvent(e){
@@ -228,6 +269,7 @@ function startPage(path,epoch){
  report('Получена общая страница из Firebase: '+(titles[path]||path));
  const url=new URL(path,location.href);url.searchParams.set("coop","1");url.searchParams.set("role",role);url.searchParams.set("seed",epoch);url.searchParams.set("build","6");
  $frame.src=url.href;
+ refreshRemotePointer();
  offEvents=onChildAdded(query(dbref("actions/"+epoch),orderByKey(),limitToLast(160)),snapshot=>{
    const action={key:snapshot.key,value:snapshot.val()};
    eventBuffer.push(action);
@@ -275,15 +317,15 @@ function observe(path,fn){
  unsubs.push(unsub);
 }
 function watchRoom(){
- offConnect=onValue(ref(db,'.info/connected'),s=>{connected=s.val()===true;updatePresence();});
+ offConnect=onValue(ref(db,'.info/connected'),s=>{connected=s.val()===true;updatePresence();refreshRemotePointer();});
  observe("state/rewards",applySharedRewards);
  observe("state/selected",applySharedSelection);
  observe("page",p=>{if(p&&allowedPages.has(p.path))startPage(p.path,p.epoch);else report("Не удалось открыть страницу занятия.");});
  observe("studentPresence",p=>{studentPresence=p;updatePresence();});
  observe("progress",p=>{latestProgress=p;if(role==="teacher"&&currentPage==="vulkan-labirint.html")sendToFrame("progress",p);});
  observe("hint",p=>{latestHint=p;if(currentPage==="vulkan-labirint.html")sendToFrame("hint",p||{points:[]});});
- observe("studentCursor",p=>{latestStudentCursor=p;if(role==="teacher")sendToFrame("studentCursor",p);});
- observe("teacherCursor",p=>{latestTeacherCursor=p;if(role==="student")sendToFrame("teacherCursor",p);});
+ observe("studentCursor",p=>{latestStudentCursor=p;refreshRemotePointer();});
+ observe("teacherCursor",p=>{latestTeacherCursor=p;refreshRemotePointer();});
  observe("viewport",p=>{latestScroll=p;if(role==="teacher"&&p?.epoch===currentEpoch)sendToFrame("scroll",p);});
  observe("resetVersion",v=>{
    if(lastVersion!==null&&v!==null&&v!==lastVersion&&currentPage==="vulkan-labirint.html")sendToFrame("reset",true);

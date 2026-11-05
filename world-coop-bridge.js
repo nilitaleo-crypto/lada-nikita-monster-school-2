@@ -55,14 +55,18 @@ document.addEventListener("click",e=>{
  }
 },true);
 document.addEventListener("pointermove",e=>{
- if(isMaze||!e.isTrusted)return;
- const now=Date.now();if(now-lastCursor<125)return;lastCursor=now;
+ if(!e.isTrusted||(isMaze&&e.target.closest?.('#mazeWrap')))return;
+ const now=Date.now();if(now-lastCursor<110)return;lastCursor=now;
  send("cursor",{x:Math.max(0,Math.min(1,e.clientX/window.innerWidth)),y:Math.max(0,Math.min(1,e.clientY/window.innerHeight)),active:true});
 },{passive:true});
-document.addEventListener("pointerup",e=>{
- if(isMaze||!e.isTrusted)return;
- send("cursor",{x:Math.max(0,Math.min(1,e.clientX/window.innerWidth)),y:Math.max(0,Math.min(1,e.clientY/window.innerHeight)),active:false});
-},{passive:true});
+function sendPointerTap(e,active){
+ if(!e.isTrusted||(isMaze&&e.target.closest?.('#mazeWrap')))return;
+ lastCursor=Date.now();
+ send("cursor",{x:Math.max(0,Math.min(1,e.clientX/window.innerWidth)),y:Math.max(0,Math.min(1,e.clientY/window.innerHeight)),active});
+}
+document.addEventListener("pointerdown",e=>sendPointerTap(e,true),{passive:true});
+document.addEventListener("pointerup",e=>sendPointerTap(e,false),{passive:true});
+document.addEventListener("pointercancel",e=>sendPointerTap(e,false),{passive:true});
 window.addEventListener("scroll",()=>{
  if(isMaze||role!=="student"||replaying)return;
  const now=Date.now();if(now-lastScroll<300)return;lastScroll=now;

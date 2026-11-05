@@ -37,7 +37,11 @@ p{line-height:1.5}
 .invite input{flex:1;min-width:190px;border:1px solid #bb946a;border-radius:12px;background:#fff9ea;padding:11px 12px;color:#513528;font:14px system-ui,sans-serif}
 .online{font-weight:700;color:#32553c}
 .iframe{display:block;width:100%;height:min(1060px,95dvh);min-height:600px;border:2px solid #b78b57;border-radius:18px;background:#f5e7cb;margin-top:15px}
-.gameWrap{position:relative}.frameGate{position:absolute;inset:15px 0 0;z-index:50;display:grid;place-items:center;background:rgba(29,15,27,.79);border-radius:18px;padding:20px}
+.gameWrap{position:relative}
+.sharedCursor{position:absolute;z-index:70;pointer-events:none;transform:translate(-50%,-50%);width:25px;height:25px;border-radius:50%;background:#c72b58;border:3px solid #fff5de;box-shadow:0 0 0 4px #b02e4270,0 2px 9px #150912b8;transition:left 65ms linear,top 65ms linear}
+.sharedCursor[data-role="student"]{background:#378dbb;box-shadow:0 0 0 4px #2874a080,0 2px 9px #150912b8}
+.sharedCursor [data-label]{position:absolute;top:-27px;left:50%;transform:translateX(-50%);background:#512733;border:1px solid #ffe9c6;border-radius:6px;color:#fff6e8;padding:2px 7px;white-space:nowrap;font:12px system-ui,sans-serif}
+.frameGate{position:absolute;inset:15px 0 0;z-index:50;display:grid;place-items:center;background:rgba(29,15,27,.79);border-radius:18px;padding:20px}
 .gateCard{text-align:center;max-width:430px;background:#f6e8c9;color:#472b2e;border-radius:16px;border:2px solid #c49a63;padding:20px;box-shadow:0 10px 28px #0009}
 .gateCard p{font-size:18px;font-weight:bold}
 .kicker{color:#93663f;font-size:13px;letter-spacing:.14em;text-transform:uppercase;font-weight:700}
@@ -85,9 +89,10 @@ p{line-height:1.5}
 </div>
 <div class="actions"><button id="checkSync" class="btn secondary" type="button">↔ Проверить синхронизацию</button><button id="reloadFrame" class="btn secondary" type="button">↻ Перезагрузить игру</button></div>
 <p id="pageSyncStatus" class="note" role="status" aria-live="polite">Ожидаем подключения к общей игре…</p>
-<p class="note">Переходы выполняются только через Firebase. Если игра не открывается на обоих устройствах, сообщение об ошибке появится здесь, а не откроется локально.</p>
+<p class="note">Красная точка Никиты и синяя точка Лады сохраняются при переходах между любыми страницами. Переходы выполняются только через Firebase. Если игра не открывается на обоих устройствах, сообщение об ошибке появится здесь, а не откроется локально.</p>
 <p id="studentNote" class="note" hidden>Веди Ладу пальцем по светлой дорожке. Красная линия — подсказка преподавателя.</p>
-<div class="gameWrap"><iframe id="mazeFrame" class="iframe" title="Совместный Тиввиг" src="about:blank"></iframe>
+<div class="gameWrap" id="gameWrap"><iframe id="mazeFrame" class="iframe" title="Совместный Тиввиг" src="about:blank"></iframe>
+<div id="sharedCursor" class="sharedCursor" role="presentation" hidden><span id="sharedCursorLabel" data-label>Никита</span></div>
 <div class="frameGate" id="frameGate" hidden><div class="gateCard"><p id="frameGateMessage">Загружаем общую игру…</p><button type="button" id="retryFrame" class="btn secondary">↻ Перезагрузить игру</button></div></div></div>
 <p id="lessonMessage" role="status" aria-live="polite" class="note"></p>
 </section>
