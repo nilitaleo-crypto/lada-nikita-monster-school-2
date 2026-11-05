@@ -21,6 +21,26 @@ const titles={
 "michael-jackson-jungle.html":"Джунгли: подруги","michael-jackson-merman.html":"Спасение русала","michael-jackson-vampire.html":"Побег от вампира","wardrobe.html":"Наряды Лады"
 };
 const validRoom=/^[A-Za-z0-9_-]{32,}$/;
+
+/* Versioned room navigation uses a whitelist-checked path encoded in the epoch.
+   This remains valid even when Firebase still has the original page-path rules. */
+function encodeRoomPage(path){
+ if(!allowedPages.has(path))throw new Error('Запрещённая страница');
+ return randomId(12)+'_p_'+btoa(path).replace(/\+/g,'-').replace(/\//g,'_').replace(/=+$/g,'');
+}
+function decodeRoomPage(data){
+ if(!data||typeof data.epoch!=='string')return null;
+ const match=/^[A-Za-z0-9_-]{16}_p_([A-Za-z0-9_-]+)$/.exec(data.epoch);
+ if(match){
+  try{
+   const token=match[1].replace(/-/g,'+').replace(/_/g,'/');
+   const result=atob(token+'='.repeat((4-token.length%4)%4));
+   return allowedPages.has(result)?result:null;
+  }catch(e){return null;}
+ }
+ return allowedPages.has(data.path)?data.path:null;
+}
+
 let role=null,room=null,uid=null,owner=null,sessionStarted=false;
 let currentPage=null,currentEpoch=null,frameReady=false,lastVersion=null,localCursorAt=0,lastProgressAt=0;
 let latestHint=null,latestProgress=null,latestStudentCursor=null,latestTeacherCursor=null,latestScroll=null,studentPresence=null;
@@ -34,8 +54,13 @@ function updateReadyStatus(){
  el.textContent='Общая игра: '+(titles[currentPage]||currentPage)+' · компьютер '+a+' · iPad '+b;
  if(!readiness.teacher||!readiness.student)el.textContent+=' · ожидаем загрузку';
  if(frameReady){
-   if(readiness.teacher&&readiness.student){pageGate(false);report('✓ Обе стороны открыли '+(titles[currentPage]||currentPage)+'. Можно играть вместе.');}
-   else pageGate(true,'Игра открылась здесь. Ждём подтверждения загрузки на '+(readiness.student?'компьютере':'iPad')+'…');
+   // A remote participant's missing READY marker must never disable this participant's controls.
+   pageGate(false);
+   if(readiness.teacher&&readiness.student){
+     report('✓ Оба устройства открыли '+(titles[currentPage]||currentPage)+'. Можно играть вместе.');
+   }else{
+     report('Эта страница готова. Ожидаем подтверждение второго устройства; кнопки доступны.');
+   }
  }
 }
 function pageGate(show,detail){
@@ -163,9 +188,10 @@ async function checkPageFromFirebase(){
  if(!sessionStarted||!room)return;
  try{
   const snapshot=await get(dbref('page')),p=snapshot.val();
-  if(p&&allowedPages.has(p.path)&&typeof p.epoch==='string'&&p.epoch.length>=12){
-   if(p.path!==currentPage||p.epoch!==currentEpoch)startPage(p.path,p.epoch);
-   return p;
+  const path=decodeRoomPage(p);
+  if(p&&path&&typeof p.epoch==='string'&&p.epoch.length>=12){
+   if(path!==currentPage||p.epoch!==currentEpoch)startPage(path,p.epoch);
+   return {...p,path};
   }
   report('⚠ В комнате не найдена общая страница.');
  }catch(e){
@@ -239,6 +265,7 @@ function frameIsReady(value){
  if(!value||value.page!==currentPage||value.epoch!==currentEpoch)return;
  frameReady=true;
  if(frameWatchdog){clearTimeout(frameWatchdog);frameWatchdog=null;}
+ pageGate(false);
  syncExistingData();
  for(const item of eventBuffer)applyEvent(item);
  const marker=readyMark[role],action=push(dbref('actions/'+currentEpoch));
@@ -284,10 +311,10 @@ async function navigate(path){
  }
  report('Открываем «'+(titles[path]||path)+'» у обоих участников…');
  try{
-  await set(dbref("page"),{path,epoch:randomId(12),by:uid,at:Date.now()});
+  await set(dbref("page"),{path:'index.html',epoch:encodeRoomPage(path),by:uid,at:Date.now()});
   // Confirm the server-side page value; the other participant will receive it too.
   const actual=await get(dbref('page'));
-  if(actual.val()?.path!==path){
+  if(decodeRoomPage(actual.val())!==path){
     report('⚠ Firebase не подтвердил переход. Общая игра осталась прежней.');
   }
  }catch(e){
@@ -320,7 +347,11 @@ function watchRoom(){
  offConnect=onValue(ref(db,'.info/connected'),s=>{connected=s.val()===true;updatePresence();refreshRemotePointer();});
  observe("state/rewards",applySharedRewards);
  observe("state/selected",applySharedSelection);
- observe("page",p=>{if(p&&allowedPages.has(p.path))startPage(p.path,p.epoch);else report("Не удалось открыть страницу занятия.");});
+ observe("page",p=>{
+   const resolved=decodeRoomPage(p);
+   if(p&&resolved)startPage(resolved,p.epoch);
+   else report("⚠ Firebase не прислал корректную страницу занятия.");
+ });
  observe("studentPresence",p=>{studentPresence=p;updatePresence();});
  observe("progress",p=>{latestProgress=p;if(role==="teacher"&&currentPage==="vulkan-labirint.html")sendToFrame("progress",p);});
  observe("hint",p=>{latestHint=p;if(currentPage==="vulkan-labirint.html")sendToFrame("hint",p||{points:[]});});
