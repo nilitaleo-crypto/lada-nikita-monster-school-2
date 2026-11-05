@@ -194,15 +194,32 @@ body.viewing{overflow:hidden}
       <a class="back" href="michael-jackson-vampire.html">🦇 Начать погоню</a>
     </article>
   </div>
-  <p class="note">Открытые награды хранятся в браузере этого устройства. На другом устройстве или после очистки данных их потребуется открыть заново.</p>
+  <p class="note">Награды сохраняются между совместными занятиями в Firebase, привязанном к аккаунту преподавателя.</p>
 </main>
 <div class="viewer" id="viewer" role="dialog" aria-modal="true" aria-label="Иллюстрация на весь экран" hidden>
   <div class="viewer-bar"><strong id="viewerTitle">✦ Апофеоз вулкана Эмпедокла</strong><button type="button" class="close" id="close">✕ Закрыть</button></div>
   <img class="large" id="viewerImage" src="images/empedocles-olympians.webp" alt="Шесть олимпийских богов Тиввига">
   <span class="viewer-hint">Нажми «Закрыть» или коснись фона, чтобы вернуться в альбом.</span>
 </div>
+<script src="game-registry.js?v=1"></script>
 <script>
 (()=>{
+  const extras=window.TivvigRegistry.rewards.filter(r=>r.gallery&&r.autoGallery);
+  const list=document.querySelector(".pages");
+  for(const r of extras){
+   const opened=document.createElement("article");opened.id="extra-"+r.id+"-opened";opened.className="page";opened.hidden=true;
+   const note=document.createElement("div");note.className="status";note.textContent="✦ Открыто · Ладабург";
+   const button=document.createElement("button");button.type="button";button.className="art-thumb";button.dataset.openReward=r.id;
+   const image=document.createElement("img");image.src=r.image;image.alt=r.alt||r.title;button.append(image);
+   const title=document.createElement("h2");title.textContent=r.title;
+   opened.append(note,button,title);
+   const locked=document.createElement("article");locked.className="page locked";locked.id="extra-"+r.id+"-sealed";
+   const label=document.createElement("div");label.className="status";label.textContent="🔒 Будущее открытие";
+   const seal=document.createElement("div");seal.className="sealed";seal.textContent="👶";
+   const hint=document.createElement("h2");hint.textContent=r.title;
+   const go=document.createElement("a");go.className="back";go.href=r.game;go.textContent="🏰 К игре в Ладабурге";
+   locked.append(label,seal,hint,go);list.append(opened,locked);
+  }
   const read=key=>{try{return localStorage.getItem(key)==='unlocked'}catch(e){return false}};
   const rewardMap={
    maze:'tivvig_reward_maze_coins_v1',
@@ -217,6 +234,11 @@ body.viewing{overflow:hidden}
   const unlocked={};
   function paintCollection(){
    for(const [kind,key] of Object.entries(rewardMap))unlocked[kind]=read(key);
+   for(const r of extras){
+    unlocked[r.id]=read(r.key);
+    document.getElementById("extra-"+r.id+"-opened").hidden=!unlocked[r.id];
+    document.getElementById("extra-"+r.id+"-sealed").hidden=unlocked[r.id];
+   }
    const outfitUnlocked=read('tivvig_outfit_mermaid_unlocked_v1')||
      ['tivvig_reward_jungle_friends_v1','tivvig_reward_merman_waterhouse_v1','tivvig_reward_vampire_nosferatu_v1'].every(read);
    document.getElementById('mermaidOutfitOpened').hidden=!outfitUnlocked;
@@ -227,7 +249,7 @@ body.viewing{overflow:hidden}
      document.getElementById(opened).hidden=!unlocked[kind];
      document.getElementById(sealed).hidden=unlocked[kind];
    }
-   document.getElementById('counter').textContent='Открыто иллюстраций: '+Object.values(unlocked).filter(Boolean).length+' из 8';
+   document.getElementById('counter').textContent='Открыто иллюстраций: '+Object.values(unlocked).filter(Boolean).length+' из '+(Object.keys(rewardMap).length+extras.length);
   }
   paintCollection();
   window.addEventListener('tivvig-inventory-changed',paintCollection);
@@ -246,6 +268,7 @@ body.viewing{overflow:hidden}
     merman:{src:'images/waterhouse-mermaid-original.webp',title:'Русалка (1900) · Джон Уильям Уотерхаус',alt:'Оригинальная картина Русалка Джона Уильяма Уотерхауса'},
     vampire:{src:'images/nosferatu.svg',title:'Носферату (1922) · Ф. В. Мурнау',alt:'Граф Орлок на корабле'}
   };
+  for(const r of extras)artworks[r.id]={src:r.image,title:r.title,alt:r.alt||r.title};
   let opener=null;
   function open(e){
     const kind=e.currentTarget.dataset.openReward||'empedocles';
@@ -268,6 +291,6 @@ body.viewing{overflow:hidden}
   document.addEventListener('keydown',e=>{if(e.key==='Escape'&&!viewer.hidden)close()});
 })();
 </script>
-<script src="world-coop-bridge.js?v=10" defer></script>
+<script src="world-coop-bridge.js?v=12" defer></script>
 </body>
 </html>
