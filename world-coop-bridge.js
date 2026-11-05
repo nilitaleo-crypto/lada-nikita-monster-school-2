@@ -45,7 +45,7 @@ document.addEventListener("click",e=>{
   return;
  }
  if(isMaze)return;
- const target=e.target.closest("button,[role=button],[data-open-reward],#rewardImg,#scene,#reward,#win,#viewer,#lightbox,#rewardReveal");
+ const target=e.target.closest("button,[role=button],[data-open-reward],#rewardImg,#scene,#stage,#arena,#reward,#win,#viewer,#lightbox,#rewardReveal,#prize,#transformation");
  if(!target || target.matches("button[disabled]"))return;
  const selector=pathOf(target);
  if(selector && selector.length<=450){
