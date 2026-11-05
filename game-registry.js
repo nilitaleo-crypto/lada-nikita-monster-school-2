@@ -6,7 +6,7 @@ const rewards=[{"key":"tivvig_reward_maze_coins_v1","gallery":true},{"key":"tivv
 const byPath=Object.fromEntries(pages.map(p=>[p.path,p]));
 const byReward=Object.fromEntries(rewards.map(r=>[r.key,r]));
 function unlockReward(key){
- if(!Object.hasOwn(byReward,key))return false;
+ if(!Object.prototype.hasOwnProperty.call(byReward,key))return false;
  try{localStorage.setItem(key,"unlocked");}catch{}
  window.dispatchEvent(new CustomEvent("tivvig:reward-unlocked",{detail:{key}}));
  window.dispatchEvent(new Event("tivvig-inventory-changed"));
