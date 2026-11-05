@@ -67,20 +67,7 @@ p{line-height:1.5}
 <div><div class="kicker">Экспедиция в прямом эфире</div><h2 id="sessionTitle">Лабиринт Эмпедокла</h2><p id="connectionStatus" class="online" role="status" aria-live="polite">Подключаемся…</p></div>
 <div class="actions" id="teacherControls" hidden>
 <label class="navLabel" for="pageSelect">Открыть страницу
-<select id="pageSelect">
-<option value="index.html">🗺️ Карта Тиввига</option>
-<option value="vulkan-labirint.html">🪙 Лабиринт Эмпедокла</option>
-<option value="vulkan-empedokla.html">🌋 Прыжки в вулкан</option>
-<option value="vulkan-slogi.html">🔤 Кузница слогов</option>
-<option value="vulkan-kuznica.html">🛠️ Поиск предметов</option>
-<option value="vulkan-hydra.html">🐉 Гидра и буквы</option>
-<option value="michael-jackson-jungle.html">🌺 Подружки</option>
-<option value="michael-jackson-merman.html">🌊 Русал</option>
-<option value="michael-jackson-vampire.html">🦇 Вампир</option>
-<option value="wardrobe.html">♛ Наряды</option>
-<option value="collection.html">🏅 Коллекция</option>
-<option value="igry.html">🧩 Другие игры</option>
-</select></label>
+<select id="pageSelect" aria-label="Выбрать игру из общего реестра"></select></label>
 <button id="clearHint" class="btn secondary" type="button">Стереть подсказку</button><button id="resetGame" class="btn secondary" type="button">Начать лабиринт заново</button>
 </div>
 </div>
@@ -100,6 +87,7 @@ p{line-height:1.5}
 <p id="lessonMessage" role="status" aria-live="polite" class="note"></p>
 </section>
 </main>
-<script type="module" src="coop.js?v=10"></script>
+<script src="game-registry.js?v=1"></script>
+<script type="module" src="coop.js?v=12"></script>
 </body>
 </html>
