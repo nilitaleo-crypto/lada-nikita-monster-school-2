@@ -201,8 +201,10 @@ body.viewing{overflow:hidden}
   <img class="large" id="viewerImage" src="images/empedocles-olympians.webp" alt="Шесть олимпийских богов Тиввига">
   <span class="viewer-hint">Нажми «Закрыть» или коснись фона, чтобы вернуться в альбом.</span>
 </div>
-<script src="game-registry.js?v=2"></script>
+
 <script>
+window.addEventListener("tivvig:registry-ready",()=>{
+
 (()=>{
   const extras=window.TivvigRegistry.rewards.filter(r=>r.gallery&&r.autoGallery);
   const list=document.querySelector(".pages");
@@ -290,7 +292,9 @@ body.viewing{overflow:hidden}
   viewer.addEventListener('click',e=>{if(e.target===viewer)close()});
   document.addEventListener('keydown',e=>{if(e.key==='Escape'&&!viewer.hidden)close()});
 })();
+
+});
 </script>
-<script src="world-coop-bridge.js?v=12" defer></script>
+<script src="game-runtime.js?v=1" defer></script>
 </body>
 </html>
