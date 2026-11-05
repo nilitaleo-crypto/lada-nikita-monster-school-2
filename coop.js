@@ -83,6 +83,55 @@ function applySharedSelection(value){
 }
 
 const $frame=$("mazeFrame");
+
+/* Routes are controlled from the parent as well as the iframe.
+   This prevents browser-native navigation from silently escaping the shared session. */
+function routeFromFrame(anchor){
+ try{
+  const raw=anchor.getAttribute('href');
+  if(!raw||raw.startsWith('#')||anchor.hasAttribute('download'))return null;
+  const target=new URL(raw,$frame.contentWindow.location.href);
+  const base=new URL('.',location.href).pathname;
+  if(target.origin!==location.origin||!target.pathname.startsWith(base))return null;
+  const page=decodeURIComponent(target.pathname.slice(base.length))||'index.html';
+  if(page.includes('/')||!allowedPages.has(page))return null;
+  return page;
+ }catch(e){return null}
+}
+function installFrameNavigation(){
+ try{
+  const doc=$frame.contentDocument;
+  if(!doc||doc.__tivvigParentRouter)return;
+  doc.__tivvigParentRouter=true;
+  doc.addEventListener('click',e=>{
+   if(!sessionStarted||!e.isTrusted)return;
+   const link=e.target?.closest?.('a[href]');
+   if(!link)return;
+   const page=routeFromFrame(link);
+   if(!page)return;
+   // Capture before native navigation; only Firebase is allowed to change pages.
+   e.preventDefault();e.stopImmediatePropagation();
+   if(page!==currentPage)navigate(page);
+  },true);
+ }catch(e){
+  report('Не удалось подключить маршрутизацию страницы: '+String(e));
+ }
+}
+async function checkPageFromFirebase(){
+ if(!sessionStarted||!room)return;
+ try{
+  const snapshot=await get(dbref('page')),p=snapshot.val();
+  if(p&&allowedPages.has(p.path)&&typeof p.epoch==='string'&&p.epoch.length>=12){
+   if(p.path!==currentPage||p.epoch!==currentEpoch)startPage(p.path,p.epoch);
+   return p;
+  }
+  report('⚠ В комнате не найдена общая страница.');
+ }catch(e){
+  report('⚠ Не удалось прочитать общую страницу Firebase: '+explain(e));
+ }
+ return null;
+}
+
 function message(text,err=false){$("message").textContent=text;$("message").className=err?"error":"";}
 function report(text){$("lessonMessage").textContent=text;}
 function explain(e){
@@ -144,6 +193,7 @@ function applyEvent(e){
 }
 function frameIsReady(value){
  if(!sessionStarted||!currentPage||frameReady)return;
+ installFrameNavigation();
  // Never mark a newly loaded iframe ready because of an old iframe load event.
  if(!value||value.page!==currentPage||value.epoch!==currentEpoch)return;
  frameReady=true;
@@ -175,8 +225,8 @@ function startPage(path,epoch){
  $("clearHint").hidden=path!=="vulkan-labirint.html";
  $("resetGame").hidden=path!=="vulkan-labirint.html";
  updatePresence();updateReadyStatus();
- report('Firebase переключает обоих участников: '+(titles[path]||path));
- const url=new URL(path,location.href);url.searchParams.set("coop","1");url.searchParams.set("role",role);url.searchParams.set("seed",epoch);url.searchParams.set("build","4");
+ report('Получена общая страница из Firebase: '+(titles[path]||path));
+ const url=new URL(path,location.href);url.searchParams.set("coop","1");url.searchParams.set("role",role);url.searchParams.set("seed",epoch);url.searchParams.set("build","6");
  $frame.src=url.href;
  offEvents=onChildAdded(query(dbref("actions/"+epoch),orderByKey(),limitToLast(160)),snapshot=>{
    const action={key:snapshot.key,value:snapshot.val()};
@@ -186,28 +236,40 @@ function startPage(path,epoch){
 }
 async function navigate(path){
  if(!allowedPages.has(path)||!room)return;
- if(!connected){report('⚠ Нет соединения с Firebase. Проверь интернет и нажми «Перезагрузить игру».');return;}
+ if(!connected){
+  const msg='⚠ Нет соединения с Firebase. Проверь интернет и нажми «Перезагрузить игру».';
+  report(msg);$('pageSyncStatus').textContent=msg;return;
+ }
  report('Открываем «'+(titles[path]||path)+'» у обоих участников…');
  try{
   await set(dbref("page"),{path,epoch:randomId(12),by:uid,at:Date.now()});
+  // Confirm the server-side page value; the other participant will receive it too.
+  const actual=await get(dbref('page'));
+  if(actual.val()?.path!==path){
+    report('⚠ Firebase не подтвердил переход. Общая игра осталась прежней.');
+  }
  }catch(e){
-  report('⚠ Не удалось открыть игру для двоих: '+explain(e));
+  const msg='⚠ Firebase не разрешил общий переход: '+explain(e);
+  report(msg);$('pageSyncStatus').textContent=msg;
   if($('pageSelect')&&currentPage)$('pageSelect').value=currentPage;
  }
 }
-function reloadSharedFrame(){
- if(!currentPage||!currentEpoch){report('Общая игра ещё не открыта.');return;}
+async function reloadSharedFrame(){
+ const p=await checkPageFromFirebase();
+ if(!p)return;
+ if(p.path!==currentPage||p.epoch!==currentEpoch)return; // startPage already reopened the latest room page.
  const url=new URL(currentPage,location.href);
  url.searchParams.set('coop','1');url.searchParams.set('role',role);
- url.searchParams.set('seed',currentEpoch);url.searchParams.set('build','4');
+ url.searchParams.set('seed',currentEpoch);url.searchParams.set('build','6');
  url.searchParams.set('retry',String(Date.now()));
  frameReady=false;
- pageGate(true,'Восстанавливаем подключение к общей странице…');
+ pageGate(true,'Восстанавливаем подключение к общей игре '+(titles[currentPage]||currentPage)+'…');
  if(frameWatchdog)clearTimeout(frameWatchdog);
  frameWatchdog=setTimeout(()=>{if(!frameReady)pageGate(true,'Не удалось открыть игру: проверь интернет и правила Firebase.')},10000);
  $frame.src=url.href;
- report('Перезагружаем игровое окно, не меняя комнату.');
+ report('Восстанавливаем ту же страницу, что записана в Firebase.');
 }
+
 function observe(path,fn){
  const unsub=onValue(dbref(path),s=>fn(s.val()),e=>report(explain(e)));
  unsubs.push(unsub);
@@ -240,8 +302,14 @@ function watchRoom(){
 }
 function initClient(){
  showLesson();sessionStarted=true;
- // iframe.load is not proof that its game bridge has initialized.
+ $frame.addEventListener('load',installFrameNavigation);
+ // iframe.load alone does not prove that the game is ready.
  watchRoom();
+ const poll=setInterval(()=>{
+  if(!sessionStarted||!connected||document.hidden)return;
+  checkPageFromFirebase();
+ },5000);
+ window.addEventListener('pagehide',()=>clearInterval(poll),{once:true});
 }
 const teacher=$("teacherStart"),student=$("studentStart");
 if(isStudentInvite&&validRoom.test(incomingRoom)){
