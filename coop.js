@@ -76,6 +76,75 @@ const rewardKeys=[
  'tivvig_outfit_mermaid_unlocked_v1'
 ];
 const rewardSet=new Set(rewardKeys),selectedKey='tivvig_outfit_selected_v1';
+
+/* Persistent Lada collection: readable/writable only by the Google teacher.
+   Individual lesson rooms mirror this state to the anonymously signed-in child. */
+let cloudProfileReady=false,cloudSavedRewards=new Set(),cloudSavedSelection=null;
+function profileRef(path=''){
+ return ref(db,'teacherProfiles/'+uid+'/lada'+(path?'/'+path:''));
+}
+function saveInfo(message,problem=false){
+ const el=document.getElementById('saveStatus');
+ if(el){el.textContent=message;el.style.color=problem?'#9e312d':'#315740';}
+}
+function localRewardSnapshot(){
+ const found={};
+ for(const key of rewardKeys){
+  try{if(localStorage.getItem(key)==='unlocked')found[key]='unlocked'}catch(e){}
+ }
+ return found;
+}
+function localSelectedOutfit(){
+ try{const stored=localStorage.getItem(selectedKey);if(stored==='mermaid'||stored==='default')return stored}catch(e){}
+ return 'default';
+}
+async function restoreTeacherCollection(){
+ const rewards=localRewardSnapshot();
+ let selected=localSelectedOutfit();
+ try{
+  const snap=await get(profileRef());
+  const saved=snap.val()||{};
+  for(const key of rewardKeys){
+   if(saved.rewards?.[key]==='unlocked'){
+    rewards[key]='unlocked';cloudSavedRewards.add(key);
+   }
+  }
+  if(saved.selected==='default'||saved.selected==='mermaid')selected=saved.selected;
+  cloudSavedSelection=saved.selected==='default'||saved.selected==='mermaid'?saved.selected:null;
+  cloudProfileReady=true;
+  saveInfo('☁ Коллекция Лады загружена из Firebase. Полученные картины сохраняются между занятиями.');
+ }catch(e){
+  cloudProfileReady=false;
+  saveInfo('⚠ Постоянное сохранение не включено: обнови правила Firebase. Внутри занятия синхронизация остаётся.',true);
+  console.warn('Tivvig: permanent progress unavailable',e);
+ }
+ return {rewards,selected};
+}
+function persistTeacherRewards(values){
+ if(role!=='teacher'||!cloudProfileReady||!values)return;
+ for(const key of rewardKeys){
+  if(values[key]!=='unlocked'||cloudSavedRewards.has(key))continue;
+  cloudSavedRewards.add(key);
+  set(profileRef('rewards/'+key),'unlocked').then(()=>{
+    saveInfo('☁ Новая награда Лады сохранена в Firebase.');
+  }).catch(e=>{
+    cloudSavedRewards.delete(key);
+    saveInfo('⚠ Награда получена, но облачное сохранение не удалось: '+explain(e),true);
+  });
+ }
+}
+function persistTeacherSelection(value){
+ if(role!=='teacher'||!cloudProfileReady||!['default','mermaid'].includes(value))return;
+ if(cloudSavedSelection===value)return;
+ cloudSavedSelection=value;
+ set(profileRef('selected'),value).then(()=>{
+  saveInfo('☁ Выбранный наряд Лады сохранён.');
+ }).catch(e=>{
+  cloudSavedSelection=null;
+  saveInfo('⚠ Не удалось сохранить наряд в облаке: '+explain(e),true);
+ });
+}
+
 let remoteActionCount=0;
 function pushReward(key){if(!room||!rewardSet.has(key))return;set(dbref('state/rewards/'+key),'unlocked').catch(e=>report(explain(e)))}
 function pushSelected(value){if(!room||!['default','mermaid'].includes(value))return;set(dbref('state/selected'),value).catch(e=>report(explain(e)))}
@@ -90,11 +159,19 @@ async function seedStudentState(){
  for(const key of rewardKeys){
   try{if(localStorage.getItem(key)==='unlocked')promises.push(set(dbref('state/rewards/'+key),'unlocked'))}catch(e){}
  }
- try{const outfit=localStorage.getItem(selectedKey);if(outfit==='mermaid'||outfit==='default')promises.push(set(dbref('state/selected'),outfit))}catch(e){}
+ // Do not overwrite a persisted teacher outfit with stale iPad localStorage.
+ try{
+  const chosen=await get(dbref('state/selected'));
+  if(!chosen.exists()){
+   const outfit=localStorage.getItem(selectedKey);
+   if(outfit==='mermaid'||outfit==='default')promises.push(set(dbref('state/selected'),outfit));
+  }
+ }catch(e){console.warn('Tivvig: student outfit preload',e);}
  await Promise.allSettled(promises);
 }
 function applySharedRewards(values){
  if(!values)return;
+ persistTeacherRewards(values);
  for(const key of rewardKeys){
   if(values[key]!=='unlocked')continue;
   try{if(localStorage.getItem(key)!=='unlocked')localStorage.setItem(key,'unlocked')}catch(e){}
@@ -103,6 +180,7 @@ function applySharedRewards(values){
 }
 function applySharedSelection(value){
  if(value!=='mermaid'&&value!=='default')return;
+ persistTeacherSelection(value);
  try{if(localStorage.getItem(selectedKey)!==value)localStorage.setItem(selectedKey,value)}catch(e){}
  sendToFrame('inventory',{kind:'selection',value});
 }
@@ -397,7 +475,12 @@ teacher.addEventListener("click",async()=>{
   const provider=new GoogleAuthProvider(),{user}=await signInWithPopup(auth,provider);
   if(user.isAnonymous||!user.providerData.some(p=>p.providerId==="google.com"))throw new Error("Требуется вход через Google.");
   role="teacher";uid=user.uid;owner=uid;room=randomId();
-  await set(dbref(""),{owner:uid,createdAt:Date.now(),resetVersion:0,page:{path:"index.html",epoch:randomId(12),by:uid,at:Date.now()}});
+  const saved=await restoreTeacherCollection();
+  await set(dbref(""),{
+   owner:uid,createdAt:Date.now(),resetVersion:0,
+   page:{path:"index.html",epoch:randomId(12),by:uid,at:Date.now()},
+   state:{rewards:saved.rewards,selected:saved.selected}
+  });
   initClient();
  }catch(e){message(explain(e),true);}
  finally{teacher.disabled=false;}
@@ -413,6 +496,7 @@ student.addEventListener("click",async()=>{
   if(!initial.exists())throw new Error("Комната не найдена. Попроси преподавателя создать новую.");
   owner=initial.child("owner").val();
   initClient();
+  saveInfo('Коллекция Лады синхронизируется с преподавателем через Firebase.');
   seedStudentState().catch(e=>report(explain(e)));
  }catch(e){message(explain(e),true);}
  finally{student.disabled=false;}

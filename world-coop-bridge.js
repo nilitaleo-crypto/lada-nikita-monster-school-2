@@ -109,6 +109,7 @@ window.addEventListener("message",e=>{
  const {type,value}=e.data;
  if(type==="role"){role=value==="teacher"?"teacher":"student";return;}
  if(type==="inventory"){
+   window.dispatchEvent(new Event('tivvig-inventory-changed'));
    if(current==="wardrobe.html")window.dispatchEvent(new Event("pageshow"));
    if(current==="index.html")window.dispatchEvent(new CustomEvent("tivvig-outfit-changed"));
    return;
