@@ -9,7 +9,7 @@
   {id:'grapes',name:'Виноград',emoji:'🍇',short:'гроздья',question:'Виноградины растут гроздьями. Как думаешь, какие они на вкус?'},
   {id:'carrot',name:'Морковь',emoji:'🥕',short:'из земли',question:'Морковь растёт под землёй. Как она хрустит, когда её ешь?'},
   {id:'pumpkin',name:'Тыква',emoji:'🎃',short:'круглая',question:'Тыква бывает огромной! Что из неё можно приготовить?'},
-  {id:'pitahaya',name:'Питахайя',emoji:'🐉',short:'драконий фрукт',question:'Питахайю ещё зовут драконьим фруктом. Какой вкус ты ей придумаешь?'},
+  {id:'pitahaya',name:'Питахайя',emoji:'🥭',short:'драконий фрукт',question:'Питахайю ещё зовут драконьим фруктом. Какой вкус ты ей придумаешь?'},
   {id:'carambola',name:'Карамбола',emoji:'⭐',short:'звезда',question:'Карамбола в разрезе похожа на звезду! Как думаешь, она сладкая или кислая?'},
   {id:'romanesco',name:'Романеско',emoji:'🥦',short:'овощ-башня',question:'Романеско похож на лес маленьких башенок. На что ещё похож этот овощ?'},
   {id:'physalis',name:'Физалис',emoji:'🍊',short:'в фонарике',question:'У физалиса есть оболочка, похожая на фонарик. Какой вкус скрывается внутри?'},
@@ -24,6 +24,7 @@
   b.setAttribute('aria-label','Положить в корзинку: '+fruit.name);
   const icon=document.createElement('span');icon.className='icon-fruit';icon.textContent=fruit.emoji;
   if(fruit.id==='purple-carrot')icon.style.filter='hue-rotate(145deg) saturate(1.5)';
+  if(fruit.id==='pitahaya')icon.style.filter='hue-rotate(290deg) saturate(1.55)';
   const label=document.createElement('span');label.className='name';label.textContent=fruit.name;
   const sub=document.createElement('span');sub.className='subtitle';sub.textContent=fruit.short;
   b.append(icon,label,sub);
