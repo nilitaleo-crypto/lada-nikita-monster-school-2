@@ -217,7 +217,7 @@ window.addEventListener("tivvig:registry-ready",()=>{
    opened.append(note,button,title);
    const locked=document.createElement("article");locked.className="page locked";locked.id="extra-"+r.id+"-sealed";
    const label=document.createElement("div");label.className="status";label.textContent="🔒 Будущее открытие";
-   const seal=document.createElement("div");seal.className="sealed";seal.textContent="👶";
+   const seal=document.createElement("div");seal.className="sealed";seal.textContent=r.sealedIcon||"✦";
    const hint=document.createElement("h2");hint.textContent=r.title;
    const go=document.createElement("a");go.className="back";go.href=r.game;go.textContent="🏰 К игре в Ладабурге";
    locked.append(label,seal,hint,go);list.append(opened,locked);
