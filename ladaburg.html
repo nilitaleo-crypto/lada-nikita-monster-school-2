@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#33252f">
+<meta name="description" content="Ладабург — столица Тиввига. Карта города для будущих приключений.">
+<title>Ладабург — столица Тиввига</title>
+<style>
+:root{--bg:#211b25;--gold:#baa37b;--ivory:#f4e6ca;--wine:#422d37}
+*{box-sizing:border-box}
+body{min-height:100dvh;margin:0;padding:clamp(8px,2vw,24px);background:radial-gradient(ellipse at 50% 5%,#72515a,#332530 55%,var(--bg) 100%);font-family:Georgia,"Times New Roman",serif;color:var(--ivory)}
+header{max-width:1500px;margin:0 auto 12px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px}
+header a{display:inline-flex;align-items:center;justify-content:center;min-height:48px;padding:10px 17px;border:1px solid var(--gold);border-radius:10px;color:#fce9c9;background:rgba(38,25,33,.86);text-decoration:none;font-size:16px;font-weight:bold;touch-action:manipulation}
+header a:hover,header a:focus-visible{background:#644b52;outline:2px solid #edcd91;outline-offset:2px}
+header .location{letter-spacing:.12em;text-transform:uppercase;font-size:clamp(11px,1.6vw,15px);font-weight:bold}
+main{max-width:1500px;margin:auto}
+.scene{position:relative;overflow:hidden;border:clamp(4px,.7vw,9px) double var(--gold);border-radius:15px;box-shadow:0 18px 50px #100b15a8;line-height:0;background:linear-gradient(135deg,#c6ae9b,#e6dbbe)}
+.scene img{display:block;width:100%;height:auto;aspect-ratio:1672/941;object-fit:contain;user-select:none;-webkit-user-drag:none}
+.caption{display:flex;align-items:baseline;justify-content:space-between;gap:14px;flex-wrap:wrap;margin:14px auto 0;max-width:1500px;color:var(--ivory)}
+.caption h1{font-size:clamp(22px,3vw,36px);font-weight:normal;margin:0;letter-spacing:.05em}
+.caption p{font-size:clamp(13px,2vw,17px);line-height:1.5;margin:0;opacity:.85}
+.note{margin-top:10px;text-align:center;font-size:13px;opacity:.8}
+@media(max-width:600px){header{gap:8px}.scene{border-width:4px;border-radius:10px}.caption{display:block;text-align:center}.caption p{margin-top:7px}}
+</style>
+</head>
+<body>
+<header>
+<a href="index.html" aria-label="Вернуться на карту мира Тиввиг">← Карта Тиввига</a>
+<span class="location">Тиввиг · Столица королевства</span>
+</header>
+<main>
+<div class="scene">
+<img src="images/ladaburg-city.avif" alt="Ладабург: светлая каменная столица с цветущими деревьями, лавками, библиотекой, театром, обсерваторией, фонтанами и далёким дворцом на горе" draggable="false" width="1672" height="941">
+</div>
+<div class="caption">
+<h1>Ладабург</h1>
+<p>Пока город встречает гостей. Скоро в его зданиях появятся приключения.</p>
+</div>
+<p id="gameConnection" class="note" aria-live="polite"></p>
+</main>
+<script src="game-runtime.js?v=1" defer></script>
+</body>
+</html>
