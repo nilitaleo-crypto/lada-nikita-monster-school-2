@@ -1,85 +1,122 @@
-/* Лавка Ладабурга — детерминированные действия от общего Firebase-реплея.
-   Вся игровая логика исполняется и у учителя, и у Лады в одном порядке кликов.
-   При обычном нажатии без кооператива игра тоже работает. */
+/* Лавка Ладабурга: реальные фотографии продуктов в корзинах на прилавке.
+   Игра намеренно работает только от click; в общем занятии все click
+   переигрываются по Firebase в одинаковом порядке у ребёнка и учителя. */
 (()=>{
- 'use strict';
- const fruits=[
-  {id:'apple',name:'Яблоко',emoji:'🍎',short:'хрустящее',question:'Яблоко бывает сладким и кислым. А какое любишь ты?'},
-  {id:'pear',name:'Груша',emoji:'🍐',short:'сочное',question:'Какая необычная форма у груши! С чем её можно сравнить?'},
-  {id:'grapes',name:'Виноград',emoji:'🍇',short:'гроздья',question:'Виноградины растут гроздьями. Как думаешь, какие они на вкус?'},
-  {id:'carrot',name:'Морковь',emoji:'🥕',short:'из земли',question:'Морковь растёт под землёй. Как она хрустит, когда её ешь?'},
-  {id:'pumpkin',name:'Тыква',emoji:'🎃',short:'круглая',question:'Тыква бывает огромной! Что из неё можно приготовить?'},
-  {id:'pitahaya',name:'Питахайя',emoji:'🥭',short:'драконий фрукт',question:'Питахайю ещё зовут драконьим фруктом. Какой вкус ты ей придумаешь?'},
-  {id:'carambola',name:'Карамбола',emoji:'⭐',short:'звезда',question:'Карамбола в разрезе похожа на звезду! Как думаешь, она сладкая или кислая?'},
-  {id:'romanesco',name:'Романеско',emoji:'🥦',short:'овощ-башня',question:'Романеско похож на лес маленьких башенок. На что ещё похож этот овощ?'},
-  {id:'physalis',name:'Физалис',emoji:'🍊',short:'в фонарике',question:'У физалиса есть оболочка, похожая на фонарик. Какой вкус скрывается внутри?'},
-  {id:'purple-carrot',name:'Фиолетовая морковь',emoji:'🥕',short:'фиолетовая!',question:'Бывает и фиолетовая морковь! Как думаешь, вкус у неё такой же, как у оранжевой?'}
- ];
- const $=id=>document.getElementById(id);
- const grid=$('products'),progress=$('progress'),speech=$('speechText'),speechTitle=$('speechTitle');
- const basket=$('basketContents'),basketNote=$('basketNote'),reward=$('reward'),flip=$('flipArtwork'),art=$('arcimboldoArtwork'),rewardText=$('rewardText');
- let chosen=[],revealed=false;
+'use strict';
+const TARGET=7;
+const fruits=[
+ {id:'apple',name:'Яблоко',short:'хрустящее',x:39,y:55,question:'Яблоки бывают сладкими и кислыми. Какое яблоко ты бы выбрала?',photo:'apple'},
+ {id:'pear',name:'Груша',short:'сочная',x:49,y:55,question:'На что похожа форма груши? Какой у неё запах?',photo:'pear'},
+ {id:'grapes',name:'Виноград',short:'ягоды',x:59,y:55,question:'Виноград бывает зелёным и фиолетовым. Какой ты любишь?',photo:'grapes'},
+ {id:'carrot',name:'Морковь',short:'хрустит',x:69,y:55,question:'Морковь растёт под землёй! Она сладкая или солёная?',photo:'carrot'},
+ {id:'pepper',name:'Перец',short:'сочный',x:79,y:55,question:'Этот перец оранжевый. Как ты думаешь, он сладкий или острый?',photo:'pepper'},
+ {id:'pitahaya',name:'Питахайя',short:'драконий плод',x:39,y:72,question:'Драконий фрукт выглядит очень необычно. А каким ты представляешь его вкус?',photo:'pitahaya'},
+ {id:'carambola',name:'Карамбола',short:'звёздочка',x:49,y:72,question:'Если карамболу разрезать поперёк, получится звезда. Она кислая или сладкая?',photo:'carambola'},
+ {id:'physalis',name:'Физалис',short:'фонарик',x:59,y:72,question:'Физалис похож на маленький фонарик. На что похож вкус ягодки?',photo:'physalis'},
+ {id:'opuntia',name:'Опунция',short:'плод кактуса',x:69,y:72,question:'А ты знала, что кактусы дают съедобные плоды? Как их можно есть, чтобы не уколоться?',photo:'opuntia'},
+ {id:'cherimoya',name:'Черимойя',short:'чешуйчатая',x:79,y:72,question:'Черимойя кажется покрытой чешуйками. Как думаешь, что у неё внутри?',photo:'cherimoya'}
+];
+const $=id=>document.getElementById(id);
+const grid=$('products'),progress=$('progress'),speech=$('speechText'),speechTitle=$('speechTitle');
+const basket=$('basketContents'),basketNote=$('basketNote'),reward=$('reward'),flip=$('flipArtwork'),art=$('arcimboldoArtwork'),rewardText=$('rewardText');
+let chosen=[],revealed=false;
+const photos=new Map();
+const photoPath=fruit=>'images/market-produce/'+fruit.photo+'.jpg';
+// Real photographs from Fruits-360 are on white. Remove the studio background
+// client-side and cache a transparent PNG; failure leaves the original photo visible.
+function isolatePhoto(img,fruit){
+ if(img.dataset.isolated)return;
+ img.dataset.isolated='1';
+ try{
+  const w=img.naturalWidth,h=img.naturalHeight;
+  if(!w||!h) return;
+  const canvas=document.createElement('canvas');canvas.width=w;canvas.height=h;
+  const ctx=canvas.getContext('2d',{willReadFrequently:true});
+  ctx.drawImage(img,0,0,w,h);
+  const pixels=ctx.getImageData(0,0,w,h);const d=pixels.data;
+  let left=w,top=h,right=-1,bottom=-1;
+  for(let y=0;y<h;y++)for(let x=0;x<w;x++){
+   const i=(y*w+x)*4,r=d[i],g=d[i+1],b=d[i+2];
+   const lo=Math.min(r,g,b),chroma=Math.max(r,g,b)-lo;
+   let alpha=255;
+   if(lo>=244&&chroma<22)alpha=0;
+   else if(lo>221&&chroma<25)alpha=Math.round(255*(244-lo)/23);
+   d[i+3]=alpha;
+   if(alpha>35){if(x<left)left=x;if(x>right)right=x;if(y<top)top=y;if(y>bottom)bottom=y;}
+  }
+  ctx.putImageData(pixels,0,0);
+  if(right<left||bottom<top)return;
+  const cropped=document.createElement('canvas');cropped.width=right-left+1;cropped.height=bottom-top+1;
+  cropped.getContext('2d').drawImage(canvas,left,top,cropped.width,cropped.height,0,0,cropped.width,cropped.height);
+  const dataUrl=cropped.toDataURL('image/png');
+  photos.set(fruit.id,dataUrl);img.classList.add('is-cutout');img.src=dataUrl;
+  if(chosen.includes(fruit.id))paintBasket();
+ }catch(e){console.warn('Could not isolate produce photo',fruit.id,e);}
+}
+for(const fruit of fruits){
+ const b=document.createElement('button');b.type='button';b.className='product';b.id='fruit-'+fruit.id;b.dataset.fruitId=fruit.id;
+ b.style.setProperty('--x',fruit.x+'%');b.style.setProperty('--y',fruit.y+'%');
+ b.setAttribute('aria-label','Положить в корзинку: '+fruit.name);
+ const wrap=document.createElement('span');wrap.className='photo-wrap';
+ const img=document.createElement('img');img.src=photoPath(fruit);img.alt='';img.decoding='async';img.loading='eager';
+ img.addEventListener('load',()=>isolatePhoto(img,fruit));
+ wrap.append(img);
+ const label=document.createElement('span');label.className='name';label.textContent=fruit.name;
+ b.append(wrap,label);
+ b.addEventListener('click',()=>choose(fruit.id));grid.append(b);
+}
+function paintBasket(){
+ basket.replaceChildren();
+ for(const id of chosen){
+  const fruit=fruits.find(f=>f.id===id);const image=document.createElement('img');
+  image.src=photos.get(id)||photoPath(fruit);image.alt='';image.setAttribute('aria-hidden','true');
+  basket.append(image);
+ }
+}
+function paint(){
+ progress.textContent='В корзинке '+chosen.length+' из '+TARGET;
+ basketNote.textContent=chosen.length===0?'Корзинка пока пуста':chosen.length===TARGET?'Корзинка полная!':'Выбрано '+chosen.length+' из '+TARGET;
  for(const fruit of fruits){
-  const b=document.createElement('button');b.type='button';b.className='product';b.id='fruit-'+fruit.id;b.dataset.fruitId=fruit.id;
-  b.setAttribute('aria-label','Положить в корзинку: '+fruit.name);
-  const icon=document.createElement('span');icon.className='icon-fruit';icon.textContent=fruit.emoji;
-  if(fruit.id==='purple-carrot')icon.style.filter='hue-rotate(145deg) saturate(1.5)';
-  if(fruit.id==='pitahaya')icon.style.filter='hue-rotate(290deg) saturate(1.55)';
-  const label=document.createElement('span');label.className='name';label.textContent=fruit.name;
-  const sub=document.createElement('span');sub.className='subtitle';sub.textContent=fruit.short;
-  b.append(icon,label,sub);
-  b.addEventListener('click',()=>choose(fruit.id));
-  grid.append(b);
+  const el=$('fruit-'+fruit.id),selected=chosen.includes(fruit.id);
+  el.classList.toggle('selected',selected);
+  el.setAttribute('aria-pressed',String(selected));
  }
- function paint(){
-  progress.textContent='В корзинке '+chosen.length+' из 5';
-  basket.textContent=chosen.map(id=>fruits.find(f=>f.id===id).emoji).join(' ');
-  basketNote.textContent=chosen.length===0?'Корзинка пока пуста':chosen.length===5?'Корзинка полная!':('Выбрано '+chosen.length+' из 5');
-  for(const fruit of fruits){
-   const el=$('fruit-'+fruit.id),isSelected=chosen.includes(fruit.id);
-   el.classList.toggle('selected',isSelected);
-   el.setAttribute('aria-pressed',String(isSelected));
-  }
- }
- function choose(id){
-  const fruit=fruits.find(f=>f.id===id);
-  if(!fruit||chosen.length>=5)return;
-  if(chosen.includes(id)){
-   speechTitle.textContent='Наш зелёный друг:';
-   speech.textContent='Этот продукт уже в корзинке! Выбери другой.';
-   return;
-  }
-  chosen.push(id);
-  speechTitle.textContent=fruit.name+':';
-  speech.textContent=fruit.question;
-  paint();
-  if(chosen.length===5){
-   speechTitle.textContent='Наш зелёный друг:';
-   speech.textContent='Ты собрала все пять! Смотри, какую корзинку мы нашли!';
-   reward.hidden=false;
-   flip.focus({preventScroll:true});
-  }
- }
- flip.addEventListener('click',()=>{
-  if(chosen.length!==5||revealed)return;
-  revealed=true;art.classList.add('turned');
-  art.alt='Перевёрнутая картина Арчимбольдо: плоды складываются в человеческое лицо';
-  flip.setAttribute('aria-label','Ты нашла лицо из фруктов');
-  rewardText.textContent='Невероятно! Корзинка превратилась в голову из фруктов. Какие плоды ты узнаёшь?';
-  // Сигнал через общий игровой реестр: он передаёт награду в текущую Firebase-комнату.
-  window.TivvigRegistry?.unlockReward('tivvig_reward_ladaburg_arcimboldo_v1');
- });
- $('playAgain').addEventListener('click',()=>{
-  chosen=[];revealed=false;art.classList.remove('turned');
-  art.alt='Джузеппе Арчимбольдо: обычная корзина с фруктами';
-  flip.setAttribute('aria-label','Перевернуть корзинку с фруктами');
-  rewardText.textContent='Нажми на корзинку с фруктами ещё раз. Кажется, в ней кто-то прячется…';
-  reward.hidden=true;
+ paintBasket();
+}
+function choose(id){
+ const fruit=fruits.find(f=>f.id===id);
+ if(!fruit||chosen.length>=TARGET)return;
+ if(chosen.includes(id)){
   speechTitle.textContent='Наш зелёный друг:';
-  speech.textContent='Соберём новую корзинку! Какие продукты попробуем теперь?';
-  paint();
- });
+  speech.textContent='Этот продукт уже в корзинке! Давай выберем другой.';
+  return;
+ }
+ chosen.push(id);
+ speechTitle.textContent=fruit.name+':';speech.textContent=fruit.question;
  paint();
- // Hook for static tests; does not change gameplay.
- window.TivvigMarketDebug=Object.freeze({selection:()=>[...chosen],revealed:()=>revealed});
+ if(chosen.length===TARGET){
+  speechTitle.textContent='Наш зелёный друг:';
+  speech.textContent='Ты собрала семь разных продуктов! А теперь посмотри на эту необычную корзину…';
+  reward.hidden=false;flip.focus({preventScroll:true});
+ }
+}
+flip.addEventListener('click',()=>{
+ if(chosen.length!==TARGET||revealed)return;
+ revealed=true;art.classList.add('turned');
+ art.alt='Перевёрнутая картина Арчимбольдо: из плодов сложилось человеческое лицо';
+ flip.setAttribute('aria-label','Ты нашла лицо из фруктов');
+ rewardText.textContent='Невероятно! Корзина превратилась в голову из фруктов. Какие плоды ты узнаёшь?';
+ window.TivvigRegistry?.unlockReward('tivvig_reward_ladaburg_arcimboldo_v1');
+});
+$('playAgain').addEventListener('click',()=>{
+ chosen=[];revealed=false;art.classList.remove('turned');
+ art.alt='Джузеппе Арчимбольдо: картина выглядит как корзина с фруктами';
+ flip.setAttribute('aria-label','Перевернуть корзинку с фруктами');
+ rewardText.textContent='Нажми на корзинку с фруктами ещё раз. Кажется, в ней кто-то прячется…';
+ reward.hidden=true;
+ speechTitle.textContent='Наш зелёный друг:';speech.textContent='Соберём новую корзинку! Какие продукты возьмём теперь?';
+ paint();
+});
+paint();
+window.TivvigMarketDebug=Object.freeze({selection:()=>[...chosen],revealed:()=>revealed,goal:TARGET});
 })();
