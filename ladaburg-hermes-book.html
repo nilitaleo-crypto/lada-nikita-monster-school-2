@@ -1,0 +1,108 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#281d17">
+<meta name="description" content="Интерактивная книга о Гермесе: шесть картин из мифа о возвращении Персефоны.">
+<title>Книга Гермеса · Ладабург</title>
+<style>
+:root{--ink:#432d1e;--gold:#c49a5a;--ivory:#faeccb;--pine:#24352f}
+*{box-sizing:border-box}html,body{margin:0;min-height:100%;background:#1e221e}
+body{font-family:Georgia,'Times New Roman',serif;color:#fff0cf;overflow-x:hidden}
+button,a{font:inherit;-webkit-tap-highlight-color:transparent;touch-action:manipulation}
+button{cursor:pointer}button:focus-visible,a:focus-visible{outline:3px solid #ffe493;outline-offset:3px}
+[hidden]{display:none!important}
+.shop{width:min(100%,1600px);min-height:100dvh;position:relative;isolation:isolate;margin:0 auto;overflow:hidden;background:#251f1b url('images/bookshop-background.webp') center center/cover no-repeat}
+.shop:before{content:'';position:absolute;inset:0;background:linear-gradient(90deg,#0b1710a8,#17221838 50%,#14180ca5),linear-gradient(0deg,#160e0b96,transparent 45%);z-index:1;pointer-events:none}
+.shop:after{content:'';position:absolute;inset:0;z-index:9;box-shadow:inset 0 0 65px #080b09b0;pointer-events:none}
+.back{position:absolute;z-index:20;left:clamp(12px,3vw,36px);top:clamp(12px,2vw,24px);min-height:46px;display:grid;place-items:center;padding:9px 15px;background:#283831e8;border:2px solid #b68c54;border-radius:12px;color:#ffe9bd;font-weight:bold;text-decoration:none}
+.sign{position:absolute;z-index:3;top:13%;left:5%;padding:14px 26px 17px;border-radius:6px;border:2px solid #d5ad73;background:linear-gradient(135deg,#503425,#281d17);box-shadow:0 11px 35px #000a;color:#ffe0a2;font-size:clamp(19px,3vw,37px);letter-spacing:.075em;text-shadow:0 2px 3px #000b;max-width:57%}
+.lada{position:absolute;z-index:7;bottom:1%;left:7%;height:60%;max-width:29%;width:auto;object-fit:contain;object-position:bottom;filter:drop-shadow(4px 10px 9px #000c);pointer-events:none}
+.merchant-scene{position:absolute;z-index:7;right:10%;bottom:-1%;height:79%;max-height:950px;aspect-ratio:1024/1536;pointer-events:none;filter:drop-shadow(8px 15px 16px #000c)}
+.merchant{display:block;width:100%;height:100%;object-fit:contain;object-position:bottom}
+/* An interactive closed cover masks the open book in the merchant's source portrait. */
+.hermes-book{pointer-events:auto;position:absolute;z-index:12;left:19%;top:35.5%;width:63%;height:23%;border:0;padding:0;background:transparent;transform:rotate(-4deg);animation:bookCall 2.7s ease-in-out infinite alternate;filter:drop-shadow(0 0 11px #fff4b8) drop-shadow(0 10px 8px #000b);user-select:none}
+.hermes-book svg{display:block;width:100%;height:100%;overflow:visible}
+.hermes-book:hover{filter:drop-shadow(0 0 18px #fff6b9) drop-shadow(0 10px 8px #000c)}
+.hermes-book:active{transform:scale(.95) rotate(-3deg)}
+@keyframes bookCall{from{filter:drop-shadow(0 0 5px #ffe6aa) drop-shadow(0 10px 8px #000a)}to{filter:drop-shadow(0 0 18px #ffdf91) drop-shadow(0 10px 8px #000c)}}
+.book-hint{position:absolute;z-index:10;right:17%;bottom:12%;border:2px solid #bd9a66;background:#1c3028e5;color:#f8e9c2;border-radius:100px;padding:8px 18px;font:bold clamp(14px,1.8vw,21px) Georgia,serif;pointer-events:none;box-shadow:0 8px 21px #0009}
+/* Full-screen book reader; no scroll to avoid accidental touch drags during lessons. */
+.reader{position:fixed;z-index:100;inset:0;inset:env(safe-area-inset-top,0px) env(safe-area-inset-right,0px) env(safe-area-inset-bottom,0px) env(safe-area-inset-left,0px);background:radial-gradient(ellipse at center,#543920,#191d19 75%);display:flex;justify-content:center;align-items:stretch;padding:clamp(5px,1vw,14px);overflow:hidden}
+.reader[hidden]{display:none!important}
+.spread{position:relative;display:flex;flex-direction:column;flex:1;min-width:0;min-height:0;border:clamp(4px,.8vw,10px) double #c79b5b;border-radius:clamp(9px,1.5vw,21px);background:repeating-linear-gradient(125deg,#f5e8c8 0,#f5e8c8 12px,#f3e3bf 12px,#f3e3bf 13px);box-shadow:inset 0 0 0 3px #fff3d2,0 16px 55px #000a;overflow:hidden;color:var(--ink)}
+.spread:after{content:'';position:absolute;inset:0;pointer-events:none;box-shadow:inset 0 0 42px #8b622e32;z-index:1}
+.reader-head{height:clamp(54px,8vh,77px);flex:0 0 auto;display:flex;align-items:center;justify-content:center;padding:4px 64px;border-bottom:1px solid #ae885374;position:relative;z-index:2}
+.reader-title{margin:0;color:#543920;text-align:center;line-height:1.15;font-size:clamp(17px,2.3vw,30px);font-weight:normal;max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.reader-close{position:absolute;right:12px;top:50%;transform:translateY(-50%);z-index:3;display:grid;place-items:center;background:#2d4137;color:#fff2cc;border:2px solid #b28a59;border-radius:12px;min-height:42px;min-width:46px;font-size:24px}
+.plate{flex:1;min-height:0;min-width:0;padding:clamp(7px,1vw,17px) clamp(8px,2vw,30px);display:flex;align-items:center;justify-content:center;position:relative;z-index:2}
+.plate img{display:block;max-width:100%;max-height:100%;width:auto;height:auto;object-fit:contain;box-shadow:0 5px 19px #442b1740;background:#eee0bd;border:clamp(2px,.3vw,5px) solid #b08c5c;user-select:none;-webkit-user-drag:none}
+.plate img[hidden]{display:none!important}
+.reader-controls{position:relative;z-index:2;flex:0 0 auto;min-height:clamp(64px,10vh,90px);display:flex;gap:clamp(8px,2vw,20px);align-items:center;justify-content:center;padding:7px 12px;border-top:1px solid #a8865577}
+.page-nav{min-height:48px;min-width:clamp(105px,17vw,180px);padding:7px 17px;border:2px solid #a67b4d;border-radius:12px;background:linear-gradient(#345348,#1a2f29);color:#fff0c7;font-weight:bold;font-size:clamp(15px,1.8vw,22px);box-shadow:0 4px 9px #4130175e}
+.page-nav:disabled{opacity:.37;cursor:default;box-shadow:none}
+.counter{min-width:80px;text-align:center;font-size:clamp(17px,2vw,23px);font-weight:bold;color:#6e4a2c;font-variant-numeric:tabular-nums}
+@media(max-width:800px){.merchant-scene{right:4%;height:64%}.lada{height:45%;left:3%}.sign{max-width:58%;left:3%;top:12%}.book-hint{right:11%;bottom:8%}}
+@media(max-width:600px) and (orientation:portrait){.shop{background-position:center}.sign{max-width:84%;font-size:18px;top:13%}.merchant-scene{right:0;height:60%;bottom:5%}.lada{left:0;height:34%;max-width:35%;bottom:3%}.book-hint{font-size:13px;right:7%;bottom:7%}.reader{padding:3px}.reader-head{height:56px;padding:3px 55px 3px 9px}.reader-title{font-size:clamp(14px,4.1vw,20px)}.reader-close{min-width:41px;min-height:41px;right:5px}.plate{padding:6px}.reader-controls{min-height:66px;gap:5px}.page-nav{min-width:0;flex:1;font-size:15px;padding:8px 6px}.counter{min-width:51px}}
+@media(max-height:510px){.sign{top:11%;font-size:19px}.merchant-scene{height:78%}.lada{height:54%}.reader-head{height:44px}.reader-controls{min-height:50px}.page-nav{min-height:38px}}
+@media(prefers-reduced-motion:reduce){.hermes-book{animation:none}}
+</style>
+</head>
+<body>
+<main class="shop" id="shop" aria-label="Книжная лавка Ладабурга">
+ <a class="back" href="ladaburg.html" aria-label="Вернуться на карту Ладабурга">← Ладабург</a>
+ <div class="sign">Книга Гермеса</div>
+ <img class="lada" src="images/lada-cutout.webp" alt="Лада пришла в книжную лавку" draggable="false">
+ <div class="merchant-scene">
+  <img class="merchant" src="images/bookshop-merchant.webp" alt="Розовая бумажная продавщица протягивает книгу" draggable="false">
+  <button class="hermes-book" id="takeBook" type="button" aria-label="Взять закрытую книгу у продавщицы" title="Открыть книгу о Гермесе">
+   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 360 295" role="img" aria-hidden="true">
+    <defs><linearGradient id="coverShade" x1="0" x2="1" y1="0" y2="1"><stop stop-color="#466455"/><stop offset=".55" stop-color="#1c3f3a"/><stop offset="1" stop-color="#112c2b"/></linearGradient><linearGradient id="spineShade" x1="0" x2="1"><stop stop-color="#bb914f"/><stop offset=".5" stop-color="#6b4829"/><stop offset="1" stop-color="#d9ae66"/></linearGradient></defs>
+    <path d="M35 37L336 12L340 257L42 277Z" fill="#e2c49b" stroke="#5d321f" stroke-width="16" stroke-linejoin="round"/>
+    <path d="M23 27L322 13L330 247L27 268Z" fill="url(#coverShade)" stroke="#bf985b" stroke-width="11" stroke-linejoin="round"/>
+    <path d="M29 27L69 25L76 263L30 268Z" fill="url(#spineShade)" stroke="#704628" stroke-width="6"/>
+    <path d="M88 52L303 40L305 220L91 236Z" fill="none" stroke="#cfaa6c" stroke-width="7"/>
+    <path d="M104 69L290 58L291 202L107 215Z" fill="none" stroke="#d6b47a" stroke-width="2"/>
+    <circle cx="198" cy="136" r="53" fill="none" stroke="#d0b06b" stroke-width="6"/>
+    <path d="M184 165L184 113Q163 91 155 106Q146 120 170 132M184 113Q203 82 214 104Q223 121 197 134M184 121L184 174M172 163Q182 184 195 162" fill="none" stroke="#eac988" stroke-width="6" stroke-linecap="round"/>
+    <path d="M151 134Q123 116 118 130Q125 148 152 150M218 134Q245 115 253 129Q243 151 214 150" fill="none" stroke="#d5b16a" stroke-width="6" stroke-linecap="round"/>
+    <circle cx="193" cy="51" r="4" fill="#ffe6a1"/><circle cx="195" cy="222" r="4" fill="#ffe6a1"/>
+   </svg>
+  </button>
+ </div>
+ <div class="book-hint" aria-hidden="true">✦ Открой книгу</div>
+</main>
+<section class="reader" id="reader" role="dialog" aria-modal="true" aria-labelledby="pageTitle" hidden>
+ <div class="spread">
+  <header class="reader-head"><h1 class="reader-title" id="pageTitle">Похищение Персефоны</h1><button class="reader-close" id="closeBook" type="button" aria-label="Закрыть книгу">×</button></header>
+  <div class="plate" id="pageArt" aria-live="off"><img src="images/hermes-page-1.webp" id="art" alt="Похищение Персефоны" width="1900" height="1442" draggable="false"></div>
+  <nav class="reader-controls" aria-label="Страницы книги"><button class="page-nav" id="prev" type="button">← Назад</button><span class="counter" id="counter" aria-label="Страница 1 из 6">1 / 6</span><button class="page-nav" id="next" type="button">Дальше →</button></nav>
+ </div>
+</section>
+<script>
+(()=>{'use strict';
+ const pages=[
+  {name:'Похищение Персефоны',src:'images/hermes-page-1.webp',alt:'Аид увозит Персефону на колеснице, окружённой мифологическими персонажами'},
+  {name:'Гермес — посланник богов',src:'images/hermes-page-2.webp',alt:'Гермес в шлеме и плаще с жезлом — изображение в мультфильме'},
+  {name:'Гермес в мире теней',src:'images/hermes-page-3.webp',alt:'Античная роспись: мифологический персонаж в лодке, связанная с представлениями о подземном мире'},
+  {name:'Персефона и гранат',src:'images/hermes-page-4.webp',alt:'Женщина с гранатом — живописный образ Персефоны'},
+  {name:'Гермес возвращает Персефону',src:'images/hermes-page-5.webp',alt:'Гермес приводит Персефону к матери Деметре'},
+  {name:'Узнаём Гермеса по атрибутам',src:'images/hermes-page-6.webp',alt:'Крылатые сандалии, крылатый шлем и жезл Гермеса'}
+ ];
+ const el=id=>document.getElementById(id), reader=el('reader'),art=el('art'),title=el('pageTitle'),counter=el('counter'),prev=el('prev'),next=el('next');
+ let position=0, opened=false;
+ function render(){const p=pages[position];title.textContent=p.name;art.src=p.src;art.alt=p.alt;counter.textContent=(position+1)+' / '+pages.length;counter.setAttribute('aria-label','Страница '+(position+1)+' из '+pages.length);prev.disabled=position===0;next.disabled=position===pages.length-1;}
+ function open(){if(opened)return;opened=true;position=0;render();reader.hidden=false;document.body.style.overflow='hidden';el('closeBook').focus({preventScroll:true});}
+ function close(){if(!opened)return;opened=false;reader.hidden=true;document.body.style.overflow='';el('takeBook').focus({preventScroll:true});}
+ function move(dir){if(!opened)return;const n=Math.max(0,Math.min(pages.length-1,position+dir));if(n===position)return;position=n;render();}
+ el('takeBook').addEventListener('click',open);el('closeBook').addEventListener('click',close);prev.addEventListener('click',()=>move(-1));next.addEventListener('click',()=>move(1));
+ document.addEventListener('keydown',e=>{if(!opened)return;if(e.key==='Escape'){e.preventDefault();close();}else if(e.key==='ArrowRight'){e.preventDefault();move(1)}else if(e.key==='ArrowLeft'){e.preventDefault();move(-1)}});
+ // Preload remaining illustrations after opening without blocking controls.
+ el('takeBook').addEventListener('click',()=>{for(const p of pages.slice(1)){const im=new Image();im.src=p.src;}},{once:true});
+ render();
+ window.__hermesBookTest={state:()=>({opened,position,total:pages.length}),open,close,next:()=>move(1),previous:()=>move(-1)};
+})();
+</script>
+<script src="game-runtime.js?v=1" defer></script>
+</body></html>

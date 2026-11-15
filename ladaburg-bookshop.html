@@ -60,6 +60,10 @@ img{display:block;max-width:100%}[hidden]{display:none!important}
 .bookshop-back{position:absolute;z-index:90;right:2.4%;top:2.4%;min-width:46px;min-height:46px;display:grid;place-items:center;text-decoration:none;font:28px/1 Georgia,serif;color:#f6dfb1;background:#38271cdb;border:2px solid #d9b87b;border-radius:12px;box-shadow:0 5px 16px #0008;touch-action:manipulation}
 .bookshop-back:focus-visible{outline:3px solid #fff2b6;outline-offset:2px}
 .fountain-next{position:absolute;z-index:78;left:50%;bottom:4.5%;transform:translateX(-50%);min-height:46px;display:inline-flex;align-items:center;justify-content:center;padding:10px 19px;white-space:nowrap;text-decoration:none;color:#3b2a1f;background:#f9e4b8;border:2px solid #dfb775;border-radius:12px;font:bold clamp(15px,2vw,21px) Georgia,serif;box-shadow:0 5px 18px #0009}.fountain-next:focus-visible{outline:3px solid #fff3bc;outline-offset:2px}
+
+.hermes-story-link{position:absolute;z-index:40;right:10%;top:17%;display:inline-flex;justify-content:center;align-items:center;min-height:47px;padding:8px 16px;background:#243c32ee;border:2px solid #cfa971;border-radius:12px;color:#fff0c5;font:bold clamp(14px,1.6vw,21px) Georgia,serif;text-decoration:none;box-shadow:0 7px 20px #0a0a09bf;touch-action:manipulation}
+.hermes-story-link:focus-visible,.hermes-story-link:hover{outline:3px solid #f6e7ad;outline-offset:2px;background:#456953}
+@media(max-width:800px){.hermes-story-link{top:16%;right:4%;font-size:14px;padding:7px 9px}}
 </style></head>
 <body><div class="wrap"><main class="game" id="game" aria-label="Книжная лавка">
 <a class="bookshop-back" href="ladaburg.html" title="Вернуться в Ладабург" aria-label="Вернуться в Ладабург">⌂</a>
@@ -95,6 +99,7 @@ img{display:block;max-width:100%}[hidden]{display:none!important}
 <img class="merchant" src="images/bookshop-merchant.webp" alt="Бумажная розовая продавщица держит книгу">
 </div>
 </section>
+<a class="hermes-story-link" href="ladaburg-hermes-book.html?v=1" aria-label="Взять у продавщицы книгу о Гермесе">✦ Книга Гермеса</a>
 <div class="book-opening" id="bookOpening" aria-hidden="true">
 <div class="magical-book"><div class="book-cover left"></div><div class="book-cover right"></div><div class="book-spine"></div></div>
 <span class="spark" style="--x:25%;--y:30%"></span><span class="spark" style="--x:71%;--y:27%;animation-delay:-.5s"></span><span class="spark" style="--x:50%;--y:19%;animation-delay:-.7s"></span>
