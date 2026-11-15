@@ -1,0 +1,158 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="theme-color" content="#262318">
+<title>Книжная лавка · Тиввиг</title><style>
+:root{color-scheme:dark;--paper:#f3d5a0;--gold:#d4a86a;--ink:#39251a}
+*{box-sizing:border-box}
+html,body{margin:0;min-height:100%;background:#19221c}
+body{font-family:Georgia,'Times New Roman',serif;color:#f8e6c5;overflow-x:hidden;background:radial-gradient(ellipse at 50% 70%,#4c5540,#171e17 72%)}
+button{font:inherit;cursor:pointer;-webkit-tap-highlight-color:transparent;touch-action:manipulation}
+button:focus-visible{outline:4px solid #ffdd8d;outline-offset:3px}
+img{display:block;max-width:100%}[hidden]{display:none!important}
+.wrap{width:min(98vw,1480px);min-height:100svh;margin:auto;padding:10px 0;display:flex;align-items:center;justify-content:center}
+.game{position:relative;isolation:isolate;width:100%;height:min(860px,calc(100svh - 22px));min-height:660px;max-height:860px;border:9px solid #503b2a;border-radius:23px;overflow:hidden;background:#251d16;box-shadow:0 0 0 2px #b68c56,0 28px 72px #070805a8}
+.game:after{content:'';position:absolute;inset:0;border:2px solid #e5c88b55;border-radius:14px;box-shadow:inset 0 0 70px #0c0f0a88;z-index:81;pointer-events:none}
+.scene{position:absolute;inset:0;isolation:isolate;overflow:hidden}
+.shop-photo{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center 53%;filter:saturate(.96) brightness(.84)}
+.scene:before{content:'';position:absolute;inset:0;z-index:1;pointer-events:none;background:linear-gradient(90deg,#13180da8,transparent 70%),linear-gradient(0deg,#241c17a1,transparent 43%)}
+.vignette{position:absolute;inset:0;pointer-events:none;z-index:8;box-shadow:inset 0 0 120px #10150d95}
+.wood-sign{position:absolute;z-index:8;left:3.5%;top:4%;padding:11px 27px 14px;border:2px solid #c89d67;border-radius:6px;background:linear-gradient(160deg,#4c291b,#241a15);color:#f7ddb0;font-size:clamp(19px,2vw,29px);font-weight:700;letter-spacing:.08em;box-shadow:0 5px 25px #000b,inset 0 0 0 3px #67462e;text-shadow:0 2px 2px #000}
+.characters{position:absolute;inset:0;z-index:7;pointer-events:none}
+.characters img{position:absolute;object-fit:contain;object-position:bottom;filter:drop-shadow(0 9px 10px #120b0a9e)}
+.merchant{height:61%;width:auto;max-width:31%;right:10%;bottom:0;transform:rotate(-2deg)}
+.lada{height:44%;width:auto;max-width:18%;right:0.5%;bottom:1%;z-index:2}
+.lada-fallback{position:absolute;z-index:2;bottom:2%;right:2%;width:15%;height:40%;display:flex;align-items:end;justify-content:center}
+.lada-fallback svg{max-width:100%;height:100%;filter:drop-shadow(0 10px 7px #0008)}
+.library{position:absolute;z-index:5;left:3.7%;top:24%;width:53%;height:70%;min-height:0;display:flex;flex-direction:column;padding:10px 13px 5px;border:12px ridge #684023;border-radius:20px 20px 7px 7px;background:linear-gradient(110deg,#17120ddc,#352119d9 60%,#100d09ec);box-shadow:inset 0 0 0 3px #b4874a,0 12px 25px #0b0b0ad1,0 0 38px #080c0a99}
+.library:before{content:'';position:absolute;inset:-8px -9px;pointer-events:none;border:3px solid #1e140d;border-radius:15px;box-shadow:inset 0 0 19px #050503c5}
+.library:after{content:'';position:absolute;z-index:5;pointer-events:none;left:42%;right:42%;top:-13px;height:21px;border-radius:12px;background:linear-gradient(#ca9854,#614021);box-shadow:0 4px 5px #08060499}
+.shelves{position:relative;display:flex;flex-direction:column;flex:1;justify-content:space-evenly;gap:16px;min-height:0;padding:7px 0 8px}
+.shelf{position:relative;display:flex;flex:1;min-height:0;align-items:flex-end;justify-content:space-evenly;gap:clamp(3px,1vw,12px);padding:0 7px 26px;background:radial-gradient(ellipse at 50% 95%,#61443171,#0c0909bb 76%);box-shadow:inset 0 4px 18px #0806048a}
+.shelf:after{content:'';position:absolute;z-index:6;bottom:0;left:-17px;right:-17px;height:27px;border-radius:2px;background:linear-gradient(#a46f3b,#4e2b1b 64%,#25150e);box-shadow:inset 0 3px #e6b46f,inset 0 -4px #190d08,0 9px 12px #080604cf;border:1px solid #b7884f;pointer-events:none}
+.book{position:relative;flex:0 1 22%;min-width:0;height:var(--bh,84%);padding:8px 2px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;border:3px solid #cca46a;border-left:7px ridge #d7b47c;border-right:5px groove #23181a;border-radius:4px 8px 3px 3px;box-shadow:inset 0 0 0 2px #4e2922,inset 4px 0 6px #fff3,7px 3px 9px #0009;background:linear-gradient(90deg,#0009,transparent 25%,#fff2 46%,transparent 73%,#0006),var(--bc,#76504c);color:#ffeac4;text-shadow:0 2px 2px #0009;font-size:clamp(24px,2.65vw,39px);font-weight:900;letter-spacing:.025em;line-height:1.08;user-select:none;z-index:3;transition:transform .16s ease,filter .16s ease}
+.book .ornament{position:absolute;top:11%;left:14%;right:14%;border-top:2px solid #e4bc72;box-shadow:0 2px #55381d}.book .ornament.bottom{top:auto;bottom:10%}.book:hover{transform:translateY(-10px);filter:brightness(1.15)}.book:active{transform:translateY(-3px)}.book .word{white-space:nowrap}
+.book.wrong{animation:shake .42s ease;filter:saturate(.65)}@keyframes shake{0%,100%{transform:translateX(0)}27%{transform:translateX(-6px)}63%{transform:translateX(6px)}}
+.book.chosen{z-index:9;transform:translateY(-15px) scale(1.05);filter:brightness(1.5) drop-shadow(0 0 14px #fff1b6)}
+.library[data-locked="true"] .book{pointer-events:none}.library[data-locked="true"] .book:not(.chosen){filter:brightness(.65)}
+.leaves{position:absolute;pointer-events:none;left:-12px;top:-27px;z-index:10;font-size:45px;color:#789b4b;text-shadow:0 3px #19330b,5px 5px 9px #000;transform:rotate(-13deg)}
+.leaves.right{left:auto;right:-10px;top:-24px;transform:scaleX(-1) rotate(-13deg)}
+.book-opening{position:absolute;inset:0;z-index:50;display:flex;align-items:center;justify-content:center;pointer-events:none;background:radial-gradient(circle,#f5dd9c66 0%,#0d120dc9 75%);opacity:0;visibility:hidden;transition:opacity .2s ease}
+.book-opening.is-visible{opacity:1;visibility:visible}
+.magical-book{position:relative;width:min(55%,510px);height:300px;transform:translateY(75px) scale(.45);animation:rise 1.6s cubic-bezier(.2,.7,.2,1) forwards;perspective:900px;filter:drop-shadow(0 15px 24px #1f120e)}
+@keyframes rise{0%{transform:translateY(75px) scale(.45) rotate(-8deg);opacity:0}38%{transform:translateY(0) scale(1);opacity:1}100%{transform:translateY(-20px) scale(1.08);opacity:1}}
+.magical-book:before{content:'';position:absolute;inset:0;border-radius:50%;background:#fff2b350;filter:blur(54px)}
+.book-cover{position:absolute;top:18%;height:66%;width:42%;background:linear-gradient(90deg,#f9e3a7,#e0b880);border:9px solid #734a32;box-shadow:inset 0 0 0 3px #fdf1c9,0 14px 20px #0906068a;transform-origin:100% 50%}
+.book-cover.left{right:50%;border-radius:20px 6px 5px 18px;transform:rotateY(70deg);animation:openLeft 1.1s .25s forwards}.book-cover.right{left:50%;border-radius:6px 20px 18px 5px;transform-origin:0 50%;transform:rotateY(-70deg);animation:openRight 1.1s .25s forwards}
+@keyframes openLeft{to{transform:rotateY(-9deg)}}@keyframes openRight{to{transform:rotateY(9deg)}}
+.book-cover:after{content:'';position:absolute;inset:12px 20%;border:2px solid #d2a267;border-radius:60%;background:repeating-linear-gradient(0deg,transparent 0 18px,#966a3b40 19px 20px)}
+.book-spine{position:absolute;left:49.3%;top:18%;width:1.7%;height:67%;border-radius:30%;background:#ad7954;box-shadow:0 0 5px #1a1416}
+.spark{position:absolute;width:12px;height:12px;background:#ffefd1;border-radius:50%;box-shadow:0 0 18px 7px #ffe6a2;animation:drift 1.2s infinite alternate ease-in-out;left:var(--x);top:var(--y)}@keyframes drift{to{transform:translateY(-40px) scale(.6);opacity:.2}}
+.reward{position:absolute;inset:0;z-index:70;display:none;justify-content:center;align-items:center;padding:25px;background:radial-gradient(ellipse at 50% 47%,#405020 0,#161f0e 70%,#080b06 100%)}
+.reward.visible{display:flex;animation:rewardShow .45s ease both}@keyframes rewardShow{from{opacity:0}to{opacity:1}}
+.reward-art{max-width:min(82%,760px);max-height:calc(100% - 20px);object-fit:contain;border:7px solid #73683b;border-radius:10px;box-shadow:0 0 0 2px #d1af65,0 18px 70px #000b,0 0 95px #a7a45035;animation:floatIn .85s ease both}@keyframes floatIn{from{transform:translateY(23px) scale(.96);opacity:0}to{transform:translateY(0) scale(1);opacity:1}}
+.restart{position:absolute;top:18px;right:19px;z-index:75;width:56px;height:56px;border:2px solid #d4b178;border-radius:50%;background:#422d21ea;color:#ffebbf;font-size:34px;line-height:1;box-shadow:0 5px 18px #0008}.restart:hover{background:#62432d}
+@media(max-width:1024px){.wrap{padding:4px 0;width:99vw}.game{height:min(760px,calc(100svh - 12px));min-height:580px;border-width:6px}.library{left:2.8%;width:57%;top:25%;height:70%}.merchant{right:7%;height:58%;max-width:31%}.lada{right:0;height:41%;max-width:19%}.book{font-size:clamp(24px,3.1vw,35px)}}
+@media(max-width:800px) and (orientation:portrait){.wrap{padding:4px 0;align-items:flex-start}.game{height:min(100svh - 8px,1100px);height:min(calc(100svh - 8px),1100px);min-height:660px}.shop-photo{object-position:50% 50%}.wood-sign{left:4%;top:3.2%;padding:9px 17px;font-size:clamp(18px,3.4vw,26px)}.library{left:2%;width:67%;top:38%;height:59%;padding:8px 8px 4px;border-width:9px}.shelf{padding:0 2px 23px}.book{font-size:clamp(19px,4vw,31px);border-left-width:4px;border-right-width:3px}.merchant{height:46%;max-width:34%;right:4%;bottom:0}.lada{height:33%;max-width:20%;right:0;bottom:0}.lada-fallback{height:30%;width:18%}.leaves{font-size:30px}}
+@media(max-width:510px){.game{min-height:650px;border-width:4px;border-radius:13px}.wood-sign{top:2.3%;font-size:17px}.library{top:42%;width:72%;height:54%;left:1%;border-width:6px;padding:5px 5px 3px}.shelves{gap:7px;padding:3px 0}.shelf{padding:0 0 19px;gap:3px}.shelf:after{height:19px;left:-9px;right:-9px}.book{font-size:clamp(18px,5vw,26px);border-width:2px;border-left-width:3px;border-right-width:2px;gap:1px}.merchant{height:38%;max-width:39%;right:1%;bottom:1%}.lada{height:25%;max-width:19%;right:0;bottom:0}.reward{padding:14px}.reward-art{max-width:95%}.restart{top:9px;right:9px;width:46px;height:46px;font-size:28px}}
+@media(prefers-reduced-motion:reduce){*,*:before,*:after{animation-duration:.01ms!important;transition-duration:.01ms!important}}
+
+.bookshop-back{position:absolute;z-index:90;right:2.4%;top:2.4%;min-width:46px;min-height:46px;display:grid;place-items:center;text-decoration:none;font:28px/1 Georgia,serif;color:#f6dfb1;background:#38271cdb;border:2px solid #d9b87b;border-radius:12px;box-shadow:0 5px 16px #0008;touch-action:manipulation}
+.bookshop-back:focus-visible{outline:3px solid #fff2b6;outline-offset:2px}
+</style></head>
+<body><div class="wrap"><main class="game" id="game" aria-label="Книжная лавка">
+<a class="bookshop-back" href="ladaburg.html" title="Вернуться в Ладабург" aria-label="Вернуться в Ладабург">⌂</a>
+<section class="scene" aria-label="Волшебный книжный магазин">
+<img class="shop-photo" src="images/bookshop-background.webp" alt="Уютный волшебный книжный магазин с растениями и полками">
+<div class="wood-sign">Книжная лавка</div><div class="vignette"></div>
+<div class="library" id="library" data-locked="false" aria-label="Полки с книгами">
+<span class="leaves" aria-hidden="true">❧</span><span class="leaves right" aria-hidden="true">❧</span>
+<div class="shelves" id="shelves">
+<div class="shelf" role="group" aria-label="Верхняя полка">
+<button class="book" type="button" data-word="КО-ЗА" aria-label="Книга КО-ЗА" style="--bc:#537368;--bh:84%"><i class="ornament"></i><span class="word">КО</span><span class="word">ЗА</span><i class="ornament bottom"></i></button>
+<button class="book" type="button" data-word="ВА-ЗА" aria-label="Книга ВА-ЗА" style="--bc:#a14e53;--bh:91%"><i class="ornament"></i><span class="word">ВА</span><span class="word">ЗА</span><i class="ornament bottom"></i></button>
+<button class="book" type="button" data-word="ЖА-БА" aria-label="Книга ЖА-БА" style="--bc:#525981;--bh:95%"><i class="ornament"></i><span class="word">ЖА</span><span class="word">БА</span><i class="ornament bottom"></i></button>
+<button class="book" type="button" data-word="РА-МА" aria-label="Книга РА-МА" style="--bc:#8a674a;--bh:87%"><i class="ornament"></i><span class="word">РА</span><span class="word">МА</span><i class="ornament bottom"></i></button>
+</div>
+<div class="shelf" role="group" aria-label="Нижняя полка">
+<button class="book" type="button" data-word="ТУ-ЧА" aria-label="Книга ТУ-ЧА" style="--bc:#796b83;--bh:88%"><i class="ornament"></i><span class="word">ТУ</span><span class="word">ЧА</span><i class="ornament bottom"></i></button>
+<button class="book" type="button" data-word="ЛИ-СА" aria-label="Книга ЛИ-СА" style="--bc:#82734a;--bh:84%"><i class="ornament"></i><span class="word">ЛИ</span><span class="word">СА</span><i class="ornament bottom"></i></button>
+<button class="book" type="button" data-word="РЫ-БА" aria-label="Книга РЫ-БА" style="--bc:#6b627d;--bh:94%"><i class="ornament"></i><span class="word">РЫ</span><span class="word">БА</span><i class="ornament bottom"></i></button>
+<button class="book" type="button" data-word="РО-ЗА" aria-label="Книга РО-ЗА" style="--bc:#945b47;--bh:90%"><i class="ornament"></i><span class="word">РО</span><span class="word">ЗА</span><i class="ornament bottom"></i></button>
+</div>
+</div>
+</div>
+<div class="characters">
+<div class="lada-fallback" id="ladaFallback" hidden aria-label="Лада">
+<svg viewBox="0 0 170 370" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Лада в цветочном платье">
+<ellipse cx="85" cy="51" rx="48" ry="50" fill="#966235"/><path d="M47 47Q37 3 76 3Q148-9 139 53L117 79 56 81Z" fill="#ac743d"/>
+<circle cx="85" cy="58" r="39" fill="#f3b37b"/><g fill="#34201c"><circle cx="72" cy="53" r="4"/><circle cx="102" cy="53" r="4"/></g><path d="M77 76Q87 83 96 74" fill="none" stroke="#a95348" stroke-width="3" stroke-linecap="round"/><path d="M53 88Q34 138 15 201" stroke="#efb07e" stroke-width="19" stroke-linecap="round"/><path d="M119 88Q141 145 161 197" stroke="#efb07e" stroke-width="19" stroke-linecap="round"/><path d="M77 310L70 363 M102 310L107 363" stroke="#e7ae7f" stroke-width="19" stroke-linecap="round"/><path d="M52 96Q80 77 119 96L155 294Q82 329 17 293Z" fill="#f9e0bf" stroke="#eeb3a7" stroke-width="3"/>
+<g fill="#e96b92"><circle cx="60" cy="138" r="8"/><circle cx="104" cy="174" r="11"/><circle cx="55" cy="239" r="10"/><circle cx="116" cy="281" r="11"/></g><g fill="#ecb837"><circle cx="60" cy="138" r="3"/><circle cx="104" cy="174" r="4"/><circle cx="55" cy="239" r="4"/><circle cx="116" cy="281" r="4"/></g></svg>
+</div>
+
+<img class="lada" id="ladaPhoto" src="images/lada-cutout.webp" alt="Лада" loading="eager" referrerpolicy="no-referrer">
+<img class="merchant" src="images/bookshop-merchant.webp" alt="Бумажная розовая продавщица держит книгу">
+</div>
+</section>
+<div class="book-opening" id="bookOpening" aria-hidden="true">
+<div class="magical-book"><div class="book-cover left"></div><div class="book-cover right"></div><div class="book-spine"></div></div>
+<span class="spark" style="--x:25%;--y:30%"></span><span class="spark" style="--x:71%;--y:27%;animation-delay:-.5s"></span><span class="spark" style="--x:50%;--y:19%;animation-delay:-.7s"></span>
+</div>
+<div class="reward" id="reward" aria-label="Награда: картина с духами" aria-hidden="true" role="dialog">
+<img class="reward-art" src="images/bookshop-spirits.webp" alt="Духи поднимаются из раскрытой книги"><button class="restart" id="restart" type="button" aria-label="Играть ещё раз" title="Играть ещё раз">↻</button>
+</div>
+</main></div>
+<script>
+
+(()=>{
+  'use strict';
+  const TARGET='ЖА-БА';
+  const library=document.getElementById('library');
+  const opening=document.getElementById('bookOpening');
+  const reward=document.getElementById('reward');
+  const restart=document.getElementById('restart');
+  const books=[...document.querySelectorAll('.book')];
+  const lada=document.getElementById('ladaPhoto');
+  const fallback=document.getElementById('ladaFallback');
+  // On the actual GitHub Pages website, use the already local, versioned Lada asset.
+  
+  function showFallback(){lada.hidden=true;fallback.hidden=false;}
+  lada.addEventListener('error', showFallback);
+  lada.addEventListener('load',()=>{if(lada.naturalWidth>0){lada.hidden=false;fallback.hidden=true;}});
+  if(lada.complete && lada.naturalWidth===0)showFallback();
+  setTimeout(()=>{if(!lada.naturalWidth)showFallback()},1500);
+  let phase='search';let rewardTimer=null;let wrongTimers=new Set();
+  function wrong(book){
+    if(phase!=='search')return;
+    book.classList.remove('wrong');void book.offsetWidth;book.classList.add('wrong');
+    let timer=setTimeout(()=>{book.classList.remove('wrong');wrongTimers.delete(timer)},480);wrongTimers.add(timer);
+  }
+  function win(book){
+    if(phase!=='search')return;
+    phase='opening';library.dataset.locked='true';books.forEach(b=>b.disabled=true);
+    book.classList.add('chosen');opening.classList.add('is-visible');
+    opening.setAttribute('aria-hidden','false');
+    rewardTimer=setTimeout(()=>{
+      if(phase!=='opening')return;
+      phase='reward';reward.classList.add('visible');reward.setAttribute('aria-hidden','false');
+      opening.classList.remove('is-visible');opening.setAttribute('aria-hidden','true');
+      restart.focus({preventScroll:true});rewardTimer=null;
+    },1750);
+  }
+  function reset(){
+    if(rewardTimer!==null)clearTimeout(rewardTimer);rewardTimer=null;
+    for(const t of wrongTimers)clearTimeout(t);wrongTimers.clear();
+    phase='search';library.dataset.locked='false';
+    books.forEach(b=>{b.disabled=false;b.classList.remove('wrong','chosen')});
+    reward.classList.remove('visible');reward.setAttribute('aria-hidden','true');
+    opening.classList.remove('is-visible');opening.setAttribute('aria-hidden','true');
+    document.activeElement?.blur?.();
+  }
+  books.forEach(b=>b.addEventListener('click',()=> b.dataset.word===TARGET?win(b):wrong(b)));
+  restart.addEventListener('click',reset);
+  window.__bookshopTest={getPhase:()=>phase,reset};
+})();
+
+</script>
+<script src="game-runtime.js?v=1" defer></script>
+</body></html>
