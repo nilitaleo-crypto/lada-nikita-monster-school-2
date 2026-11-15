@@ -31,6 +31,11 @@ main{max-width:1500px;margin:auto}
 .bookshop-hotspot:hover,.bookshop-hotspot:focus-visible{background:#f5e3b42d;border-color:#ffe5a3;outline:2px solid #633f50;outline-offset:2px}
 .bookshop-sign{position:absolute;top:-2px;left:50%;transform:translateX(-50%);white-space:nowrap;line-height:1.3;font:bold clamp(11px,1.4vw,17px) Georgia,serif;text-align:center;color:#392320;padding:4px 9px;border-radius:8px;border:2px solid #ad8353;background:#f5deb2ee;box-shadow:0 3px 7px #301d2988;pointer-events:none}
 @media(max-width:680px){.bookshop-hotspot{left:14%;top:31%;width:13%;height:18%}.bookshop-sign{font-size:10px;white-space:normal;min-width:56px}}
+
+.fountain-hotspot{position:absolute;z-index:5;left:41%;top:36%;width:18%;height:38%;display:block;border:2px solid transparent;border-radius:50%;cursor:pointer;touch-action:manipulation;background:radial-gradient(ellipse,#b4f7ff07,transparent 65%);transition:border-color .16s,background .16s}
+.fountain-hotspot:hover,.fountain-hotspot:focus-visible{border-color:#fff0b6;background:#f9e6ab22;outline:2px solid #633f50;outline-offset:2px}
+.fountain-sign{position:absolute;left:50%;bottom:-8px;transform:translateX(-50%);white-space:nowrap;line-height:1.3;font:bold clamp(11px,1.3vw,17px) Georgia,serif;color:#392320;padding:5px 10px;border-radius:8px;border:2px solid #ad8353;background:#f5deb2ef;box-shadow:0 3px 7px #301d2988;pointer-events:none}
+@media(max-width:680px){.fountain-hotspot{left:39%;top:33%;width:21%;height:43%}.fountain-sign{font-size:10px;padding:3px 5px}}
 </style>
 </head>
 <body>
@@ -43,6 +48,7 @@ main{max-width:1500px;margin:auto}
 <img src="images/ladaburg-city.webp" alt="Ладабург: светлая каменная столица с цветущими деревьями, лавками, библиотекой, театром, обсерваторией, фонтанами и далёким дворцом на горе" draggable="false" width="1672" height="941">
 <a class="market-hotspot" href="ladaburg-market.html?v=2" aria-label="Войти в лавку удивительных плодов"><span class="market-sign">🍎 Лавка плодов</span></a>
 <a class="bookshop-hotspot" href="ladaburg-bookshop.html?v=1" aria-label="Войти в книжную лавку"><span class="bookshop-sign">📚 Книги</span></a>
+<a class="fountain-hotspot" href="ladaburg-fountain.html?v=1" aria-label="Войти к фонтану семи духов"><span class="fountain-sign">👻 Фонтан</span></a>
 </div>
 <div class="caption">
 <h1>Ладабург</h1>

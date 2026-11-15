@@ -59,6 +59,7 @@ img{display:block;max-width:100%}[hidden]{display:none!important}
 
 .bookshop-back{position:absolute;z-index:90;right:2.4%;top:2.4%;min-width:46px;min-height:46px;display:grid;place-items:center;text-decoration:none;font:28px/1 Georgia,serif;color:#f6dfb1;background:#38271cdb;border:2px solid #d9b87b;border-radius:12px;box-shadow:0 5px 16px #0008;touch-action:manipulation}
 .bookshop-back:focus-visible{outline:3px solid #fff2b6;outline-offset:2px}
+.fountain-next{position:absolute;z-index:78;left:50%;bottom:4.5%;transform:translateX(-50%);min-height:46px;display:inline-flex;align-items:center;justify-content:center;padding:10px 19px;white-space:nowrap;text-decoration:none;color:#3b2a1f;background:#f9e4b8;border:2px solid #dfb775;border-radius:12px;font:bold clamp(15px,2vw,21px) Georgia,serif;box-shadow:0 5px 18px #0009}.fountain-next:focus-visible{outline:3px solid #fff3bc;outline-offset:2px}
 </style></head>
 <body><div class="wrap"><main class="game" id="game" aria-label="Книжная лавка">
 <a class="bookshop-back" href="ladaburg.html" title="Вернуться в Ладабург" aria-label="Вернуться в Ладабург">⌂</a>
@@ -99,7 +100,7 @@ img{display:block;max-width:100%}[hidden]{display:none!important}
 <span class="spark" style="--x:25%;--y:30%"></span><span class="spark" style="--x:71%;--y:27%;animation-delay:-.5s"></span><span class="spark" style="--x:50%;--y:19%;animation-delay:-.7s"></span>
 </div>
 <div class="reward" id="reward" aria-label="Награда: картина с духами" aria-hidden="true" role="dialog">
-<img class="reward-art" src="images/bookshop-spirits.webp" alt="Духи поднимаются из раскрытой книги"><button class="restart" id="restart" type="button" aria-label="Играть ещё раз" title="Играть ещё раз">↻</button>
+<img class="reward-art" src="images/bookshop-spirits.webp" alt="Духи поднимаются из раскрытой книги"><a class="fountain-next" href="ladaburg-fountain.html?v=1" aria-label="Пойти к фонтану и поймать духов">⛲ К фонтану</a><button class="restart" id="restart" type="button" aria-label="Играть ещё раз" title="Играть ещё раз">↻</button>
 </div>
 </main></div>
 <script>
