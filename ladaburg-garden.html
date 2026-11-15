@@ -1,0 +1,110 @@
+<!doctype html>
+<html lang="ru"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#1f202b">
+<meta name="description" content="Тиввиг — побег из сада: математические примеры в пределах десяти и превращающийся дух.">
+<title>Побег из сада · Тиввиг</title>
+<style>
+:root{--cream:#f7e7c5;--gold:#d4b681;--ink:#302326;--green:#23352e}
+*{box-sizing:border-box}html,body{margin:0;min-height:100%;background:#171a24}
+body{font-family:Georgia,'Times New Roman',serif;color:var(--cream);background:radial-gradient(ellipse at top,#444354,#1a1c29 69%);overflow-x:hidden}
+button,a{-webkit-tap-highlight-color:transparent;touch-action:manipulation;font-family:inherit}button{cursor:pointer}a{text-decoration:none;color:inherit}
+button:focus-visible,a:focus-visible{outline:3px solid #fff0a9;outline-offset:2px}[hidden]{display:none!important}
+.screen{min-height:100dvh;padding:9px 11px 12px;display:flex;align-items:center;flex-direction:column;justify-content:flex-start;gap:10px}
+header{width:min(100%,1320px);display:flex;justify-content:space-between;align-items:center;gap:8px}
+header h1{font-size:clamp(17px,2.4vw,30px);font-weight:normal;text-align:center;line-height:1.15;margin:0;text-shadow:0 3px 7px #000c}
+.nav,.reset{min-height:44px;border:1px solid #c5a576;background:linear-gradient(#f6e4bb,#c3a47c);color:#302523;border-radius:12px;padding:8px 11px;font-size:clamp(12px,1.45vw,16px);font-weight:bold;white-space:nowrap;box-shadow:0 4px 6px #0006}
+.arena{position:relative;isolation:isolate;overflow:hidden;width:min(100%,1320px);height:min(calc(100dvh - 90px),742px);min-height:500px;border:5px ridge #c1a477;border-radius:17px;background:#262637 url('images/ladaburg-garden.webp') center/cover no-repeat;box-shadow:0 18px 55px #000a;touch-action:manipulation}
+.arena:before{content:'';position:absolute;inset:0;background:linear-gradient(to bottom,#080b1960,transparent 26%,transparent 72%,#09101a75);z-index:1;pointer-events:none}
+.path{position:absolute;z-index:2;width:100%;height:100%;inset:0;pointer-events:none}
+.path polyline{stroke:#2b2928c7;stroke-width:1.5;fill:none;stroke-linejoin:round;stroke-linecap:round}
+.path .trim{stroke:#f7dda7d9;stroke-width:.48}
+.tile{position:absolute;z-index:3;transform:translate(-50%,-50%) rotate(-8deg);width:6.7%;height:5.3%;border:2px solid #f1d9a699;border-radius:49% 47% 51% 44%;background:linear-gradient(145deg,#e8d2a2,#b79977 53%,#4e4b4a);box-shadow:0 3px 0 #333139b3,0 8px 8px #0008;pointer-events:none}
+.tile.goal{box-shadow:0 0 22px #e9d8c1,0 3px 0 #333139;border-color:#fff2c5}
+.portal{position:absolute;right:4%;top:28%;width:14%;height:31%;z-index:4;pointer-events:none;display:grid;place-items:center;filter:drop-shadow(0 0 14px #f7c887b8)}
+.portal svg{width:100%;height:100%}.sprite{position:absolute;z-index:8;transform:translate(-50%,-96%);pointer-events:none;transition:left .65s cubic-bezier(.15,.8,.25,1),top .65s cubic-bezier(.15,.8,.25,1);will-change:left,top}
+.lada{width:clamp(62px,9%,120px);height:clamp(93px,30%,190px);filter:drop-shadow(2px 8px 5px #061014df)}
+.lada img{width:100%;height:100%;object-fit:contain;object-position:bottom;display:block}
+.enemy{width:clamp(90px,15.4%,210px);height:clamp(105px,33%,228px);z-index:7;filter:drop-shadow(0 0 9px #c83e4a) drop-shadow(4px 9px 7px #050914e8)}
+.enemy::before{content:'';position:absolute;inset:12%;border-radius:50%;background:radial-gradient(circle,#151723b8,#13142166 56%,transparent 75%);filter:blur(10px);z-index:-1}
+.enemy img{height:100%;width:100%;object-fit:contain;display:block;filter:contrast(1.23) drop-shadow(0 0 9px #f45d67a0)}
+.enemy.transformed{filter:drop-shadow(0 0 15px #e63d4e) drop-shadow(4px 9px 9px #040813)}
+.enemy.transformed img{filter:contrast(1.23) drop-shadow(0 0 10px #fb647999)}
+.enemy.bump{animation:bump .35s ease-in-out}
+@keyframes bump{25%{transform:translate(-53%,-96%) scale(1.09)}75%{transform:translate(-47%,-96%) scale(1.08)}}
+@keyframes pulse{from{opacity:.6;transform:scale(.9)}to{opacity:1;transform:scale(1.08)}}
+.mist{position:absolute;z-index:4;left:2%;bottom:12%;width:95%;height:21%;background:linear-gradient(to top,#d8b7d524,transparent);filter:blur(15px);pointer-events:none}
+.question{position:absolute;z-index:14;top:3.5%;left:3%;width:min(32%,400px);display:flex;flex-direction:column;align-items:stretch;gap:9px}
+.parchment{display:flex;align-items:center;justify-content:center;min-height:108px;border:3px double #ac835a;border-radius:17px 12px 18px 8px;padding:8px 12px;background:linear-gradient(145deg,#faeccd,#debf93 67%,#efd6a9);color:#342720;box-shadow:0 5px 0 #654832ba,0 10px 19px #0008;font:bold clamp(32px,5.8vw,65px)/1.15 Georgia,serif;white-space:nowrap;text-shadow:0 1px #fff9de}
+.answers{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:7px}
+.answer{min-height:61px;border:3px solid #9b7956;border-radius:13px;background:linear-gradient(145deg,#fbebc9,#d1b083);color:#2a2320;box-shadow:0 4px 0 #40302aba,0 7px 9px #0007;font:bold clamp(26px,4vw,46px) Georgia,serif}
+.answer:active{transform:translateY(2px);box-shadow:0 1px 0 #40302a}.answer:disabled{cursor:default;opacity:.75}.answer.right{background:#c3dfb6}.answer.wrong{background:#f2b3ae}
+.progress{position:absolute;z-index:15;right:2%;top:3%;font:bold clamp(15px,2.1vw,23px) Georgia,serif;color:#ffe7b8;background:#162c2ae7;border:2px solid #b99b68;border-radius:14px;padding:10px 16px;box-shadow:0 4px 14px #0009;font-variant-numeric:tabular-nums}
+.status{position:absolute;z-index:12;left:50%;bottom:2%;transform:translateX(-50%);max-width:92%;font-size:clamp(14px,1.6vw,20px);padding:6px 14px;border-radius:22px;background:#12181cc6;box-shadow:0 4px 12px #0006;color:#fff0c9;white-space:nowrap;text-align:center}
+.spark{position:absolute;z-index:10;pointer-events:none;color:#f7d7a0;text-shadow:0 0 12px #ff6c98;font-size:52px;transform:translate(-50%,-50%);animation:sparkup .7s ease-out both}
+@keyframes sparkup{0%{opacity:0;scale:.5}35%{opacity:1;scale:1.3}100%{opacity:0;scale:1.9;translate:0 -15px}}
+.modal{position:fixed;z-index:45;inset:0;display:grid;place-items:center;background:#0b1127df;padding:16px;backdrop-filter:blur(7px)}
+.modal>.card{width:min(570px,100%);border:4px ridge #ccb180;border-radius:20px;background:linear-gradient(145deg,#f8e9cb,#d0ad83);color:#352720;box-shadow:0 20px 55px #000c;text-align:center;padding:24px}
+.card h2{font-size:clamp(28px,4vw,44px);font-weight:normal;margin:0 0 12px}.card p{font-size:clamp(16px,2vw,22px);line-height:1.35;margin:0 0 20px}
+.actions{display:flex;flex-wrap:wrap;justify-content:center;gap:9px}.actions button,.actions a{min-height:48px;padding:10px 18px;border-radius:12px;border:2px solid #986e50;background:#22362e;color:#fbe4ba;font:bold 17px Georgia,serif}
+.actions a{display:inline-grid;place-items:center}.actions button:active{transform:translateY(2px)}
+@media(max-width:800px){.screen{padding:4px;gap:4px}.arena{width:100%;height:min(calc(100dvh - 60px),980px);min-height:500px;background-position:54% center}.question{left:2%;top:3%;width:39%}.parchment{min-height:74px;font-size:clamp(27px,5.7vw,49px)}.answer{min-height:49px;font-size:clamp(24px,4vw,36px)}.sprite.lada{width:11%;height:23%}.sprite.enemy{width:19%;height:26%}.progress{font-size:15px;padding:7px 9px}.status{font-size:12px}.tile{height:5%;width:8%}.portal{right:2%;top:34%}}
+@media(max-width:600px) and (orientation:portrait){header h1{font-size:15px}.nav,.reset{font-size:12px;padding:6px 8px;min-height:38px}.arena{height:calc(100dvh - 58px);min-height:580px;max-height:none;background-position:52% center}.question{top:6%;left:3%;width:59%;gap:6px}.parchment{min-height:76px;font-size:clamp(30px,8vw,47px)}.answer{min-height:56px;font-size:clamp(26px,6.7vw,35px)}.progress{top:2%;right:2%;font-size:12px;padding:5px}.sprite.lada{width:17%;height:19%}.sprite.enemy{width:23%;height:20%}.portal{width:20%;height:25%;top:39%;right:-2%}.status{bottom:1%;font-size:12px;padding:5px 7px}}
+@media(max-height:480px) and (orientation:landscape){.arena{height:calc(100dvh - 63px);min-height:300px}.parchment{min-height:52px;font-size:31px}.answer{min-height:39px;font-size:23px}.sprite.enemy{height:31%}.sprite.lada{height:27%}}
+@media(prefers-reduced-motion:reduce){.sprite{transition-duration:.01ms}.spark{animation-duration:.01ms}}
+</style></head>
+<body><div class="screen">
+<header><a class="nav" href="ladaburg-fountain.html?v=4" aria-label="Вернуться к фонтану">← Фонтан</a><h1>✦ Побег из сада ✦</h1><button class="reset" type="button" id="reset" aria-label="Начать заново">↻ Сначала</button></header>
+<main class="arena" id="arena" aria-label="Сад Ладабурга: десять клеток пути, Лада и преследующий дух">
+ <svg class="path" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true"><polyline points="10,85 19,85 28,81 37,76 46,72 55,68 64,62 73,56 82,50 91,44"/><polyline class="trim" points="10,85 19,85 28,81 37,76 46,72 55,68 64,62 73,56 82,50 91,44"/></svg>
+ <div id="tiles"></div>
+ <div class="mist"></div>
+ <div id="portal" class="portal" aria-hidden="true"><svg viewBox="0 0 140 230"><defs><radialGradient id="light"><stop stop-color="#fff8ca" stop-opacity=".93"/><stop offset=".5" stop-color="#e5b782" stop-opacity=".68"/><stop offset="1" stop-color="#b26e99" stop-opacity="0"/></radialGradient></defs><ellipse cx="70" cy="110" rx="61" ry="97" fill="url(#light)"/><path d="M17 207V47Q70 -20 123 47V207" fill="none" stroke="#e0c9ab" stroke-width="11"/><path d="M40 207V64Q70 28 100 64V207" fill="none" stroke="#f5e2c2" stroke-width="4"/></svg></div>
+ <div id="enemy" class="sprite enemy" aria-label="Злой дух преследует Ладу"><img id="enemyImg" src="images/garden-shadow-spirit.webp" alt="Дух в чёрном капюшоне с горящими глазами" draggable="false"></div>
+ <div id="lada" class="sprite lada" aria-label="Лада"><img id="ladaImg" src="images/lada-cutout.webp" alt="Лада бежит по саду" draggable="false"></div>
+ <div class="question"><div class="parchment" id="equation" aria-live="polite">6 + 3 = ?</div><div class="answers" id="choices" aria-label="Варианты ответа"></div></div>
+ <div class="progress" id="progress" role="status" aria-live="polite">До выхода: 7</div>
+ <div class="status" id="status" role="status" aria-live="polite">Помоги Ладе убежать от духа!</div>
+</main></div>
+<section id="lose" class="modal" hidden role="dialog" aria-modal="true" aria-labelledby="loseTitle"><div class="card"><h2 id="loseTitle">Дух догнал Ладу!</h2><p>Можно попробовать ещё раз.</p><div class="actions"><button type="button" id="retry">↻ Сначала</button><a href="ladaburg-fountain.html?v=4">← К фонтану</a></div></div></section>
+<section id="win" class="modal" hidden role="dialog" aria-modal="true" aria-labelledby="winTitle"><div class="card"><h2 id="winTitle">Лада выбралась из сада!</h2><p>Дух остался позади ворот.</p><div class="actions"><button type="button" id="again">↻ Ещё раз</button><a href="ladaburg.html">🏰 Ладабург</a></div></div></section>
+<p id="gameConnection" hidden></p>
+<script>
+(()=>{'use strict';
+const P=[{x:10,y:85},{x:19,y:85},{x:28,y:81},{x:37,y:76},{x:46,y:72},{x:55,y:68},{x:64,y:62},{x:73,y:56},{x:82,y:50},{x:91,y:44}];
+const $=id=>document.getElementById(id), arena=$('arena'), enemy=$('enemy'), lada=$('lada'), enemyImg=$('enemyImg'), choices=$('choices');
+const reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;let generation=0;
+const delay=ms=>new Promise(resolve=>setTimeout(resolve,reduce?Math.min(15,ms):ms));
+let pL=2,pE=0,changed=false,busy=false,over=false,answer=0,taskNo=0,lastSig='';
+const seed=new URLSearchParams(location.search).get('seed')||'';
+let rng=2166136261;for(const ch of seed)rng=Math.imul(rng^ch.charCodeAt(0),16777619)>>>0;
+function rnd(){if(!seed)return Math.random();rng^=rng<<13;rng^=rng>>>17;rng^=rng<<5;return (rng>>>0)/4294967296}
+function rand(n){return Math.floor(rnd()*n)}
+function at(node,n){const p=P[Math.max(0,Math.min(9,n))];node.style.left=p.x+'%';node.style.top=p.y+'%'}
+function sync(){at(lada,pL);at(enemy,pE);$('progress').textContent='До выхода: '+Math.max(0,9-pL);$('progress').setAttribute('aria-label','Осталось '+Math.max(0,9-pL)+' клеток')}
+P.forEach((p,i)=>{const stone=document.createElement('i');stone.className='tile'+(i===9?' goal':'');stone.style.left=p.x+'%';stone.style.top=p.y+'%';$('tiles').append(stone)});
+function makeTask(){let a,b,op,result,sig;
+ for(let i=0;i<16;i++){if(rnd()<.5){a=rand(10);b=rand(11-a);op='+';result=a+b}else{a=rand(11);b=rand(a+1);op='−';result=a-b}sig=a+op+b;if(sig!==lastSig)break}
+ lastSig=sig;answer=result;$('equation').textContent=a+' '+op+' '+b+' = ?';
+ const options=new Set([result]);const pool=[result+1,result-1,result+2,result-2,result+3,result-3,rand(11),rand(11)].filter(n=>n>=0&&n<=10&&n!==result);
+ while(options.size<3&&pool.length)options.add(pool.splice(rand(pool.length),1)[0]);while(options.size<3)options.add(rand(11));
+ const vals=[...options];for(let i=vals.length-1;i>0;i--){let j=rand(i+1);[vals[i],vals[j]]=[vals[j],vals[i]]}
+ choices.replaceChildren();for(const n of vals){const b=document.createElement('button');b.className='answer';b.type='button';b.textContent=String(n);b.setAttribute('aria-label','Ответ '+n);b.addEventListener('click',()=>play(n,b));choices.append(b)}
+}
+function flash(n,s='✦'){const p=P[n];const el=document.createElement('span');el.className='spark';el.textContent=s;el.style.left=p.x+'%';el.style.top=(p.y-13)+'%';arena.append(el);setTimeout(()=>el.remove(),1100)}
+async function transform(tag){if(changed||tag!==generation)return;changed=true;flash(pE,'✧');$('status').textContent='Дух меняет облик!';await delay(300);if(tag!==generation)return;enemy.classList.add('transformed');enemyImg.src='images/garden-crimson-spirit.webp';enemyImg.alt='Вторая форма духа: красноглазый рогатый демон';await delay(490)}
+function show(id){$(id).hidden=false;$(id).querySelector('button')?.focus({preventScroll:true})}
+async function play(n,b){if(busy||over||b.disabled)return;busy=true;const tag=generation;const correct=n===answer;b.classList.add(correct?'right':'wrong');[...choices.children].forEach(x=>x.disabled=true);$('status').textContent=correct?'✦':'Дух приближается!';await delay(240);if(tag!==generation)return;
+ pL=Math.min(9,pL+1);pE=Math.min(9,pE+(correct?1:2));sync();if(!correct){enemy.classList.remove('bump');void enemy.offsetWidth;enemy.classList.add('bump')}
+ await delay(780);if(tag!==generation)return;
+ if(pE>=pL){over=true;show('lose');return}
+ if(!changed&&pL>=5)await transform(tag);if(tag!==generation)return;
+ if(pL>=9){over=true;flash(9,'✦');$('portal').style.opacity='0';await delay(500);if(tag!==generation)return;try{if(window.TivvigRegistry?.unlockReward)window.TivvigRegistry.unlockReward('tivvig_reward_garden_escape_v1');else localStorage.setItem('tivvig_reward_garden_escape_v1','unlocked')}catch{}show('win');return}
+ taskNo++;makeTask();busy=false;$('status').textContent='Помоги Ладе убежать от духа!';
+}
+function reset(){generation++;pL=2;pE=0;changed=false;busy=false;over=false;taskNo=0;lastSig='';enemy.classList.remove('transformed','bump');enemyImg.src='images/garden-shadow-spirit.webp';enemyImg.alt='Дух в чёрном капюшоне с горящими глазами';$('portal').style.opacity='';$('status').textContent='Помоги Ладе убежать от духа!';$('lose').hidden=true;$('win').hidden=true;sync();makeTask()}
+$('reset').addEventListener('click',reset);$('retry').addEventListener('click',reset);$('again').addEventListener('click',reset);
+reset();
+window.__gardenTest={getState:()=>({pL,pE,changed,busy,over,answer,choices:[...choices.children].map(x=>Number(x.textContent)),taskNo}),reset,playCorrect:()=>{let b=[...choices.children].find(x=>Number(x.textContent)===answer);if(b)b.click()},playWrong:()=>{let b=[...choices.children].find(x=>Number(x.textContent)!==answer);if(b)b.click()}};
+})();
+</script><script src="game-runtime.js?v=1" defer></script></body></html>
