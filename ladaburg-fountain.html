@@ -20,7 +20,7 @@ button:focus-visible,a:focus-visible{outline:3px solid #ffebaa;outline-offset:3p
 .top h1{font-size:clamp(19px,2.4vw,29px);font-weight:normal;text-align:center;margin:0;text-shadow:0 3px 9px #000a}
 .top a,.top button{display:inline-flex;align-items:center;justify-content:center;min-height:43px;border:1px solid #e6ce96;border-radius:12px;background:#2d4131;color:#fff4d7;padding:8px 14px;text-decoration:none;font-size:clamp(12px,1.4vw,16px);box-shadow:0 2px 9px #0006}
 .stage{position:relative;isolation:isolate;margin:auto;width:min(100%,1320px);height:min(760px,calc(100dvh - 100px));min-height:570px;overflow:hidden;border:5px ridge #d1b580;border-radius:19px;box-shadow:0 20px 55px #0009;background:#577a75}
-.city{position:absolute;inset:0;background:#577a75 url('images/ladaburg-fountain-closeup.webp') center/cover no-repeat}
+.city{position:absolute;inset:0;background:#577a75 url('images/ladaburg-fountain-closeup.webp?v=3') center/cover no-repeat}
 .stage::after{content:'';position:absolute;inset:0;box-shadow:inset 0 0 60px #17251a99;pointer-events:none;z-index:1}
 .water{position:absolute;left:42%;top:65%;width:36%;height:13%;border-radius:50%;background:radial-gradient(ellipse,#abf8ef90,#59b3b070 46%,transparent 73%);filter:blur(10px);opacity:.7;z-index:2;pointer-events:none;animation:water 3.5s ease-in-out infinite alternate}
 @keyframes water{from{transform:scale(.94)}to{transform:scale(1.12)}}
@@ -81,6 +81,13 @@ button:focus-visible,a:focus-visible{outline:3px solid #ffebaa;outline-offset:3p
 .ghost-zone{left:50%;top:40%;width:44%;height:28%}.tray{min-height:25%;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));grid-template-rows:repeat(2,1fr);row-gap:0;bottom:1.5%}.fruit{width:100%;min-height:54px}.fruit .pic{font-size:clamp(30px,9vw,45px)}.basket{grid-column:4;grid-row:2;min-width:0;border-left:0;padding-left:0}.basket span:first-child{font-size:33px}
 }
 @media(prefers-reduced-motion:reduce){*,*::after,*::before{animation-duration:.01ms!important;transition-duration:.01ms!important}}
+
+/* v3: crisp high-resolution scene; strong silhouettes without obstructing the riddles. */
+.ghost-zone{left:64%;top:27%;width:30%;height:51%}
+.ghost-zone::before{content:"";position:absolute;inset:-6%;border-radius:50%;background:radial-gradient(ellipse at 50% 49%,rgba(22,33,49,.67) 0%,rgba(25,44,48,.43) 39%,rgba(22,37,46,.14) 67%,transparent 79%);filter:blur(10px);pointer-events:none;z-index:0}
+.ghost{position:relative;z-index:1;filter:drop-shadow(0 0 3px rgba(19,24,43,.96)) drop-shadow(0 4px 10px rgba(19,25,40,.92)) drop-shadow(0 13px 18px rgba(17,28,34,.8))}
+@media(max-width:800px){.ghost-zone{left:51%;top:33%;width:44%;height:37%}}
+@media(max-width:520px){.ghost-zone{left:52%;top:40%;width:44%;height:30%}}
 </style>
 </head>
 <body>
@@ -113,7 +120,7 @@ button:focus-visible,a:focus-visible{outline:3px solid #ffebaa;outline-offset:3p
 <script>
 (()=>{
  'use strict';
- const ghostSources=['images/fountain-ghost-1.webp','images/fountain-ghost-2.webp','images/fountain-ghost-3.webp','images/fountain-ghost-4.webp','images/fountain-ghost-5.webp','images/fountain-ghost-6.webp','images/fountain-ghost-7.webp'];
+ const ghostSources=['images/fountain-ghost-1.webp?v=3','images/fountain-ghost-2.webp?v=3','images/fountain-ghost-3.webp?v=3','images/fountain-ghost-4.webp?v=3','images/fountain-ghost-5.webp?v=3','images/fountain-ghost-6.webp?v=3','images/fountain-ghost-7.webp?v=3'];
  const rounds=[
   {id:'apple',name:'Ворчун',riddle:'Само с кулачок, красный бочок. Потрогаешь — гладко, а откусишь — сладко.'},
   {id:'banana',name:'Хитрец',riddle:'Месяц с неба свалился — и в тарелке очутился.'},
