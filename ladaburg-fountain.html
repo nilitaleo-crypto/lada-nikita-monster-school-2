@@ -20,7 +20,7 @@ button:focus-visible,a:focus-visible{outline:3px solid #ffebaa;outline-offset:3p
 .top h1{font-size:clamp(19px,2.4vw,29px);font-weight:normal;text-align:center;margin:0;text-shadow:0 3px 9px #000a}
 .top a,.top button{display:inline-flex;align-items:center;justify-content:center;min-height:43px;border:1px solid #e6ce96;border-radius:12px;background:#2d4131;color:#fff4d7;padding:8px 14px;text-decoration:none;font-size:clamp(12px,1.4vw,16px);box-shadow:0 2px 9px #0006}
 .stage{position:relative;isolation:isolate;margin:auto;width:min(100%,1320px);height:min(760px,calc(100dvh - 100px));min-height:570px;overflow:hidden;border:5px ridge #d1b580;border-radius:19px;box-shadow:0 20px 55px #0009;background:#577a75}
-.city{position:absolute;inset:0;background-image:linear-gradient(0deg,#122f2790,transparent 30%,#132a2454 100%),url('images/ladaburg-city.webp');background-size:cover,175% auto;background-position:center,49% 56%;filter:saturate(1.03) contrast(1.03);transform:scale(1.002)}
+.city{position:absolute;inset:0;background:#577a75 url('images/ladaburg-fountain-closeup.webp') center/cover no-repeat}
 .stage::after{content:'';position:absolute;inset:0;box-shadow:inset 0 0 60px #17251a99;pointer-events:none;z-index:1}
 .water{position:absolute;left:42%;top:65%;width:36%;height:13%;border-radius:50%;background:radial-gradient(ellipse,#abf8ef90,#59b3b070 46%,transparent 73%);filter:blur(10px);opacity:.7;z-index:2;pointer-events:none;animation:water 3.5s ease-in-out infinite alternate}
 @keyframes water{from{transform:scale(.94)}to{transform:scale(1.12)}}
@@ -28,19 +28,19 @@ button:focus-visible,a:focus-visible{outline:3px solid #ffebaa;outline-offset:3p
 .progress{position:absolute;z-index:20;top:2.5%;right:2%;display:flex;gap:4px;padding:7px 10px;border:2px solid #b69a62;border-radius:20px;background:#152f2ade;box-shadow:0 4px 12px #0006}
 .seal{font-size:clamp(17px,2.4vw,25px);width:clamp(18px,2.6vw,28px);text-align:center;filter:grayscale(.9);opacity:.55;transform:scale(.9);transition:filter .3s,opacity .3s,transform .3s}
 .seal.active{filter:none;opacity:1;transform:scale(1.1)}
-.lada{position:absolute;z-index:8;left:3.5%;bottom:18%;height:64%;width:24%;object-fit:contain;object-position:bottom;filter:drop-shadow(2px 8px 8px #17201577);pointer-events:none}
-.book-hands{position:absolute;z-index:11;left:9.4%;bottom:34%;width:16%;min-width:95px;transform:rotate(-9deg);filter:drop-shadow(0 5px 6px #0008);pointer-events:none;transform-origin:center bottom}
-.book-hands.glow{animation:glow 1s ease-in-out infinite alternate}
+.lada{position:absolute;z-index:10;left:1.8%;bottom:17%;height:58%;width:21%;object-fit:contain;object-position:bottom;filter:drop-shadow(2px 8px 8px #17201577);pointer-events:none}
+.book-hands{position:absolute;z-index:12;left:5.8%;bottom:25.5%;width:17.5%;min-width:96px;opacity:1;transform:rotate(-5deg);filter:drop-shadow(0 5px 6px #0008);pointer-events:none;transform-origin:center bottom}
+.book-hands.glow{opacity:1;animation:glow 1s ease-in-out infinite alternate}
 @keyframes glow{from{filter:drop-shadow(0 4px 5px #372113)}to{filter:drop-shadow(0 0 27px #ffe28f) drop-shadow(0 0 5px #fff)}}
-.ghost-zone{position:absolute;left:47%;top:24%;width:31%;height:44%;z-index:7;display:flex;justify-content:center;align-items:center;pointer-events:none}
+.ghost-zone{position:absolute;left:49.5%;top:21%;width:26%;height:47%;z-index:7;display:flex;justify-content:center;align-items:center;pointer-events:none}
 .ghost{width:100%;height:100%;object-fit:contain;filter:drop-shadow(0 0 15px #ffe3a9ba) drop-shadow(0 7px 16px #1f291db5);animation:ghostBob 2.7s ease-in-out infinite;transform-origin:bottom center;user-select:none}
 .ghost.appearing{animation:emerge 850ms cubic-bezier(.2,.92,.24,1.06) both}
 @keyframes ghostBob{0%,100%{transform:translateY(3px) rotate(-2deg)}50%{transform:translateY(-16px) rotate(2deg)}}
 @keyframes emerge{0%{opacity:0;transform:translateY(140px) scale(.2)}80%{opacity:1}100%{transform:translateY(0) scale(1)}}
-.speech{position:absolute;z-index:16;top:10%;left:3%;width:min(39%,490px);padding:19px 22px 21px;background:linear-gradient(165deg,#fff2d4f7,#e4c998f5);border:3px solid #a57c49;border-radius:23px 26px 26px 7px;color:#3b271b;box-shadow:0 8px 0 #6b4c2a72,0 15px 35px #0007;max-height:40%;display:grid;align-content:center;overflow:auto}
-.speech::after{content:'';position:absolute;bottom:-12px;left:22%;width:21px;height:21px;background:#e4c998;border-right:3px solid #a57c49;border-bottom:3px solid #a57c49;transform:rotate(45deg);z-index:-1}
+.speech{position:absolute;z-index:16;top:7%;left:21%;width:min(43%,610px);padding:16px 22px 18px;background:linear-gradient(165deg,#fff2d4f7,#e4c998f5);border:3px solid #a57c49;border-radius:23px 26px 26px 7px;color:#3b271b;box-shadow:0 8px 0 #6b4c2a72,0 15px 35px #0007;max-height:31%;display:grid;align-content:center;overflow:hidden}
+.speech::after{content:'';position:absolute;bottom:-12px;left:18%;width:21px;height:21px;background:#e4c998;border-right:3px solid #a57c49;border-bottom:3px solid #a57c49;transform:rotate(45deg);z-index:-1}
 .spirit-name{font:bold clamp(11px,1.3vw,14px) Georgia,serif;letter-spacing:.1em;text-transform:uppercase;color:#865a38;margin:0 0 7px}
-.riddle{font-size:clamp(17px,2.1vw,27px);line-height:1.3;font-weight:bold;margin:0;text-wrap:balance}
+.riddle{font-size:clamp(16px,1.9vw,24px);line-height:1.24;font-weight:bold;margin:0;text-wrap:balance}
 .instruction{position:absolute;z-index:8;top:3.6%;left:2%;font-size:clamp(12px,1.4vw,16px);color:#fff2c8;text-shadow:0 3px 7px #0a201bb0}
 .tray{position:absolute;z-index:22;left:1.8%;right:1.8%;bottom:1.9%;min-height:16%;border-radius:20px 20px 13px 13px;background:linear-gradient(160deg,#f3ddadf5,#caa67bea 50%,#92724def);border:3px solid #b08b57;box-shadow:0 8px 0 #4f3b2eab,0 14px 25px #0008,inset 0 2px #ffeec7;display:flex;justify-content:space-evenly;align-items:center;gap:3px;padding:12px 9px}
 .tray::before{content:'';position:absolute;top:-8px;left:2%;right:2%;height:8px;background:#f4e2b4d8;border-radius:100% 100% 0 0}
@@ -55,7 +55,7 @@ button:focus-visible,a:focus-visible{outline:3px solid #ffebaa;outline-offset:3p
 .basket span:first-child{font-size:clamp(39px,5vw,65px);line-height:1}
 .basket .count{font:bold clamp(12px,1.7vw,18px) system-ui,sans-serif;color:#53371d;font-variant-numeric:tabular-nums}
 .float-fruit{position:fixed;z-index:9999;pointer-events:none;font-size:64px;line-height:1;filter:drop-shadow(0 4px 5px #0006);will-change:transform,opacity}
-.ghost-message{position:absolute;right:2%;top:12%;z-index:18;color:#fff0c0;background:#1c2f2b9a;padding:5px 9px;border-radius:10px;font-size:15px;opacity:0;transition:opacity .25s;pointer-events:none}
+.ghost-message{position:absolute;right:20%;top:17%;z-index:18;color:#fff0c0;background:#1c2f2b9a;padding:5px 9px;border-radius:10px;font-size:15px;opacity:0;transition:opacity .25s;pointer-events:none}
 .ghost-message.visible{opacity:1}
 .finish{position:absolute;z-index:30;inset:0;display:flex;flex-direction:column;justify-content:center;align-items:center;gap:14px;text-align:center;padding:24px;background:#0e2a25d9;backdrop-filter:blur(5px)}
 .finish .final-book{font-size:clamp(92px,13vw,170px);filter:drop-shadow(0 0 33px #f9db94);animation:bookRise 1.4s ease-in-out infinite alternate}
@@ -67,18 +67,18 @@ button:focus-visible,a:focus-visible{outline:3px solid #ffebaa;outline-offset:3p
 @media(max-width:800px){
 .screen{padding:6px 7px 10px}.top{margin-bottom:6px;gap:3px}.top h1{font-size:17px}.top a,.top button{padding:7px 8px;font-size:12px;min-height:38px}
 .stage{height:calc(100dvh - 65px);max-height:1060px;min-height:610px;border-width:3px;border-radius:12px}
-.city{background-size:cover,auto 120%;background-position:center,51% 52%}
+.city{background-position:center center;background-size:cover}
 .heading-ribbon{display:none}.progress{top:2%;right:2%;gap:1px;padding:5px}.seal{font-size:18px;width:20px}
-.speech{top:8%;left:3%;width:91%;max-height:22%;padding:12px 16px;border-radius:18px}
+.speech{top:7%;left:4%;width:92%;max-height:24%;padding:12px 16px;border-radius:18px}
 .spirit-name{font-size:13px;margin-bottom:4px}.riddle{font-size:clamp(18px,3.5vw,25px)}
-.lada{height:49%;width:38%;left:0%;bottom:21%}.book-hands{left:12%;bottom:32%;width:17%;min-width:64px}
-.ghost-zone{left:47%;top:31%;width:47%;height:33%}.tray{bottom:2%;left:1%;right:1%;padding:8px 4px;min-height:15%;gap:0}.fruit{min-height:70px}.fruit .pic{font-size:clamp(31px,5.4vw,48px)}.basket{min-width:45px}.basket span:first-child{font-size:38px}.basket .count{font-size:12px}
+.lada{height:46%;width:34%;left:0%;bottom:22%}.book-hands{left:8%;bottom:28%;width:18%;min-width:64px}
+.ghost-zone{left:49%;top:31%;width:40%;height:34%}.tray{bottom:2%;left:1%;right:1%;padding:8px 4px;min-height:15%;gap:0}.fruit{min-height:70px}.fruit .pic{font-size:clamp(31px,5.4vw,48px)}.basket{min-width:45px}.basket span:first-child{font-size:38px}.basket .count{font-size:12px}
 }
 @media(max-width:520px){
 .top h1{font-size:14px}.stage{min-height:710px;height:calc(100dvh - 60px)}
-.speech{top:9%;max-height:25%;width:94%;left:3%}.riddle{font-size:20px}
-.lada{height:43%;width:45%;left:-2%;bottom:31%}.book-hands{left:13%;bottom:40%;width:20%;min-width:65px}
-.ghost-zone{left:47%;top:40%;width:51%;height:31%}.tray{min-height:25%;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));grid-template-rows:repeat(2,1fr);row-gap:0;bottom:1.5%}.fruit{width:100%;min-height:54px}.fruit .pic{font-size:clamp(30px,9vw,45px)}.basket{grid-column:4;grid-row:2;min-width:0;border-left:0;padding-left:0}.basket span:first-child{font-size:33px}
+.speech{top:8%;max-height:24%;width:94%;left:3%}.riddle{font-size:18px;line-height:1.18}
+.lada{height:41%;width:39%;left:-2%;bottom:25%}.book-hands{left:10%;bottom:30%;width:21%;min-width:65px}
+.ghost-zone{left:50%;top:40%;width:44%;height:28%}.tray{min-height:25%;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));grid-template-rows:repeat(2,1fr);row-gap:0;bottom:1.5%}.fruit{width:100%;min-height:54px}.fruit .pic{font-size:clamp(30px,9vw,45px)}.basket{grid-column:4;grid-row:2;min-width:0;border-left:0;padding-left:0}.basket span:first-child{font-size:33px}
 }
 @media(prefers-reduced-motion:reduce){*,*::after,*::before{animation-duration:.01ms!important;transition-duration:.01ms!important}}
 </style>
@@ -113,34 +113,7 @@ button:focus-visible,a:focus-visible{outline:3px solid #ffebaa;outline-offset:3p
 <script>
 (()=>{
  'use strict';
- const ghostPalettes=[
-  ['#fff3cb','#d8b36e','#563c31'],['#f2f4e7','#adc2b1','#36433d'],['#f2dceb','#ca9aba','#4b364c'],
-  ['#f7daca','#d9a57e','#523a31'],['#fff0ca','#d4c067','#463a2d'],['#d8ecf9','#9eafdc','#393b55'],['#f5d7df','#b996c5','#4a3650']
- ];
- function ghostSvg(n){
-  const [a,b,d]=ghostPalettes[n];const crown=n===6?'<path d="M143 99 L151 42 L178 77 L204 22 L226 75 L256 40 L259 105 Z" fill="'+b+'" stroke="'+a+'" stroke-width="6"/>':'';
-  const horns=n===0||n===4?'<path d="M120 128 Q60 92 82 36 Q103 83 154 88 M251 89 Q305 71 331 41 Q339 103 285 142" fill="none" stroke="'+b+'" stroke-width="17" stroke-linecap="round"/>':'';
-  const curls=n===2?'<path d="M117 154 Q55 112 38 168 Q24 204 56 199 M283 156 Q351 129 364 184 Q375 215 352 225" fill="none" stroke="'+a+'" stroke-width="18" stroke-linecap="round"/>':'';
-  const closed=n===1?'<path d="M155 189 Q171 180 182 188 M216 188 Q234 180 246 190" stroke="'+d+'" stroke-width="9" fill="none"/>':'';
-  return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 440" width="400" height="440"><defs>
-  <radialGradient id="ghostBody" cx="48%" cy="37%" r="70%"><stop offset="0" stop-color="#fffdf0" stop-opacity=".97"/><stop offset=".44" stop-color="${a}" stop-opacity=".94"/><stop offset=".82" stop-color="${b}" stop-opacity=".78"/><stop offset="1" stop-color="${b}" stop-opacity=".08"/></radialGradient>
-  <filter id="soft" x="-40%" y="-40%" width="180%" height="180%"><feGaussianBlur stdDeviation="12"/></filter>
-  <filter id="rim" x="-30%" y="-30%" width="160%" height="160%"><feDropShadow dx="0" dy="0" stdDeviation="7" flood-color="${a}" flood-opacity=".72"/></filter>
-  </defs>
-  <path d="M205 63 C114 62 112 115 108 146 C57 169 45 215 65 235 C79 248 102 238 129 227 C103 268 87 317 111 331 C137 354 166 316 179 295 C158 343 152 395 186 384 C210 381 223 338 239 315 C258 359 305 353 325 324 C343 294 304 255 293 233 C335 257 366 237 347 202 C337 181 308 171 290 153 C309 104 278 62 205 63 Z" fill="${a}" opacity=".35" filter="url(#soft)"/>
-  ${horns}${crown}${curls}
-  <path d="M205 63 C114 62 112 115 108 146 C57 169 45 215 65 235 C79 248 102 238 129 227 C103 268 87 317 111 331 C137 354 166 316 179 295 C158 343 152 395 186 384 C210 381 223 338 239 315 C258 359 305 353 325 324 C343 294 304 255 293 233 C335 257 366 237 347 202 C337 181 308 171 290 153 C309 104 278 62 205 63 Z" fill="url(#ghostBody)" stroke="${a}" stroke-width="6" filter="url(#rim)"/>
-  <path d="M127 216 Q82 244 76 202 M292 209 Q340 221 336 201" fill="none" stroke="${a}" stroke-width="20" stroke-linecap="round"/>
-  <path d="M164 155 Q176 132 193 156 M216 155 Q239 130 254 154" stroke="${d}" stroke-width="11" fill="none" stroke-linecap="round"/>
-  <ellipse cx="174" cy="179" rx="17" ry="21" fill="${d}" transform="rotate(18 174 179)"/><ellipse cx="234" cy="179" rx="17" ry="21" fill="${d}" transform="rotate(-18 234 179)"/>
-  <circle cx="179" cy="173" r="5" fill="#fff"/><circle cx="230" cy="173" r="5" fill="#fff"/>
-  <path d="M161 237 Q203 267 252 238 Q241 301 207 303 Q175 297 161 237 Z" fill="${d}" stroke="${a}" stroke-width="4"/>
-  <path d="M174 246 L182 266 L189 248 M213 254 L222 273 L229 250 M242 243 L235 267" fill="#fff9e5" stroke="#fff4d9" stroke-width="4"/>
-  <path d="M140 291 Q121 315 144 331 M237 300 Q276 307 264 336 M167 335 Q192 347 177 368" fill="none" stroke="${a}" stroke-opacity=".83" stroke-width="9" stroke-linecap="round"/>
-  <g fill="${a}" opacity=".92"><path d="M76 96 l5 12 12 5 -12 5 -5 12 -5 -12 -12 -5 12 -5z"/><path d="M322 121 l4 9 9 4 -9 4 -4 9 -4 -9 -9 -4 9 -4z"/><circle cx="100" cy="353" r="5"/><circle cx="319" cy="278" r="4"/><circle cx="291" cy="359" r="6"/></g>
-  ${closed}</svg>`;
- }
- const ghostUri=n=>'data:image/svg+xml;charset=utf-8,'+encodeURIComponent(ghostSvg(n));
+ const ghostSources=['images/fountain-ghost-1.webp','images/fountain-ghost-2.webp','images/fountain-ghost-3.webp','images/fountain-ghost-4.webp','images/fountain-ghost-5.webp','images/fountain-ghost-6.webp','images/fountain-ghost-7.webp'];
  const rounds=[
   {id:'apple',name:'Ворчун',riddle:'Само с кулачок, красный бочок. Потрогаешь — гладко, а откусишь — сладко.'},
   {id:'banana',name:'Хитрец',riddle:'Месяц с неба свалился — и в тарелке очутился.'},
@@ -164,7 +137,7 @@ button:focus-visible,a:focus-visible{outline:3px solid #ffebaa;outline-offset:3p
   if(!round)return;
   spiritName.textContent='ЗЛОЙ ДУХ · '+round.name;
   riddle.textContent='«'+round.riddle+'»';
-  ghost.src=ghostUri(index);
+  ghost.src=ghostSources[index];
   ghost.style.opacity='1';ghost.style.transform='';ghost.classList.remove('appearing');
   void ghost.offsetWidth;ghost.classList.add('appearing');
  }
