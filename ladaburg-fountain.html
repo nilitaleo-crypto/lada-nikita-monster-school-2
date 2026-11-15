@@ -88,6 +88,27 @@ button:focus-visible,a:focus-visible{outline:3px solid #ffebaa;outline-offset:3p
 .ghost{position:relative;z-index:1;filter:drop-shadow(0 0 3px rgba(19,24,43,.96)) drop-shadow(0 4px 10px rgba(19,25,40,.92)) drop-shadow(0 13px 18px rgba(17,28,34,.8))}
 @media(max-width:800px){.ghost-zone{left:51%;top:33%;width:44%;height:37%}}
 @media(max-width:520px){.ghost-zone{left:52%;top:40%;width:44%;height:30%}}
+
+/* The lady from the found book appears after all seven spirits have been caught. */
+.finish{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:clamp(12px,2.8vw,35px);align-items:center;justify-items:stretch;text-align:left;overflow:auto;padding:clamp(12px,3vw,30px);background:radial-gradient(ellipse at 30% 37%,#41545b,#1a293c 55%,#0e1927 100%);backdrop-filter:none}
+.finish-portrait{display:block;max-width:100%;width:100%;height:min(100%,660px);max-height:calc(100% - 4px);object-fit:cover;object-position:center 25%;border:3px solid #d8b779;border-radius:16px;box-shadow:0 9px 35px #0009,0 0 38px #ffe5b133;animation:ladyReveal .7s ease-out both}
+.finish-copy{min-width:0;max-width:600px;padding:clamp(14px,3vw,38px) clamp(14px,2.5vw,32px);border:2px solid #cfb17b;border-radius:20px;background:linear-gradient(150deg,#faeac9,#d8ba8e);color:#3b2b23;box-shadow:0 8px 22px #0009}
+.finish .finish-kicker{margin:0 0 15px;font:bold clamp(12px,1.5vw,16px) Georgia,serif;letter-spacing:.09em;color:#775338;text-transform:uppercase}
+.finish h2{margin:0 0 15px;color:#3b2b23;font-size:clamp(24px,3.2vw,44px);line-height:1.15}
+.finish .finish-line{margin:0 0 25px;color:#503929;font-size:clamp(19px,2.1vw,28px);line-height:1.32}
+.finish .actions{justify-content:flex-start}
+.finish button,.finish a{font-size:clamp(15px,1.5vw,18px);min-height:46px}
+@keyframes ladyReveal{from{opacity:0;transform:translateY(24px)}to{opacity:1;transform:translateY(0)}}
+@media(max-width:700px){
+ .finish{display:flex;flex-direction:column;justify-content:center;gap:10px;overflow-y:auto;padding:10px}
+ .finish-portrait{flex:0 1 auto;width:min(100%,310px);height:min(43dvh,390px);min-height:170px;object-fit:cover;object-position:center 20%}
+ .finish-copy{width:100%;padding:13px 15px}
+ .finish .finish-kicker{margin-bottom:7px;font-size:12px}
+ .finish h2{font-size:clamp(23px,5.5vw,32px);margin-bottom:6px}
+ .finish .finish-line{font-size:18px;margin-bottom:12px}
+ .finish .actions{gap:8px}
+ .finish button,.finish a{padding:8px 11px;font-size:15px}
+}
 </style>
 </head>
 <body>
@@ -114,7 +135,7 @@ button:focus-visible,a:focus-visible{outline:3px solid #ffebaa;outline-offset:3p
     <button class="fruit" data-fruit="lemon" title="Лимон" aria-label="Бросить лимон"><span class="pic" aria-hidden="true">🍋</span></button>
     <div class="basket" aria-label="Корзина и количество пойманных духов"><span aria-hidden="true">🧺</span><span class="count" id="count">0 / 7</span></div>
   </div>
-  <section class="finish" id="finish" hidden role="dialog" aria-modal="true" aria-labelledby="endTitle"><div class="final-book" aria-hidden="true">📖✨</div><h2 id="endTitle">Все семь духов в книге!</h2><p>Волшебная книга теперь хранит их тайну.</p><div class="actions"><button id="again" type="button">↻ Ещё раз</button><a href="ladaburg.html">🏰 Ладабург</a></div></section>
+  <section class="finish" id="finish" hidden role="dialog" aria-modal="true" aria-labelledby="endTitle"><img class="finish-portrait" src="images/fountain-lady-reward-v4.webp" alt="Сияющая таинственная дама в белом одеянии протягивает руку Ладе" width="600" height="941"><div class="finish-copy"><p class="finish-kicker">✦ Таинственная встреча</p><h2 id="endTitle">Мне нужна твоя помощь!</h2><p class="finish-line">«Лада, мне нужна твоя помощь!»</p><div class="actions"><button id="again" type="button">↻ Ещё раз</button><a href="ladaburg.html">🏰 Ладабург</a></div></div></section>
 </main>
 </div>
 <script>
