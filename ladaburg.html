@@ -47,6 +47,12 @@ main{max-width:1500px;margin:auto}
 .hermes-hotspot:hover,.hermes-hotspot:focus-visible{background:#f5e3b42d;border-color:#ffe5a3;outline:2px solid #633f50;outline-offset:2px}
 .hermes-sign{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);white-space:nowrap;line-height:1.3;font:bold clamp(11px,1.4vw,17px) Georgia,serif;text-align:center;color:#392320;padding:4px 9px;border-radius:8px;border:2px solid #ad8353;background:#f5deb2ee;box-shadow:0 3px 7px #301d2988;pointer-events:none}
 @media(max-width:680px){.hermes-hotspot{left:4.6%;top:54%;width:11.5%;height:17.5%}.hermes-sign{font-size:10px;white-space:nowrap;padding:4px 5px}}
+
+/* Entrance to the rotunda visible on the upper left-center of Ladaburg's city illustration. */
+.temple-hotspot{position:absolute;z-index:6;left:29.3%;top:11.2%;width:12.7%;height:23.6%;display:block;border:2px solid transparent;border-radius:48% 48% 11px 11px;touch-action:manipulation;cursor:pointer;background:linear-gradient(180deg,#ffe0aa09,#ffe8b710);transition:background .16s,border-color .16s}
+.temple-hotspot:hover,.temple-hotspot:focus-visible{background:#f4ddab30;border-color:#ffe6b6;outline:2px solid #624434;outline-offset:2px}
+.temple-sign{position:absolute;left:50%;bottom:0;transform:translateX(-50%);white-space:nowrap;line-height:1.3;font:bold clamp(11px,1.3vw,17px) Georgia,serif;text-align:center;color:#392b22;background:#f5deb2ee;border:2px solid #ad8353;border-radius:8px;padding:4px 9px;box-shadow:0 3px 7px #301d2988;pointer-events:none}
+@media(max-width:680px){.temple-hotspot{left:29%;top:11.2%;width:13.3%;height:23.6%}.temple-sign{font-size:10px;padding:3px 5px}}
 </style>
 </head>
 <body>
@@ -60,6 +66,7 @@ main{max-width:1500px;margin:auto}
 <a class="market-hotspot" href="ladaburg-market.html?v=2" aria-label="Войти в лавку удивительных плодов"><span class="market-sign">🍎 Лавка плодов</span></a>
 <a class="bookshop-hotspot" href="ladaburg-bookshop.html?v=3" aria-label="Играть в поиск книг по слогам"><span class="bookshop-sign">🔤 Слоги</span></a>
 <a class="hermes-hotspot" href="ladaburg-hermes-book.html?v=2" aria-label="Открыть книгу о Гермесе"><span class="hermes-sign">📖 Гермес</span></a>
+<a class="temple-hotspot" href="ladaburg-aphrodite.html?v=1" aria-label="Войти в храм Афродиты и выучить стих-пароль"><span class="temple-sign">🏛️ Храм</span></a>
 <a class="fountain-hotspot" href="ladaburg-fountain.html?v=3" aria-label="Войти к фонтану семи духов"><span class="fountain-sign">👻 Фонтан</span></a>
 <a class="garden-hotspot" href="ladaburg-garden.html?v=2" aria-label="Войти в сад с призраками"><span class="garden-sign">🌿 Сад</span></a>
 </div>
