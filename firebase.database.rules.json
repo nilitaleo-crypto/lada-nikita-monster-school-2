@@ -111,7 +111,7 @@
           ".write": "auth != null && (auth.uid === root.child('rooms').child($roomId).child('owner').val() || auth.token.firebase.sign_in_provider === 'anonymous')",
           ".validate": "newData.hasChildren(['path','epoch','by','at']) && newData.child('by').val() === auth.uid",
           "path": {
-            ".validate": "newData.isString() && (newData.val() === 'index.html' || newData.val() === 'vulkan-labirint.html' || newData.val() === 'vulkan-empedokla.html' || newData.val() === 'vulkan-slogi.html' || newData.val() === 'vulkan-kuznica.html' || newData.val() === 'vulkan-hydra.html' || newData.val() === 'collection.html' || newData.val() === 'igry.html' || newData.val() === 'michael-jackson-jungle.html' || newData.val() === 'michael-jackson-merman.html' || newData.val() === 'michael-jackson-vampire.html' || newData.val() === 'wardrobe.html')"
+            ".validate": "newData.isString() && (newData.val() === 'index.html' || newData.val() === 'vulkan-labirint.html' || newData.val() === 'vulkan-empedokla.html' || newData.val() === 'vulkan-slogi.html' || newData.val() === 'vulkan-kuznica.html' || newData.val() === 'vulkan-hydra.html' || newData.val() === 'michael-jackson-jungle.html' || newData.val() === 'michael-jackson-merman.html' || newData.val() === 'michael-jackson-vampire.html' || newData.val() === 'ladaburg.html' || newData.val() === 'ladaburg-market.html' || newData.val() === 'ladaburg-bookshop.html' || newData.val() === 'ladaburg-hermes-book.html' || newData.val() === 'ladaburg-aphrodite.html' || newData.val() === 'ladaburg-observatory.html' || newData.val() === 'ladaburg-fountain.html' || newData.val() === 'ladaburg-garden.html' || newData.val() === 'ladaburg-fialka.html' || newData.val() === 'remote-sync-test.html' || newData.val() === 'wardrobe.html' || newData.val() === 'collection.html' || newData.val() === 'igry.html')"
           },
           "epoch": {
             ".validate": "newData.isString() && newData.val().matches(/^[A-Za-z0-9_-]{16,}$/)"
@@ -174,7 +174,7 @@
           },
           "selected": {
             ".write": "auth != null && (auth.uid === root.child('rooms').child($roomId).child('owner').val() || auth.token.firebase.sign_in_provider === 'anonymous')",
-            ".validate": "newData.isString() && (newData.val() === 'default' || newData.val() === 'mermaid')"
+            ".validate": "newData.isString() && (newData.val() === 'default' || newData.val() === 'mermaid' || newData.val() === 'stars')"
           }
         }
       }
@@ -191,7 +191,7 @@
           },
           "selected": {
             ".write": "auth != null && auth.uid === $teacherId && auth.token.firebase.sign_in_provider === 'google.com'",
-            ".validate": "newData.isString() && (newData.val() === 'default' || newData.val() === 'mermaid')"
+            ".validate": "newData.isString() && (newData.val() === 'default' || newData.val() === 'mermaid' || newData.val() === 'stars')"
           }
         }
       }
