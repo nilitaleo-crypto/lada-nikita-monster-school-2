@@ -402,7 +402,7 @@ function applyEvent(e){
    let button=null;
    try{button=$frame.contentDocument?.querySelector(e.value.selector)}catch{}
    const chosen=button?.dataset?.choose;
-   if(button?.tagName==="BUTTON"&&!button.disabled&&outfits.includes(chosen)){
+   if(button?.tagName==="BUTTON"&&outfits.includes(chosen)){
     pendingWardrobeOutfit=chosen;
     showOutfit(chosen);
     if(e.value.by===uid)pushSelected(chosen);
