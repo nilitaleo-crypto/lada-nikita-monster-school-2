@@ -59,6 +59,12 @@ main{max-width:1500px;margin:auto}
 .observatory-hotspot:hover,.observatory-hotspot:focus-visible{border-color:#f9e4ae;outline:2px solid #463b61;outline-offset:2px;background:#fae4ad27}
 .observatory-sign{position:absolute;left:50%;bottom:1%;transform:translateX(-50%);padding:5px 9px;white-space:nowrap;font:bold clamp(11px,1.25vw,16px) Georgia,serif;text-align:center;line-height:1.25;color:#392a22;background:#f5deb2f0;border:2px solid #ad8353;border-radius:8px;box-shadow:0 3px 8px #251d2388;pointer-events:none}
 @media(max-width:680px){.observatory-hotspot{left:86.8%;top:31.6%;width:11%;height:35%}.observatory-sign{font-size:10px;padding:3px 5px}}
+
+/* New location, isolated from established map targets. */
+.fialka-hotspot{position:absolute;z-index:6;left:66.5%;top:49%;width:17.5%;height:22%;display:block;border:2px solid transparent;border-radius:18px;cursor:pointer;touch-action:manipulation;background:linear-gradient(160deg,#dfc3ff09,#7e51a521);transition:background .16s,border-color .16s}
+.fialka-hotspot:hover,.fialka-hotspot:focus-visible{background:#bc82e84a;border-color:#f3dcff;outline:2px solid #53376b;outline-offset:2px}
+.fialka-sign{position:absolute;bottom:0;left:50%;transform:translateX(-50%);color:#4a2e5f;background:#f9e9fcec;border:2px solid #bb8bc6;border-radius:9px;padding:5px 9px;text-align:center;line-height:1.24;white-space:nowrap;font:bold clamp(11px,1.3vw,17px) Georgia,serif;box-shadow:0 3px 9px #27132b8e;pointer-events:none}
+@media(max-width:680px){.fialka-hotspot{left:65%;top:49%;width:19%;height:23%}.fialka-sign{padding:4px 5px;font-size:10px;white-space:normal;min-width:83px}}
 </style>
 </head>
 <body>
@@ -76,6 +82,7 @@ main{max-width:1500px;margin:auto}
 <a class="observatory-hotspot" href="ladaburg-observatory.html?v=2" aria-label="Войти в сказочную обсерваторию и запомнить звёзды"><span class="observatory-sign">🔭 Звёзды</span></a>
 <a class="fountain-hotspot" href="ladaburg-fountain.html?v=3" aria-label="Войти к фонтану семи духов"><span class="fountain-sign">👻 Фонтан</span></a>
 <a class="garden-hotspot" href="ladaburg-garden.html?v=2" aria-label="Войти в сад с призраками"><span class="garden-sign">🌿 Сад</span></a>
+<a class="fialka-hotspot" href="ladaburg-fialka.html?v=1" aria-label="Войти в школу феи Фиалки и посмотреть рисунки Лады"><span class="fialka-sign">🎨 Школа Фиалки</span></a>
 </div>
 <div class="caption">
 <h1>Ладабург</h1>
