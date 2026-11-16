@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#604185">
+<meta name="description" content="Школа феи Фиалки — галерея рисунков Лады в Ладабурге">
+<title>Школа феи Фиалки — Ладабург</title>
+<style>
+:root{--violet:#5c347a;--deep:#2d204b;--ink:#482d5b;--gold:#dec68c;--pale:#fff4fb}
+*{box-sizing:border-box}html{min-height:100%}body{margin:0;min-height:100dvh;background:radial-gradient(ellipse at 50% -6%,#c5a1dc 0%,#725292 42%,#30204d 100%);color:var(--pale);font:16px Georgia,'Times New Roman',serif}
+a,button{touch-action:manipulation;-webkit-tap-highlight-color:transparent}a:focus-visible,button:focus-visible{outline:4px solid #fff0a6;outline-offset:4px}
+.top{max-width:1320px;margin:auto;display:flex;align-items:center;justify-content:space-between;gap:12px;padding:12px clamp(12px,2.1vw,25px)}.back{border:2px solid #d8ba81;background:#fff0cf;color:#493050;padding:11px 16px;border-radius:12px;text-decoration:none;font:bold 15px Georgia,serif;min-height:48px;display:inline-flex;align-items:center}.crumb{font-size:clamp(11px,1.4vw,15px);letter-spacing:.09em;text-align:right;color:#f9e3ff}
+main{max-width:1320px;margin:0 auto;padding:0 clamp(8px,1.8vw,22px) 18px}
+.school{position:relative;isolation:isolate;overflow:hidden;min-height:600px;display:grid;grid-template-columns:minmax(190px,31%) minmax(0,1fr);border:7px double #e7c58e;border-radius:28px;background:radial-gradient(ellipse at 35% 20%,#eec8ef,#b485c9 55%,#76519b);box-shadow:0 20px 60px #171025aa,inset 0 0 45px #fff5ff55}
+.school:before{content:"";position:absolute;inset:3% 1.5%;border:2px solid #f5dbb3a0;border-radius:34px 34px 14px 14px;z-index:-1;pointer-events:none}
+.school:after{content:"";position:absolute;z-index:-1;bottom:-20px;left:-10px;right:-10px;height:19%;background:repeating-linear-gradient(90deg,#f7dcf393 0 2px,transparent 2px 80px),linear-gradient(0deg,#bd91d7,#ecc8e1);clip-path:polygon(0 13%,100% 13%,100% 100%,0 100%);pointer-events:none}
+.arch{position:absolute;z-index:-1;width:50%;height:76%;left:0;top:12%;border:19px solid #a271aa;border-radius:49% 49% 3% 3%/34% 34% 3% 3%;background:linear-gradient(165deg,#e6c0e8aa,#c6a0df88);box-shadow:inset 0 0 0 7px #eecdaa99;opacity:.72}
+.violets{position:absolute;z-index:0;pointer-events:none;color:#eec8f3;text-shadow:2px 4px 0 #6d3584,0 0 9px #f8e1fd;font-size:clamp(32px,4.8vw,70px);letter-spacing:13px}.violets.top-left{left:0;top:2px;transform:rotate(-15deg)}.violets.top-right{right:-11px;top:5px;transform:rotate(10deg)}.violets.bottom-left{left:-15px;bottom:4px;font-size:clamp(37px,7vw,90px)}
+.lada-area{position:relative;min-width:0;display:flex;flex-direction:column;align-items:center;justify-content:end;padding:clamp(12px,2vw,30px) 4px 24px}
+.lada-area:before{content:"";position:absolute;inset:15% 3% 8%;border:4px double #fbe6c6aa;border-radius:48% 48% 10% 10%/31% 31% 5% 5%;background:radial-gradient(ellipse at 50% 35%,#efd5f17d,#a36aba22);box-shadow:inset 0 0 40px #fff5ff63}
+.lada-model{position:relative;width:min(100%,295px);aspect-ratio:1056/1448;z-index:1;filter:drop-shadow(0 11px 13px #44265a77)}.lada-model img{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;user-select:none;-webkit-user-drag:none}.lada-model .coat{z-index:3}.lada-model .face{z-index:4;clip-path:ellipse(19% 16.8% at 49.6% 14.5%)}
+.lada-tag{z-index:1;padding:8px 12px;border:2px solid #cba26e;border-radius:99px;background:#fff0d9;color:#613a6b;font-size:14px;font-weight:bold;text-align:center;box-shadow:0 3px 6px #3a185549}
+.exhibition{padding:clamp(15px,2vw,27px);z-index:1;min-width:0;display:flex;flex-direction:column;align-items:center;gap:14px}
+.sign{width:100%;max-width:650px;text-align:center;background:linear-gradient(120deg,#fff0de,#f8e0ef,#fff0de);color:#643f78;border:4px ridge #e1b87c;border-radius:48% 48% 15px 15px/35% 35% 15px 15px;box-shadow:0 6px 0 #8f5c9f,0 11px 19px #47275b59;padding:13px 12px}.sign h1{font:bold clamp(25px,3.6vw,44px) Georgia,serif;margin:0;letter-spacing:.02em}.sign p{font:italic clamp(12px,1.4vw,16px) Georgia,serif;margin:6px 0 0}
+.wall{position:relative;width:100%;background:linear-gradient(160deg,#75449c,#8655a9 65%,#6a3d87);border:6px ridge #dfb97c;border-radius:21px;padding:clamp(10px,2vw,25px);box-shadow:inset 0 0 0 3px #a97dc6,0 12px 22px #41224f88}.wall:after{content:"✿";position:absolute;bottom:-22px;left:50%;transform:translateX(-50%);font-size:43px;color:#e9bddb;text-shadow:0 2px 0 #b9826d}
+.gallery{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:clamp(9px,1.7vw,19px)}
+.picture{display:flex;flex-direction:column;align-items:center;gap:5px;min-width:0;border:0;background:transparent;cursor:pointer;padding:0;font:inherit;color:#fff8f5}.frame{display:block;position:relative;width:100%;background:white;padding:7px;border:8px ridge #dfc083;border-radius:9px;box-shadow:0 4px 6px #3718428c;transition:transform .14s}.picture:hover .frame,.picture:focus-visible .frame{transform:translateY(-3px);box-shadow:0 5px 0 #e8bad1,0 10px 15px #39234a55}.frame canvas{display:block;width:100%;height:auto;aspect-ratio:420/594;background:white}.picture span.label{font-size:clamp(12px,1.4vw,17px);font-weight:bold;line-height:1.25;text-align:center;text-shadow:0 1px 2px #2e173a}.hint{color:#fff5e8;font-size:clamp(13px,1.4vw,16px);text-align:center;margin:4px 0}
+.viewer[hidden]{display:none!important}.viewer{position:fixed;inset:0;background:#140c22f3;z-index:1000;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:10px;padding:clamp(10px,2vh,20px)}.viewer h2{font-size:clamp(17px,2vw,25px);text-align:center;font-weight:normal;margin:0;color:#fff0cf}.paper{background:white;padding:8px;border:5px ridge #dcbd87;max-width:min(88vw,690px);max-height:calc(100dvh - 140px);box-shadow:0 15px 45px #0008;overflow:hidden;display:flex;justify-content:center}.paper canvas{display:block;width:auto;height:auto;max-width:100%;max-height:calc(100dvh - 165px);object-fit:contain;aspect-ratio:420/594}.close{border:2px solid #e6c694;border-radius:11px;min-height:48px;padding:10px 21px;background:#fff0d0;color:#4b2c5f;font:700 16px Georgia,serif;cursor:pointer}.viewer-text{font-size:12px;color:#ecd8f6;margin:0;text-align:center}body.modal-open{overflow:hidden}
+@media(max-width:800px){.school{grid-template-columns:minmax(130px,28%) minmax(0,1fr);min-height:500px}.exhibition{padding:13px 9px}.wall{padding:9px}.frame{padding:4px;border-width:5px}.picture span.label{font-size:12px}.violets{letter-spacing:3px}}
+@media(max-width:560px){.top{padding:9px 8px}.school{display:flex;flex-direction:column;gap:0;min-height:0;border-width:5px;border-radius:18px}.school:after{height:11%}.arch{width:95%;height:29%}.lada-area{height:225px;flex-direction:row;justify-content:center;gap:12px;padding:10px 4px 0}.lada-area:before{inset:0 8%}.lada-model{height:208px;width:auto}.lada-tag{font-size:12px;max-width:125px}.exhibition{padding:7px 12px 22px}.sign{padding:8px}.sign h1{font-size:25px}.wall{width:100%;padding:10px}.picture span.label{font-size:12px}.hint{font-size:13px}}
+@media(prefers-reduced-motion:reduce){.frame{transition:none}}
+</style>
+</head>
+<body>
+<header class="top"><a class="back" href="ladaburg.html">← В Ладабург</a><span class="crumb">Школа феи Фиалки · Галерея Лады</span></header>
+<main><section class="school" aria-labelledby="schoolTitle">
+<div class="arch" aria-hidden="true"></div><div class="violets top-left" aria-hidden="true">✿ ✿ ✿</div><div class="violets top-right" aria-hidden="true">✿ ✿</div><div class="violets bottom-left" aria-hidden="true">✿</div>
+<div class="lada-area"><div class="lada-model" aria-label="Лада в звёздном пальто из коллекции"><img src="images/lada-cutout.webp" alt="Лада" draggable="false"><img class="coat" src="images/star-outfit.webp" alt="" aria-hidden="true" draggable="false"><img class="face" src="images/lada-cutout.webp" alt="" aria-hidden="true" draggable="false"></div><span class="lada-tag">✦ Лада<br>в звёздном пальто ✦</span></div>
+<div class="exhibition"><div class="sign"><h1 id="schoolTitle">Школа феи Фиалки</h1><p>Волшебная галерея рисунков Лады</p></div>
+<div class="wall"><div class="gallery" id="gallery">
+<button class="picture" type="button" id="art-0" data-art="0" aria-label="Увеличить рисунок Призраки у фонтана"><span class="frame"><canvas width="420" height="594" aria-hidden="true"></canvas></span><span class="label">Призраки у фонтана</span></button>
+<button class="picture" type="button" id="art-1" data-art="1" aria-label="Увеличить рисунок Аид и Персефона"><span class="frame"><canvas width="420" height="594" aria-hidden="true"></canvas></span><span class="label">Аид и Персефона</span></button>
+<button class="picture" type="button" id="art-2" data-art="2" aria-label="Увеличить рисунок Побег от духа-Векны"><span class="frame"><canvas width="420" height="594" aria-hidden="true"></canvas></span><span class="label">Побег от духа-Векны</span></button>
+<button class="picture" type="button" id="art-3" data-art="3" aria-label="Увеличить рисунок Лада ловит звёзды"><span class="frame"><canvas width="420" height="594" aria-hidden="true"></canvas></span><span class="label">Лада ловит звёзды</span></button>
+</div></div><p class="hint">Нажми на рисунок, чтобы рассмотреть его поближе ✨</p></div>
+</section><p id="gameConnection" aria-live="polite" style="font-size:12px;text-align:center"></p></main>
+<div class="viewer" id="viewer" role="dialog" aria-modal="true" aria-labelledby="viewerTitle" hidden><h2 id="viewerTitle">Рисунок</h2><div class="paper"><canvas id="viewerArt" width="840" height="1188" role="img" aria-label="Увеличенная раскраска"></canvas></div><button class="close" id="closeArt" type="button">✕ Закрыть рисунок</button><p class="viewer-text">Возвращайся к витрине, чтобы открыть другую картину</p></div>
+<script src="fialka-art.js?v=1" defer></script>
+<script src="game-runtime.js?v=1" defer></script>
+<script src="game-registry.js?v=2" defer></script>
+<script src="world-coop-bridge.js?v=12" defer></script>
+</body></html>
