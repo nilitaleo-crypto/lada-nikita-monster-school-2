@@ -1,0 +1,160 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#141b37">
+<meta name="description" content="Тиввиг: сказочный домик астронома и игра на память о звёздах.">
+<title>Обсерватория · Звёзды памяти · Тиввиг</title>
+<style>
+:root{--gold:#d8b67e;--night:#172540;--ink:#f8e8c9;--paper:#f3e2bd}
+*{box-sizing:border-box}html,body{margin:0;min-height:100%;background:#0c1527}
+body{font-family:Georgia,'Times New Roman',serif;color:var(--ink);overflow-x:hidden}
+button,a{-webkit-tap-highlight-color:transparent;touch-action:manipulation;font:inherit}
+button{cursor:pointer}a{color:inherit;text-decoration:none}button:focus-visible,a:focus-visible{outline:3px solid #fff1b3;outline-offset:3px}
+[hidden]{display:none!important}
+.app{position:relative;isolation:isolate;width:min(100%,1650px);min-height:100dvh;margin:auto;overflow:hidden;background:#0b1427;box-shadow:0 0 55px #0009}
+.top{position:absolute;top:clamp(9px,2vh,20px);left:clamp(9px,2vw,26px);right:clamp(9px,2vw,26px);z-index:40;display:flex;align-items:center;justify-content:space-between;gap:8px;pointer-events:none}
+.top h1{margin:0;line-height:1.1;text-align:center;font-size:clamp(18px,2.55vw,32px);font-weight:normal;text-shadow:0 3px 9px #030612ee}
+.top a,.top button{pointer-events:auto;white-space:nowrap;min-height:46px;display:inline-flex;align-items:center;justify-content:center;border:2px solid var(--gold);border-radius:12px;background:#172b36e6;color:#ffe9bc;padding:8px clamp(9px,1.5vw,20px);font-size:clamp(12px,1.5vw,17px);font-weight:bold;box-shadow:0 6px 17px #0008}
+.room{position:relative;isolation:isolate;min-height:100dvh;background:#161e35 url('images/ladaburg-observatory.webp') center/cover no-repeat;overflow:hidden}
+.room:after{content:'';position:absolute;inset:0;z-index:2;pointer-events:none;background:linear-gradient(to top,#060d1ebd,transparent 42%),linear-gradient(to right,#06102255,transparent 40%)}
+.room-lada{position:absolute;z-index:4;left:16%;bottom:13.5%;height:clamp(180px,38vh,390px);max-width:21%;object-fit:contain;object-position:bottom;filter:drop-shadow(3px 10px 10px #03040ac9);transition:left 1s ease,bottom 1s ease,height 1s ease;pointer-events:none}
+.room.approached .room-lada{left:47%;bottom:25%;height:clamp(140px,27vh,280px)}
+.scope-glow{position:absolute;z-index:3;right:29%;top:26%;width:15%;aspect-ratio:1;border-radius:50%;pointer-events:none;background:radial-gradient(circle,#fff7c59e,#f9da8d2b 45%,transparent 72%);filter:blur(12px);opacity:0;transition:opacity .8s}
+.room.approached .scope-glow{opacity:1}
+.room-message{position:absolute;z-index:9;left:clamp(12px,4%,70px);bottom:clamp(85px,15%,150px);max-width:min(41%,540px);border:2px solid #caa366;border-radius:17px;padding:13px clamp(13px,2.3vw,25px);color:#f9e9c7;background:#10243ad9;box-shadow:0 8px 24px #000b}
+.room-message .kicker{color:#e9c485;letter-spacing:.13em;font-weight:bold;font-size:clamp(10px,1.2vw,15px)}
+.room-message p{font-size:clamp(17px,2.3vw,29px);line-height:1.25;margin:7px 0}
+.room-actions{position:absolute;z-index:12;right:clamp(12px,4%,58px);bottom:clamp(22px,6%,70px);display:flex;gap:12px;flex-wrap:wrap;justify-content:flex-end}
+.action{min-height:53px;padding:12px clamp(15px,2.2vw,30px);border:2px solid #e2bd7f;border-radius:14px;background:linear-gradient(140deg,#e6c68d,#bd8c51);color:#272034;font:bold clamp(15px,2vw,24px) Georgia,serif;box-shadow:0 7px 18px #000a;cursor:pointer}
+.action:hover{filter:brightness(1.1)}.action:active{transform:translateY(2px)}.action.secondary{color:#f6e6c3;background:linear-gradient(140deg,#1c3954,#132234)}
+.sky{position:relative;min-height:100dvh;padding:clamp(77px,11vh,104px) clamp(12px,3vw,36px) clamp(85px,13vh,128px);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;isolation:isolate;background:radial-gradient(ellipse at 50% 44%,#172d5c 0%,#0f1635 60%,#080d23 100%)}
+.sky:after{content:'';position:absolute;z-index:-1;inset:0;opacity:.45;background-image:radial-gradient(#e9dafa 1px,transparent 1.5px),radial-gradient(#f7d498 1px,transparent 1px);background-size:59px 63px,97px 103px;background-position:17px 13px,59px 46px;pointer-events:none}
+.sky-counter{position:absolute;z-index:7;top:clamp(78px,12vh,116px);right:clamp(16px,6vw,85px);font-size:clamp(13px,1.5vw,20px);font-weight:bold;color:#ffe6b0;white-space:nowrap;padding:7px 13px;background:#162d47de;border:1px solid #c5a679;border-radius:12px}
+.sky-title{color:#fff0d0;margin:0 0 1px;font-size:clamp(19px,2.5vw,33px);text-align:center;font-weight:normal;text-shadow:0 2px 5px #000b}
+.eyepiece{position:relative;flex:0 0 auto;width:min(78vh,76vw,690px);height:min(78vh,76vw,690px);min-width:270px;min-height:270px;max-height:calc(100dvh - 290px);aspect-ratio:1;border-radius:50%;padding:clamp(9px,1.5vw,17px);border:clamp(7px,1vw,15px) ridge #c99d60;background:radial-gradient(circle,#162f61 5%,#101b3b 58%,#080d23 85%);box-shadow:inset 0 0 0 3px #ffe6a1,inset 0 0 80px #0009,0 0 0 9px #362c34,0 0 35px #edbb8766;overflow:hidden}
+.eyepiece:before{position:absolute;content:'';inset:8%;z-index:0;opacity:.4;pointer-events:none;background:radial-gradient(ellipse at 42% 43%,#557ba36a,transparent 55%);filter:blur(25px)}
+.star-field{position:relative;z-index:2;width:100%;height:100%;border-radius:50%;overflow:hidden;background:radial-gradient(ellipse at 42% 37%,#40578a34,#12224712 60%,#08132a22 85%)}
+.star-field:before{position:absolute;inset:0;content:'';pointer-events:none;background-image:radial-gradient(#f2f4fc 1px,transparent 1.5px),radial-gradient(#d5dfff 1px,transparent 1.3px),radial-gradient(#e7c08c 1px,transparent 1.3px);background-size:42px 51px,70px 63px,87px 97px;background-position:17px 7px,36px 22px,55px 34px;opacity:.7}
+.star{position:absolute;z-index:3;display:grid;place-items:center;width:clamp(47px,7vw,60px);height:clamp(47px,7vw,60px);transform:translate(-50%,-50%);border:0;border-radius:50%;padding:0;color:#b5c5df;background:radial-gradient(circle,#c3c9df23,transparent 70%);font:bold clamp(23px,3.5vw,34px)/1 Georgia,serif;text-shadow:0 0 8px #c1d7ff80;transition:color .2s ease,text-shadow .2s ease,background .2s ease,filter .2s ease;touch-action:manipulation}
+.star::before{content:'✦';display:block}.star:disabled{cursor:default}
+.star.preview,.star.chosen{color:#ffebac;text-shadow:0 0 5px #fff,0 0 16px #ffe09b,0 0 30px #e9ac42;background:radial-gradient(circle,#f8d47444,transparent 73%)}
+.star.wrong{color:#ffa0a8;text-shadow:0 0 10px #fa3c62,0 0 22px #fd2e53;background:radial-gradient(circle,#f764764f,transparent)}
+.star.sequence-preview{animation:sequenceShine 4.8s linear infinite both;animation-delay:var(--seq-delay,0s)}
+@keyframes sequenceShine{0%,12%,32%,100%{color:#b5c5df;text-shadow:0 0 8px #c1d7ff80;background:transparent}17%,26%{color:#ffe6a5;text-shadow:0 0 6px #fff,0 0 22px #ffe3ad,0 0 33px #f8b846;background:radial-gradient(circle,#f9d48088,transparent 70%)}}
+.sky-hint{min-height:47px;display:grid;place-items:center;text-align:center;color:#ffebc6;font-size:clamp(16px,2vw,24px);background:#12243ae3;border:1px solid #a98c66;border-radius:13px;padding:9px 17px;max-width:min(650px,90vw)}
+.sky-actions{position:absolute;z-index:10;bottom:clamp(12px,3vh,28px);left:50%;transform:translateX(-50%);width:min(92%,760px);display:flex;gap:12px;justify-content:center;align-items:center;flex-wrap:wrap}
+.sky-actions .action{min-width:190px}
+.victory{position:relative;min-height:100dvh;display:flex;flex-direction:column;gap:23px;align-items:center;justify-content:center;padding:85px 25px 55px;text-align:center;background:radial-gradient(ellipse at 52% 32%,#3e5375,#171c39 55%,#081020)}
+.victory .sigil{font-size:clamp(90px,16vw,180px);color:#ffdf94;text-shadow:0 0 40px #e6b86eb5;line-height:1}
+.victory h2{font-size:clamp(27px,4vw,52px);margin:0;font-weight:normal}.victory p{font-size:clamp(16px,2.3vw,24px);margin:0}
+.victory .links{display:flex;flex-wrap:wrap;justify-content:center;gap:12px}
+.victory .links a{min-height:49px;display:grid;place-items:center;border:2px solid #caa86e;border-radius:13px;background:#1c3950;padding:10px 16px;font-weight:bold}
+#gameConnection{position:fixed;z-index:50;left:10px;bottom:5px;color:#ffceac;background:#122033e9;border-radius:8px;font:13px system-ui;padding:3px 7px}
+@media(max-width:850px){.room{background-position:57% center}.room-lada{left:5%;bottom:15%;height:34vh;max-width:29%}.room.approached .room-lada{left:47%;bottom:23%;height:26vh}.room-message{left:3%;bottom:26%;max-width:43%}.room-actions{bottom:4%;right:4%}.sky-counter{top:87px;right:18px}.sky-title{font-size:21px}.sky{gap:8px;padding-top:114px;padding-bottom:104px}.eyepiece{width:min(72vh,86vw,600px);height:min(72vh,86vw,600px);max-height:calc(100dvh - 260px)}}
+@media(max-width:600px) and (orientation:portrait){.room{background-position:53% center}.room-lada{left:5%;height:28%;bottom:16%;max-width:39%}.room.approached .room-lada{left:45%;height:24%;bottom:25%}.room-message{left:3%;right:3%;bottom:26%;max-width:none}.room-message p{font-size:17px}.room-actions{bottom:6%;left:3%;right:3%}.room-actions .action{width:100%}.top h1{font-size:15px}.top a,.top button{padding:6px 8px;font-size:12px;min-height:40px}.sky{padding-top:125px;padding-bottom:112px;justify-content:center}.sky-counter{top:80px;right:14px;font-size:12px}.sky-title{font-size:19px}.eyepiece{width:88vw;height:88vw;min-width:0;min-height:0;max-height:calc(100dvh - 285px)}.star{width:clamp(44px,10vw,53px);height:clamp(44px,10vw,53px);font-size:27px}.sky-actions{bottom:4%;width:95%}.sky-actions .action{width:100%;min-width:0}.sky-hint{font-size:16px}}
+@media(max-height:580px) and (orientation:landscape){.room-message{bottom:18%;padding:8px 13px}.room-message p{font-size:18px}.room-lada{height:35%}.room.approached .room-lada{height:28%}.sky{padding-top:70px;padding-bottom:65px;gap:3px}.sky-counter{top:71px;right:13px}.eyepiece{width:min(58vh,66vw,460px);height:min(58vh,66vw,460px);max-height:calc(100dvh - 160px)}.star{width:44px;height:44px}.sky-actions{bottom:5px}.sky-actions .action{min-height:42px;padding:7px 15px}.sky-hint{font-size:15px;min-height:31px;padding:3px 9px}}
+@media(prefers-reduced-motion:reduce){*,*:before,*:after{animation-duration:.01ms!important;transition-duration:.01ms!important}.star.sequence-preview{animation:none!important;color:#ffe6a5}.star.sequence-preview:before{display:none}.star.sequence-preview:after{content:attr(data-order);font-weight:bold;font-size:22px;color:#ffe6a5}}
+</style>
+</head>
+<body><main class="app" id="app">
+ <header class="top"><a href="ladaburg.html" aria-label="Вернуться в Ладабург">← Ладабург</a><h1>✦ Домик астронома ✦</h1><button type="button" id="restart" title="С начала" aria-label="Начать игру заново">↻ Сначала</button></header>
+ <section class="room" id="room" aria-label="Сказочный домик астронома">
+  <div class="scope-glow" aria-hidden="true"></div>
+  <img class="room-lada" id="roomLada" src="images/lada-cutout.webp" alt="Лада стоит возле телескопа" draggable="false">
+  <div class="room-message" id="roomMessage"><div class="kicker">ПУТЕШЕСТВИЕ К ЗВЁЗДАМ</div><p id="roomText">В домике астронома спрятано звёздное небо.</p></div>
+  <div class="room-actions"><button class="action" type="button" id="approach">Подойти к телескопу 🔭</button><button class="action" type="button" id="look" hidden>Заглянуть в телескоп ✦</button></div>
+ </section>
+ <section class="sky" id="sky" hidden aria-label="Звёзды в телескопе">
+  <div class="sky-counter" id="roundLabel">Раунд 1 / 5</div>
+  <h2 class="sky-title" id="skyTitle">Запомни звёзды</h2>
+  <div class="eyepiece"><div class="star-field" id="starField" aria-label="Звёздное небо с кнопками-звёздами"></div></div>
+  <div class="sky-hint" id="skyHint" role="status" aria-live="polite">Запомни, какие звёзды светятся</div>
+  <div class="sky-actions">
+   <button class="action" id="startRecall" type="button" hidden>Я запомнила ✦</button>
+   <button class="action secondary" id="retryRound" type="button" hidden>↻ Посмотреть ещё раз</button>
+   <button class="action" id="nextRound" type="button" hidden>Следующий раунд →</button>
+  </div>
+ </section>
+ <section class="victory" id="victory" hidden aria-label="Пять раундов пройдены">
+  <div class="sigil" aria-hidden="true">✦</div><h2>Лада запомнила звёздный рисунок!</h2>
+  <p>Все пять испытаний пройдены.</p>
+  <div class="links"><button type="button" id="again" class="action">↻ Ещё раз</button><a href="ladaburg.html">🏰 Ладабург</a></div>
+ </section>
+ <p id="gameConnection" hidden aria-live="polite"></p>
+</main>
+<script>
+(()=>{'use strict';
+ const $=id=>document.getElementById(id);
+ const app=$('app'),room=$('room'),sky=$('sky'),victory=$('victory'),field=$('starField');
+ const approach=$('approach'),look=$('look'),startRecall=$('startRecall'),retry=$('retryRound'),next=$('nextRound');
+ const lines=[
+   {count:6,targets:2,mode:'set',seconds:7},
+   {count:7,targets:3,mode:'set',seconds:6},
+   {count:8,targets:3,mode:'set',seconds:6},
+   {count:9,targets:4,mode:'set',seconds:5},
+   {count:9,targets:4,mode:'order',seconds:6}
+ ];
+ // Every room participant receives the same Firebase epoch in the seed query param.
+ // The seed fixes both positions and answers. No device-local randomness affects gameplay.
+ const seed=new URLSearchParams(location.search).get('seed')||'solo-stars-2026';
+ const coordinates=[[24,19],[48,14],[73,21],[84,40],[76,65],[54,84],[27,76],[15,52],[35,39],[56,41],[38,61],[61,61],[48,27],[24,53]];
+ function hash(str){let h=2166136261>>>0;for(let i=0;i<str.length;i++){h^=str.charCodeAt(i);h=Math.imul(h,16777619)>>>0}return h||1}
+ function seeded(n){let x=n>>>0;return ()=>{x^=x<<13;x^=x>>>17;x^=x<<5;return(x>>>0)/4294967296}}
+ function shuffled(n,rng){const out=Array.from({length:n},(_,i)=>i);for(let i=n-1;i>0;i--){const j=Math.floor(rng()*(i+1));[out[i],out[j]]=[out[j],out[i]]}return out}
+ let stage='room',round=0,phase='idle',selected=[],targets=[],stars=[],previewTimer=null;
+ function cancelPreview(){if(previewTimer!==null){clearTimeout(previewTimer);previewTimer=null}}
+ function configureRound(){
+   const level=lines[round],rng=seeded(hash(seed+'|round='+round));
+   const available=shuffled(coordinates.length,rng).slice(0,level.count);
+   const indices=shuffled(level.count,rng);
+   return {positions:available.map(i=>coordinates[i]),targets:indices.slice(0,level.targets)};
+ }
+ function showPart(where){room.hidden=where!=='room';sky.hidden=where!=='sky';victory.hidden=where!=='victory';stage=where}
+ function reset(){cancelPreview();round=0;phase='idle';selected=[];targets=[];stars=[];field.replaceChildren();room.classList.remove('approached');$('roomText').textContent='В домике астронома спрятано звёздное небо.';approach.hidden=false;look.hidden=true;showPart('room')}
+ function walk(){if(stage!=='room'||phase!=='idle')return;phase='approached';room.classList.add('approached');$('roomText').textContent='Телескоп показывает звёзды. Лада подходит к нему.';approach.hidden=true;look.hidden=false}
+ function peek(){if(stage!=='room'||phase!=='approached')return;showPart('sky');beginRound()}
+ function paintButtons(){startRecall.hidden=phase!=='preview';retry.hidden=phase!=='retry';next.hidden=phase!=='solved';next.textContent=round===4?'Завершить ✦':'Следующий раунд →';}
+ function clearStarStyles(){stars.forEach(s=>{s.classList.remove('preview','sequence-preview','chosen','wrong');s.style.removeProperty('--seq-delay');delete s.dataset.order})}
+ function dimPreview(){previewTimer=null;if(phase!=='preview')return;stars.forEach(s=>s.classList.remove('preview','sequence-preview'));$('skyHint').textContent='Запомнила? Теперь найди эти звёзды.'}
+ function beginRound(){
+   cancelPreview();phase='preview';selected=[];const level=lines[round],cfg=configureRound();targets=cfg.targets;
+   $('roundLabel').textContent='Раунд '+(round+1)+' / 5';$('skyTitle').textContent=level.mode==='order'?'Повтори порядок звёзд':'Запомни звёзды';
+   $('skyHint').textContent=level.mode==='order'?'Смотри, в каком порядке загораются звёзды':'Запомни, какие звёзды светятся';
+   field.replaceChildren();stars=[];
+   cfg.positions.forEach(([x,y],i)=>{
+     const b=document.createElement('button');b.type='button';b.className='star';b.id='star-'+i;b.style.left=x+'%';b.style.top=y+'%';
+     b.setAttribute('aria-label','Звезда '+(i+1));b.disabled=true;b.addEventListener('click',()=>pickStar(i));field.append(b);stars.push(b)
+   });
+   if(level.mode==='order'){
+     targets.forEach((id,idx)=>{stars[id].classList.add('sequence-preview');stars[id].dataset.order=String(idx+1);stars[id].style.setProperty('--seq-delay',(idx*.9)+'s')});
+   }else targets.forEach(id=>stars[id].classList.add('preview'));
+   paintButtons();previewTimer=setTimeout(dimPreview,level.seconds*1000);
+ }
+ function startSearch(){
+   if(stage!=='sky'||phase!=='preview')return;
+   cancelPreview();phase='recall';clearStarStyles();stars.forEach(s=>s.disabled=false);
+   $('skyHint').textContent=lines[round].mode==='order'?'Нажми на звёзды в том же порядке':'Найди звёзды, которые светились';paintButtons()
+ }
+ function pickStar(i){
+   if(stage!=='sky'||phase!=='recall'||selected.includes(i))return;
+   const expected=lines[round].mode==='order'?targets[selected.length]:null;
+   if(!targets.includes(i)||(expected!==null&&i!==expected)){
+     stars[i].classList.add('wrong');phase='retry';stars.forEach(s=>s.disabled=true);
+     $('skyHint').textContent='Попробуем ещё раз — посмотри на рисунок';paintButtons();return
+   }
+   selected.push(i);stars[i].classList.add('chosen');stars[i].disabled=true;
+   if(selected.length===targets.length){phase='solved';stars.forEach(s=>s.disabled=true);$('skyHint').textContent='✦ Все звёзды найдены!';paintButtons()}
+   else $('skyHint').textContent=lines[round].mode==='order'?('Вспомни следующую звезду · '+selected.length+' / '+targets.length):('Найдено: '+selected.length+' / '+targets.length)
+ }
+ function repeat(){if(stage!=='sky'||phase!=='retry')return;beginRound()}
+ function advance(){if(stage!=='sky'||phase!=='solved')return;cancelPreview();if(round===4){phase='finished';showPart('victory')}else{round++;beginRound()}}
+ approach.addEventListener('click',walk);look.addEventListener('click',peek);startRecall.addEventListener('click',startSearch);
+ retry.addEventListener('click',repeat);next.addEventListener('click',advance);$('restart').addEventListener('click',reset);$('again').addEventListener('click',reset);
+ reset();
+ window.__starsTest={getState:()=>({stage,round,phase,targets:[...targets],selected:[...selected],positions:stars.map(s=>({x:s.style.left,y:s.style.top})),available:stars.length}),
+   approach:()=>approach.click(),look:()=>look.click(),recall:()=>startRecall.click(),pick:i=>stars[i]?.click(),repeat:()=>retry.click(),next:()=>next.click(),reset};
+})();
+</script><script src="game-runtime.js?v=1" defer></script>
+</body></html>
