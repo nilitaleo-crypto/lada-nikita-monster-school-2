@@ -70,6 +70,7 @@ const rewardSet=new Set(rewardKeys),selectedKey='tivvig_outfit_selected_v1';
 /* Persistent Lada collection: readable/writable only by the Google teacher.
    Individual lesson rooms mirror this state to the anonymously signed-in child. */
 let cloudProfileReady=false,cloudSavedRewards=new Set(),cloudSavedSelection=null;
+let skipLegacyRoomSelectionSave=false;
 function profileRef(path=''){
  return ref(db,'teacherProfiles/'+uid+'/lada'+(path?'/'+path:''));
 }
@@ -125,6 +126,8 @@ function persistTeacherRewards(values){
 }
 function persistTeacherSelection(value){
  if(role!=='teacher'||!cloudProfileReady||!['default','mermaid','stars'].includes(value))return;
+ // A temporary default in an old room must not overwrite a saved star outfit.
+ if(skipLegacyRoomSelectionSave){skipLegacyRoomSelectionSave=false;if(value==='default')return;}
  if(cloudSavedSelection===value)return;
  cloudSavedSelection=value;
  set(profileRef('selected'),value).then(()=>{
@@ -137,7 +140,14 @@ function persistTeacherSelection(value){
 
 let remoteActionCount=0;
 function pushReward(key){if(!room||!rewardSet.has(key))return;set(dbref('state/rewards/'+key),'unlocked').catch(e=>report(explain(e)))}
-function pushSelected(value){if(!room||!['default','mermaid','stars'].includes(value))return;set(dbref('state/selected'),value).catch(e=>report(explain(e)))}
+function pushSelected(value){
+ if(!room||!['default','mermaid','stars'].includes(value))return;
+ set(dbref('state/selected'),value).catch(e=>{
+  if(value==='stars'&&String(e?.code||e).includes('permission-denied'))
+   saveInfo('⚠ Звёздный наряд пока не синхронизируется: опубликуй обновлённые правила Firebase.',true);
+  report(explain(e));
+ });
+}
 window.addEventListener('storage',e=>{
  if(!sessionStarted||!room||!e.key)return;
  if(rewardSet.has(e.key)&&e.newValue==='unlocked')pushReward(e.key);
@@ -514,11 +524,21 @@ teacher.addEventListener("click",async()=>{
   if(user.isAnonymous||!user.providerData.some(p=>p.providerId==="google.com"))throw new Error("Требуется вход через Google.");
   role="teacher";uid=user.uid;owner=uid;room=randomId();
   const saved=await restoreTeacherCollection();
-  await set(dbref(""),{
+  const initialRoom={
    owner:uid,createdAt:Date.now(),resetVersion:0,
    page:{path:"index.html",epoch:randomId(12),by:uid,at:Date.now()},
    state:{rewards:saved.rewards,selected:saved.selected}
-  });
+  };
+  try{
+   await set(dbref(""),initialRoom);
+  }catch(error){
+   // Older deployed rules do not accept the "stars" outfit. Keep the lesson usable.
+   if(initialRoom.state.selected!=='stars'||!String(error?.code||error).includes('permission-denied'))throw error;
+   initialRoom.state.selected='default';
+   await set(dbref(""),initialRoom);
+   skipLegacyRoomSelectionSave=true;
+   saveInfo('⚠ Занятие открыто со стандартным нарядом. Обнови правила Firebase для синхронизации звёздного костюма.',true);
+  }
   initClient();
  }catch(e){message(explain(e),true);}
  finally{teacher.disabled=false;}

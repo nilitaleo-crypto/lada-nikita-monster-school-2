@@ -6,6 +6,9 @@ const allowed=window.TivvigRegistry?.allowedPages;
 if(!allowed)return;
 const current=location.pathname.split("/").pop()||"index.html";
 if(!allowed.has(current))return;
+// Some older pages include both a static and a runtime bridge. Only one may run.
+if(window.__tivvigWorldBridgeStarted)return;
+window.__tivvigWorldBridgeStarted=true;
 if(current==="index.html")document.querySelectorAll('a[href="coop.html"]').forEach(a=>{a.style.display="none";});
 const isMaze=current==="vulkan-labirint.html";
 let role=q.get("role")==="teacher"?"teacher":"student",replaying=false,lastCursor=0,lastScroll=0;
