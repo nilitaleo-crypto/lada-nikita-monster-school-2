@@ -74,6 +74,7 @@ let skipLegacyRoomSelectionSave=false;
 // Clothing clicks are replicated through the room action stream. An older
 // state snapshot must not cancel the latest selection on either device.
 let pendingWardrobeOutfit=null;
+let outfitWriteInFlight=null;
 const outfits=['default','mermaid','stars'];
 function profileRef(path=''){
  return ref(db,'teacherProfiles/'+uid+'/lada'+(path?'/'+path:''));
@@ -146,7 +147,12 @@ let remoteActionCount=0;
 function pushReward(key){if(!room||!rewardSet.has(key))return;set(dbref('state/rewards/'+key),'unlocked').catch(e=>report(explain(e)))}
 function pushSelected(value){
  if(!room||!outfits.includes(value))return;
- set(dbref('state/selected'),value).catch(e=>{
+ outfitWriteInFlight=value;
+ set(dbref('state/selected'),value).then(()=>{
+  if(outfitWriteInFlight===value)outfitWriteInFlight=null;
+  if(pendingWardrobeOutfit===value)persistTeacherSelection(value);
+ }).catch(e=>{
+  if(outfitWriteInFlight===value)outfitWriteInFlight=null;
   if(value==='stars'&&String(e?.code||e).includes('permission-denied')){
    saveInfo('⚠ Звёздный наряд надет на этом занятии, но для облачного сохранения нужны обновлённые правила Firebase.',true);
    report('⚠ Наряд выбран в занятии; для постоянного сохранения обнови правила Firebase.');
@@ -198,9 +204,13 @@ function showOutfit(value){
 function applySharedSelection(value){
  if(!outfits.includes(value))return;
  if(pendingWardrobeOutfit!==null){
-  // A stale snapshot or a Firebase write rejection must not undo the click.
+  // Firebase fires onValue optimistically BEFORE a set() is acknowledged.
+  // Keep the override even when the rejected write rolls back to old state.
   if(value!==pendingWardrobeOutfit)return;
-  pendingWardrobeOutfit=null;
+  if(outfitWriteInFlight===value){showOutfit(value);return;}
+  persistTeacherSelection(value);
+  showOutfit(value);
+  return;
  }
  persistTeacherSelection(value);
  showOutfit(value);
