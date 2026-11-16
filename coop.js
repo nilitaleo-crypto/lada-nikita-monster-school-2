@@ -71,6 +71,10 @@ const rewardSet=new Set(rewardKeys),selectedKey='tivvig_outfit_selected_v1';
    Individual lesson rooms mirror this state to the anonymously signed-in child. */
 let cloudProfileReady=false,cloudSavedRewards=new Set(),cloudSavedSelection=null;
 let skipLegacyRoomSelectionSave=false;
+// Clothing clicks are replicated through the room action stream. An older
+// state snapshot must not cancel the latest selection on either device.
+let pendingWardrobeOutfit=null;
+const outfits=['default','mermaid','stars'];
 function profileRef(path=''){
  return ref(db,'teacherProfiles/'+uid+'/lada'+(path?'/'+path:''));
 }
@@ -141,17 +145,25 @@ function persistTeacherSelection(value){
 let remoteActionCount=0;
 function pushReward(key){if(!room||!rewardSet.has(key))return;set(dbref('state/rewards/'+key),'unlocked').catch(e=>report(explain(e)))}
 function pushSelected(value){
- if(!room||!['default','mermaid','stars'].includes(value))return;
+ if(!room||!outfits.includes(value))return;
  set(dbref('state/selected'),value).catch(e=>{
-  if(value==='stars'&&String(e?.code||e).includes('permission-denied'))
-   saveInfo('⚠ Звёздный наряд пока не синхронизируется: опубликуй обновлённые правила Firebase.',true);
+  if(value==='stars'&&String(e?.code||e).includes('permission-denied')){
+   saveInfo('⚠ Звёздный наряд надет на этом занятии, но для облачного сохранения нужны обновлённые правила Firebase.',true);
+   report('⚠ Наряд выбран в занятии; для постоянного сохранения обнови правила Firebase.');
+   return;
+  }
   report(explain(e));
  });
 }
 window.addEventListener('storage',e=>{
  if(!sessionStarted||!room||!e.key)return;
  if(rewardSet.has(e.key)&&e.newValue==='unlocked')pushReward(e.key);
- else if(e.key===selectedKey&&['default','mermaid','stars'].includes(e.newValue))pushSelected(e.newValue);
+ else if(e.key===selectedKey&&outfits.includes(e.newValue)){
+  // The click action is authoritative in co-op wardrobe; do not race with it.
+  if(currentPage==='wardrobe.html')return;
+  pendingWardrobeOutfit=e.newValue;
+  pushSelected(e.newValue);
+ }
 });
 async function seedStudentState(){
  if(role!=='student')return;
@@ -178,11 +190,20 @@ function applySharedRewards(values){
  }
  sendToFrame('inventory',{kind:'rewards'});
 }
-function applySharedSelection(value){
- if(!['mermaid','default','stars'].includes(value))return;
- persistTeacherSelection(value);
+function showOutfit(value){
+ if(!outfits.includes(value))return;
  try{if(localStorage.getItem(selectedKey)!==value)localStorage.setItem(selectedKey,value)}catch(e){}
  sendToFrame('inventory',{kind:'selection',value});
+}
+function applySharedSelection(value){
+ if(!outfits.includes(value))return;
+ if(pendingWardrobeOutfit!==null){
+  // A stale snapshot or a Firebase write rejection must not undo the click.
+  if(value!==pendingWardrobeOutfit)return;
+  pendingWardrobeOutfit=null;
+ }
+ persistTeacherSelection(value);
+ showOutfit(value);
 }
 
 const $frame=$("mazeFrame");
@@ -365,6 +386,18 @@ function applyEvent(e){
   return;
  }
  if(e.value?.kind==="click"&&e.value?.selector&&currentPage!=="vulkan-labirint.html"){
+  if(currentPage==="wardrobe.html"){
+   // Both players see the same clicked outfit immediately. Exactly one device
+   // (the sender) writes it to room state, avoiding conflicting Firebase writes.
+   let button=null;
+   try{button=$frame.contentDocument?.querySelector(e.value.selector)}catch{}
+   const chosen=button?.dataset?.choose;
+   if(button?.tagName==="BUTTON"&&!button.disabled&&outfits.includes(chosen)){
+    pendingWardrobeOutfit=chosen;
+    showOutfit(chosen);
+    if(e.value.by===uid)pushSelected(chosen);
+   }
+  }
   sendToFrame("click",{selector:e.value.selector});
  }
 }
