@@ -26,7 +26,7 @@ main{width:min(1200px,100%);min-height:100dvh;margin:0 auto;padding:clamp(12px,2
 .message{background:#e6c99b;border:1px solid #ad805c;border-radius:8px;padding:10px 13px;font-size:clamp(13px,1.45vw,16px);line-height:1.5;margin:0}.message strong{color:#684039}.nav{display:flex;flex-wrap:wrap;gap:10px;justify-content:center;margin-top:7px}.nav a{background:#593443;color:#ffead0;border:1px solid #c29a62;border-radius:10px;padding:10px 16px;font-weight:bold}
 @media(max-width:760px){main{padding:10px}.book{padding:17px 13px}.book:before{display:none}.layout{grid-template-columns:1fr}.preview{min-height:0}.doll{height:min(45dvh,440px);min-height:210px}.options{gap:10px}.item{grid-template-columns:72px minmax(0,1fr)}.thumb{width:72px;height:95px}.intro{margin-bottom:11px}}
 </style>
-<script src="wardrobe.js" defer></script>
+<script src="wardrobe.js?v=2" defer></script>
 </head>
 <body>
 <main>
@@ -54,7 +54,11 @@ main{width:min(1200px,100%);min-height:100dvh;margin:0 auto;padding:clamp(12px,2
      <div class="thumb"><img src="images/lada-cutout.webp" alt="" draggable="false"><img src="images/mermaid-outfit.webp" alt="" draggable="false"><span id="mermaidLock" class="lock" aria-hidden="true">🔒</span></div>
      <div><h3>Наряд русалки</h3><p id="mermaidCaption">Награда за все три испытания леса Майкла Джексона</p><button data-choose="mermaid" type="button" disabled>Пока закрыто</button></div>
     </article>
-    <p class="message" id="wardrobeStatus" role="status" aria-live="polite">Собери награды всех трёх игр леса Майкла Джексона, чтобы открыть русалку.</p>
+    <article class="item locked" id="card-stars">
+     <div class="thumb"><img src="images/star-outfit.webp" alt="" draggable="false"><span id="starsLock" class="lock" aria-hidden="true">🔒</span></div>
+     <div><h3>Звёздный наряд</h3><p id="starsCaption">Награда за пять звёздных испытаний в домике астронома</p><button data-choose="stars" type="button" disabled>Пока закрыто</button></div>
+    </article>
+    <p class="message" id="wardrobeStatus" role="status" aria-live="polite">Наряды открываются после приключений.</p>
     <div class="nav"><a href="michael-jackson-jungle.html">🌿 К испытаниям леса</a><a href="collection.html">✦ Коллекция</a></div>
    </div>
   </div>
@@ -75,12 +79,21 @@ window.addEventListener('DOMContentLoaded',()=>{
   $('card-default').querySelector('button').textContent=chosen==='default'?'✓ Надето':'Надеть';
   const btn=$('card-mermaid').querySelector('button');btn.disabled=!open;btn.textContent=!open?'🔒 Пока закрыто':chosen==='mermaid'?'✓ Надето':'Надеть';
   $('mermaidCaption').textContent=open?'Открыто! Лес Майкла Джексона завершён.':'Награда за все три испытания леса Майкла Джексона';
-  $('previewName').textContent=chosen==='mermaid'?'Лада-русалка':'Обычный наряд';
-  $('wardrobeStatus').innerHTML=open?'Все испытания леса завершены! <strong>Оба наряда доступны.</strong> Можно менять их в любой момент.':'Пройди три игры леса Майкла Джексона: найди подруг, спаси русала и убеги от вампира.';
+  const starOpen=api.unlocked('stars');
+  $('card-stars').classList.toggle('active',chosen==='stars');
+  $('card-stars').classList.toggle('locked',!starOpen);
+  $('starsLock').hidden=starOpen;
+  const starButton=$('card-stars').querySelector('button');
+  starButton.disabled=!starOpen;
+  starButton.textContent=!starOpen?'🔒 Пока закрыто':chosen==='stars'?'✓ Надето':'Надеть';
+  $('starsCaption').textContent=starOpen?'Открыто! Наряд из обсерватории Ладабурга.':'Награда за пять звёздных испытаний в домике астронома';
+  $('previewName').textContent=chosen==='stars'?'Лада в звёздном наряде':chosen==='mermaid'?'Лада-русалка':'Обычный наряд';
+  $('wardrobeStatus').innerHTML=starOpen?'✦ Звёздный наряд получен! <strong>Выбирай любой открытый костюм.</strong>':open?'Русалка открыта! Переодевай Ладу, когда захочешь.':'Исследуй Тиввиг, чтобы открыть новые наряды.';
   api.equip($('previewDoll'));
  }
  document.querySelectorAll('[data-choose]').forEach(btn=>btn.addEventListener('click',()=>{if(api.select(btn.dataset.choose))paint()}));
  window.addEventListener('pageshow',paint);
+ window.addEventListener('tivvig-inventory-changed',paint);
  paint();
 });
 </script>

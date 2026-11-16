@@ -85,7 +85,7 @@ function localRewardSnapshot(){
  return found;
 }
 function localSelectedOutfit(){
- try{const stored=localStorage.getItem(selectedKey);if(stored==='mermaid'||stored==='default')return stored}catch(e){}
+ try{const stored=localStorage.getItem(selectedKey);if(['mermaid','default','stars'].includes(stored))return stored}catch(e){}
  return 'default';
 }
 async function restoreTeacherCollection(){
@@ -99,8 +99,8 @@ async function restoreTeacherCollection(){
     rewards[key]='unlocked';cloudSavedRewards.add(key);
    }
   }
-  if(saved.selected==='default'||saved.selected==='mermaid')selected=saved.selected;
-  cloudSavedSelection=saved.selected==='default'||saved.selected==='mermaid'?saved.selected:null;
+  if(['default','mermaid','stars'].includes(saved.selected))selected=saved.selected;
+  cloudSavedSelection=['default','mermaid','stars'].includes(saved.selected)?saved.selected:null;
   cloudProfileReady=true;
   saveInfo('☁ Коллекция Лады загружена из Firebase. Полученные картины сохраняются между занятиями.');
  }catch(e){
@@ -124,7 +124,7 @@ function persistTeacherRewards(values){
  }
 }
 function persistTeacherSelection(value){
- if(role!=='teacher'||!cloudProfileReady||!['default','mermaid'].includes(value))return;
+ if(role!=='teacher'||!cloudProfileReady||!['default','mermaid','stars'].includes(value))return;
  if(cloudSavedSelection===value)return;
  cloudSavedSelection=value;
  set(profileRef('selected'),value).then(()=>{
@@ -137,11 +137,11 @@ function persistTeacherSelection(value){
 
 let remoteActionCount=0;
 function pushReward(key){if(!room||!rewardSet.has(key))return;set(dbref('state/rewards/'+key),'unlocked').catch(e=>report(explain(e)))}
-function pushSelected(value){if(!room||!['default','mermaid'].includes(value))return;set(dbref('state/selected'),value).catch(e=>report(explain(e)))}
+function pushSelected(value){if(!room||!['default','mermaid','stars'].includes(value))return;set(dbref('state/selected'),value).catch(e=>report(explain(e)))}
 window.addEventListener('storage',e=>{
  if(!sessionStarted||!room||!e.key)return;
  if(rewardSet.has(e.key)&&e.newValue==='unlocked')pushReward(e.key);
- else if(e.key===selectedKey&&['default','mermaid'].includes(e.newValue))pushSelected(e.newValue);
+ else if(e.key===selectedKey&&['default','mermaid','stars'].includes(e.newValue))pushSelected(e.newValue);
 });
 async function seedStudentState(){
  if(role!=='student')return;
@@ -154,7 +154,7 @@ async function seedStudentState(){
   const chosen=await get(dbref('state/selected'));
   if(!chosen.exists()){
    const outfit=localStorage.getItem(selectedKey);
-   if(outfit==='mermaid'||outfit==='default')promises.push(set(dbref('state/selected'),outfit));
+   if(['mermaid','default','stars'].includes(outfit))promises.push(set(dbref('state/selected'),outfit));
   }
  }catch(e){console.warn('Tivvig: student outfit preload',e);}
  await Promise.allSettled(promises);
@@ -169,7 +169,7 @@ function applySharedRewards(values){
  sendToFrame('inventory',{kind:'rewards'});
 }
 function applySharedSelection(value){
- if(value!=='mermaid'&&value!=='default')return;
+ if(!['mermaid','default','stars'].includes(value))return;
  persistTeacherSelection(value);
  try{if(localStorage.getItem(selectedKey)!==value)localStorage.setItem(selectedKey,value)}catch(e){}
  sendToFrame('inventory',{kind:'selection',value});
