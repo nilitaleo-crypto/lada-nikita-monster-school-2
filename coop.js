@@ -70,6 +70,7 @@ const rewardSet=new Set(rewardKeys),selectedKey='tivvig_outfit_selected_v1';
 /* Persistent Lada collection: readable/writable only by the Google teacher.
    Individual lesson rooms mirror this state to the anonymously signed-in child. */
 let cloudProfileReady=false,cloudSavedRewards=new Set(),cloudSavedSelection=null;
+let skipLegacyRoomSelectionSave=false;
 function profileRef(path=''){
  return ref(db,'teacherProfiles/'+uid+'/lada'+(path?'/'+path:''));
 }
@@ -125,6 +126,8 @@ function persistTeacherRewards(values){
 }
 function persistTeacherSelection(value){
  if(role!=='teacher'||!cloudProfileReady||!['default','mermaid','stars'].includes(value))return;
+ // A temporary default in an old room must not overwrite a saved star outfit.
+ if(skipLegacyRoomSelectionSave){skipLegacyRoomSelectionSave=false;if(value==='default')return;}
  if(cloudSavedSelection===value)return;
  cloudSavedSelection=value;
  set(profileRef('selected'),value).then(()=>{
@@ -533,6 +536,7 @@ teacher.addEventListener("click",async()=>{
    if(initialRoom.state.selected!=='stars'||!String(error?.code||error).includes('permission-denied'))throw error;
    initialRoom.state.selected='default';
    await set(dbref(""),initialRoom);
+   skipLegacyRoomSelectionSave=true;
    saveInfo('⚠ Занятие открыто со стандартным нарядом. Обнови правила Firebase для синхронизации звёздного костюма.',true);
   }
   initClient();
