@@ -1,0 +1,72 @@
+/* Council: canonical Tivvig cast composited over a crisp SVG hall,
+   with the choices physically situated on the war table. */
+:root{--c-cream:#fff2dc}
+.council-table-scene{background:#32273b;isolation:isolate}
+.scene-art{z-index:0;object-fit:fill;filter:saturate(1.13) contrast(1.07)}
+.council-lights{position:absolute;inset:0;z-index:1;pointer-events:none;background:
+radial-gradient(ellipse at 51% 5%,#ffc98214,transparent 37%),
+radial-gradient(circle at 16% 27%,#ffbd5d23,transparent 24%),
+radial-gradient(circle at 84% 27%,#ffbd5d23,transparent 23%),
+linear-gradient(to bottom,#16102121,transparent 45%,#170f1838)}
+/* Their visual sprites are sourced from the established Ladaburg files, not new AI characters. */
+.people-hotspots{z-index:8}
+.person-hotspot{display:flex;align-items:flex-end;justify-content:center;border-radius:10px;overflow:visible}
+.person-hotspot img.original-person{display:block;width:100%;height:100%;object-fit:contain;object-position:center bottom;pointer-events:none;user-select:none;-webkit-user-drag:none;filter:drop-shadow(0 9px 6px #100c1aaa)}
+.person-hotspot.lada{left:6%;top:17%;width:22%;height:42%}
+.person-hotspot.cat{left:28%;top:22%;width:20%;height:35%}
+.person-hotspot.rabbit{left:52%;top:14%;width:24%;height:45%}
+.person-hotspot.monkey{left:77%;top:20%;width:20%;height:39%}
+.person-hotspot span{top:3%;z-index:3;left:50%}
+.person-hotspot:hover span,.person-hotspot:focus-visible span,.person-hotspot.chosen span{opacity:1}
+.person-hotspot.chosen:after{content:'✓';position:absolute;z-index:6;right:-3px;top:8px;width:30px;height:30px;border:3px solid #fff6da;border-radius:50%;background:#36846b;color:#fff;font:bold 19px Georgia,serif;display:grid;place-items:center;box-shadow:0 0 15px #61f6d5}
+.person-hotspot.chosen{box-shadow:none;filter:drop-shadow(0 0 12px #82ffdd)}
+/* Perspective oak table fills the bottom half; gilded rim and carved ornament. */
+.grand-table{position:absolute;z-index:9;pointer-events:none;top:48%;left:1%;width:98%;height:57%;filter:drop-shadow(0 18px 15px #0f0b18bd)}
+.table-wood{position:absolute;inset:0;border:clamp(8px,1.15vw,21px) ridge #b68b52;border-radius:49% 49% 23% 23%/40% 40% 16% 16%;background:
+radial-gradient(ellipse at 50% 16%,#ae7249 0,#885536 25%,#5b352b 50%,#40282b 80%,#241923 100%);
+box-shadow:inset 0 0 0 6px #4f2b2b,inset 0 0 0 11px #cca26155,inset 0 17px 26px #edc38b29,0 12px 20px #140f21a9}
+.table-wood:after{content:"";position:absolute;bottom:3%;left:7%;right:7%;height:15%;border-radius:50%;border:3px solid #d4a56b75;background:repeating-linear-gradient(90deg,transparent 0 65px,#deb47a22 67px 69px,transparent 71px 130px);opacity:.75}
+.table-map{position:absolute;left:8.5%;right:8.5%;top:8%;bottom:12%;border:clamp(4px,.55vw,9px) ridge #b79069;border-radius:32% 32% 13% 13%/22% 22% 14% 14%;background:
+radial-gradient(ellipse at 45% 39%,#f9ecd2 0,#e9cd96 58%,#c59d73 100%);
+box-shadow:inset 0 0 31px #8967497a,0 4px 18px #1c101c9a;overflow:hidden}
+.table-map:before{content:"";position:absolute;inset:4%;border:2px solid #7657355e;border-radius:29% 29% 10% 10%;pointer-events:none}
+.map-landscape{position:absolute;top:11%;width:29%;height:54%;object-fit:cover;object-position:center;border:2px solid #8264417d;border-radius:44% 44% 17% 17%;box-shadow:0 8px 13px #38221b66;
+-webkit-mask-image:radial-gradient(ellipse at 50% 46%,black 34%,transparent 78%);
+mask-image:radial-gradient(ellipse at 50% 46%,black 34%,transparent 78%);
+filter:saturate(1.2)}
+.map-forest{left:2%}.map-bridge{left:35.5%}.map-river{right:2%}
+.map-trails{position:absolute;inset:0;width:100%;height:100%;pointer-events:none}
+.table-book{position:absolute;z-index:2;bottom:14%;left:3%;font-size:clamp(22px,3.6vw,56px);width:7%;height:16%;display:grid;place-items:center;color:#ebd2a1;border:4px ridge #9e7b50;border-radius:6px;background:linear-gradient(90deg,#37233e,#69394d,#3f2447);box-shadow:3px 5px 6px #261c21}
+.table-candle{position:absolute;z-index:2;bottom:13%;right:4%;font-size:clamp(24px,4vw,55px);filter:drop-shadow(0 0 10px #ffcb7b)}
+.table-route{z-index:13;min-width:clamp(51px,7vw,96px);min-height:clamp(47px,6.2vw,78px);background:#fff5d333;border:3px solid #fff0c6a6;box-shadow:0 0 13px #f9cb7c88,inset 0 0 17px #fff5a76a}
+.table-route.forest{left:24%;top:63%}.table-route.bridge{left:50%;top:63%}.table-route.river{left:76%;top:63%}
+.table-route .route-glow{font-size:clamp(28px,3.5vw,48px)}
+.table-route .route-caption{bottom:-11px}
+.table-route.selected{background:#69ffe155;box-shadow:0 0 17px #6afde4,0 0 0 4px #a4ffde57}
+.table-parchment{z-index:15;left:22%;right:22%;bottom:1.7%;min-height:17%;max-height:33%;background:linear-gradient(132deg,#ffefd0ef,#ebd1a1f5 70%,#d7b37fea);border:clamp(3px,.4vw,6px) ridge #b18b56;box-shadow:0 0 0 3px #41243488,0 7px 20px #1e102a9e}
+.scene-brand{top:1.5%;left:36%;width:28%;font-size:clamp(13px,1.8vw,26px);text-shadow:0 4px 5px #2a1827}
+.council-bubble{z-index:21;left:1%;top:6%;max-width:32%;font-size:clamp(10px,1.05vw,15px);opacity:.96}
+@media(max-width:799px){
+.person-hotspot.lada{left:4%;top:17%;width:24%;height:43%}
+.person-hotspot.cat{left:28%;top:23%;width:21%;height:33%}
+.person-hotspot.rabbit{left:51%;top:16%;width:24%;height:43%}
+.person-hotspot.monkey{left:75%;top:22%;width:23%;height:36%}
+.grand-table{top:48%;left:0;width:100%;height:57%}
+.table-route.forest{left:24%;top:63%}.table-route.bridge{left:50%;top:63%}.table-route.river{left:76%;top:63%}
+.table-parchment{left:14%;right:14%;bottom:1%;max-height:40%}
+.table-route .route-glow{font-size:23px}
+.scene-brand{left:36%;width:28%;font-size:clamp(11px,1.7vw,16px)}
+}
+@media(max-width:799px) and (orientation:portrait){
+.council-table-scene{aspect-ratio:4/3}
+.scene-art{object-fit:cover}
+.people-hotspots,.table-paths{transform:none}
+.grand-table{top:46%;height:59%}
+.person-hotspot.lada{left:3%;top:20%;width:24%;height:39%}
+.person-hotspot.cat{left:27%;top:25%;width:22%;height:33%}
+.person-hotspot.rabbit{left:50%;top:18%;width:26%;height:41%}
+.person-hotspot.monkey{left:76%;top:22%;width:24%;height:36%}
+.table-parchment{left:6%;right:6%;bottom:1%;max-height:42%}
+.table-route.forest{left:25%;top:60%}.table-route.bridge{left:50%;top:60%}.table-route.river{left:75%;top:60%}
+}
+@media(prefers-reduced-motion:reduce){*,*:before,*:after{transition:none!important;animation:none!important}}
