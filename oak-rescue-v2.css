@@ -1,0 +1,94 @@
+/* Rescued oak scene: separate set pieces and unambiguous relationships.
+   Layout is intentionally outside dialogs, so objects are never covered. */
+.scene{display:grid;grid-template-columns:minmax(0,1fr) clamp(305px,28%,395px);grid-template-rows:auto auto minmax(0,1fr);gap:0;height:auto;min-height:675px;max-width:1420px;overflow:hidden;background:linear-gradient(145deg,#e8d8ba,#b7c5a8);isolation:isolate}
+.scene::before{display:none}
+.oak-stage{position:relative;grid-column:1;grid-row:1 / 4;min-width:0;min-height:660px;overflow:hidden;background:#a4c9ac;isolation:isolate}
+.oak-stage .oak-backdrop{position:absolute;inset:0;display:block;width:100%;height:100%;object-fit:fill;pointer-events:none;z-index:0}
+.dialog,.hud,.panel{position:relative;inset:auto;left:auto;right:auto;top:auto;bottom:auto;transform:none;width:auto;max-width:none;min-width:0;height:auto;z-index:20;margin:12px}
+.dialog{grid-column:2;grid-row:1;padding:14px;min-height:0}
+.dialog h2{font-size:clamp(17px,1.9vw,23px)}
+.dialog p{font-size:clamp(14px,1.4vw,18px)}
+.dialog .sub{font-size:13px}
+.hud{grid-column:2;grid-row:2;justify-self:stretch;align-self:start;text-align:center;flex-wrap:wrap;padding:7px}
+.panel{grid-column:2;grid-row:3;align-self:end;padding:14px 12px}
+.panel h3{font-size:clamp(20px,2.1vw,27px)}
+.panel p{font-size:clamp(14px,1.35vw,18px)}
+.option-row{gap:8px}.option{min-width:80px;flex:1 1 105px;font-size:clamp(15px,1.35vw,19px);min-height:53px}
+.action{font-size:clamp(16px,1.4vw,19px)}
+/* The original photograph and crew remain unchanged. */
+.oak-stage .crew{position:absolute;left:0%;bottom:1.5%;width:32%;height:36%;z-index:12;pointer-events:none}
+.oak-stage .vampire{position:absolute;top:24%;left:70%;width:25%;height:auto!important;aspect-ratio:530/300;z-index:7;filter:drop-shadow(0 7px 7px #1d122899);transition:top .55s ease,left .55s ease,width .55s ease,opacity .45s ease;pointer-events:none}
+.oak-stage .vampire img{display:block;width:100%;height:100%;object-fit:contain}
+.oak-stage .vampire.hide-branch::after{display:none}
+.oak-stage .vampire.hollow{left:43%;top:37%;width:17%;z-index:6;filter:brightness(.85) drop-shadow(0 5px 5px #26132b)}
+.oak-stage .vampire.hide-branch{left:76%;top:53%;width:21%;z-index:5}
+.oak-stage .vampire.under-branch{left:65%;top:39%;width:23%;z-index:6}
+.oak-stage .vampire.above-branch{left:66%;top:12%;width:23%;z-index:7}
+.oak-stage .vampire.front-trunk{left:54%;top:65%;width:23%;z-index:10}
+.oak-stage .setpiece{position:absolute;pointer-events:none;z-index:9;filter:drop-shadow(0 7px 5px #263c3280)}
+.oak-stage .setpiece svg{display:block;width:100%;height:100%;overflow:visible}
+.oak-stage .setpiece.stone-piece{left:25%;top:72%;width:19%;height:17%;z-index:9}
+.oak-stage .setpiece.stump-piece{left:77%;top:62%;width:17%;height:24%;z-index:9}
+.oak-stage .setpiece.hollow-piece{left:46%;top:35%;width:13%;height:25%;z-index:8;filter:drop-shadow(0 4px 6px #3321198b)}
+.oak-stage .setpiece.log-piece{left:49%;top:80%;width:26%;height:14%;z-index:8}
+.oak-stage .setpiece.branch-piece{left:63%;top:31%;width:34%;height:11%;z-index:9}
+.oak-stage .places{position:absolute;inset:0;z-index:15;pointer-events:none}
+.oak-stage .place{position:absolute;display:grid;place-items:center;--size:clamp(48px,5.5vw,74px);width:var(--size);height:var(--size);min-width:48px;min-height:48px;transform:translate(-50%,-50%);border:2px solid transparent;border-radius:50%;background:#fff9d31b;box-shadow:0 0 0 3px #fff5a47a,0 4px 15px #3c532c55;font-size:clamp(25px,3vw,39px);z-index:15;pointer-events:auto;transition:transform .15s,background .15s;touch-action:manipulation}
+.oak-stage .place:hover,.oak-stage .place:focus-visible{transform:translate(-50%,-50%) scale(1.13);background:#fff3b888;filter:none}
+.oak-stage .place .place-mark{display:none}
+.oak-stage .place::after{content:"🌰";position:static;inset:auto;filter:drop-shadow(0 2px 3px #0006);font-size:inherit;display:block;line-height:1;z-index:auto}
+.oak-stage .place.found{visibility:hidden;opacity:0;pointer-events:none}
+.oak-stage .place.found::after{display:none}
+.oak-stage .place.under-stone{left:34%;top:87%}
+.oak-stage .place.behind-stone{left:78.4%;top:70%}
+.oak-stage .place.in-hollow{left:52%;top:47%}
+.oak-stage .place.in-front{left:62%;top:93%}
+.oak-stage .place.above-root{left:79%;top:26%}
+.oak-stage .place.behind-stone{z-index:7} /* The stump passes in front of the acorn's rim */
+.oak-stage .place.behind-stone::after{transform:translate(-12px,-7px)}
+.oak-stage .place.in-hollow{z-index:10;background:#40251e44;box-shadow:inset 0 0 8px #0007}
+.oak-stage .place.above-root{box-shadow:0 0 0 3px #fff1b085;background:#fff0b12e}
+.oak-stage .place.under-stone,.oak-stage .place.in-front{z-index:11}
+/* During the hiding round the visible props stay exactly where they were. */
+.oak-stage .vampire.gone{opacity:0}
+.oak-stage .vampire.hit{animation:vampHit .5s ease-in-out}
+.throwing{z-index:33}
+.finish{position:fixed;inset:0;z-index:90;overflow:auto}
+.finish-card{background-position:center;min-height:min(600px,92dvh)}
+@media(max-width:980px){
+ .scene{display:flex;flex-direction:column;min-height:0;height:auto}
+ .dialog{order:0;margin:10px 10px 4px;padding:10px 12px}
+ .dialog h2{font-size:19px}.dialog p{font-size:15px}
+ .hud{order:1;align-self:center;margin:4px;padding:5px 12px;font-size:14px}
+ .oak-stage{order:2;width:100%;height:clamp(420px,68vw,610px);min-height:420px;flex-shrink:0}
+ .panel{order:3;margin:7px 10px 12px;padding:12px}
+ .oak-stage .crew{width:34%;height:36%}
+}
+@media(max-width:520px){
+ .page{padding:5px 4px 15px}.top h1{font-size:15px}.top a,.top button{min-height:39px;padding:5px 7px;font-size:11px}
+ .scene{border-width:3px;border-radius:13px}
+ .dialog{margin:7px 6px 3px;padding:9px}
+ .dialog h2{font-size:17px}.dialog p{font-size:14px}.dialog .sub{font-size:12px}
+ .hud{margin:3px;font-size:12px}
+ .oak-stage{height:450px;min-height:450px}
+ .oak-stage .crew{width:33%;height:33%;bottom:1%}
+ .oak-stage .setpiece.stone-piece{left:25%;width:20%}
+ .oak-stage .setpiece.stump-piece{left:76%;width:18%}
+ .oak-stage .setpiece.hollow-piece{left:46%;width:14%}
+ .oak-stage .place{--size:52px}
+ .oak-stage .place.under-stone{left:34%;top:86%}
+ .oak-stage .place.behind-stone{left:78%;top:70%}
+ .oak-stage .place.in-hollow{left:52%;top:46%}
+ .oak-stage .place.in-front{left:62%;top:93%}
+ .oak-stage .place.above-root{left:79%;top:26%}
+ .oak-stage .vampire.hollow{left:42%;top:39%;width:18%}
+ .oak-stage .vampire.hide-branch{left:74%;top:56%;width:22%}
+ .oak-stage .vampire.under-branch{left:67%;top:40%;width:23%}
+ .oak-stage .vampire.above-branch{left:65%;top:16%;width:23%}
+ .oak-stage .vampire.front-trunk{left:55%;top:66%;width:23%}
+ .panel{margin:6px;padding:10px}.panel h3{font-size:20px}.panel p{font-size:14px}
+ .option-row{gap:5px}.option{min-height:48px;min-width:75px;padding:7px 8px;font-size:15px}
+ .action{font-size:16px;min-height:46px}
+ .finish-card{min-height:530px}
+}
+@media(prefers-reduced-motion:reduce){.oak-stage .vampire{transition:none!important}}
