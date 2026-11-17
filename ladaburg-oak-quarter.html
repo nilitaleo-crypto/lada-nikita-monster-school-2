@@ -1,0 +1,32 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#625080"><title>Ладабург — Дубовый квартал</title>
+<style>
+:root{--gold:#dec48a;--ink:#2e2344}*{box-sizing:border-box}
+html,body{margin:0;min-height:100%;font-family:Georgia,'Times New Roman',serif;color:#fff0df}
+body{min-height:100dvh;padding:clamp(9px,2vw,24px);background:radial-gradient(ellipse at 50% 0%,#806394,#30243f 75%)}
+a{touch-action:manipulation}a:focus-visible{outline:4px solid #fff09e;outline-offset:3px}
+header{max-width:1550px;margin:auto auto 12px;display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
+header a,.back{display:inline-flex;align-items:center;justify-content:center;min-height:48px;padding:9px 16px;border:2px solid #c39c62;border-radius:12px;background:#f8e7c7;color:#523c38;text-decoration:none;font-weight:bold}
+header span{font-size:clamp(12px,1.6vw,19px);letter-spacing:.08em}
+main{max-width:1550px;margin:auto}.scene{position:relative;border:7px double var(--gold);border-radius:20px;overflow:hidden;line-height:0;box-shadow:0 20px 50px #150e2299;background:#d2cba7}
+.scene>img{display:block;width:100%;height:auto;user-select:none;-webkit-user-drag:none}
+.house{position:absolute;left:0%;top:45%;width:19%;height:39%;border-radius:24% 30% 13px 13px;cursor:pointer;display:block;touch-action:manipulation;border:3px solid transparent;background:radial-gradient(ellipse,#d7c1ff1c,transparent 70%);transition:background .2s,border .2s}
+.house:hover,.house:focus-visible{background:#e6c9ff4d;border-color:#ffe3a1;outline:3px solid #563c77;outline-offset:-3px}
+.house-label{position:absolute;bottom:0;left:50%;transform:translateX(-50%);min-width:105px;max-width:95%;font:bold clamp(12px,1.8vw,23px)/1.2 Georgia,serif;color:#493063;text-align:center;padding:8px 10px;border-radius:14px;background:#f8e8dce8;border:3px solid #ac8dce;box-shadow:0 5px 13px #28193866;pointer-events:none}
+.caption{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:10px;margin:13px auto}.caption h1{margin:0;font-size:clamp(23px,3vw,38px);font-weight:normal}.caption p{margin:0;font-size:clamp(13px,1.5vw,18px)}
+@media(max-width:720px){body{padding:7px}.scene{border-width:4px;border-radius:10px}.house{left:0;top:45%;width:24%;height:40%}.house-label{font-size:11px;min-width:76px;padding:5px 3px}.caption{text-align:center;justify-content:center}}
+</style>
+</head>
+<body>
+<header><a href="ladaburg.html" aria-label="Вернуться к центральной площади Ладабурга">← Ладабург</a><span>Дубовый квартал · Жилые дома</span></header>
+<main>
+<div class="scene"><img src="images/oak-quarter.webp" alt="Новый жилой квартал Ладабурга, светлые дома в цветах и огромный древний дуб на центральной площади" width="1448" height="1086" draggable="false">
+<a class="house" href="ladaburg-cat-home.html" aria-label="Войти в первый дом слева, в гости к ловкому синему коту"><span class="house-label">🐈 Дом кота</span></a>
+</div>
+<div class="caption"><h1>Дубовый квартал</h1><p>На площади растёт древний дуб. А в первом доме слева тебя ждёт ловкий кот.</p></div>
+<p id="gameConnection" style="text-align:center;font-size:13px" aria-live="polite"></p>
+</main><script src="game-runtime.js?v=1" defer></script>
+</body></html>
