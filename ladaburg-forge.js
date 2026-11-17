@@ -3,12 +3,18 @@
 (()=>{
 'use strict';
 const $=id=>document.getElementById(id);
-const STEPS=['intro','rhythm','assembly','runes','victory'];
+const STEPS=['intro','rhythm','assembly','reading','runes','victory'];
 const BEATS=[['B','S','B'],['B','B','S','B'],['S','B','B','S']];
 const PATTERNS=[
  {known:['☾','✦','☾','✦'],answer:'☾'},
  {known:['◆','◆','✦','◆','◆','✦'],answer:'◆'},
  {known:['✦','☾','◆','✦','☾'],answer:'◆'}
+];
+const READING=[
+ {chunks:['ВО','ДА'],target:'water',success:'Вода зашипела — раскалённая броня закаляется!'},
+ {chunks:['РУ','НА'],target:'rune',success:'Камень засветился. Кузнецы перенесли знак на броню!'},
+ {chunks:['КРЫ','ЛО'],target:'wing',success:'Крыло расправилось и теперь готово к полёту!'},
+ {chunks:['ЛА','ДА,','БЕ','РИ','МЕЧ!'],target:'sword',success:'Лада берёт меч! Теперь доспехи готовы к последнему заклинанию.'}
 ];
 const PARTS=['wings','chest','arms','legs'];
 const PART_NAMES={wings:'Крылья',chest:'Нагрудник',arms:'Наручи',legs:'Поножи'};
@@ -16,7 +22,7 @@ const KEY='tivvig_outfit_monankaka_unlocked_v1';
 const sleep=ms=>new Promise(resolve=>setTimeout(resolve,ms));
 const reduce=!!window.matchMedia?.('(prefers-reduced-motion:reduce)').matches;
 let stage='intro',round=0,played=[],hasListened=false,busy=false,serial=0;
-let selectedPart=null,doneParts=new Set(),runeRound=0,transitioning=false;
+let selectedPart=null,doneParts=new Set(),readingRound=0,readingPressed=new Set(),runeRound=0,transitioning=false;
 let audio=null;
 const text=(id,value)=>{const el=$(id);if(el)el.textContent=value};
 function status(id,message,kind=''){
@@ -47,13 +53,14 @@ function hitEffect(which){
 function setStage(next){
  stage=next;transitioning=false;serial++;busy=false;
  for(const name of STEPS)$(name).hidden=name!==next;
- for(const [idx,name] of ['rhythm','assembly','runes'].entries()){
-  const el=$('progress-'+name),current=['intro','rhythm','assembly','runes','victory'].indexOf(next);
+ for(const [idx,name] of ['rhythm','assembly','reading','runes'].entries()){
+  const el=$('progress-'+name),current=STEPS.indexOf(next);
   el.classList.toggle('active',current===idx+1);
   el.classList.toggle('done',current>idx+1);
  }
  if(next==='rhythm')renderRhythm();
  if(next==='assembly')renderAssembly();
+ if(next==='reading')renderReading();
  if(next==='runes')renderRunes();
  if(next==='victory')award();
  if(next!=='intro')window.setTimeout(()=>{
@@ -139,9 +146,68 @@ function placePart(slot){
  doneParts.add(slot);selectedPart=null;renderAssembly();
  status('assemblyStatus','Деталь прикреплена! Теперь на броне '+doneParts.size+' из 4 частей.','good');
  if(doneParts.size===PARTS.length){
-  transitioning=true;status('assemblyStatus','Все детали собраны! Отправляемся зачаровывать доспех.','good');
-  window.setTimeout(()=>{if(stage==='assembly'&&transitioning)setStage('runes')},reduce?80:850);
+  transitioning=true;status('assemblyStatus','Все детали собраны! Теперь надо прочитать инструкцию Вулкана.','good');
+  window.setTimeout(()=>{if(stage==='assembly'&&transitioning)setStage('reading')},reduce?80:850);
  }
+}
+/* Every reading round couples a real syllable-written parchment to a physical prop.
+ * The prompt never includes the target image. Taps on syllables provide a visual reading aid,
+ * but only the correct workshop object advances the ritual. */
+function renderReading(){
+ if(stage!=='reading')return;
+ const task=READING[readingRound],scroll=$('reading-word');
+ text('reading-count','Пергамент '+(readingRound+1)+' из '+READING.length);
+ scroll.replaceChildren();
+ task.chunks.forEach((part,index)=>{
+  if(index && readingRound<3){
+   const dash=document.createElement('span');dash.className='scroll-dash';dash.textContent='-';dash.setAttribute('aria-hidden','true');scroll.appendChild(dash);
+  }
+  if(index && readingRound===3 && (index===2||index===4)){
+   const gap=document.createElement('span');gap.className='scroll-space';gap.setAttribute('aria-hidden','true');scroll.appendChild(gap);
+  }
+  const b=document.createElement('button');
+  b.type='button';b.className='scroll-syllable';b.id='read-syllable-'+index;
+  b.textContent=part;b.setAttribute('aria-label','Прочитать часть '+part.replace(/[!,]/g,''));
+  b.classList.toggle('read',readingPressed.has(index));
+  b.addEventListener('click',()=>highlightSyllable(index));scroll.appendChild(b);
+ });
+ text('reading-message',readingRound===3?'Последняя записка — целое предложение. Прочитай его вслух.':'Прочитай слово вслух и найди то, что оно называет.');
+ const stamps=$('reading-stamps').children;
+ for(let i=0;i<stamps.length;i++){
+  const won=i<readingRound;stamps[i].textContent=won?'✦':'✧';stamps[i].classList.toggle('done',won);
+ }
+ document.querySelectorAll('[data-object]').forEach(b=>{
+  const used=READING.slice(0,readingRound).some(r=>r.target===b.dataset.object);
+  b.disabled=used||transitioning;b.classList.toggle('used',used);b.classList.remove('wrong');
+ });
+ status('reading-status','Прочитай вслух и найди предмет. Слоги можно подсветить нажатием.');
+}
+function highlightSyllable(index){
+ if(stage!=='reading'||transitioning||!Number.isInteger(index))return;
+ const task=READING[readingRound];if(index<0||index>=task.chunks.length)return;
+ if(readingPressed.has(index))readingPressed.delete(index);else readingPressed.add(index);
+ const b=$('read-syllable-'+index);if(b)b.classList.toggle('read',readingPressed.has(index));
+ status('reading-status','Прочитай выделенную часть, затем попробуй соединить слово целиком.');
+}
+function pickReadingObject(id,button){
+ if(stage!=='reading'||transitioning||!button||button.disabled)return;
+ const task=READING[readingRound];
+ if(id!==task.target){
+  button.classList.remove('wrong');void button.offsetWidth;button.classList.add('wrong');
+  status('reading-status','Это другой предмет. Прочитай записку ещё раз.','bad');return;
+ }
+ transitioning=true;
+ document.querySelectorAll('[data-object]').forEach(b=>b.disabled=true);
+ button.classList.add('used');
+ text('reading-message',task.success);
+ status('reading-status',task.success,'good');
+ const token=++serial;
+ window.setTimeout(()=>{
+  if(token!==serial||stage!=='reading')return;
+  readingRound++;readingPressed.clear();transitioning=false;
+  if(readingRound===READING.length){setStage('runes');return}
+  renderReading();
+ },reduce?120:900);
 }
 function renderRunes(){
  if(stage!=='runes')return;
@@ -188,7 +254,7 @@ function equip(){
  status('rewardStatus','Броня открыта, но переодевание сейчас недоступно. Попробуй открыть гардероб.','bad');
 }
 function reset(){
- serial++;round=0;played=[];hasListened=false;busy=false;selectedPart=null;doneParts.clear();runeRound=0;transitioning=false;
+ serial++;round=0;played=[];hasListened=false;busy=false;selectedPart=null;doneParts.clear();readingRound=0;readingPressed.clear();runeRound=0;transitioning=false;
  $('equipArmor').textContent='♛ Надеть доспехи';setStage('intro');
 }
 $('begin').addEventListener('click',()=>setStage('rhythm'));
@@ -197,13 +263,15 @@ document.querySelectorAll('[data-hit]').forEach(button=>button.addEventListener(
 document.querySelectorAll('[data-piece]').forEach(button=>button.addEventListener('click',()=>selectPart(button.dataset.piece)));
 document.querySelectorAll('[data-slot]').forEach(button=>button.addEventListener('click',()=>placePart(button.dataset.slot)));
 document.querySelectorAll('[data-rune]').forEach(button=>button.addEventListener('click',()=>chooseRune(button.dataset.rune)));
+document.querySelectorAll('[data-object]').forEach(button=>button.addEventListener('click',()=>pickReadingObject(button.dataset.object,button)));
 $('equipArmor').addEventListener('click',equip);$('replay').addEventListener('click',reset);
 window.__vulcanForgeTest={
- state:()=>({stage,round,played:[...played],hasListened,busy,selectedPart,doneParts:[...doneParts],runeRound,unlocked:(()=>{try{return localStorage.getItem(KEY)==='unlocked'}catch{return false}})()}),
- beats:BEATS.map(x=>[...x]),parts:[...PARTS],runes:PATTERNS.map(p=>({known:[...p.known],answer:p.answer})),
+ state:()=>({stage,round,played:[...played],hasListened,busy,selectedPart,doneParts:[...doneParts],readingRound,readingPressed:[...readingPressed],runeRound,unlocked:(()=>{try{return localStorage.getItem(KEY)==='unlocked'}catch{return false}})()}),
+ beats:BEATS.map(x=>[...x]),parts:[...PARTS],reading:READING.map(x=>({chunks:[...x.chunks],target:x.target})),runes:PATTERNS.map(p=>({known:[...p.known],answer:p.answer})),
  start:()=>$('begin').click(),listen:()=>$('listen').click(),
  hit:which=>document.querySelector('[data-hit="'+which+'"]')?.click(),
  part:key=>$('part-'+key)?.click(),slot:key=>$('slot-'+key)?.click(),
+ syllable:index=>$('read-syllable-'+index)?.click(),readingObject:id=>document.querySelector('[data-object="'+id+'"]')?.click(),
  rune:symbol=>document.querySelectorAll('[data-rune]').forEach(b=>{if(b.dataset.rune===symbol)b.click()}),
  equip:()=>$('equipArmor').click(),reset
 };
