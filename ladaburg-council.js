@@ -114,7 +114,8 @@ function renderRouteCards(revised){
   card.type='button';card.dataset.pickRoute=item.id;
   card.setAttribute('aria-pressed',String(selected));
   card.setAttribute('aria-label',item.name+'. Плюс: '+item.pros[0]+' Минус: '+item.cons[0]);
-  card.append(make('span','route-emoji',item.icon),make('strong','route-name',item.name));
+  const art=make('img','route-art');art.src='images/council-route-'+item.id+'.svg';art.alt='';art.draggable=false;
+  card.append(art,make('span','route-emoji',item.icon),make('strong','route-name',item.name));
   const preview=make('div','route-preview');
   preview.append(make('span','pro-preview','＋ '+item.pros[0]),make('span','con-preview','－ '+item.cons[0]));
   card.append(preview);
