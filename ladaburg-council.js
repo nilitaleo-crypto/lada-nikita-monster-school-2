@@ -147,17 +147,18 @@ function renderRouteCards(revised){
 }
 function selectRoute(id){
  const target=route(id);if(!target)return;
- if(state.stage==='intro'){say('monkey','Прежде чем выбирать, начни военный совет.');return}
- if(state.stage!=='compare'&&state.stage!=='reconsider'){say('lada','Мы уже обсуждаем другую часть плана. Чтобы изменить маршрут, вернись к обсуждению.');return}
+ if(state.stage==='intro'){say('monkey','Сначала начни совет.');return}
+ if(state.stage!=='compare'&&state.stage!=='reconsider'){say('lada','Сейчас обсудим друзей и план!');return}
  state.selected=id;
  if(state.stage==='compare')state.visited.add(id);
  if(state.stage==='compare')renderRouteCards(false);else renderRouteCards(true);
  const plus=state.stage==='reconsider'?target.afterPro:target.pros[0];
  const minus=state.stage==='reconsider'?target.afterCon:target.cons[0];
- say('lada',target.name+': плюс — '+plus+' Минус — '+minus);
+ say('lada',target.icon+' '+target.name+' · ＋ '+plus+' − '+minus);
 }
 function speakerTalk(id){
- if(id==='lada'){say(id,'Я — командир. Я должна учесть и плюсы, и минусы каждого пути.');return}
+ if(state.stage==='helpers'&&id!=='lada'&&friend(id)){toggleHelper(id);return}
+ if(id==='lada'){say(id,'Я выберу маршрут!');return}
  const h=friend(id),r=route(state.selected);
  if(state.stage==='helpers'&&r&&h){
   const d=h.route[r.id];say(id,d.pro+' Но '+d.con.charAt(0).toLowerCase()+d.con.slice(1));return;
@@ -203,7 +204,7 @@ function toggleHelper(id){
  if(state.stage!=='helpers'||!friend(id))return;
  if(state.helpers.has(id))state.helpers.delete(id);
  else if(state.helpers.size<2)state.helpers.add(id);
- else{say('lada','Выбери двух помощников для разведки. Чтобы поменять состав, сначала сними одно назначение.');return}
+ else{say('lada','Нужно двое! Сними одного, чтобы выбрать другого.');return}
  renderHelpers();
  const helper=friend(id),routeData=route(state.selected);
  if(state.helpers.has(id))say(id,helper.route[routeData.id].pro+' Но '+helper.route[routeData.id].con.charAt(0).toLowerCase()+helper.route[routeData.id].con.slice(1));
