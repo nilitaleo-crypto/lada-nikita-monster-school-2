@@ -8,6 +8,7 @@
     'ladaburg-cat-home.html':'#catHomeLada, #victoryLada',
     'ladaburg-rabbit-home.html':'#rabbitHomeLada',
     'ladaburg-monkey-home.html':'#monkeyHomeLada',
+    'ladaburg-nosferatu-oak.html':'#rescueLada',
     'ladaburg-fountain.html':'#lada',
     'ladaburg-garden.html':'#ladaImg',
     'ladaburg-bookshop.html':'#ladaPhoto',
