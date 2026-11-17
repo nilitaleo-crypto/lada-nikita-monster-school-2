@@ -1,0 +1,192 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#55406b">
+<meta name="description" content="Лада, ловкий кот и сильный заяц спасают Умняшку от Носферату: ищут жёлуди и повторяют предлоги.">
+<title>Спасение Умняшки у дуба · Тиввиг</title>
+<style>
+:root{--cream:#fff2d9;--ink:#492d49;--gold:#dec08b;--purple:#593475;--purple-deep:#39234c}
+*{box-sizing:border-box}html,body{margin:0;min-height:100%;background:#22172f}body{font-family:Georgia,'Times New Roman',serif;color:var(--cream)}
+[hidden]{display:none!important}button,a{font:inherit;-webkit-tap-highlight-color:transparent;touch-action:manipulation}button{cursor:pointer}button:disabled{cursor:default;opacity:.65}button:focus-visible,a:focus-visible{outline:4px solid #fff5ac;outline-offset:3px}
+.page{min-height:100dvh;padding:8px clamp(6px,1.5vw,19px) 20px;background:radial-gradient(ellipse at top,#825e9a,#2d213d 76%)}
+.top{max-width:1420px;margin:0 auto 8px;display:flex;align-items:center;justify-content:space-between;gap:8px}.top h1{margin:0;text-align:center;font-size:clamp(17px,2.4vw,29px);line-height:1.16;text-shadow:0 2px 9px #0007}.top a,.top button{min-height:44px;display:flex;align-items:center;justify-content:center;border-radius:11px;border:2px solid #caa779;background:#f7e6c5;color:#503750;padding:7px 13px;font-weight:bold;text-decoration:none;white-space:nowrap}
+.scene{position:relative;isolation:isolate;width:min(100%,1420px);height:min(790px,calc(100dvh - 82px));min-height:655px;margin:auto;overflow:hidden;border:6px ridge var(--gold);border-radius:21px;background:#8d8559 url('images/oak-closeup.webp') center center/cover no-repeat;box-shadow:0 18px 48px #1b1127af}
+.scene::before{content:"";position:absolute;inset:0;background:linear-gradient(180deg,#25142c36,#21142a00 34%,#1a12341f 69%,#21122b73 100%);z-index:0;pointer-events:none}
+.vampire{position:absolute;z-index:6;top:9%;left:57%;width:38%;height:45%;transition:top .65s ease,left .65s ease,width .65s ease,transform .2s ease,opacity .55s ease;pointer-events:none;filter:drop-shadow(0 13px 10px #1d12288c)}
+.vampire img{display:block;width:100%;height:100%;object-fit:contain;object-position:center bottom}
+.vampire.hide-branch::after{content:"";position:absolute;left:-5%;right:-5%;bottom:3%;height:28%;transform:rotate(-11deg);background:repeating-linear-gradient(8deg,#94612b 0 13px,#6e4527 14px 20px,#ae7541 21px 30px);border:7px ridge #7c4d2a;border-radius:60% 50% 38% 46%;box-shadow:0 7px 9px #27140e8a;z-index:2}
+.vampire.hollow{left:29.5%;top:29%;width:20%;height:32%;filter:brightness(.76) drop-shadow(0 6px 8px #1b0c18db)}
+.vampire.hide-branch{left:58%;top:9%;width:37%;height:43%}
+.vampire.under-branch{left:69%;top:33%;width:28%;height:35%}
+.vampire.above-branch{left:59%;top:0%;width:33%;height:42%}
+.vampire.front-trunk{left:47%;top:33%;width:33%;height:39%}
+.vampire.hit{animation:vampHit .5s ease-in-out}.vampire.gone{opacity:0;transform:scale(.58) translateY(-55px)}
+@keyframes vampHit{0%,100%{filter:drop-shadow(0 13px 10px #1d12288c)}30%,75%{filter:drop-shadow(0 0 18px #ffd28a);transform:rotate(7deg)}}
+.crew{position:absolute;left:1%;bottom:4%;width:41%;height:39%;z-index:5;pointer-events:none}.hero{position:absolute;bottom:0;height:100%;object-fit:contain;object-position:center bottom;filter:drop-shadow(0 6px 7px #20142385)}
+.crew-lada{left:0;width:39%;height:100%}.crew-cat{left:34%;width:34%;height:78%}.crew-rabbit{left:59%;width:43%;height:84%}
+.dialog{position:absolute;z-index:12;top:3%;left:2%;width:min(47%,610px);border:4px ridge #d1a575;border-radius:19px 19px 19px 4px;background:linear-gradient(150deg,#fff5e2ee,#f1d8bce9);box-shadow:0 8px 26px #26142d98;color:var(--ink);padding:clamp(12px,1.8vw,23px);min-height:100px}
+.dialog h2{font-size:clamp(18px,2vw,27px);margin:0 0 6px;line-height:1.2}.dialog p{font-size:clamp(15px,1.6vw,20px);line-height:1.34;margin:0}.dialog .sub{font-size:clamp(12px,1.25vw,16px);margin-top:6px;color:#77556c}
+.hud{position:absolute;z-index:15;right:1.4%;top:2%;border:3px ridge #d9b47e;border-radius:18px;background:#fff1dcef;padding:9px 12px;color:#5d3966;display:flex;gap:8px;align-items:center;justify-content:center;font-weight:bold;font-size:clamp(12px,1.3vw,18px)}.hud .nuts{font-size:clamp(15px,1.8vw,26px);letter-spacing:.05em}.hud .empty{filter:grayscale(1);opacity:.35}
+.panel{position:absolute;z-index:17;right:1.2%;bottom:1.4%;width:min(57%,760px);border:5px ridge #d4ae76;border-radius:19px;padding:clamp(12px,1.8vw,22px);text-align:center;color:#4e3250;background:linear-gradient(143deg,#fff2d7f6,#f0d8b8f8);box-shadow:0 10px 33px #1e122ccf}
+.panel .eyebrow{font-size:clamp(13px,1.3vw,17px);letter-spacing:.08em;color:#795177;font-weight:bold}.panel h3{margin:6px 0 8px;font-size:clamp(21px,2.5vw,32px);line-height:1.16}.panel p{font-size:clamp(15px,1.45vw,19px);line-height:1.3;margin:7px 0}.panel .status{font-weight:bold;min-height:26px;color:#634773}.panel .status.good{color:#326e4b}
+.option-row{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin-top:10px}.option{min-height:58px;min-width:clamp(105px,13vw,160px);padding:10px 12px;border-radius:12px;border:3px solid #bf93c7;background:#fff8ee;color:#59356d;font-size:clamp(17px,1.8vw,23px);font-weight:bold;box-shadow:0 4px 0 #b89e90}.option:hover:not(:disabled){background:#f1e0f6}.option.wrong{animation:shake .35s}.option.right{background:#dff1c5;border-color:#8daf70;color:#38613c}
+.action{min-height:51px;margin-top:8px;border-radius:13px;padding:10px 21px;border:3px ridge #dabc85;background:linear-gradient(165deg,#9d70c5,#5d3889);color:#fff7e1;font-weight:bold;font-size:clamp(16px,1.65vw,22px);box-shadow:0 4px 0 #35244b}.action:hover:not(:disabled){filter:brightness(1.1)}
+.places{position:absolute;z-index:9;inset:0;pointer-events:none}.place{--size:clamp(54px,6.3vw,87px);position:absolute;display:flex;align-items:center;justify-content:center;height:var(--size);width:var(--size);border:3px solid #ffe5aaee;border-radius:50%;background:#392349ab;box-shadow:0 0 0 6px #caa2dc4d,0 4px 12px #160c23d3;font-size:clamp(29px,3vw,43px);pointer-events:auto;transition:transform .2s,filter .2s;-webkit-tap-highlight-color:transparent}.place:hover,.place:focus-visible{transform:scale(1.1);filter:brightness(1.18)}.place.found{opacity:0;pointer-events:none}.place.wrong{animation:shake .35s}.place::after{content:'🌰';position:absolute;right:-14px;bottom:-15px;font-size:29px;filter:drop-shadow(0 2px 3px #0008)}.place.found::after{display:none}
+.place.under-stone{left:12%;top:62%}.place.behind-stone{left:82%;top:67%}.place.in-hollow{left:33.1%;top:33%}.place.in-front{left:51%;top:66%}.place.above-root{left:64%;top:52%}
+.place.under-stone::after{bottom:-25px;right:12px;z-index:-1}.place.behind-stone::after{right:-11px;bottom:13px;z-index:-1}.place.in-hollow{background:#1a1427e6}.place.in-hollow::after{left:20px;bottom:2px}.place.in-front::after{right:0;bottom:0}.place.above-root::after{right:22px;top:-18px;bottom:auto}
+.place-mark{font-size:35px;filter:drop-shadow(0 4px 3px #0007);pointer-events:none}
+.throwing{position:absolute;z-index:30;top:0;left:0;transform:translate(-50%,-50%);font-size:55px;line-height:1;pointer-events:none;filter:drop-shadow(0 4px 5px #24192b99)}
+.finish{position:absolute;z-index:45;inset:0;display:flex;justify-content:center;align-items:center;padding:12px;background:#1a1129c9;backdrop-filter:blur(4px)}
+.finish-card{position:relative;width:min(98%,1130px);max-height:100%;overflow:auto;border:7px ridge #e4bc7e;border-radius:18px;background:url('images/all-hug-reward.webp') center/cover no-repeat;min-height:570px;box-shadow:0 15px 40px #000a;display:flex;flex-direction:column;justify-content:end;align-items:center;text-align:center;padding:15px}
+.finish-lada{position:absolute;left:13%;bottom:16%;width:29%;height:66%;object-fit:contain;object-position:bottom;filter:drop-shadow(0 8px 9px #211528ba)}
+.finish-copy{z-index:2;max-width:98%;padding:14px 24px;background:#fff0dcee;color:#492d4b;border:4px ridge #d9b17a;border-radius:17px;box-shadow:0 4px 15px #1d123b9a}.finish-copy h2{font-size:clamp(24px,4vw,44px);margin:0 0 7px}.finish-copy p{font-size:clamp(16px,1.8vw,22px);margin:0 0 12px}.finish-actions{display:flex;flex-wrap:wrap;gap:10px;justify-content:center}.finish-actions a,.finish-actions button{min-height:46px;background:#593779;color:#fff4d8;border:2px ridge #deb982;border-radius:9px;text-decoration:none;padding:9px 14px;font-weight:bold}
+@keyframes shake{0%,100%{translate:0 0}20%,60%{translate:-6px 0}40%,80%{translate:6px 0}}
+@media(max-width:1040px){.scene{height:calc(100dvh - 70px);min-height:790px}.dialog{width:60%;top:2%;padding:12px}.hud{right:1%;top:24%;padding:5px}.vampire{left:52%;top:16%;width:46%;height:35%}.vampire.hollow{left:29%;top:36%;width:25%;height:28%}.vampire.hide-branch{left:54%;top:16%;width:45%;height:33%}.vampire.under-branch{left:67%;top:41%;width:32%;height:29%}.vampire.above-branch{left:56%;top:10%;width:40%;height:34%}.vampire.front-trunk{left:45%;top:41%;width:38%;height:32%}.crew{bottom:33%;width:60%;height:26%}.panel{left:2%;right:2%;bottom:2%;width:96%;padding:12px;min-height:210px}.places .place.under-stone{left:12%;top:56%}.places .place.behind-stone{left:81%;top:55%}.places .place.in-front{left:52%;top:57%}.places .place.above-root{left:64%;top:45%}}
+@media(max-width:600px){.page{padding:5px 5px 14px}.top h1{font-size:15px}.top a,.top button{padding:5px 6px;min-height:39px;font-size:12px}.scene{min-height:830px;height:max(830px,calc(100dvh - 60px));border-width:3px;border-radius:12px;background-position:center center}.dialog{top:1.5%;left:1.5%;width:97%;min-height:0;padding:10px 11px;border-width:3px}.dialog h2{font-size:18px;margin-bottom:3px}.dialog p{font-size:14px;line-height:1.22}.dialog .sub{font-size:12px}.hud{top:24%;right:2%;font-size:12px}.vampire{left:47%;top:27%;height:24%;width:53%}.vampire.hollow{left:22%;top:35%;width:30%;height:20%}.vampire.hide-branch{left:50%;top:29%;height:23%;width:48%}.vampire.under-branch{left:59%;top:39%;height:23%;width:42%}.vampire.above-branch{left:56%;top:23%;height:24%;width:44%}.vampire.front-trunk{left:39%;top:39%;height:22%;width:43%}.crew{left:1%;bottom:30%;width:74%;height:23%}.panel{bottom:1%;left:1%;right:1%;width:98%;padding:9px 8px;min-height:0;border-width:3px}.panel h3{font-size:20px;margin:4px 0}.panel p{font-size:14px;margin:4px 0}.option{min-width:88px;min-height:47px;font-size:16px;padding:6px}.option-row{gap:5px;margin-top:6px}.action{font-size:16px;min-height:44px;padding:7px 9px}.places .place{--size:53px;border-width:2px}.places .place.in-hollow{left:31%;top:37%}.places .place.under-stone{left:10%;top:52%}.places .place.behind-stone{left:80%;top:55%}.places .place.in-front{left:52%;top:55%}.places .place.above-root{left:64%;top:43%}.place::after{font-size:24px}.finish-card{min-height:600px}.finish-lada{left:1%;bottom:30%;height:44%;width:30%}.finish-copy{padding:9px 8px}.finish-copy h2{font-size:23px}.finish-copy p{font-size:15px}}
+/* Keep vampire + captive a single, naturally proportioned unit at every hiding spot. */
+.vampire{height:auto!important;aspect-ratio:530/300}.vampire img{width:100%;height:100%;object-fit:contain}
+.vampire.hollow{left:30%;top:32%;width:19%}
+.vampire.hide-branch{left:58%;top:13%;width:34%}
+.vampire.under-branch{left:66%;top:38%;width:27%}
+.vampire.above-branch{left:60%;top:3%;width:30%}
+.vampire.front-trunk{left:47%;top:39%;width:28%}
+@media(max-width:1040px){
+.vampire.hollow{left:8%;top:32%;width:25%}
+.vampire.hide-branch{left:53%;top:15%;width:42%}
+.vampire.under-branch{left:59%;top:31%;width:37%}
+.vampire.above-branch{left:53%;top:4%;width:42%}
+.vampire.front-trunk{left:44%;top:37%;width:40%}
+}
+@media(max-width:600px){
+.vampire.hollow{left:4%;top:34%;width:42%}
+.vampire.hide-branch{left:50%;top:25%;width:48%}
+.vampire.under-branch{left:56%;top:35%;width:41%}
+.vampire.above-branch{left:51%;top:21%;width:46%}
+.vampire.front-trunk{left:45%;top:37%;width:43%}
+}
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{transition:none!important;animation-duration:.01ms!important}}
+</style>
+</head>
+<body><div class="page">
+<header class="top"><a href="ladaburg-oak-quarter.html" aria-label="Вернуться в Дубовый квартал">← Дубовый квартал</a><h1>🌳 Спасение Умняшки</h1><button id="reset" type="button">↻ Сначала</button></header>
+<main class="scene" id="scene" aria-label="Под огромным старым дубом Носферату схватил Умняшку, а Лада и её друзья пытаются её спасти">
+ <div class="vampire" id="vampire"><img src="images/nosferatu-with-umnyashka.webp" alt="Носферату держит в своих руках Умняшку в розовом платье" draggable="false"></div>
+ <div class="crew" aria-label="Лада и её друзья: ловкий кот и сильный заяц"><img id="rescueLada" class="hero crew-lada" src="images/lada-cutout.webp" alt="Лада в выбранном костюме" draggable="false"><img class="hero crew-cat" src="images/blue-cat.webp" alt="Ловкий кот" draggable="false"><img class="hero crew-rabbit" src="images/rabbit-cutout.webp" alt="Сильный розовый заяц" draggable="false"></div>
+ <div class="dialog" role="status" aria-live="polite"><h2 id="dialogHeading">Носферату похитил Умняшку!</h2><p id="dialogText">Он подхватил её и забрался на старый дуб! Кот и заяц помогут нам спасти подругу. Сначала найди пять жёлудей.</p><p class="sub" id="dialogExtra">Читай подсказки про места: ПОД, ЗА, ПЕРЕД, В и НАД.</p></div>
+ <div class="hud" id="hud" aria-label="Собрано 0 из 5 желудей"><span id="hudCaption">Жёлуди</span><span class="nuts" id="nuts">◌ ◌ ◌ ◌ ◌</span></div>
+ <div class="places" id="places" hidden aria-label="Найди жёлуди на земле около дуба">
+  <button type="button" class="place under-stone" data-place="under-stone" aria-label="Жёлудь под камнем"><span class="place-mark">🪨</span></button>
+  <button type="button" class="place behind-stone" data-place="behind-stone" aria-label="Жёлудь за камнем"><span class="place-mark">🪨</span></button>
+  <button type="button" class="place in-hollow" data-place="in-hollow" aria-label="Жёлудь в дупле"><span class="place-mark">🕳️</span></button>
+  <button type="button" class="place in-front" data-place="in-front" aria-label="Жёлудь перед стволом дерева"><span class="place-mark">🌳</span></button>
+  <button type="button" class="place above-root" data-place="above-root" aria-label="Жёлудь над корнем дерева"><span class="place-mark">🌿</span></button>
+ </div>
+ <div class="panel" id="panel" aria-live="polite">
+  <div class="eyebrow" id="stageLabel">ЛАДАБУРГ · ДУБОВЫЙ КВАРТАЛ</div>
+  <h3 id="taskHeading">Спасательная операция!</h3>
+  <p id="taskText">Умняшка в руках у вампира. Сумеешь найти пять жёлудей и прогнать Носферату?</p>
+  <div class="option-row" id="options" hidden></div>
+  <button class="action" id="action" type="button">🌰 Начать поиски</button>
+  <p class="status" id="feedback" role="status" aria-live="polite"></p>
+ </div>
+ <section class="finish" id="finish" hidden role="dialog" aria-modal="true" aria-labelledby="finishTitle"><div class="finish-card"><div class="finish-copy"><h2 id="finishTitle">💗 Все снова вместе!</h2><p>Умняшка спасена! Лада, кот, заяц и обезьянка крепко обнимаются. Теперь отряд готов к путешествию к Аиду.</p><div class="finish-actions"><a href="ladaburg-oak-quarter.html">🌳 К дубу</a><a href="collection.html">🏅 Награда в коллекции</a><button id="replay" type="button">↻ Сыграть снова</button></div></div></div></section>
+</main><p id="gameConnection" aria-live="polite" style="font-size:13px;text-align:center;margin:8px 0"></p>
+</div>
+<script>
+(()=>{
+'use strict';
+const $=id=>document.getElementById(id);
+const collectTasks=[
+ {id:'under-stone',clue:'Первый жёлудь спрятан ПОД большим камнем.',hint:'Посмотри на камень слева: где его нижняя часть?'},
+ {id:'behind-stone',clue:'Второй жёлудь спрятан ЗА камнем.',hint:'Найди камень справа и загляни за него.'},
+ {id:'in-hollow',clue:'Третий жёлудь находится В ДУПЛЕ дуба.',hint:'Дупло — это отверстие в стволе дерева.'},
+ {id:'in-front',clue:'Четвёртый жёлудь лежит ПЕРЕД стволом дуба.',hint:'Он находится на земле прямо перед деревом.'},
+ {id:'above-root',clue:'Последний жёлудь лежит НАД большим корнем.',hint:'Взгляни немного выше корней дерева.'}
+];
+const hiding=[
+ {where:'В ДУПЛЕ',pose:'hollow',choices:['ЗА ВЕТКОЙ','В ДУПЛЕ','ПОД ВЕТКОЙ']},
+ {where:'ЗА ВЕТКОЙ',pose:'hide-branch',choices:['ПЕРЕД СТВОЛОМ','ЗА ВЕТКОЙ','НАД ВЕТКОЙ']},
+ {where:'ПОД ВЕТКОЙ',pose:'under-branch',choices:['ПОД ВЕТКОЙ','В ДУПЛЕ','ЗА ВЕТКОЙ']},
+ {where:'НАД ВЕТКОЙ',pose:'above-branch',choices:['ПОД ВЕТКОЙ','НАД ВЕТКОЙ','ПЕРЕД СТВОЛОМ']},
+ {where:'ПЕРЕД СТВОЛОМ',pose:'front-trunk',choices:['ЗА ВЕТКОЙ','В ДУПЛЕ','ПЕРЕД СТВОЛОМ']}
+];
+let phase='intro',found=[],shot=0,chosen=false,locked=false,epoch=0,after=null;
+const delay=ms=>new Promise(r=>setTimeout(r,ms));
+const reduce=window.matchMedia?.('(prefers-reduced-motion: reduce)').matches||false;
+function say(heading,body,extra=''){$('dialogHeading').textContent=heading;$('dialogText').textContent=body;$('dialogExtra').textContent=extra;}
+function feedback(msg,ok=false){$('feedback').textContent=msg;$('feedback').classList.toggle('good',ok)}
+function updateHud(){const count=phase==='throw'||phase==='done'?5:found.length;$('nuts').textContent=Array.from({length:5},(_,i)=>i<count?'🌰':'◌').join(' ');$('hudCaption').textContent=phase==='throw'?'Броски: '+shot+'/5':'Жёлуди';$('hud').setAttribute('aria-label',phase==='throw'?'Брошено '+shot+' из 5 желудей':'Собрано '+count+' из 5 желудей')}
+function render(){
+ const places=$('places'),opts=$('options'),action=$('action'),vamp=$('vampire');
+ places.hidden=phase!=='collect';opts.hidden=true;action.hidden=true;
+ document.querySelectorAll('.place').forEach(b=>{b.classList.toggle('found',found.includes(b.dataset.place));b.disabled=locked||found.includes(b.dataset.place)});
+ vamp.className='vampire';
+ if(phase==='intro'){
+  $('stageLabel').textContent='ЛАДАБУРГ · СТАРЫЙ ДУБ';$('taskHeading').textContent='Носферату схватил Умняшку!';$('taskText').textContent='Лада, кот и заяц должны её спасти. Поищи жёлуди вокруг дуба, а затем помоги попасть в вампира.';
+  action.textContent='🌰 Найти жёлуди';action.hidden=false;
+ }else if(phase==='collect'){
+  const t=collectTasks[Math.min(found.length,collectTasks.length-1)];$('stageLabel').textContent='ЭТАП I · ПОИСК ЖЁЛУДЕЙ';$('taskHeading').textContent=found.length===5?'Жёлуди собраны!':'Жёлудь '+(found.length+1)+' из 5';$('taskText').textContent=found.length===5?'Все пять желудей в корзине. Сейчас прогоним вампира!':t.clue;
+  say('Найди жёлудь!',t.clue,t.hint);
+ }else if(phase==='throw'){
+  const t=hiding[shot];vamp.classList.add(t.pose);$('stageLabel').textContent='ЭТАП II · СПАСЕНИЕ';$('taskHeading').textContent='Бросок '+(shot+1)+' из 5';$('taskText').textContent='Где сейчас Носферату с Умняшкой? Выбери подходящие слова.';
+  say('Где спрятался вампир?','Он держит Умняшку и перебирается по веткам. Посмотри внимательно: где они сейчас?','Выбери предлог, затем брось жёлудь в Носферату, а не в Умняшку.');
+  opts.hidden=false;opts.replaceChildren();
+  for(let i=0;i<t.choices.length;i++){
+   const s=t.choices[i],b=document.createElement('button');b.type='button';b.className='option';b.id='hide-choice-'+i;b.textContent=s;b.disabled=locked||chosen;
+   if(chosen&&s===t.where)b.classList.add('right');
+   b.addEventListener('click',()=>chooseHide(s,b));opts.append(b)
+  }
+  action.textContent='🌰 Бросить жёлудь!';action.hidden=!chosen;action.disabled=locked;
+ }
+ updateHud();
+}
+function start(){if(phase!=='intro')return;phase='collect';found=[];shot=0;chosen=false;locked=false;feedback('Найди жёлудь по подсказке.');render()}
+function wrong(b,msg){b.classList.remove('wrong');void b.offsetWidth;b.classList.add('wrong');feedback(msg)}
+async function findAcorn(b){
+ if(phase!=='collect'||locked||b.disabled)return;
+ const item=collectTasks[found.length];if(b.dataset.place!==item.id){wrong(b,'Не здесь! Посмотри на подсказку и попробуй снова.');return}
+ locked=true;const g=epoch;b.disabled=true;found.push(item.id);feedback('Верно! Жёлудь в корзине.',true);render();
+ await delay(reduce?80:640);if(g!==epoch)return;locked=false;
+ if(found.length===5){phase='throw';chosen=false;feedback('Пять желудей собраны. Теперь спасаем Умняшку!');}
+ else feedback('Отлично! Ищем следующий жёлудь.',true);
+ render();
+}
+function chooseHide(s,b){
+ if(phase!=='throw'||chosen||locked)return;
+ const t=hiding[shot];if(s!==t.where){wrong(b,'Это другое место. Посмотри на положение вампира.');return}
+ chosen=true;feedback('Верно! Цель найдена — бросай жёлудь!',true);render();
+}
+async function throwAcorn(){
+ if(phase!=='throw'||!chosen||locked)return;locked=true;const g=epoch;
+ const scene=$('scene'),vamp=$('vampire'),sceneRect=scene.getBoundingClientRect(),target=vamp.getBoundingClientRect(),crew=$('rescueLada').getBoundingClientRect();
+ const startX=crew.left+crew.width*.83-sceneRect.left,startY=crew.top+crew.height*.48-sceneRect.top;
+ const endX=target.left+target.width*.67-sceneRect.left,endY=target.top+target.height*.36-sceneRect.top;
+ const nut=document.createElement('span');nut.className='throwing';nut.textContent='🌰';nut.style.left=startX+'px';nut.style.top=startY+'px';scene.append(nut);
+ const duration=reduce?60:650;let a=null;
+ try{a=nut.animate([{transform:'translate(-50%,-50%) scale(.8)'},{transform:`translate(calc(-50% + ${(endX-startX)*.48}px),calc(-50% + ${(endY-startY)*.45-70}px)) scale(1.3)`,offset:.5},{transform:`translate(calc(-50% + ${endX-startX}px),calc(-50% + ${endY-startY}px)) scale(.75)`}],{duration,easing:'ease-in',fill:'forwards'});await a.finished}catch{await delay(duration)}finally{nut.remove()}
+ if(g!==epoch)return;
+ vamp.classList.add('hit');feedback('Попадание! Носферату перебирается на другую ветку.',true);
+ await delay(reduce?80:490);if(g!==epoch)return;
+ shot++;chosen=false;locked=false;
+ if(shot===5){finishGame();return}
+ feedback('Он снова спрятался. Найди его!',true);render();
+}
+function finishGame(){
+ phase='done';locked=true;const vamp=$('vampire');vamp.classList.add('gone');
+ const key='tivvig_reward_nosferatu_rescue_v1';
+ try{if(!window.TivvigRegistry?.unlockReward?.(key)){localStorage.setItem(key,'unlocked');window.dispatchEvent(new CustomEvent('tivvig:reward-unlocked',{detail:{key}}));window.dispatchEvent(new Event('tivvig-inventory-changed'))}}catch(e){console.warn('Tivvig reward storage',e)}
+ feedback('Умняшка свободна! Все обнимаются!',true);updateHud();$('finish').hidden=false;
+}
+function reset(){epoch++;phase='intro';found=[];shot=0;chosen=false;locked=false;$('finish').hidden=true;$('vampire').className='vampire';feedback('');say('Носферату похитил Умняшку!','Он подхватил её и забрался на старый дуб! Кот и заяц помогут нам спасти подругу. Сначала найди пять жёлудей.','Читай подсказки про места: ПОД, ЗА, ПЕРЕД, В и НАД.');render()}
+document.querySelectorAll('.place').forEach(b=>b.addEventListener('click',()=>findAcorn(b)));
+$('action').addEventListener('click',()=>{if(phase==='intro')start();else if(phase==='throw')throwAcorn()});$('reset').addEventListener('click',reset);$('replay').addEventListener('click',reset);
+reset();
+window.__oakRescueTest={state:()=>({phase,found:[...found],shot,chosen,locked,finished:!$('finish').hidden,pose:$('vampire').className}),places:collectTasks.map(x=>x.id),hiding:hiding.map(x=>({where:x.where,choices:x.choices,pose:x.pose})),start,find:id=>document.querySelector('.place[data-place="'+id+'"]')?.click(),answer:idx=>$('hide-choice-'+idx)?.click(),throw:()=>$('action').click(),reset};
+})();
+</script>
+<script src="game-runtime.js?v=1" defer></script>
+<script src="wardrobe.js?v=2" defer></script>
+<script src="lada-avatar.js?v=1" defer></script>
+</body></html>
