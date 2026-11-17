@@ -1,0 +1,141 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#432733">
+<meta name="description" content="Кузница Вулкана в Дубовом квартале. Создай магическую крылатую броню для Лады в трёх испытаниях.">
+<title>Кузница крылатых доспехов — Дубовый квартал</title>
+<link rel="stylesheet" href="ladaburg-forge.css?v=1">
+<script src="wardrobe.js?v=3" defer></script>
+<script src="game-registry.js?v=3" defer></script>
+<script src="ladaburg-forge.js?v=1" defer></script>
+<script src="world-coop-bridge.js?v=12" defer></script>
+<script src="lada-avatar.js?v=2" defer></script>
+</head>
+<body>
+<header class="top">
+<a href="ladaburg-oak-quarter.html">← Дубовый квартал</a>
+<span class="loc">Ладабург · Кузница Вулкана</span>
+</header>
+<main>
+<div class="forge">
+ <section class="painting" aria-label="Мастерская, вдохновлённая картиной Диего Веласкеса «Кузница Вулкана»">
+  <img src="images/forge-of-vulcan.webp" alt="Диего Веласкес, Кузница Вулкана: кузнецы у наковальни и огня" draggable="false">
+  <div class="fire-glow" aria-hidden="true"></div><div class="scene-tint" aria-hidden="true"></div>
+  <div class="crew" aria-label="Лада пришла с ловким котом, сильным зайцем и Умняшкой Обезьяной">
+    <img id="forgeLada" class="lada" src="images/lada-cutout.webp" alt="Лада в выбранном наряде" draggable="false">
+    <img class="cat" src="images/blue-cat.webp" alt="Ловкий кот" draggable="false">
+    <img class="rabbit" src="images/rabbit-cutout.webp" alt="Сильный заяц" draggable="false">
+    <img class="monkey" src="images/monkey-cutout.webp" alt="Умняшка Обезьяна" draggable="false">
+  </div>
+  <div class="painting-caption">
+   <span class="small">Мастера из картины Веласкеса</span>
+   <h1>Кузница крылатых доспехов</h1>
+   <p>Вулкан поможет Ладе изготовить броню для похода к Аиду.</p>
+  </div>
+  <div class="smith-plaque">Диего Веласкес · «Кузница Вулкана» · 1630</div>
+ </section>
+ <nav class="progress" aria-label="Этапы ковки">
+  <span id="progress-rhythm" class="active">I · Ковка</span>
+  <span id="progress-assembly">II · Сборка</span>
+  <span id="progress-runes">III · Чары</span>
+ </nav>
+ <div class="workbench">
+  <section class="phase" id="intro" aria-labelledby="intro-title">
+   <div class="story">
+    <h2 id="intro-title">Вулкан принимает заказ!</h2>
+    <p>Лада, кот, заяц и Умняшка вошли в горячую кузницу. Мастера с картины Веласкеса согласны изготовить для Лады особые доспехи — <strong>тёмно-фиолетовую броню с огромными крыльями и бирюзовыми рунами</strong>.</p>
+    <p>Но волшебную броню нельзя просто купить. Сначала научись ковать, затем собери её из деталей и, наконец, зачаруй!</p>
+    <button id="begin" type="button" class="primary">⚒ Начать ковку</button>
+   </div>
+  </section>
+  <section class="phase" id="rhythm" aria-labelledby="rhythm-title" hidden>
+   <div class="under-title">ИСПЫТАНИЕ I · МОЛОТЫ КУЗНЕЦОВ</div>
+   <h2 id="rhythm-title">Отбей ритм на наковальне</h2>
+   <p>Вулкан стучит двумя молотами. Сначала послушай его удары, а затем повтори в том же порядке. Большой молот гремит <strong>БАМ</strong>, маленький звенит <strong>ДЗИНЬ</strong>.</p>
+   <div class="rhythm-stage">
+    <div class="anvil" id="anvil" aria-label="Железная наковальня с искрами">
+      <span class="sparkles" aria-hidden="true">✦ ✧ ✦</span>
+      <div class="steel"><svg viewBox="0 0 330 160" role="img" aria-label="Наковальня"><defs><linearGradient id="metal" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#c0b9b2"/><stop offset=".4" stop-color="#626c75"/><stop offset="1" stop-color="#2b3444"/></linearGradient></defs><path d="M21 52 100 48 112 33 264 33 298 47 285 75 242 85 232 106 221 108 237 143 99 143 118 107 107 86 65 74 21 74Z" fill="url(#metal)" stroke="#1a2435" stroke-width="8" stroke-linejoin="round"/><path d="M102 51H276" fill="none" stroke="#e1d7bd" stroke-width="6" opacity=".9"/><path d="M119 107H220" fill="none" stroke="#d1b9ac" stroke-width="5" opacity=".5"/></svg></div>
+      <div id="forgeSound" aria-live="polite">⚒ Кузнечный горн пылает</div>
+    </div>
+    <div class="smith-rhythm">
+     <h3 id="rhythm-counter">Ритм 1 из 3</h3>
+     <div class="beats" id="beatDemo" aria-label="Ритм кузнеца"></div>
+     <div class="beats" id="beatInput" aria-label="Твои удары"></div>
+     <button id="listen" class="primary" type="button">▶ Послушать ритм</button>
+     <p>Повторяй удары кнопками ниже.</p>
+    </div>
+   </div>
+   <div class="hammer-buttons" aria-label="Два кузнечных молота">
+    <button id="hit-big" type="button" data-hit="B" disabled><span class="tool" aria-hidden="true">🔨</span>Большой молот · БАМ</button>
+    <button id="hit-small" type="button" data-hit="S" disabled><span class="tool" aria-hidden="true">⚒️</span>Маленький молот · ДЗИНЬ</button>
+   </div>
+   <div class="status" id="rhythmStatus" role="status" aria-live="polite">Нажми «Послушать ритм».</div>
+  </section>
+  <section class="phase" id="assembly" aria-labelledby="assembly-title" hidden>
+   <div class="under-title">ИСПЫТАНИЕ II · СБОРКА НА КУЗНЕЧНОЙ СТОЙКЕ</div>
+   <h2 id="assembly-title">Собери крылатую броню</h2>
+   <p>Мастера разложили детали на верстаке. <strong>Выбери деталь</strong> справа и затем <strong>нажми на место на стойке</strong>, куда она подходит. Крылья крепятся за спиной, нагрудник на груди, наручи на руках, поножи на ногах.</p>
+   <div class="assembly-layout">
+    <div class="rack" aria-label="Стойка для сборки волшебной брони">
+     <img src="images/monankaka-armor.svg" alt="Контур будущих тёмно-фиолетовых доспехов с крыльями" draggable="false">
+     <button class="slot" type="button" id="slot-wings" data-slot="wings" aria-label="Место для крыльев">✧ Крылья</button>
+     <button class="slot" type="button" id="slot-chest" data-slot="chest" aria-label="Место для нагрудника">✦ Грудь</button>
+     <button class="slot" type="button" id="slot-arms" data-slot="arms" aria-label="Место для наручей">✦ Руки</button>
+     <button class="slot" type="button" id="slot-legs" data-slot="legs" aria-label="Место для поножей">✦ Ноги</button>
+    </div>
+    <div class="parts-tray">
+     <h3>Детали на верстаке <span id="assembly-count">0/4</span></h3>
+     <button type="button" id="part-chest" class="part" data-piece="chest"><span class="glyph" aria-hidden="true">♜</span>Нагрудник</button>
+     <button type="button" id="part-wings" class="part" data-piece="wings"><span class="glyph" aria-hidden="true">🦇</span>Крылья</button>
+     <button type="button" id="part-legs" class="part" data-piece="legs"><span class="glyph" aria-hidden="true">♞</span>Поножи</button>
+     <button type="button" id="part-arms" class="part" data-piece="arms"><span class="glyph" aria-hidden="true">⚔</span>Наручи</button>
+     <p id="assemblyStatus" class="status" role="status" aria-live="polite">Кузнецы ждут первую деталь.</p>
+    </div>
+   </div>
+  </section>
+  <section class="phase" id="runes" aria-labelledby="runes-title" hidden>
+   <div class="under-title">ИСПЫТАНИЕ III · МАГИЯ ВУЛКАНА</div>
+   <h2 id="runes-title">Зачаруй нагрудник</h2>
+   <p>На нагруднике кузнец вырезал повторяющийся узор. <strong>Какая руна следующая?</strong> Нажми на правильный камень — он оставит светящийся след на броне.</p>
+   <div class="rune-table">
+     <h3 id="rune-counter">Узор 1 из 3</h3>
+     <div class="etched-plate" aria-label="Тёмный нагрудник с бирюзовой гравировкой"><div id="rune-pattern" class="rune-sequence" aria-label="Последовательность рун"></div></div>
+     <div class="rune-choices" aria-label="Выбери подходящую руну">
+      <button type="button" data-rune="✦" aria-label="Руна звезда">✦</button>
+      <button type="button" data-rune="☾" aria-label="Руна луна">☾</button>
+      <button type="button" data-rune="◆" aria-label="Руна кристалл">◆</button>
+     </div>
+     <p id="runeStatus" class="status" role="status" aria-live="polite">Посмотри на закономерность и продолжи её.</p>
+   </div>
+  </section>
+  <section class="phase" id="victory" aria-labelledby="victory-title" hidden>
+   <div class="finish-layout">
+    <div class="reward-portrait">
+     <div class="reward-doll" aria-label="Лада в новых крылатых доспехах">
+      <img src="images/lada-cutout.webp" alt="Лада" draggable="false">
+      <img class="suit" src="images/monankaka-armor.svg" alt="Крылатая броня с бирюзовыми магическими узорами" draggable="false">
+      <img class="face" src="images/lada-cutout.webp" aria-hidden="true" alt="" draggable="false">
+     </div>
+    </div>
+    <div class="reward-copy">
+     <div class="under-title">✦ ВОЛШЕБНАЯ НАГРАДА ✦</div>
+     <h2 id="victory-title">Доспехи ночных крыльев!</h2>
+     <p>Лада отбила ритм, собрала части брони и вывела магические руны. Вулкан дарит ей броню с огромными фиолетовыми крыльями и бирюзовым сиянием!</p>
+     <p><strong>Новый наряд добавлен в коллекцию и гардероб.</strong></p>
+     <button id="equipArmor" type="button" class="primary">♛ Надеть доспехи</button>
+     <a href="wardrobe.html">Открыть гардероб</a>
+     <a href="ladaburg-oak-quarter.html">Вернуться к друзьям</a>
+     <button id="replay" type="button" class="secondary">↻ Сыграть ещё раз</button>
+     <p id="rewardStatus" class="status" role="status" aria-live="polite"></p>
+    </div>
+   </div>
+  </section>
+ </div>
+</div>
+<p id="gameConnection" class="small-note" aria-live="polite"></p>
+</main>
+</body>
+</html>
