@@ -6,6 +6,7 @@
   const targets={
     'ladaburg-fialka.html':'.lada-model [data-lada-avatar]',
     'ladaburg-cat-home.html':'#catHomeLada, #victoryLada',
+    'ladaburg-rabbit-home.html':'#rabbitHomeLada',
     'ladaburg-fountain.html':'#lada',
     'ladaburg-garden.html':'#ladaImg',
     'ladaburg-bookshop.html':'#ladaPhoto',
