@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="900" height="1100" viewBox="0 0 900 1100">
+<defs><linearGradient id="paper" x1="0" x2="1" y1="0" y2="1"><stop stop-color="#f8ebca"/><stop offset=".55" stop-color="#e1bf83"/><stop offset="1" stop-color="#bc9165"/></linearGradient><linearGradient id="rod" x1="0" x2="0" y1="0" y2="1"><stop stop-color="#d9b475"/><stop offset=".55" stop-color="#846246"/><stop offset="1" stop-color="#f1d493"/></linearGradient><filter id="sh"><feDropShadow dx="4" dy="16" stdDeviation="16" flood-color="#150b1f" flood-opacity=".55"/></filter></defs>
+<path d="M127 92Q451 65 770 100L763 962Q464 993 133 964Z" fill="url(#paper)" stroke="#8b6247" stroke-width="13" filter="url(#sh)"/>
+<path d="M133 132Q452 92 764 132" stroke="#b38760" stroke-width="4" fill="none" opacity=".6"/>
+<rect x="100" y="83" width="696" height="54" rx="24" fill="url(#rod)" stroke="#6b4b3a" stroke-width="9"/><circle cx="101" cy="109" r="35" fill="#d1b17b" stroke="#654739" stroke-width="10"/><circle cx="795" cy="109" r="35" fill="#d1b17b" stroke="#654739" stroke-width="10"/>
+<rect x="100" y="945" width="696" height="54" rx="24" fill="url(#rod)" stroke="#6b4b3a" stroke-width="9"/><circle cx="101" cy="972" r="35" fill="#d1b17b" stroke="#654739" stroke-width="10"/><circle cx="795" cy="972" r="35" fill="#d1b17b" stroke="#654739" stroke-width="10"/>
+<path d="M173 169H728V896H173Z" stroke="#7e6a5a" stroke-width="3" opacity=".5" fill="none"/>
+<text x="450" y="229" text-anchor="middle" font-family="Georgia,serif" fill="#6a4247" font-size="28" letter-spacing="7">РАТУША ЛАДАБУРГА</text>
+<path d="M284 263H616" stroke="#9b7655" stroke-width="4"/>
+<text x="450" y="331" text-anchor="middle" font-family="Georgia,serif" fill="#5b3450" font-size="58" font-weight="bold">СВИТОК СОВЕТА</text>
+<text x="450" y="375" text-anchor="middle" font-family="Georgia,serif" fill="#6f4b49" font-size="25">ПЛАН ЭКСПЕДИЦИИ К АИДУ</text>
+<path d="M245 474Q300 413 365 468Q436 502 467 457Q527 408 644 469L696 553Q625 643 568 607Q497 575 458 626Q390 664 312 621Z" fill="#d4b889" stroke="#886e51" stroke-width="8"/>
+<path d="M263 503Q357 461 466 514T679 505" fill="none" stroke="#7f648a" stroke-width="8" stroke-linecap="round" stroke-dasharray="9 12"/>
+<path d="M264 540Q380 577 450 544T679 541" fill="none" stroke="#ad6a51" stroke-width="8" stroke-linecap="round" stroke-dasharray="9 12"/>
+<path d="M278 576Q394 652 459 584T680 585" fill="none" stroke="#678c6e" stroke-width="8" stroke-linecap="round" stroke-dasharray="9 12"/>
+<text x="287" y="508" font-size="43">🌲</text><text x="522" y="533" font-size="43">🌉</text><text x="597" y="608" font-size="43">🌊</text><text x="294" y="588" font-size="38">🏰</text>
+<path d="M449 700 519 745 502 823 448 867 392 823 378 746Z" fill="#814858" stroke="#d6b076" stroke-width="10"/>
+<path d="M448 725 477 764 461 811 449 826 423 808 419 762Z" fill="#d4b779"/><path d="M450 750 462 770 447 801 437 773Z" fill="#523f64"/>
+<text x="450" y="912" text-anchor="middle" font-family="Georgia,serif" fill="#755340" font-size="23" letter-spacing="3">ПОХОД ЕЩЁ НЕ НАЧАЛСЯ</text>
+</svg>
