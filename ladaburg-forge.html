@@ -6,10 +6,10 @@
 <meta name="theme-color" content="#432733">
 <meta name="description" content="Кузница Вулкана в Дубовом квартале. Создай магическую крылатую броню для Лады в трёх испытаниях.">
 <title>Кузница крылатых доспехов — Дубовый квартал</title>
-<link rel="stylesheet" href="ladaburg-forge.css?v=1">
+<link rel="stylesheet" href="ladaburg-forge.css?v=2">
 <script src="wardrobe.js?v=3" defer></script>
 <script src="game-registry.js?v=3" defer></script>
-<script src="ladaburg-forge.js?v=1" defer></script>
+<script src="ladaburg-forge.js?v=2" defer></script>
 <script src="world-coop-bridge.js?v=12" defer></script>
 <script src="lada-avatar.js?v=2" defer></script>
 </head>
@@ -80,7 +80,11 @@
    <p>Мастера разложили детали на верстаке. <strong>Выбери деталь</strong> справа и затем <strong>нажми на место на стойке</strong>, куда она подходит. Крылья крепятся за спиной, нагрудник на груди, наручи на руках, поножи на ногах.</p>
    <div class="assembly-layout">
     <div class="rack" aria-label="Стойка для сборки волшебной брони">
-     <img src="images/monankaka-armor.svg" alt="Контур будущих тёмно-фиолетовых доспехов с крыльями" draggable="false">
+     <img class="armor-ghost" src="images/monankaka-armor.svg" alt="Едва заметный контур будущих доспехов" draggable="false">
+     <div class="piece-art wings-art" id="armor-art-wings" hidden aria-hidden="true"><img class="left-wing" src="images/monankaka-armor.svg" alt="" draggable="false"><img class="right-wing" src="images/monankaka-armor.svg" alt="" draggable="false"></div>
+     <div class="piece-art chest-art" id="armor-art-chest" hidden aria-hidden="true"><img src="images/monankaka-armor.svg" alt="" draggable="false"></div>
+     <div class="piece-art arms-art" id="armor-art-arms" hidden aria-hidden="true"><img class="left-arm" src="images/monankaka-armor.svg" alt="" draggable="false"><img class="right-arm" src="images/monankaka-armor.svg" alt="" draggable="false"></div>
+     <div class="piece-art legs-art" id="armor-art-legs" hidden aria-hidden="true"><img src="images/monankaka-armor.svg" alt="" draggable="false"></div>
      <button class="slot" type="button" id="slot-wings" data-slot="wings" aria-label="Место для крыльев">✧ Крылья</button>
      <button class="slot" type="button" id="slot-chest" data-slot="chest" aria-label="Место для нагрудника">✦ Грудь</button>
      <button class="slot" type="button" id="slot-arms" data-slot="arms" aria-label="Место для наручей">✦ Руки</button>
