@@ -101,4 +101,17 @@ main{max-width:1340px;margin:auto;padding:0 10px 20px}
 .small-note{text-align:center;font-size:12px;color:#dac6ac;margin-top:10px}
 @media(max-width:740px){.top{padding:8px 6px}.top a{padding:8px 10px}.forge{border-width:4px;border-radius:12px}.painting{height:260px;min-height:0}.painting-caption{max-width:67%;right:2%;top:3%;padding:8px 9px}.painting-caption h1{font-size:24px}.painting-caption p{font-size:12px}.crew{width:63%;height:65%;left:1%}.smith-plaque{padding:4px 7px;font-size:11px;right:6px;bottom:5px}.progress{padding:9px 5px;gap:4px}.progress span{font-size:11px;line-height:1.2}.workbench{min-height:410px;padding:14px 8px 18px}.rhythm-stage,.assembly-layout,.finish-layout{grid-template-columns:1fr;gap:10px}.anvil{min-height:180px}.anvil .steel{height:93px}.hammer-buttons button{min-height:93px}.rack{height:450px}.parts-tray{padding:9px}.part{display:inline-flex;width:calc(50% - 9px);min-height:58px;margin:4px;font-size:14px;gap:5px;vertical-align:top}.part .glyph{font-size:23px;min-width:28px}.reward-portrait{height:420px}.reward-copy{padding:10px}.reward-copy h2{margin:6px 0}.reward-copy p{font-size:16px}}
 @media(max-width:410px){.painting{height:228px}.crew{width:62%;height:64%}.painting-caption h1{font-size:21px}.painting-caption p{font-size:11px}.slot[data-slot="wings"]{top:17%}.rack{height:395px}.slot{font-size:12px}.part{width:calc(50% - 9px);font-size:13px}}
+
+/* The suit is actually assembled: a dim outline first, independent colored fragments after each match. */
+.rack>img.armor-ghost{opacity:.22;filter:grayscale(1) brightness(.35)}
+.rack .piece-art{position:absolute;inset:0;z-index:2;pointer-events:none;animation:piece-arrive .35s ease-out}
+.rack .piece-art img{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;filter:drop-shadow(0 0 4px #76fff6a0)}
+.rack .piece-art.wings-art .left-wing{clip-path:polygon(0 6%,43% 6%,43% 64%,0 82%)}
+.rack .piece-art.wings-art .right-wing{clip-path:polygon(57% 6%,100% 6%,100% 82%,57% 64%)}
+.rack .piece-art.chest-art img{clip-path:polygon(32% 26%,69% 26%,69% 67%,32% 67%)}
+.rack .piece-art.arms-art .left-arm{clip-path:polygon(0 33%,44% 33%,44% 91%,0 91%)}
+.rack .piece-art.arms-art .right-arm{clip-path:polygon(57% 33%,100% 33%,100% 91%,57% 91%)}
+.rack .piece-art.legs-art img{clip-path:polygon(28% 64%,71% 64%,78% 100%,22% 100%)}
+@keyframes piece-arrive{from{opacity:.2;filter:brightness(1.8)}to{opacity:1;filter:none}}
+
 @media(prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;transition-duration:.01ms!important}}
