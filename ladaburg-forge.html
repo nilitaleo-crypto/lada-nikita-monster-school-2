@@ -4,12 +4,12 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#432733">
-<meta name="description" content="Кузница Вулкана в Дубовом квартале. Создай магическую крылатую броню для Лады в трёх испытаниях.">
+<meta name="description" content="Кузница Вулкана в Дубовом квартале. Создай магическую крылатую броню для Лады в четырёх испытаниях.">
 <title>Кузница крылатых доспехов — Дубовый квартал</title>
-<link rel="stylesheet" href="ladaburg-forge.css?v=2">
+<link rel="stylesheet" href="ladaburg-forge.css?v=3">
 <script src="wardrobe.js?v=3" defer></script>
 <script src="game-registry.js?v=3" defer></script>
-<script src="ladaburg-forge.js?v=2" defer></script>
+<script src="ladaburg-forge.js?v=3" defer></script>
 <script src="world-coop-bridge.js?v=12" defer></script>
 <script src="lada-avatar.js?v=2" defer></script>
 </head>
@@ -39,14 +39,15 @@
  <nav class="progress" aria-label="Этапы ковки">
   <span id="progress-rhythm" class="active">I · Ковка</span>
   <span id="progress-assembly">II · Сборка</span>
-  <span id="progress-runes">III · Чары</span>
+  <span id="progress-reading">III · Чтение</span>
+  <span id="progress-runes">IV · Чары</span>
  </nav>
  <div class="workbench">
   <section class="phase" id="intro" aria-labelledby="intro-title">
    <div class="story">
     <h2 id="intro-title">Вулкан принимает заказ!</h2>
     <p>Лада, кот, заяц и Умняшка вошли в горячую кузницу. Мастера с картины Веласкеса согласны изготовить для Лады особые доспехи — <strong>тёмно-фиолетовую броню с огромными крыльями и бирюзовыми рунами</strong>.</p>
-    <p>Но волшебную броню нельзя просто купить. Сначала научись ковать, затем собери её из деталей и, наконец, зачаруй!</p>
+    <p>Но волшебную броню нельзя просто купить. Сначала научись ковать, затем собери её из деталей, прочитай тайную инструкцию Вулкана и, наконец, зачаруй!</p>
     <button id="begin" type="button" class="primary">⚒ Начать ковку</button>
    </div>
   </section>
@@ -100,8 +101,41 @@
     </div>
    </div>
   </section>
+
+  <section class="phase" id="reading" aria-labelledby="reading-title" hidden>
+   <div class="under-title">ИСПЫТАНИЕ III · ТАЙНАЯ ИНСТРУКЦИЯ ВУЛКАНА</div>
+   <h2 id="reading-title">Прочитай волшебный рецепт</h2>
+   <p>Кузнецы приготовили четыре записки. <strong>Прочитай</strong> слово или фразу и <strong>найди нужный предмет</strong> в мастерской. После правильного выбора предмет оживёт.</p>
+   <div class="reading-layout">
+    <div class="recipe-scroll" aria-label="Пергамент с кузнечным заданием">
+     <div class="scroll-top">✦ Книга секретов Вулкана ✦</div>
+     <div class="scroll-count" id="reading-count">Пергамент 1 из 4</div>
+     <div class="scroll-big" id="reading-word" aria-label="Прочитай слово"></div>
+     <div class="scroll-hint">Если сложно, нажимай на слоги по очереди. Они будут подсвечиваться.</div>
+     <div class="scroll-message" id="reading-message">Прочитай вслух, а потом найди предмет справа.</div>
+     <div class="reading-stamps" id="reading-stamps" aria-label="Выполненные поручения"><span>✧</span><span>✧</span><span>✧</span><span>✧</span></div>
+    </div>
+    <div class="reading-yard" id="reading-yard" aria-label="Кузнечный верстак с четырьмя предметами">
+     <div class="reading-shelf" aria-hidden="true"></div><div class="reading-hearth" aria-hidden="true"><span>♨</span></div><div class="reading-table" aria-hidden="true"></div>
+     <button id="reading-water" class="reading-target water" type="button" data-object="water" aria-label="Чан с водой">
+      <svg viewBox="0 0 160 170" aria-hidden="true"><ellipse cx="79" cy="46" rx="65" ry="29" fill="#acbbc1" stroke="#293c46" stroke-width="8"/><path d="M15 48 32 141Q80 168 129 141L144 48Z" fill="#656e82" stroke="#26313e" stroke-width="8"/><ellipse cx="79" cy="46" rx="54" ry="19" fill="#63bdd4" stroke="#abddec" stroke-width="6"/><path d="M48 50Q74 38 103 51" fill="none" stroke="#e3ffff" stroke-width="5"/></svg><span class="read-effect" aria-hidden="true">♨ ♨</span>
+     </button>
+     <button id="reading-rune" class="reading-target rune-stone" type="button" data-object="rune" aria-label="Камень с руной">
+      <svg viewBox="0 0 150 155" aria-hidden="true"><path d="m68 9 57 28 13 65-55 42-69-29-2-67Z" fill="#6a5d86" stroke="#242639" stroke-width="8"/><path d="M62 34 51 74 82 70 62 111M82 70 103 45" fill="none" stroke="#7ef5e9" stroke-width="12" stroke-linecap="round" stroke-linejoin="round"/></svg><span class="read-effect" aria-hidden="true">✧ ✦</span>
+     </button>
+     <button id="reading-wing" class="reading-target wing" type="button" data-object="wing" aria-label="Запасное крыло для доспехов">
+      <svg viewBox="0 0 210 175" aria-hidden="true"><path d="M19 39Q114 12 186 13L170 68 208 101 153 108 179 165 92 134 38 169 43 107 13 106 46 75Z" fill="#5b378d" stroke="#2d1b45" stroke-width="9" stroke-linejoin="round"/><path d="M27 51Q96 74 162 23M58 85l104 16M65 97 99 133" fill="none" stroke="#ac7ce4" stroke-width="7"/><path d="m72 88 42 17" fill="none" stroke="#51f3e7" stroke-width="7"/></svg><span class="read-effect" aria-hidden="true">✧ ✦</span>
+     </button>
+     <button id="reading-sword" class="reading-target sword" type="button" data-object="sword" aria-label="Магический меч на верстаке">
+      <svg viewBox="0 0 145 205" aria-hidden="true"><path d="M66 8 84 8 89 113 76 147 63 113Z" fill="#bfd9e7" stroke="#2e4c67" stroke-width="7"/><path d="M77 18 77 128" stroke="#e1fafa" stroke-width="7"/><path d="M28 134 118 134 102 148 49 149Z" fill="#a78b63" stroke="#50394c" stroke-width="8"/><path d="M70 148 83 148 86 187 67 187Z" fill="#643d64" stroke="#352440" stroke-width="7"/><circle cx="77" cy="193" r="9" fill="#50eadd" stroke="#765476" stroke-width="5"/></svg><span class="read-effect" aria-hidden="true">✦ ✧</span>
+     </button>
+     <div class="reading-yard-caption" aria-hidden="true">В кузнице спрятаны четыре предмета</div>
+    </div>
+   </div>
+   <div class="status" id="reading-status" role="status" aria-live="polite">Прочитай вслух и найди предмет.</div>
+  </section>
   <section class="phase" id="runes" aria-labelledby="runes-title" hidden>
-   <div class="under-title">ИСПЫТАНИЕ III · МАГИЯ ВУЛКАНА</div>
+   <div class="under-title">ИСПЫТАНИЕ IV · МАГИЯ ВУЛКАНА</div>
    <h2 id="runes-title">Зачаруй нагрудник</h2>
    <p>На нагруднике кузнец вырезал повторяющийся узор. <strong>Какая руна следующая?</strong> Нажми на правильный камень — он оставит светящийся след на броне.</p>
    <div class="rune-table">
@@ -127,7 +161,7 @@
     <div class="reward-copy">
      <div class="under-title">✦ ВОЛШЕБНАЯ НАГРАДА ✦</div>
      <h2 id="victory-title">Доспехи ночных крыльев!</h2>
-     <p>Лада отбила ритм, собрала части брони и вывела магические руны. Вулкан дарит ей броню с огромными фиолетовыми крыльями и бирюзовым сиянием!</p>
+     <p>Лада отбила ритм, собрала части брони, прочитала тайную инструкцию Вулкана и вывела магические руны. Вулкан дарит ей броню с огромными фиолетовыми крыльями и бирюзовым сиянием!</p>
      <p><strong>Новый наряд добавлен в коллекцию и гардероб.</strong></p>
      <button id="equipArmor" type="button" class="primary">♛ Надеть доспехи</button>
      <a href="wardrobe.html">Открыть гардероб</a>
