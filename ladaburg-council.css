@@ -14,7 +14,7 @@ main{max-width:1430px;margin:auto;padding:0 clamp(7px,1.8vw,20px) 17px}
 .seat{pointer-events:auto;position:absolute;top:28%;width:18%;height:41%;border:0;padding:0;background:transparent;color:#fbeaca;display:block;transition:filter .2s,transform .2s}
 .seat .seat-chair{position:absolute;bottom:0;left:8%;width:84%;height:58%;border:8px ridge #96704b;border-radius:45% 45% 22% 22%/30% 30% 13% 13%;background:linear-gradient(125deg,#4a304c,#7a5060,#392338);box-shadow:0 9px 18px #15101d9f}
 .seat img.avatar{position:relative;z-index:2;width:100%;height:100%;object-fit:contain;object-position:bottom;filter:drop-shadow(2px 8px 5px #130c20b3);user-select:none;-webkit-user-drag:none}
-.seat .person-label{position:absolute;z-index:12;left:50%;bottom:7%;transform:translateX(-50%);padding:3px 9px;white-space:nowrap;border:2px solid #b49a69;border-radius:7px;background:#f1ddb4ef;color:#51384d;font:bold clamp(10px,1.15vw,16px) Georgia,serif;box-shadow:0 4px 8px #20172788}
+.seat .person-label{position:absolute;z-index:12;left:50%;top:-4%;bottom:auto;transform:translateX(-50%);padding:3px 9px;white-space:nowrap;border:2px solid #b49a69;border-radius:7px;background:#f1ddb4ef;color:#51384d;font:bold clamp(10px,1.15vw,16px) Georgia,serif;box-shadow:0 4px 8px #20172788}
 .seat:hover,.seat:focus-visible,.seat.chosen{filter:drop-shadow(0 0 12px #f7d89b);transform:translateY(-4px)}
 .seat.chosen .person-label{background:#c4f6e9;border-color:#60e4c2}
 .cat-seat{left:8%;z-index:3}.monkey-seat{left:27%;z-index:4}.lada-seat{left:53%;z-index:5}.rabbit-seat{left:75%;z-index:3}
@@ -109,4 +109,9 @@ button.primary:active,button.secondary:active{translate:0 3px;box-shadow:none}
  .finish-layout{grid-template-columns:1fr;gap:8px}.finish-layout>img{height:240px}.finish-card{padding:12px}
  .plan-paper{padding:16px 12px}.council-action{padding:10px}.council-action button{width:100%}.finish-links a,.finish-links button{flex:1}
 }
+
+/* Keep the table in front of their laps while name plaques remain above their heads. */
+.seat .person-label{pointer-events:none}
+.seat .avatar{pointer-events:none}
+
 @media(prefers-reduced-motion:reduce){*,*::before,*::after{scroll-behavior:auto!important;animation-duration:.01ms!important;transition:none!important}}
