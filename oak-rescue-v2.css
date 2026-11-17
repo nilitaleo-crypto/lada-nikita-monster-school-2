@@ -19,20 +19,20 @@
 .oak-stage .crew{position:absolute;left:0%;bottom:1.5%;width:32%;height:36%;z-index:12;pointer-events:none}
 .oak-stage .vampire{position:absolute;top:24%;left:70%;width:25%;height:auto!important;aspect-ratio:530/300;z-index:7;filter:drop-shadow(0 7px 7px #1d122899);transition:top .55s ease,left .55s ease,width .55s ease,opacity .45s ease;pointer-events:none}
 .oak-stage .vampire img{display:block;width:100%;height:100%;object-fit:contain}
-.oak-stage .vampire.hide-branch::after{display:none}
-.oak-stage .vampire.hollow{left:43%;top:37%;width:17%;z-index:6;filter:brightness(.85) drop-shadow(0 5px 5px #26132b)}
-.oak-stage .vampire.hide-branch{left:76%;top:53%;width:21%;z-index:5}
+.oak-stage .vampire.hide-stump::after{display:none}
+.oak-stage .vampire.hollow{left:40%;top:37%;width:17%;z-index:6;filter:brightness(.85) drop-shadow(0 5px 5px #26132b)}
+.oak-stage .vampire.hide-stump{left:76%;top:53%;width:21%;z-index:5}
 .oak-stage .vampire.under-branch{left:65%;top:39%;width:23%;z-index:6}
 .oak-stage .vampire.above-branch{left:66%;top:12%;width:23%;z-index:7}
-.oak-stage .vampire.front-trunk{left:54%;top:65%;width:23%;z-index:10}
+.oak-stage .vampire.front-log{left:54%;top:65%;width:23%;z-index:10}
 .oak-stage .setpiece{position:absolute;pointer-events:none;z-index:9;filter:drop-shadow(0 7px 5px #263c3280)}
 .oak-stage .setpiece svg{display:block;width:100%;height:100%;overflow:visible}
 .oak-stage .setpiece.stone-piece{left:25%;top:72%;width:19%;height:17%;z-index:9}
 .oak-stage .setpiece.stump-piece{left:77%;top:62%;width:17%;height:24%;z-index:9}
-.oak-stage .setpiece.hollow-piece{left:46%;top:35%;width:13%;height:25%;z-index:8;filter:drop-shadow(0 4px 6px #3321198b)}
+.oak-stage .setpiece.hollow-piece{left:40%;top:35%;width:13%;height:25%;z-index:8;filter:drop-shadow(0 4px 6px #3321198b)}
 .oak-stage .setpiece.log-piece{left:49%;top:80%;width:26%;height:14%;z-index:8}
 .oak-stage .setpiece.branch-piece{left:63%;top:31%;width:34%;height:11%;z-index:9}
-.oak-stage .places{position:absolute;inset:0;z-index:15;pointer-events:none}
+.oak-stage .places{position:absolute;inset:0;z-index:auto;pointer-events:none}
 .oak-stage .place{position:absolute;display:grid;place-items:center;--size:clamp(48px,5.5vw,74px);width:var(--size);height:var(--size);min-width:48px;min-height:48px;transform:translate(-50%,-50%);border:2px solid transparent;border-radius:50%;background:#fff9d31b;box-shadow:0 0 0 3px #fff5a47a,0 4px 15px #3c532c55;font-size:clamp(25px,3vw,39px);z-index:15;pointer-events:auto;transition:transform .15s,background .15s;touch-action:manipulation}
 .oak-stage .place:hover,.oak-stage .place:focus-visible{transform:translate(-50%,-50%) scale(1.13);background:#fff3b888;filter:none}
 .oak-stage .place .place-mark{display:none}
@@ -40,15 +40,15 @@
 .oak-stage .place.found{visibility:hidden;opacity:0;pointer-events:none}
 .oak-stage .place.found::after{display:none}
 .oak-stage .place.under-stone{left:34%;top:87%}
-.oak-stage .place.behind-stone{left:78.4%;top:70%}
-.oak-stage .place.in-hollow{left:52%;top:47%}
-.oak-stage .place.in-front{left:62%;top:93%}
-.oak-stage .place.above-root{left:79%;top:26%}
-.oak-stage .place.behind-stone{z-index:7} /* The stump passes in front of the acorn's rim */
-.oak-stage .place.behind-stone::after{transform:translate(-12px,-7px)}
+.oak-stage .place.behind-stump{left:78.4%;top:70%}
+.oak-stage .place.in-hollow{left:46%;top:47%}
+.oak-stage .place.in-front-log{left:62%;top:93%}
+.oak-stage .place.above-branch{left:79%;top:26%}
+.oak-stage .place.behind-stump{z-index:7} /* The stump passes in front of the acorn's rim */
+.oak-stage .place.behind-stump::after{transform:translate(-12px,-7px)}
 .oak-stage .place.in-hollow{z-index:10;background:#40251e44;box-shadow:inset 0 0 8px #0007}
-.oak-stage .place.above-root{box-shadow:0 0 0 3px #fff1b085;background:#fff0b12e}
-.oak-stage .place.under-stone,.oak-stage .place.in-front{z-index:11}
+.oak-stage .place.above-branch{box-shadow:0 0 0 3px #fff1b085;background:#fff0b12e}
+.oak-stage .place.under-stone{z-index:7}.oak-stage .place.in-front-log{z-index:11}
 /* During the hiding round the visible props stay exactly where they were. */
 .oak-stage .vampire.gone{opacity:0}
 .oak-stage .vampire.hit{animation:vampHit .5s ease-in-out}
@@ -74,18 +74,18 @@
  .oak-stage .crew{width:33%;height:33%;bottom:1%}
  .oak-stage .setpiece.stone-piece{left:25%;width:20%}
  .oak-stage .setpiece.stump-piece{left:76%;width:18%}
- .oak-stage .setpiece.hollow-piece{left:46%;width:14%}
+ .oak-stage .setpiece.hollow-piece{left:40%;width:14%}
  .oak-stage .place{--size:52px}
  .oak-stage .place.under-stone{left:34%;top:86%}
- .oak-stage .place.behind-stone{left:78%;top:70%}
- .oak-stage .place.in-hollow{left:52%;top:46%}
- .oak-stage .place.in-front{left:62%;top:93%}
- .oak-stage .place.above-root{left:79%;top:26%}
- .oak-stage .vampire.hollow{left:42%;top:39%;width:18%}
- .oak-stage .vampire.hide-branch{left:74%;top:56%;width:22%}
+ .oak-stage .place.behind-stump{left:78%;top:70%}
+ .oak-stage .place.in-hollow{left:46%;top:46%}
+ .oak-stage .place.in-front-log{left:62%;top:93%}
+ .oak-stage .place.above-branch{left:79%;top:26%}
+ .oak-stage .vampire.hollow{left:39%;top:39%;width:18%}
+ .oak-stage .vampire.hide-stump{left:74%;top:56%;width:22%}
  .oak-stage .vampire.under-branch{left:67%;top:40%;width:23%}
  .oak-stage .vampire.above-branch{left:65%;top:16%;width:23%}
- .oak-stage .vampire.front-trunk{left:55%;top:66%;width:23%}
+ .oak-stage .vampire.front-log{left:55%;top:66%;width:23%}
  .panel{margin:6px;padding:10px}.panel h3{font-size:20px}.panel p{font-size:14px}
  .option-row{gap:5px}.option{min-height:48px;min-width:75px;padding:7px 8px;font-size:15px}
  .action{font-size:16px;min-height:46px}
