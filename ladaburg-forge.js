@@ -123,6 +123,7 @@ function renderAssembly(){
   option.disabled=solved;option.classList.toggle('done',solved);
   option.classList.toggle('selected',!solved&&selectedPart===part);
   option.setAttribute('aria-pressed',String(!solved&&selectedPart===part));
+  const art=$('armor-art-'+part);if(art)art.hidden=!solved;
   slot.disabled=solved;slot.classList.toggle('done',solved);
   slot.textContent=solved?'✓ '+PART_NAMES[part]:(part==='chest'?'✦ Грудь':part==='wings'?'✧ Крылья':part==='arms'?'✦ Руки':'✦ Ноги');
  }
