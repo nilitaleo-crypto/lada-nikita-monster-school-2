@@ -1,0 +1,158 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#423057">
+<meta name="description" content="Помоги ловкому синему коту поймать буквы ветра Сироко и отправиться с Ладой к Аиду">
+<title>Дом ловкого кота — Ладабург</title>
+<style>
+:root{--ink:#403052;--purple:#604079;--gold:#dcad68;--cream:#fff1d6;--shadow:#201330}
+*{box-sizing:border-box}html,body{margin:0;min-height:100%;font-family:Georgia,'Times New Roman',serif;color:var(--cream)}
+body{min-height:100dvh;padding:clamp(8px,2vw,20px);background:radial-gradient(ellipse at 55% 0,#8968a3,#332440 76%,#1d152b)}
+[hidden]{display:none!important}button,a{font:inherit;-webkit-tap-highlight-color:transparent;touch-action:manipulation}
+button{cursor:pointer}button:disabled{cursor:default}button:focus-visible,a:focus-visible{outline:4px solid #fff5ac;outline-offset:3px}
+header{width:min(1420px,100%);display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:9px;margin:0 auto 12px}
+.back,.navbutton{display:inline-flex;align-items:center;justify-content:center;min-height:48px;padding:9px 15px;text-decoration:none;border-radius:12px;border:2px solid #b88c5c;background:#f9e4b8;color:#4d304e;font-weight:bold;box-shadow:0 3px 0 #160d28a8}
+header>span{font-size:clamp(12px,1.5vw,18px);letter-spacing:.08em;text-align:right}
+main{width:min(1420px,100%);margin:0 auto}.scene{position:relative;overflow:hidden;border:7px double #d6af79;border-radius:22px;box-shadow:0 18px 46px #170c21ad;background:#564274;min-height:500px;isolation:isolate}
+.scene-img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center center;user-select:none;-webkit-user-drag:none;pointer-events:none}
+#room{aspect-ratio:16/9;min-height:530px}.room-shade{position:absolute;inset:0;background:linear-gradient(180deg,#21122b76 0%,#21122b00 35%,#1a10245c 100%);pointer-events:none}
+.actor{position:absolute;bottom:4%;z-index:3;object-fit:contain;object-position:bottom;filter:drop-shadow(0 10px 7px #21132ca8);pointer-events:none;user-select:none;-webkit-user-drag:none}
+.lada-actor{left:16%;height:49%;width:20%}.cat-actor{right:13%;height:46%;width:25%}
+.bubble{position:absolute;z-index:5;top:4%;left:25%;width:min(68%,760px);padding:clamp(14px,2vw,24px);background:#fff1dfed;color:var(--ink);border:4px ridge #d7ab69;border-radius:29px 29px 29px 6px;box-shadow:0 7px 22px #2413308f;text-align:center}
+.bubble strong{display:block;font-size:clamp(20px,2.6vw,33px);margin-bottom:7px}.bubble p{font-size:clamp(15px,1.55vw,21px);line-height:1.45;margin:0}
+.bigbutton{min-height:56px;display:inline-flex;align-items:center;justify-content:center;padding:13px 23px;background:linear-gradient(180deg,#9c6fc6,#5c3988);color:#fff7dd;border:3px solid #ebc382;border-radius:16px;font-size:clamp(16px,1.8vw,23px);font-weight:bold;box-shadow:0 5px 0 #2c1847,0 9px 18px #1d133066}
+.bigbutton:hover:not(:disabled){filter:brightness(1.12)}
+#goRoof{position:absolute;z-index:6;bottom:3%;left:50%;transform:translateX(-50%);white-space:nowrap}
+#roof{aspect-ratio:16/9;min-height:560px}.roof-sky{position:absolute;inset:0;background:linear-gradient(180deg,#2a2061bd 0%,#6f6ca666 60%,#231b3b66),url('images/oak-quarter.webp') center 42%/cover no-repeat}
+#roof:after{content:"";position:absolute;z-index:1;left:-2%;right:-2%;bottom:-6%;height:25%;background:repeating-linear-gradient(150deg,#573c5c 0 23px,#775774 24px 47px,#382d4b 48px 53px);border-top:15px ridge #bd9876;transform:skewY(-1deg);pointer-events:none}
+.hud{position:absolute;z-index:5;top:2%;left:2%;right:2%;display:flex;justify-content:space-between;align-items:flex-start;gap:14px;flex-wrap:wrap}
+.hud-card{background:#fff0ddeb;color:#493454;padding:11px 16px;border:3px ridge #ba9c70;border-radius:16px;box-shadow:0 4px 12px #20122d80;max-width:70%}
+.hud-card strong{font-size:clamp(16px,2.1vw,26px);display:block}.hud-card p{font-size:clamp(13px,1.4vw,17px);margin:5px 0 0}
+.hud .back{font-size:14px}.fall-zone{position:absolute;inset:22% 2% 19%;z-index:3;overflow:hidden;pointer-events:none}
+.falling-letter{position:absolute;top:-22%;width:clamp(64px,6.5vw,96px);height:clamp(70px,7.4vw,108px);font:bold clamp(35px,4vw,54px) Georgia,serif;color:#48305b;display:grid;place-items:center;border:4px ridge #ceaa67;border-radius:14px;box-shadow:0 5px 15px #281b439c,inset 0 0 12px #cfb180;background:linear-gradient(145deg,#fff9df,#f7d9a4);text-shadow:0 1px 0 #fff;animation:driftDown var(--fall-speed,9s) linear var(--fall-delay,0s) infinite;pointer-events:auto;touch-action:manipulation;will-change:top}
+.falling-letter:hover{box-shadow:0 0 0 5px #fff0ae77,0 5px 15px #281b439c}.falling-letter.caught{animation:none!important;pointer-events:none}
+@keyframes driftDown{from{top:-25%}to{top:103%}}
+.chimney{position:absolute;bottom:15%;right:1%;z-index:2;width:16%;height:27%;background:repeating-linear-gradient(0deg,#80617c 0 22px,#6a4d67 23px 26px);border:7px ridge #b18c7c;border-radius:5px 5px 14px 14px;box-shadow:inset 0 10px 18px #3e2039b0,0 8px 14px #180c29b0}
+.chimney:before{content:"";position:absolute;top:-15px;left:-13%;width:126%;height:23px;background:#d0ac90;border:5px ridge #91717c;border-radius:8px}
+.chimney:after{content:"ТРУБА";position:absolute;top:17%;left:13%;right:13%;text-align:center;color:#f6dabc;font:bold clamp(10px,1.5vw,19px) Georgia,serif;letter-spacing:.07em}
+.cat-on-roof{position:absolute;left:3%;bottom:12%;width:clamp(88px,14%,180px);max-height:38%;object-fit:contain;z-index:4;pointer-events:none;filter:drop-shadow(0 10px 7px #1b122f8a)}
+.basket{position:absolute;z-index:4;left:50%;bottom:6%;transform:translateX(-50%);width:clamp(155px,26vw,340px);height:clamp(107px,12vw,150px);pointer-events:none}
+.basket-svg{position:absolute;inset:0;width:100%;height:100%;filter:drop-shadow(0 8px 4px #150c1db0)}
+.basket-tokens{position:absolute;z-index:5;left:7%;right:7%;top:22%;display:flex;justify-content:center;gap:7px}
+.basket-tokens b{display:grid;place-items:center;width:clamp(29px,3.2vw,44px);height:clamp(36px,3.6vw,48px);background:#fff1cd;color:#462c65;border:2px solid #bc8a56;border-radius:9px;font-size:clamp(18px,2.2vw,29px)}
+.round-controls{margin:13px auto;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;max-width:1200px}
+.round-status{color:#fff3de;font-size:clamp(14px,1.5vw,19px);line-height:1.5}
+#puzzle{min-height:580px;background:linear-gradient(145deg,#44265fcf,#422b62dd),url('images/cat-room.webp') center/cover no-repeat;display:flex;align-items:center;justify-content:center;padding:clamp(20px,4vw,50px)}
+.puzzle-card{background:linear-gradient(125deg,#f7e5b9,#fff3dc 60%,#e4c18d);border:8px double #b98854;border-radius:30px;box-shadow:0 15px 40px #1b132eaa,inset 0 0 0 4px #fceec7;color:#4c3353;width:min(800px,100%);padding:clamp(15px,4vw,34px);text-align:center}
+.puzzle-card .eyebrow{letter-spacing:.12em;color:#865b75;font-weight:bold;font-size:clamp(13px,1.3vw,18px)}
+.puzzle-card h2{font-size:clamp(26px,3.3vw,43px);margin:8px 0 12px}.puzzle-card p{font-size:clamp(16px,1.6vw,22px);line-height:1.45;margin:7px 0 14px}
+.emoji{font-size:clamp(55px,8vw,95px);line-height:1.1}.slots,.bank{display:flex;gap:clamp(8px,1.4vw,16px);align-items:center;justify-content:center;margin:15px 0;flex-wrap:wrap}
+.slot{width:clamp(66px,8.3vw,110px);height:clamp(77px,9.7vw,128px);border:4px solid #9765ae;border-bottom-width:8px;background:#ead7f1;border-radius:14px;color:#4d336e;font:bold clamp(36px,5vw,69px) Georgia,serif;display:grid;place-items:center}
+.slot.complete{background:#d8e9b8;border-color:#7b9b61}
+.bank button{width:clamp(69px,8.4vw,100px);height:clamp(79px,9vw,110px);border:4px ridge #ca995b;border-radius:14px;background:linear-gradient(145deg,#fff1cc,#e6bc7a);color:#4a2c60;font:bold clamp(35px,5vw,65px) Georgia,serif;box-shadow:0 5px 0 #8d674d}
+.bank button:disabled{opacity:.26;box-shadow:none}
+#puzzleHint{font-size:clamp(14px,1.6vw,19px);min-height:26px;color:#72516b}
+#victory{background:linear-gradient(160deg,#68409a,#352450);min-height:540px;display:flex;align-items:center;justify-content:center;padding:25px}
+.victory-card{border:7px double #efcd87;border-radius:30px;background:linear-gradient(130deg,#fff3d9,#f6dca8);color:#493354;width:min(820px,100%);padding:clamp(16px,3vw,35px);text-align:center;box-shadow:0 20px 48px #1b0d3099}
+.victory-card h2{font-size:clamp(27px,3.8vw,45px);margin:10px 0 5px}.victory-card p{font-size:clamp(16px,1.8vw,22px);line-height:1.45}
+.victory-figures{display:flex;gap:18px;align-items:end;justify-content:center;height:clamp(170px,26vw,300px);margin:10px auto 20px}.victory-figures img{height:100%;max-width:40%;object-fit:contain;filter:drop-shadow(0 6px 5px #57334d77)}
+#gameConnection{min-height:20px;margin:8px;text-align:center;font:13px system-ui,sans-serif}
+@media(max-width:850px){.scene{border-width:5px;border-radius:13px}#room{min-height:450px}.bubble{top:3%;left:19%;width:76%}.cat-actor{right:10%;height:39%}.lada-actor{left:12%;height:39%}}
+@media(max-width:580px){body{padding:7px}header{gap:6px}.scene{border-width:4px;border-radius:12px}#room{min-height:520px;aspect-ratio:auto}.scene-img{object-position:50% 45%}.bubble{left:4%;width:92%;top:3%;padding:11px;border-width:3px;border-radius:17px}.bubble strong{font-size:22px}.bubble p{font-size:16px;line-height:1.33}.lada-actor{left:4%;height:40%;width:37%;bottom:14%}.cat-actor{right:4%;height:41%;width:44%;bottom:14%}#goRoof{bottom:2%;white-space:normal;text-align:center;width:max-content;max-width:94%;min-height:52px;font-size:17px}#roof{min-height:570px;aspect-ratio:auto}.hud{gap:6px}.hud-card{max-width:100%;width:100%;padding:7px 11px}.hud-card strong{font-size:18px}.hud-card p{font-size:13px;margin:2px}.hud .back{min-height:35px;padding:4px 9px}.fall-zone{top:23%;bottom:23%}.falling-letter{width:63px;height:72px;font-size:39px}.chimney{width:22%;height:22%;bottom:17%}.cat-on-roof{width:92px;bottom:16%}.basket{width:210px;bottom:6%;left:50%}.round-controls{justify-content:center;text-align:center}.round-status{width:100%}#puzzle{min-height:580px;padding:12px}.puzzle-card{padding:15px;border-width:5px}.slot{width:67px;height:78px}.bank button{width:72px;height:80px}#victory{min-height:500px;padding:10px}}
+@media(prefers-reduced-motion:reduce){.falling-letter{animation-duration:20s!important}.bigbutton{transition:none}}
+</style>
+</head>
+<body>
+<header><a class="back" href="ladaburg-oak-quarter.html">← Дубовый квартал</a><span>Экспедиция к Аиду · Вербовка № 1</span></header>
+<main>
+<section id="room" class="scene" aria-label="Комната ловкого кота">
+<img class="scene-img" src="images/cat-room.webp" alt="Сказочная синяя комната с книгами, звездой, кошачьим креслом и камином в форме кота" width="1672" height="941">
+<div class="room-shade"></div>
+<img class="actor lada-actor" id="catHomeLada" src="images/lada-cutout.webp" alt="Лада в выбранном наряде" draggable="false">
+<img class="actor cat-actor" src="images/blue-cat.webp" alt="Синий зубастый кот в шляпе — игрушка Лады" draggable="false">
+<div class="bubble"><strong>Привет, Лада! Я ловкий кот!</strong><p>Ветер Сироко раскидал мои буквы по крыше. Я ловлю их, чтобы они не упали в трубу. Помоги мне — и я пойду с тобой в царство Аида!</p></div>
+<button id="goRoof" type="button" class="bigbutton">🐾 На крышу — ловить буквы!</button>
+</section>
+<section id="roof" class="scene" aria-label="На крыше ловим буквы ветра Сироко" hidden>
+<div class="roof-sky" aria-hidden="true"></div>
+<div class="hud"><div class="hud-card"><strong id="roundTitle">Раунд 1 из 3</strong><p>Сироко бросает буквы! Нажимай на них, пока они падают.</p></div><button type="button" id="backToRoom" class="back">← В комнату</button></div>
+<div class="fall-zone" id="fallZone" aria-label="Падающие буквы"></div>
+<div class="chimney" aria-hidden="true"></div><img class="cat-on-roof" src="images/blue-cat.webp" alt="Кот следит за трубой">
+<div class="basket" role="img" aria-label="Корзина для пойманных букв">
+<svg viewBox="0 0 330 154" class="basket-svg" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M31 45C32 126 62 150 163 151C264 150 297 127 299 46Z" fill="#b97837" stroke="#603522" stroke-width="7"/><path d="M32 50Q165 110 300 50" fill="none" stroke="#eec28a" stroke-width="8"/><path d="M46 67Q164 114 280 67M57 92Q165 131 271 92M75 121Q164 143 252 121" fill="none" stroke="#e3a668" stroke-width="6"/><path d="M80 47L93 138M129 48L137 149M180 48L177 148M229 47L216 138M269 49L250 122" stroke="#754522" stroke-width="7"/><ellipse cx="165" cy="44" rx="144" ry="23" fill="#e4aa5d" stroke="#714124" stroke-width="8"/><ellipse cx="165" cy="42" rx="125" ry="13" fill="#704120" stroke="#5e331d" stroke-width="4"/></svg>
+<div class="basket-tokens" id="basketTokens" aria-live="polite"></div>
+</div>
+</section>
+<div class="round-controls" id="roundControls" hidden><span class="round-status" id="roundStatus" role="status" aria-live="polite">Лови буквы!</span><button class="bigbutton" type="button" id="nextRound" hidden>Следующий раунд →</button></div>
+<section id="puzzle" class="scene" aria-label="Собери слова из пойманных букв" hidden>
+<div class="puzzle-card"><div class="eyebrow" id="puzzleCounter">Этап 2 · Слово 1 из 3</div><h2>Собери слово!</h2><div class="emoji" id="wordPicture">🐈</div><p id="puzzleQuestion">Кто помогал ловить буквы?</p><div class="slots" id="wordSlots" aria-label="Клетки для букв"></div><p id="puzzleHint" role="status" aria-live="polite">Нажимай на буквы по порядку.</p><div class="bank" id="letterBank" aria-label="Пойманные буквы для слова"></div><button type="button" class="bigbutton" id="nextWord" hidden>Следующее слово →</button></div>
+</section>
+<section id="victory" class="scene" aria-label="Ловкий кот завербован для экспедиции" hidden>
+<div class="victory-card"><div class="eyebrow">✦ Первый герой экспедиции ✦</div><h2>Ловкий кот с нами!</h2><p>Ты спасла все буквы Сироко. Теперь кот может отправиться с Ладой в царство Аида!</p><div class="victory-figures"><img src="images/lada-cutout.webp" id="victoryLada" alt="Лада в выбранном костюме"><img src="images/blue-cat.webp" alt="Ловкий кот с огромными глазами и зубами"></div><a class="bigbutton" href="ladaburg-oak-quarter.html">← Вернуться к дубу</a></div>
+</section>
+<p id="gameConnection" aria-live="polite"></p>
+</main>
+<script>
+(()=>{
+'use strict';
+const $=id=>document.getElementById(id);
+const words=[{word:'КОТ',letters:['Т','К','О'],picture:'🐈',question:'Кто помогал ловить буквы?'},{word:'ДОМ',letters:['М','О','Д'],picture:'🏠',question:'Где живёт кот?'},{word:'ЛЕС',letters:['С','Л','Е'],picture:'🌳',question:'Где растёт много деревьев?'}];
+let phase='room',round=0,wordIndex=0,roundCaught=new Set(),chosenLetters=[],locked=false;
+const panels=['room','roof','puzzle','victory'];
+function show(name){phase=name;panels.forEach(id=>$(id).hidden=id!==name);$('roundControls').hidden=name!=='roof'}
+function animateToBasket(button){
+ if(window.matchMedia?.('(prefers-reduced-motion: reduce)').matches)return;
+ const rect=button.getBoundingClientRect(),dest=$('basketTokens').getBoundingClientRect();
+ const clone=button.cloneNode(true);clone.removeAttribute('id');clone.className='';clone.style.cssText='position:fixed;left:'+rect.left+'px;top:'+rect.top+'px;width:'+rect.width+'px;height:'+rect.height+'px;z-index:999;pointer-events:none;display:grid;place-items:center;font:bold 42px Georgia;color:#50346b;border:4px ridge #caa26b;border-radius:13px;background:#fff2cf;transition:transform .55s ease-in,opacity .55s';
+ document.body.append(clone);
+ requestAnimationFrame(()=>{clone.style.transform='translate('+(dest.left+dest.width/2-rect.left-rect.width/2)+'px,'+(dest.top-rect.top)+'px) scale(.43)';clone.style.opacity='0'});
+ setTimeout(()=>clone.remove(),650);
+}
+function basketAdd(ch){const b=document.createElement('b');b.textContent=ch;$('basketTokens').append(b)}
+function catchLetter(index){
+ if(phase!=='roof'||locked||roundCaught.has(index))return;
+ const btn=$('catch-'+index);if(!btn||btn.disabled)return;
+ roundCaught.add(index);btn.disabled=true;animateToBasket(btn);btn.hidden=true;basketAdd(words[round].letters[index]);
+ $('roundStatus').textContent='Поймано '+roundCaught.size+' из 3 букв';
+ if(roundCaught.size===3){$('roundStatus').textContent='Все три буквы спасены!';$('nextRound').hidden=false;$('nextRound').textContent=round===2?'Составить слова →':'Следующий раунд →'}
+}
+function renderRound(){
+ show('roof');locked=false;roundCaught=new Set();$('roundTitle').textContent='Раунд '+(round+1)+' из 3 · '+['КОТ','ДОМ','ЛЕС'][round];$('roundStatus').textContent='Поймано 0 из 3 букв';$('nextRound').hidden=true;$('basketTokens').replaceChildren();
+ const zone=$('fallZone');zone.replaceChildren();const letters=words[round].letters;
+ letters.forEach((ch,i)=>{
+  const b=document.createElement('button');b.type='button';b.className='falling-letter';b.id='catch-'+i;b.textContent=ch;
+  b.style.left=[17,45,72][(i+round)%3]+'%';b.style.setProperty('--fall-speed',[10.5,9.2,8.4][round]+'s');b.style.setProperty('--fall-delay',[-1.5,-4.7,-7.4][i]+'s');
+  b.setAttribute('aria-label','Поймать букву '+ch);b.addEventListener('click',()=>catchLetter(i));zone.append(b)
+ });
+}
+function nextRound(){if(phase!=='roof'||roundCaught.size!==3)return;locked=true;if(round===2){wordIndex=0;renderPuzzle();return}round++;renderRound()}
+function renderPuzzle(){
+ show('puzzle');chosenLetters=[];const level=words[wordIndex];
+ $('puzzleCounter').textContent='Этап 2 · Слово '+(wordIndex+1)+' из 3';$('wordPicture').textContent=level.picture;$('puzzleQuestion').textContent=level.question;
+ $('puzzleHint').textContent='Нажимай на буквы по порядку.';$('nextWord').hidden=true;$('wordSlots').replaceChildren();$('letterBank').replaceChildren();
+ for(let i=0;i<3;i++){const slot=document.createElement('div');slot.className='slot';slot.id='slot-'+i;slot.textContent='·';$('wordSlots').append(slot)}
+ level.letters.forEach((ch,i)=>{const b=document.createElement('button');b.type='button';b.id='word-letter-'+i;b.textContent=ch;b.setAttribute('aria-label','Выбрать букву '+ch);b.addEventListener('click',()=>chooseLetter(i));$('letterBank').append(b)});
+}
+function chooseLetter(i){
+ if(phase!=='puzzle'||chosenLetters.length===3)return;
+ const level=words[wordIndex];const button=$('word-letter-'+i);if(!button||button.disabled)return;
+ const expected=level.word[chosenLetters.length];
+ if(button.textContent!==expected){$('puzzleHint').textContent='Попробуй другую букву! Нужно найти «'+expected+'».';return}
+ button.disabled=true;const slot=$('slot-'+chosenLetters.length);slot.textContent=expected;slot.classList.add('complete');chosenLetters.push(i);
+ $('puzzleHint').textContent='Отлично! '+chosenLetters.length+' из 3.';
+ if(chosenLetters.length===3){$('puzzleHint').textContent='Получилось слово «'+level.word+'»!';$('nextWord').hidden=false;$('nextWord').textContent=wordIndex===2?'Позвать кота в экспедицию! ✦':'Следующее слово →'}
+}
+function unlock(){const key='tivvig_reward_cat_recruited_v1';if(window.TivvigRegistry?.unlockReward){window.TivvigRegistry.unlockReward(key)}else{try{localStorage.setItem(key,'unlocked')}catch{}window.dispatchEvent(new CustomEvent('tivvig:reward-unlocked',{detail:{key}}));window.dispatchEvent(new Event('tivvig-inventory-changed'))}}
+function nextWord(){if(phase!=='puzzle'||chosenLetters.length!==3)return;if(wordIndex===2){unlock();show('victory');return}wordIndex++;renderPuzzle()}
+function resetToRoom(){round=0;wordIndex=0;roundCaught=new Set();chosenLetters=[];show('room')}
+$('goRoof').addEventListener('click',()=>{round=0;renderRound()});$('backToRoom').addEventListener('click',resetToRoom);$('nextRound').addEventListener('click',nextRound);$('nextWord').addEventListener('click',nextWord);
+// Keep the reward state and button flow deterministic across two co-op clients.
+window.__catQuestTest={getState:()=>({phase,round,wordIndex,caught:roundCaught.size,chosen:chosenLetters.length}),catchLetter,advanceRound:nextRound,chooseLetter,advanceWord:nextWord,reset:resetToRoom};
+show('room');
+})();
+</script>
+<script src="game-runtime.js?v=1" defer></script>
+<script src="wardrobe.js?v=2" defer></script>
+<script src="lada-avatar.js?v=2" defer></script>
+</body></html>
