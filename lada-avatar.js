@@ -5,6 +5,7 @@
   const file=location.pathname.split('/').pop()||'index.html';
   const targets={
     'ladaburg-fialka.html':'.lada-model [data-lada-avatar]',
+    'ladaburg-forge.html':'#forgeLada',
     'ladaburg-cat-home.html':'#catHomeLada, #victoryLada',
     'ladaburg-rabbit-home.html':'#rabbitHomeLada',
     'ladaburg-monkey-home.html':'#monkeyHomeLada',
@@ -60,7 +61,7 @@
         ctx.drawImage(base,0,0,w,h);
         ctx.drawImage(coat,0,0,w,h);
         // Match the star outfit's face opening in wardrobe.js.
-        if(item.id==='stars'){
+        if(item.id==='stars'||item.id==='monankaka'){
           ctx.save();ctx.beginPath();
           ctx.ellipse(w*.496,h*.145,w*.19,h*.168,0,0,Math.PI*2);
           ctx.clip();ctx.drawImage(base,0,0,w,h);ctx.restore();
