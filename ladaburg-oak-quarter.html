@@ -18,6 +18,12 @@ main{max-width:1550px;margin:auto}.scene{position:relative;border:7px double var
 .house-label{position:absolute;bottom:0;left:50%;transform:translateX(-50%);min-width:105px;max-width:95%;font:bold clamp(12px,1.8vw,23px)/1.2 Georgia,serif;color:#493063;text-align:center;padding:8px 10px;border-radius:14px;background:#f8e8dce8;border:3px solid #ac8dce;box-shadow:0 5px 13px #28193866;pointer-events:none}
 .caption{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:10px;margin:13px auto}.caption h1{margin:0;font-size:clamp(23px,3vw,38px);font-weight:normal}.caption p{margin:0;font-size:clamp(13px,1.5vw,18px)}
 @media(max-width:720px){body{padding:7px}.scene{border-width:4px;border-radius:10px}.house{left:0;top:45%;width:24%;height:40%}.house-label{font-size:11px;min-width:76px;padding:5px 3px}.caption{text-align:center;justify-content:center}}
+
+/* Second recruit: the strong pink rabbit lives in the right-hand house. */
+.rabbit-house{position:absolute;right:0%;top:32%;width:22%;height:50%;border:3px solid transparent;border-radius:24% 18% 16px 20px;cursor:pointer;display:block;touch-action:manipulation;background:radial-gradient(ellipse,#ffd4eb1c,transparent 70%);transition:background .2s,border .2s}
+.rabbit-house:hover,.rabbit-house:focus-visible{background:#ffcee65c;border-color:#ffe3aa;outline:3px solid #744879;outline-offset:-3px}
+.rabbit-house-label{position:absolute;bottom:0;right:7%;min-width:108px;max-width:96%;text-align:center;padding:8px 10px;border-radius:14px;background:#fce0ece9;color:#673c5a;border:3px solid #d5a0af;box-shadow:0 5px 13px #28193866;pointer-events:none;font:bold clamp(12px,1.8vw,23px)/1.2 Georgia,serif}
+@media(max-width:720px){.rabbit-house{right:0;top:29%;width:24%;height:54%}.rabbit-house-label{min-width:82px;padding:5px 4px;font-size:11px}}
 </style>
 </head>
 <body>
@@ -25,8 +31,9 @@ main{max-width:1550px;margin:auto}.scene{position:relative;border:7px double var
 <main>
 <div class="scene"><img src="images/oak-quarter.webp" alt="Новый жилой квартал Ладабурга, светлые дома в цветах и огромный древний дуб на центральной площади" width="1448" height="1086" draggable="false">
 <a class="house" href="ladaburg-cat-home.html" aria-label="Войти в первый дом слева, в гости к ловкому синему коту"><span class="house-label">🐈 Дом кота</span></a>
+<a class="rabbit-house" href="ladaburg-rabbit-home.html" aria-label="Войти в дом сильного розового зайца, в гости к силачу"><span class="rabbit-house-label">🐰 Дом силача</span></a>
 </div>
-<div class="caption"><h1>Дубовый квартал</h1><p>На площади растёт древний дуб. А в первом доме слева тебя ждёт ловкий кот.</p></div>
+<div class="caption"><h1>Дубовый квартал</h1><p>На площади растёт древний дуб. В левом доме живёт ловкий кот, а в правом — сильный заяц.</p></div>
 <p id="gameConnection" style="text-align:center;font-size:13px" aria-live="polite"></p>
 </main><script src="game-runtime.js?v=1" defer></script>
 </body></html>
