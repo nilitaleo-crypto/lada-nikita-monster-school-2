@@ -1,0 +1,162 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#543055">
+<meta name="description" content="Помоги сильному розовому зайцу восстановить силы: отгадай семь загадок о еде и накорми его.">
+<title>Дом сильного зайца — Ладабург</title>
+<style>
+:root{--purple:#542e61;--cream:#fff2da;--ink:#4c2f49;--gold:#d9b47b}
+*{box-sizing:border-box}html,body{margin:0;min-height:100%;background:#29162e}
+body{font-family:Georgia,'Times New Roman',serif;color:var(--cream);background:radial-gradient(ellipse at 50% 0%,#83566f,#2c1a35 70%);overflow-x:hidden}
+[hidden]{display:none!important}button,a{touch-action:manipulation;-webkit-tap-highlight-color:transparent}button{cursor:pointer;font:inherit}button:disabled{cursor:default}a:focus-visible,button:focus-visible{outline:3px solid #fff39a;outline-offset:3px}
+.screen{min-height:100dvh;padding:10px 12px 18px}.top{max-width:1300px;margin:0 auto 10px;display:flex;justify-content:space-between;align-items:center;gap:8px}
+.top a,.top button{min-height:44px;padding:8px 13px;border:2px solid #d5b17e;border-radius:12px;background:#f7e5c7;color:#57334d;text-decoration:none;font-weight:bold;box-shadow:0 4px 0 #241327;display:grid;place-items:center}
+.top h1{font-size:clamp(18px,2.5vw,30px);font-weight:normal;margin:0;text-align:center;line-height:1.15}
+.stage{position:relative;isolation:isolate;width:min(100%,1300px);height:min(770px,calc(100dvh - 96px));min-height:605px;margin:auto;overflow:hidden;border:6px ridge #cfad78;border-radius:22px;background:#57435d;box-shadow:0 18px 46px #110b16aa}
+.stage-bg{position:absolute;inset:0;background:linear-gradient(180deg,#190f2e38 0%,#21122c00 52%,#21122b55 100%),url('images/rabbit-room.webp') center/cover no-repeat;z-index:0}
+.stage::after{content:"";position:absolute;inset:0;pointer-events:none;z-index:1;box-shadow:inset 0 0 40px #271b315e}
+.stage-title{position:absolute;z-index:2;top:2.5%;left:2%;font-size:clamp(11px,1.2vw,17px);font-weight:bold;letter-spacing:.12em;text-shadow:0 2px 6px #27102a;color:#fff4db}
+.progress{position:absolute;z-index:12;top:2.6%;right:2%;padding:7px 11px;background:#301a3eea;border:2px solid #ddba80;border-radius:50px;display:flex;gap:3px;box-shadow:0 4px 12px #0006}
+.spoon{font-size:clamp(18px,2.3vw,27px);filter:grayscale(1);opacity:.45;transition:filter .25s,opacity .25s,transform .25s}
+.spoon.active{filter:none;opacity:1;transform:translateY(-3px)}
+.bubble{position:absolute;z-index:11;top:9%;left:22%;width:47%;max-height:35%;min-height:103px;padding:clamp(12px,1.6vw,22px);color:#4e3041;background:linear-gradient(155deg,#fff5dceb,#edd8b9f4);border:4px ridge #c9a271;border-radius:24px 25px 22px 8px;box-shadow:0 9px 21px #25152c8c;display:flex;flex-direction:column;justify-content:center;gap:6px}
+.bubble strong{font-size:clamp(12px,1.3vw,17px);color:#925c6c;text-transform:uppercase;letter-spacing:.05em}
+.bubble p{font-weight:bold;font-size:clamp(16px,1.85vw,25px);line-height:1.26;margin:0;text-wrap:balance}
+.lada{position:absolute;left:1%;bottom:21%;height:46%;width:25%;object-fit:contain;object-position:bottom;z-index:5;filter:drop-shadow(0 8px 8px #180e228c);pointer-events:none;user-select:none;-webkit-user-drag:none}
+.rabbit-place{position:absolute;z-index:6;bottom:20%;right:7%;width:32%;height:65%;display:flex;align-items:flex-end;justify-content:center;pointer-events:none}
+.rabbit{display:block;width:auto;height:var(--rabbit-h,32%);max-height:100%;max-width:100%;object-fit:contain;object-position:bottom;transition:height .68s cubic-bezier(.2,.74,.26,1.1),filter .28s;filter:drop-shadow(0 10px 12px #24122f8c);user-select:none;-webkit-user-drag:none;transform-origin:bottom center}
+.rabbit.grow{animation:bunny-bounce .7s cubic-bezier(.2,.8,.3,1)}
+@keyframes bunny-bounce{0%,100%{transform:translateY(0) scaleX(1)}45%{transform:translateY(-12px) scaleX(1.06)}}
+.speech-feedback{position:absolute;z-index:12;left:48%;bottom:28%;background:#fff5cced;color:#62405a;border-radius:12px;border:2px solid #bb8d6c;padding:7px 13px;font-weight:bold;font-size:clamp(13px,1.5vw,19px);box-shadow:0 6px 13px #1e112c91;opacity:0;transition:opacity .2s;pointer-events:none}
+.speech-feedback.visible{opacity:1}.speech-feedback.wrong{background:#f7d7d8;color:#85343c}
+.tray{position:absolute;z-index:17;bottom:1.6%;left:1.5%;right:1.5%;min-height:16%;display:grid;grid-template-columns:repeat(7,minmax(0,1fr)) 90px;gap:3px;align-items:center;padding:10px 8px;background:linear-gradient(155deg,#f3dcb3f5,#b88d69ef 75%,#9b7460ed);border:4px ridge #d6ac6f;border-radius:21px;box-shadow:0 8px 0 #513743ac,0 12px 17px #2010227d}
+.food{position:relative;display:grid;place-items:center;gap:2px;min-width:0;min-height:80px;border:0;border-radius:13px;background:#ffebcf33;color:#3d2b39;box-shadow:inset 0 0 0 1px #f7dec02b;transition:transform .15s,background .15s;user-select:none}
+.food:hover:not(:disabled),.food:focus-visible{transform:translateY(-5px);background:#fff4cb9c}.food:active:not(:disabled){transform:scale(.93)}.food[disabled]{opacity:.7}.food.wrong{animation:wrong .36s linear}
+@keyframes wrong{0%,100%{transform:translateX(0)}25%{transform:translateX(-7px)}50%{transform:translateX(5px)}75%{transform:translateX(-3px)}}
+.food .pic{font-size:clamp(30px,4.7vw,64px);line-height:1;filter:drop-shadow(0 4px 3px #4b2c3a77)}
+.food .name{font-size:clamp(10px,1vw,14px);font-weight:bold;line-height:1.1;color:#422b34}
+.spoon-count{border-left:2px solid #946745a0;min-height:68px;display:grid;align-content:center;justify-items:center;gap:3px;color:#4c3043;text-align:center}
+.spoon-count span{font-size:30px;line-height:1}.spoon-count b{font-size:clamp(14px,1.4vw,18px);font-variant-numeric:tabular-nums}
+.float-food{position:fixed;z-index:2000;pointer-events:none;line-height:1;font-size:clamp(44px,5vw,75px);transform:translate(-50%,-50%);transition:left .56s cubic-bezier(.25,.8,.25,1),top .56s cubic-bezier(.25,.8,.25,1),opacity .56s;filter:drop-shadow(0 6px 7px #1b1439)}
+.intro{position:absolute;z-index:18;inset:0;background:linear-gradient(90deg,#291930a6,#2d1c42aa);display:flex;align-items:center;justify-content:center;padding:clamp(14px,3vw,40px)}
+.intro-card{width:min(680px,96%);padding:clamp(15px,3vw,32px);border:6px double #c19b6b;border-radius:25px;color:#4e304b;background:linear-gradient(145deg,#fff1d1,#eccfb8);box-shadow:0 15px 30px #140b20b0;text-align:center}
+.intro-card h2{font-size:clamp(23px,3.6vw,42px);margin:0 0 11px}.intro-card p{font-size:clamp(16px,2vw,22px);line-height:1.36;margin:0 0 13px}
+.intro-card button,.finish a,.finish button{display:inline-grid;place-items:center;min-height:50px;padding:10px 18px;border:2px solid #d6a66b;border-radius:13px;background:#60316a;color:#fff5df;text-decoration:none;font-size:clamp(16px,1.8vw,21px);font-weight:bold;box-shadow:0 4px 0 #342042}
+.finish{position:absolute;z-index:25;inset:0;background:radial-gradient(ellipse at 48% 38%,#814c7fee,#27182eeb);padding:clamp(12px,3vw,30px);display:grid;grid-template-columns:42% minmax(0,1fr);align-items:center;gap:clamp(10px,2vw,30px)}
+.finish-hero{min-height:260px;height:85%;display:flex;align-items:end;justify-content:center;position:relative}.finish-rabbit{max-height:100%;max-width:100%;object-fit:contain;filter:drop-shadow(0 10px 14px #21112b99)}.finish-hero:before{content:'🏋️';position:absolute;left:3%;bottom:4%;font-size:clamp(34px,6vw,75px);filter:drop-shadow(0 5px 7px #140c19);transform:rotate(-12deg)}
+.finish-card{border:5px double #d2ac70;border-radius:25px;padding:clamp(14px,2.5vw,30px);background:#fff0d8;color:#502f4b;box-shadow:0 12px 30px #110c1aba}.finish-card h2{font-size:clamp(25px,3.2vw,43px);margin:0 0 13px}.finish-card p{font-size:clamp(16px,1.7vw,22px);line-height:1.42}.finish-actions{display:flex;flex-wrap:wrap;gap:9px;margin-top:20px}
+.note{margin:12px auto 0;text-align:center;font-size:clamp(12px,1.4vw,16px);max-width:1100px;color:#f0dbb8}
+@media(max-width:850px){.stage{height:calc(100dvh - 80px);min-height:625px;border-width:4px}.bubble{left:3%;top:8%;width:65%;max-height:30%}.bubble p{font-size:clamp(17px,2.4vw,23px)}.rabbit-place{right:1%;bottom:25%;width:44%;height:50%}.lada{left:-2%;bottom:26%;height:38%;width:31%}.tray{grid-template-columns:repeat(4,minmax(0,1fr));grid-template-rows:repeat(2,1fr);min-height:24%;padding:6px}.food{min-height:57px}.food .pic{font-size:clamp(31px,6vw,47px)}.spoon-count{min-height:55px;border:0}.spoon-count span{font-size:21px}.progress{gap:0;padding:5px 8px}.spoon{font-size:18px}}
+@media(max-width:520px){.screen{padding:6px}.top{margin-bottom:7px}.top a,.top button{padding:6px 9px;min-height:38px;font-size:12px}.top h1{font-size:16px}.stage{height:calc(100dvh - 69px);min-height:725px;border-radius:13px}.stage-title{display:none}.progress{right:1%;top:1.5%}.spoon{font-size:15px}.bubble{top:8%;left:2%;width:96%;max-height:27%;min-height:115px;padding:10px 12px}.bubble strong{font-size:11px}.bubble p{font-size:clamp(16px,4vw,20px);line-height:1.18}.lada{left:-3%;bottom:28%;height:33%;width:40%}.rabbit-place{right:1%;bottom:28%;width:60%;height:40%}.speech-feedback{left:38%;bottom:29%;font-size:13px}.tray{min-height:27%;bottom:1%;left:1%;right:1%;gap:2px;border-width:3px}.food{min-height:64px}.food .pic{font-size:clamp(29px,9vw,43px)}.food .name{font-size:10px}.spoon-count b{font-size:13px}.finish{grid-template-columns:1fr;grid-template-rows:39% auto;gap:8px;overflow:auto}.finish-hero{min-height:0;height:100%}.finish-card p{font-size:16px}.finish-card h2{font-size:25px;margin-bottom:7px}.finish-actions{margin-top:11px}}
+@media(prefers-reduced-motion:reduce){.rabbit,.food,.float-food,.speech-feedback,.spoon{animation:none!important;transition-duration:.01ms!important}}
+</style>
+</head>
+<body>
+<div class="screen">
+<header class="top"><a href="ladaburg-oak-quarter.html" aria-label="Вернуться в Дубовый квартал">← К дубу</a><h1>🐰 Дом сильного зайца</h1><button type="button" id="restart" aria-label="Начать игру сначала">↻ Сначала</button></header>
+<main class="stage" id="stage" aria-label="Накорми зайца, отгадав семь загадок о еде">
+ <div class="stage-bg" aria-hidden="true"></div><div class="stage-title">ЛАДАБУРГ · ДОМ ВЕЛИКОГО СИЛАЧА</div>
+ <div class="progress" id="progress" role="status" aria-label="Съедено 0 из 7 ложек" aria-live="polite"><span class="spoon">🥄</span><span class="spoon">🥄</span><span class="spoon">🥄</span><span class="spoon">🥄</span><span class="spoon">🥄</span><span class="spoon">🥄</span><span class="spoon">🥄</span></div>
+ <div class="bubble" role="status" aria-live="polite"><strong id="riddleTitle">Зайцу нужна помощь</strong><p id="riddle">Я так ослаб, что не могу поднять даже ложку...</p></div>
+ <img class="lada" id="rabbitHomeLada" src="images/lada-cutout.webp" alt="Лада в выбранном наряде помогает зайцу" draggable="false">
+ <div class="rabbit-place"><img id="rabbit" class="rabbit" src="images/rabbit-cutout.webp" alt="Розовый плюшевый заяц, которому возвращаются силы" draggable="false"></div>
+ <div class="speech-feedback" id="feedback" role="status" aria-live="polite"></div>
+ <div class="tray" id="tray" aria-label="Продукты для кормления зайца">
+  <button class="food" type="button" data-food="carrot" aria-label="Выбрать морковь"><span class="pic" aria-hidden="true">🥕</span><span class="name">Морковь</span></button>
+  <button class="food" type="button" data-food="cucumber" aria-label="Выбрать огурец"><span class="pic" aria-hidden="true">🥒</span><span class="name">Огурец</span></button>
+  <button class="food" type="button" data-food="mushroom" aria-label="Выбрать гриб"><span class="pic" aria-hidden="true">🍄</span><span class="name">Гриб</span></button>
+  <button class="food" type="button" data-food="cheese" aria-label="Выбрать сыр"><span class="pic" aria-hidden="true">🧀</span><span class="name">Сыр</span></button>
+  <button class="food" type="button" data-food="corn" aria-label="Выбрать кукурузу"><span class="pic" aria-hidden="true">🌽</span><span class="name">Кукуруза</span></button>
+  <button class="food" type="button" data-food="egg" aria-label="Выбрать яйцо"><span class="pic" aria-hidden="true">🥚</span><span class="name">Яйцо</span></button>
+  <button class="food" type="button" data-food="bread" aria-label="Выбрать хлеб"><span class="pic" aria-hidden="true">🍞</span><span class="name">Хлеб</span></button>
+  <div class="spoon-count" aria-label="Количество съеденных ложек"><span aria-hidden="true">🥣</span><b id="count">0 / 7</b></div>
+ </div>
+ <section class="intro" id="intro" role="dialog" aria-modal="true" aria-labelledby="introTitle">
+  <div class="intro-card"><h2 id="introTitle">Великий силач ослаб!</h2><p>«Лада! Раньше я поднимал огромные гири, а теперь даже ложка слишком тяжёлая. Отгадай загадки о еде и накорми меня. Каждая ложка вернёт мне немного силы!»</p><button type="button" id="start">🥣 Накормить зайца!</button></div>
+ </section>
+ <section class="finish" id="finish" hidden role="dialog" aria-modal="true" aria-labelledby="finishTitle">
+  <div class="finish-hero"><img src="images/rabbit-cutout.webp" class="finish-rabbit" alt="Сильный розовый заяц восстановил силы"></div>
+  <div class="finish-card"><h2 id="finishTitle">💪 Сила вернулась!</h2><p>Семь ложек — и наш заяц снова самый сильный в Ладабурге! Он поднимает тяжеленную гирю и радостно говорит:</p><p><strong>«Лада, я отправляюсь с тобой в царство Аида! В твоём отряде теперь есть силач!»</strong></p><div class="finish-actions"><a href="collection.html">🏅 К наградам</a><a href="ladaburg-oak-quarter.html">🌳 К дубу</a><button type="button" id="again">↻ Сыграть ещё раз</button></div></div>
+ </section>
+</main>
+<p class="note" id="gameConnection" aria-live="polite">Помоги зайцу восстановить силы: угадай, какой продукт ему нужен.</p>
+</div>
+<script>
+(()=>{
+ 'use strict';
+ // Seven new, food-themed riddles. Identical selection/feedback/progression to fountain.
+ const rounds=[
+  {id:'carrot',riddle:'Рыжий носик спрятался в земле, а зелёный хвостик остался над землёй. Что это?'},
+  {id:'mushroom',riddle:'Есть у меня шляпка и ножка, но я не гуляю по дорожке. Кто я?'},
+  {id:'cheese',riddle:'Я жёлтый, иногда весь в дырочках. Мыши были бы от меня в восторге!'},
+  {id:'corn',riddle:'Под зелёными листьями спрятались сотни жёлтых зёрнышек, выстроенных рядами.'},
+  {id:'egg',riddle:'Без окон и без дверей, внутри белок и желток. Что это за домик?'},
+  {id:'cucumber',riddle:'Найди среди продуктов тот, чьё название начинается с буквы О!'},
+  {id:'bread',riddle:'Я появляюсь из муки в печи. У меня корочка, а моё название начинается на Х!'}
+ ];
+ const $=id=>document.getElementById(id),foods=[...document.querySelectorAll('.food')],spoons=[...document.querySelectorAll('.spoon')];
+ const rabbit=$('rabbit'),riddle=$('riddle'),feedback=$('feedback'),finish=$('finish');
+ const reduce=window.matchMedia?.('(prefers-reduced-motion: reduce)').matches||false;
+ const delay=ms=>new Promise(res=>setTimeout(res,ms));
+ let index=0,generation=0,busy=false,started=false,complete=false;
+ let feedbackTimer=null;
+ function setSize(n){rabbit.style.setProperty('--rabbit-h',(32+n*9.5)+'%')}
+ function render(){
+  $('riddleTitle').textContent=complete?'Великий силач':`Загадка ${index+1} из 7`;
+  riddle.textContent=complete?'Я снова полон сил! Спасибо, Лада!':rounds[index].riddle;
+  $('count').textContent=index+' / 7';
+  $('progress').setAttribute('aria-label','Съедено '+index+' из 7 ложек');
+  spoons.forEach((s,i)=>s.classList.toggle('active',i<index));
+  foods.forEach(b=>{b.disabled=busy||complete||!started;b.classList.remove('wrong')});
+  setSize(index);
+ }
+ function say(text,wrong=false){
+  clearTimeout(feedbackTimer);feedback.textContent=text;feedback.classList.toggle('wrong',wrong);feedback.classList.add('visible');
+  feedbackTimer=setTimeout(()=>feedback.classList.remove('visible'),reduce?500:1350);
+ }
+ function wrong(b){b.classList.remove('wrong');void b.offsetWidth;b.classList.add('wrong');say('Не то! Попробуй другой продукт.',true)}
+ async function flyFood(button,tag){
+  const start=button.querySelector('.pic').getBoundingClientRect();const mouth=rabbit.getBoundingClientRect();
+  const floating=document.createElement('span');floating.className='float-food';floating.textContent='🥄'+button.querySelector('.pic').textContent;
+  floating.style.left=(start.left+start.width/2)+'px';floating.style.top=(start.top+start.height/2)+'px';
+  document.body.append(floating);floating.getBoundingClientRect();
+  floating.style.left=(mouth.left+mouth.width*.5)+'px';floating.style.top=(mouth.top+mouth.height*.39)+'px';floating.style.opacity='.15';
+  await delay(reduce?40:610);floating.remove();return tag===generation;
+ }
+ function unlock(){
+  const key='tivvig_reward_rabbit_recruited_v1';
+  if(window.TivvigRegistry?.unlockReward?.(key))return;
+  try{localStorage.setItem(key,'unlocked')}catch(e){}
+  window.dispatchEvent(new CustomEvent('tivvig:reward-unlocked',{detail:{key}}));
+  window.dispatchEvent(new Event('tivvig-inventory-changed'));
+ }
+ async function choose(button){
+  if(!started||busy||complete||button.disabled)return;
+  if(button.dataset.food!==rounds[index].id){wrong(button);return}
+  busy=true;foods.forEach(b=>b.disabled=true);const tag=generation;
+  say('Правильно! Ложка летит к зайцу!');
+  if(!await flyFood(button,tag))return;
+  if(tag!==generation)return;
+  index++;setSize(index);rabbit.classList.remove('grow');void rabbit.offsetWidth;rabbit.classList.add('grow');
+  $('count').textContent=index+' / 7';spoons.forEach((s,i)=>s.classList.toggle('active',i<index));
+  $('progress').setAttribute('aria-label','Съедено '+index+' из 7 ложек');
+  say(index===7?'Теперь я могу поднять целый дом!':'Я становлюсь сильнее!');
+  await delay(reduce?40:850);if(tag!==generation)return;
+  if(index===7){complete=true;busy=true;unlock();render();finish.hidden=false;return}
+  busy=false;render();
+ }
+ function reset(){
+  generation++;clearTimeout(feedbackTimer);document.querySelectorAll('.float-food').forEach(e=>e.remove());
+  index=0;started=false;busy=false;complete=false;finish.hidden=true;$('intro').hidden=false;
+  rabbit.classList.remove('grow');feedback.classList.remove('visible','wrong');render();
+ }
+ foods.forEach(b=>b.addEventListener('click',()=>choose(b)));
+ $('start').addEventListener('click',()=>{if(started)return;started=true;$('intro').hidden=true;render()});
+ $('restart').addEventListener('click',reset);$('again').addEventListener('click',reset);
+ reset();
+ window.__rabbitTest={getState:()=>({index,busy,started,complete,foodDisabled:foods.filter(f=>f.disabled).length,size:rabbit.style.getPropertyValue('--rabbit-h')}),start:()=>$('start').click(),choose:id=>document.querySelector(`[data-food="${id}"]`)?.click(),reset,rounds:rounds.map(x=>({id:x.id,riddle:x.riddle}))};
+})();
+</script>
+<script src="game-runtime.js?v=1" defer></script><script src="wardrobe.js?v=2" defer></script><script src="lada-avatar.js?v=1" defer></script>
+</body></html>
