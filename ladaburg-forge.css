@@ -115,4 +115,54 @@ main{max-width:1340px;margin:auto;padding:0 10px 20px}
 .rack .piece-art.legs-art img{clip-path:polygon(28% 64%,71% 64%,78% 100%,22% 100%)}
 @keyframes piece-arrive{from{opacity:.2;filter:brightness(1.8)}to{opacity:1;filter:none}}
 
+
+/* The reading quest is located IN the existing forge rather than a disconnected quiz. */
+.reading-layout{display:grid;grid-template-columns:minmax(215px,37%) minmax(0,1fr);gap:clamp(12px,2.2vw,25px);align-items:stretch;max-width:1110px;margin:15px auto 8px}
+.recipe-scroll{position:relative;min-height:407px;display:flex;flex-direction:column;align-items:center;justify-content:start;padding:31px 15px 23px;border:5px solid #9b7455;border-radius:24px 19px 20px 23px;color:#533a3a;background:linear-gradient(90deg,#d3a775 0%,#f6e4bd 7%,#f9e6c6 50%,#dfbd90 94%,#ae825b 100%);box-shadow:inset 0 0 23px #9a71495e,0 9px 24px #130d1ba8}
+.recipe-scroll:before,.recipe-scroll:after{content:"";position:absolute;z-index:0;left:0;right:0;height:21px;border:3px solid #a77d55;border-radius:50%;background:linear-gradient(#e0ba86,#a27755);box-shadow:0 3px 7px #5939267b}
+.recipe-scroll:before{top:-8px}.recipe-scroll:after{bottom:-8px}
+.scroll-top{font-size:clamp(12px,1.3vw,15px);text-align:center;text-transform:uppercase;letter-spacing:.1em;font-weight:bold;color:#8a5e53}
+.scroll-count{margin:20px 0 10px;padding:6px 14px;background:#794f478f;border-radius:60px;color:#fff3d4;font-size:clamp(13px,1.4vw,16px);font-weight:bold}
+.scroll-big{display:flex;align-content:center;justify-content:center;align-items:center;gap:4px;flex-wrap:wrap;min-height:96px;max-width:100%;margin:10px auto 0}
+.scroll-syllable{min-height:57px;min-width:47px;padding:5px 6px;border:2px solid transparent;border-radius:8px;background:transparent;color:#4b253d;font:bold clamp(23px,3.4vw,43px) Georgia,serif;letter-spacing:.015em}
+.scroll-syllable:hover,.scroll-syllable:focus-visible{background:#ffeec7}
+.scroll-syllable.read{background:#efb96d;color:#3d2541;border-color:#bb8157;box-shadow:0 0 13px #e5a25e82}
+.scroll-dash{align-self:center;color:#9c6451;font:bold clamp(20px,2.3vw,30px) Georgia,serif;margin:0 -4px}
+.scroll-space{width:15px}
+.scroll-hint{font-size:clamp(12px,1.2vw,14px);line-height:1.4;text-align:center;color:#865c4a;margin:10px auto}
+.scroll-message{margin:auto 0 12px;padding:9px 7px;width:100%;font-size:clamp(15px,1.4vw,18px);line-height:1.33;text-align:center;border-top:2px solid #bd9573;color:#51374a;min-height:55px}
+.reading-stamps{display:flex;gap:12px;margin:3px auto 0;font-size:clamp(22px,2.7vw,29px);color:#9b728c}
+.reading-stamps .done{color:#426e5f;text-shadow:0 0 7px #dcffe6}
+.reading-yard{position:relative;min-height:407px;aspect-ratio:1.42;overflow:hidden;isolation:isolate;border:6px ridge #b78d68;border-radius:16px;background:linear-gradient(180deg,#644650 0%,#7e5b59 49%,#443338 50%,#382933 100%);box-shadow:inset 0 0 36px #1a1325,0 10px 23px #130d1a8a}
+.reading-yard:before{content:"";position:absolute;inset:0;z-index:0;background:repeating-linear-gradient(90deg,#e0a16d14 0 6px,transparent 6px 45px,#120e2233 46px 49px),repeating-linear-gradient(0deg,transparent 0 66px,#1f122644 67px 69px);pointer-events:none}
+.reading-shelf{position:absolute;left:5%;right:6%;top:29%;height:13px;z-index:1;border-radius:8px;background:linear-gradient(#a77a58,#57352e);box-shadow:0 8px 0 #291e27,0 17px 14px #150c1b7b}
+.reading-table{position:absolute;left:3%;right:3%;bottom:12%;height:20px;z-index:2;border:3px solid #56392d;border-radius:9px;background:linear-gradient(#b38860,#654234);box-shadow:3px 9px 0 #3d2928,0 11px 13px #1a1118a0}
+.reading-table:after{content:"";position:absolute;top:24px;left:8%;height:125px;width:14px;background:#55362e;box-shadow:400px 0 #55362e;pointer-events:none}
+.reading-hearth{position:absolute;right:3%;top:2%;width:30%;height:35%;z-index:1;border:12px ridge #765653;border-radius:70px 70px 7px 7px;background:radial-gradient(ellipse at 50% 90%,#ffce69 0,#e7652d 35%,#6a2732 67%,#241b2d 100%);box-shadow:0 0 32px #e76d427a;pointer-events:none}
+.reading-hearth span{display:block;margin-top:16px;font-size:clamp(32px,5vw,60px);color:#ffd88e;filter:drop-shadow(0 0 15px #f9883f);animation:fire 2.8s infinite alternate}
+.reading-target{position:absolute;z-index:4;min-width:94px;min-height:95px;border:2px solid transparent;border-radius:23px;background:#fff8d20b;display:grid;place-items:center;padding:4px;transition:filter .2s,transform .2s,background .2s,box-shadow .2s}
+.reading-target svg{display:block;width:100%;height:100%;max-height:125px;overflow:visible;pointer-events:none;filter:drop-shadow(0 8px 5px #1d1b25bb)}
+.reading-target:hover:not(:disabled),.reading-target:focus-visible{background:#ffedb933;border-color:#f9d692;box-shadow:0 0 0 4px #f9d69244;transform:scale(1.07)}
+.reading-target.water{left:7%;bottom:22%;width:24%;height:31%}
+.reading-target.rune-stone{left:9%;top:4%;width:25%;height:26%}
+.reading-target.wing{right:15%;top:6%;width:33%;height:30%;transform:rotate(-6deg)}
+.reading-target.wing:hover:not(:disabled){transform:rotate(-6deg) scale(1.07)}
+.reading-target.sword{right:8%;bottom:21%;width:20%;height:37%}
+.reading-target .read-effect{position:absolute;left:50%;top:-10%;transform:translateX(-50%);opacity:0;color:#b8fff2;font-size:clamp(24px,3vw,40px);pointer-events:none;white-space:nowrap;text-shadow:0 0 12px #5ffff1;transition:opacity .25s}
+.reading-target.water .read-effect{color:#e4fcff}
+.reading-target.used{background:radial-gradient(ellipse at center,#6efbe43b,transparent 75%);border-color:#86f8db66;box-shadow:0 0 23px #45ffed66}
+.reading-target.used .read-effect{opacity:1;animation:read-rise 2s ease-in-out infinite alternate}
+.reading-target.used svg{filter:drop-shadow(0 0 14px #8bfff3)}
+.reading-target.wrong{animation:read-shake .36s}
+@keyframes read-shake{0%,100%{translate:0}30%{translate:-7px}70%{translate:7px}}
+@keyframes read-rise{from{translate:0 4px;opacity:.45}to{translate:0 -17px;opacity:1}}
+.reading-yard-caption{position:absolute;z-index:3;bottom:2%;left:4%;right:4%;text-align:center;color:#f7d3b8;text-shadow:0 2px 4px #1b0e1d;background:#24182466;padding:5px 9px;border-radius:9px;font-size:clamp(12px,1.2vw,15px);pointer-events:none}
+@media(max-width:820px){
+ .reading-layout{grid-template-columns:1fr;gap:12px}
+ .recipe-scroll{min-height:290px;padding:22px 12px}
+ .scroll-count{margin:11px 0 3px}.scroll-big{min-height:75px;margin:3px auto}
+ .scroll-message{margin:6px auto 8px}.reading-yard{width:min(100%,650px);margin:auto;min-height:340px;aspect-ratio:1.48}
+}
+@media(max-width:430px){.recipe-scroll{min-height:245px;padding:19px 8px 13px}.scroll-syllable{font-size:clamp(24px,6vw,32px);min-height:50px;min-width:35px;padding:4px}.scroll-dash{font-size:24px;margin:0 -3px}.scroll-space{width:8px}.scroll-hint{font-size:12px}.reading-yard{min-height:315px;aspect-ratio:1.27}.reading-target{min-width:76px;min-height:75px}.reading-target.water{width:26%;left:4%;bottom:21%}.reading-target.rune-stone{left:5%;width:28%}.reading-target.wing{right:11%;width:37%}.reading-target.sword{right:6%;width:23%}.reading-yard-caption{font-size:12px}}
+
 @media(prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;transition-duration:.01ms!important}}
