@@ -5,6 +5,7 @@
   const file=location.pathname.split('/').pop()||'index.html';
   const targets={
     'ladaburg-fialka.html':'.lada-model [data-lada-avatar]',
+    'ladaburg-council.html':'#councilLada',
     'ladaburg-forge.html':'#forgeLada',
     'ladaburg-cat-home.html':'#catHomeLada, #victoryLada',
     'ladaburg-rabbit-home.html':'#rabbitHomeLada',
