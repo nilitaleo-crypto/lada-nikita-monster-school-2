@@ -45,7 +45,7 @@ const ADVICE={
  monkey:'Сначала сравним плюсы и минусы.'
 };
 const state={stage:'intro',selected:null,first:null,visited:new Set(),helpers:new Set(),saved:false};
-const scroll=()=>{if(window.matchMedia?.('(prefers-reduced-motion:reduce)').matches)return;const main=document.querySelector('.council-workspace');if(main)window.setTimeout(()=>main.scrollIntoView({block:'start',behavior:'smooth'}),100)};
+const scroll=()=>{const board=document.querySelector('.council-workspace');if(board)board.scrollTop=0;};
 function say(speaker,msg){
  const names={lada:'Лада',cat:'Ловкий кот',rabbit:'Сильный заяц',monkey:'Умняшка',messenger:'Гонец из Ладабурга'};
  text('speakerName',names[speaker]||speaker);
