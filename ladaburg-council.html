@@ -3,140 +3,92 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<meta name="theme-color" content="#3e2d42">
-<meta name="description" content="Лада и трое друзей на военном совете в ратуше Ладабурга. Сравни три пути к Аиду, взвесь преимущества и опасности и подготовь маршрут.">
-<title>Совет отряда — ратуша Ладабурга</title>
-<link rel="stylesheet" href="ladaburg-council.css?v=1">
-<link rel="stylesheet" href="ladaburg-council-v2.css?v=1">
+<meta name="theme-color" content="#412b49">
+<title>Совет четырёх — ратуша Ладабурга</title>
+<meta name="description" content="Лада, кот, заяц и Умняшка выбирают дорогу на волшебной карте прямо за столом в ратуше Ладабурга.">
+<link rel="stylesheet" href="ladaburg-council-table.css?v=1">
 <script src="wardrobe.js?v=3" defer></script>
 <script src="game-registry.js?v=4" defer></script>
-<script src="ladaburg-council.js?v=2" defer></script>
+<script src="ladaburg-council.js?v=4" defer></script>
 <script src="world-coop-bridge.js?v=12" defer></script>
-<script src="lada-avatar.js?v=3" defer></script>
 </head>
 <body>
-<header class="topbar">
- <a href="ladaburg.html">← Ладабург</a>
- <span>🏰 Ратуша · Совет</span>
- <a href="ladaburg-oak-quarter.html">🌳 К дубу</a>
-</header>
 <main>
- <div class="hall">
-  <div class="hall-scene" aria-label="В ратуше Ладабурга четверо героев сидят за большим овальным столом. Перед ними — карта трёх дорог, ведущих к царству Аида.">
-   <img class="hall-backdrop" src="images/ladaburg-council-hall.svg" alt="" aria-hidden="true" draggable="false">
-   <div class="scene-heading"><span>ЛАДАБУРГ</span><strong>Совет четырёх</strong></div>
-   <div class="seated-friends">
-    <button class="seat cat-seat" type="button" data-speaker="cat" aria-label="Послушать мнение ловкого кота">
-      <span class="seat-chair" aria-hidden="true"></span>
-      <img class="avatar" src="images/blue-cat.webp" alt="" draggable="false">
-      <span class="person-label">Кот</span>
-    </button>
-    <button class="seat monkey-seat" type="button" data-speaker="monkey" aria-label="Послушать мнение Умняшки">
-      <span class="seat-chair" aria-hidden="true"></span>
-      <img class="avatar" src="images/monkey-cutout.webp" alt="" draggable="false">
-      <span class="person-label">Умняшка</span>
-    </button>
-    <button class="seat lada-seat" type="button" data-speaker="lada" aria-label="Лада — командир отряда">
-      <span class="seat-chair" aria-hidden="true"></span>
-      <img class="avatar" id="councilLada" src="images/lada-cutout.webp" alt="" draggable="false">
-      <span class="person-label">Лада</span>
-    </button>
-    <button class="seat rabbit-seat" type="button" data-speaker="rabbit" aria-label="Послушать мнение сильного зайца">
-      <span class="seat-chair" aria-hidden="true"></span>
-      <img class="avatar" src="images/rabbit-cutout.webp" alt="" draggable="false">
-      <span class="person-label">Заяц</span>
-    </button>
-   </div>
-   <div class="wood-table" aria-hidden="true">
-    <svg viewBox="0 0 1180 365" preserveAspectRatio="none">
-     <defs>
-      <linearGradient id="mahogany" x1="0" y1="0" x2=".7" y2="1"><stop stop-color="#86543e"/><stop offset=".3" stop-color="#5b362d"/><stop offset=".65" stop-color="#402b2f"/><stop offset="1" stop-color="#251d2b"/></linearGradient>
-      <linearGradient id="parchment" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#f3e5bf"/><stop offset=".45" stop-color="#d9c091"/><stop offset="1" stop-color="#a88765"/></linearGradient>
-      <radialGradient id="light"><stop stop-color="#e7bb84" stop-opacity=".75"/><stop offset="1" stop-color="#9a5f54" stop-opacity="0"/></radialGradient>
-     </defs>
-     <ellipse cx="590" cy="183" rx="568" ry="165" fill="#1a111e" opacity=".55"/>
-     <ellipse cx="590" cy="160" rx="568" ry="157" fill="url(#mahogany)" stroke="#9d794e" stroke-width="13"/>
-     <ellipse cx="590" cy="160" rx="543" ry="141" fill="none" stroke="#c59a61" stroke-width="3" opacity=".75"/>
-     <ellipse cx="590" cy="160" rx="519" ry="125" fill="none" stroke="#34252b" stroke-width="7" opacity=".8"/>
-     <path d="M108 160Q591 130 1074 160M151 104Q565 160 1021 103M186 226Q596 160 995 226" fill="none" stroke="#d3a078" stroke-width="4" opacity=".19"/>
-     <ellipse cx="568" cy="132" rx="445" ry="119" fill="url(#light)" opacity=".4"/>
-     <path d="M302 46Q559 18 864 54L886 259Q578 299 276 257Z" fill="url(#parchment)" stroke="#826048" stroke-width="9"/>
-     <path d="M314 62Q571 38 849 67L866 242Q572 273 297 242Z" fill="none" stroke="#a58766" stroke-width="3"/>
-     <!-- A map contains three colored route lines; buttons on the map are separately interactive. -->
-     <path d="M363 172C468 42 639 44 795 167" fill="none" stroke="#746191" stroke-width="10" stroke-dasharray="11 10" stroke-linecap="round"/>
-     <path d="M363 172Q565 137 795 167" fill="none" stroke="#a66152" stroke-width="10" stroke-dasharray="11 10" stroke-linecap="round"/>
-     <path d="M363 172C500 277 671 275 795 167" fill="none" stroke="#4c827f" stroke-width="10" stroke-dasharray="11 10" stroke-linecap="round"/>
-     <g fill="#654e43" stroke="#f0d8aa" stroke-width="3"><circle cx="363" cy="172" r="26"/><circle cx="795" cy="167" r="25"/></g>
-     <path d="M354 178V160L363 148 373 160V178Z" fill="#f0d9b1"/>
-     <path d="M783 178V146L795 137 809 146V178Z" fill="#d6bdd1"/>
-     <g fill="#5a4764" opacity=".64"><circle cx="539" cy="108" r="10"/><circle cx="577" cy="94" r="10"/><circle cx="613" cy="108" r="10"/></g>
-     <g fill="#447a81" opacity=".55"><path d="M532 240q32-18 60 0t65-5" stroke="#447a81" stroke-width="7" fill="none"/></g>
-     <g fill="#996c53"><circle cx="239" cy="137" r="13"/><circle cx="929" cy="198" r="14"/></g>
-     <path d="M224 136 250 138M915 197 942 198" stroke="#dab98d" stroke-width="5"/>
-     <g fill="#d7b782" stroke="#65483d" stroke-width="3"><ellipse cx="174" cy="146" rx="22" ry="35"/><ellipse cx="996" cy="128" rx="19" ry="30"/></g>
-     <g font-family="Georgia,serif" font-size="22" font-weight="bold" fill="#5a493c"><text x="350" y="229">ЛАДАБУРГ</text><text x="747" y="219">АИД</text></g>
-    </svg>
-   </div>
-   <button type="button" class="map-route forest" data-route="forest" aria-label="Рассмотреть путь через Тёмный лес"><span aria-hidden="true">🌲</span><small>Лес</small></button>
-   <button type="button" class="map-route bridge" data-route="bridge" aria-label="Рассмотреть путь по Старому мосту"><span aria-hidden="true">🌉</span><small>Мост</small></button>
-   <button type="button" class="map-route river" data-route="river" aria-label="Рассмотреть путь по Подземной реке"><span aria-hidden="true">🌊</span><small>Река</small></button>
-   <div class="speech" id="speech" role="status" aria-live="polite"><strong id="speakerName">Умняшка</strong><span id="speechText">Перед нами три дороги. У каждой есть свои преимущества и опасности. Давайте всё обсудим!</span></div>
-   <div class="scene-note" id="sceneNote">Коснись друга или дороги</div>
-   <div class="storm-window" id="stormOverlay" hidden aria-hidden="true">☁ ☂ ☁</div>
-  </div>
-  <div class="seal-progress" aria-label="Этапы совета">
-   <span id="step-compare">① Пути</span>
-   <span id="step-news">② Дождь</span>
-   <span id="step-helpers">③ Друзья</span>
-   <span id="step-finish">④ План</span>
-  </div>
-  <div class="council-workspace">
-   <section id="phase-intro" class="phase" aria-labelledby="introTitle"><div class="brief">
- <div class="brief-mark">📜</div><h1 id="introTitle">Совет отряда</h1>
- <p>Три пути. У каждого — <b>плюсы</b> и <b>минусы</b>. Выслушай друзей!</p>
- <button class="primary" type="button" id="begin">К карте →</button>
-</div></section>
-<section id="phase-compare" class="phase" hidden aria-labelledby="compareTitle">
- <div class="brief-heading"><h2 id="compareTitle">Как пойдём?</h2><span class="micro-instruction">Выбери дороги на столе</span></div>
- <div id="routeCards" class="route-cards" aria-label="Три дороги — сравнение"></div>
- <div id="routeDetails" class="route-details" aria-live="polite"></div>
- <div class="compact-action"><span id="compareStatus" class="live-status" aria-live="polite">Посмотри все три пути</span><button class="primary" id="chooseFirst" type="button" disabled>Выбрать →</button></div>
-</section>
-<section id="phase-news" class="phase" hidden aria-labelledby="newsTitle"><div class="brief">
- <div class="brief-mark">🌧️</div><h2 id="newsTitle">Весть гонца!</h2>
- <p>Прошёл дождь. Лес размок, мост скользкий, а река поднялась.</p>
- <button id="readNews" type="button" class="primary">Что изменилось? →</button>
-</div></section>
-<section id="phase-reconsider" class="phase" hidden aria-labelledby="reconsiderTitle">
- <div class="brief-heading"><h2 id="reconsiderTitle">После дождя</h2><span class="micro-instruction">Оставить путь или передумать?</span></div>
- <div id="revisedRouteCards" class="route-cards" aria-label="Три дороги после дождя"></div>
- <div id="revisedRouteDetails" class="route-details" aria-live="polite"></div>
- <div class="compact-action"><span id="reconsiderStatus" class="live-status" aria-live="polite">Сравни изменения</span><button class="primary" id="confirmRoute" type="button">Утвердить →</button></div>
-</section>
-<section id="phase-helpers" class="phase" hidden aria-labelledby="helpersTitle">
- <div class="brief-heading"><h2 id="helpersTitle">Кого отправим вперёд?</h2><span class="micro-instruction">Два помощника</span></div>
- <p id="helpersIntro" class="mini-lead">Все пойдут вместе. Двое разведают путь.</p>
- <div id="helperCards" class="helper-cards" aria-label="Друзья — достоинства и ограничения"></div>
- <div class="compact-action"><span id="helpersStatus" class="live-status" aria-live="polite">Выбери двух друзей</span><button class="primary" id="confirmHelpers" type="button" disabled>Готово →</button></div>
-</section>
-<section id="phase-plan" class="phase" hidden aria-labelledby="planTitle">
- <div class="brief-heading"><h2 id="planTitle">Приказ командира</h2><span class="micro-instruction">Расскажи свой план</span></div>
- <div class="plan-paper"><div id="planRoad" class="plan-line"></div><div id="planAdvantage" class="plan-line"></div><div id="planRisk" class="plan-line"></div><div id="planTeam" class="plan-line"></div></div>
- <p class="prompt-speech">«Я выбираю… потому что… Но опасаюсь…»</p>
- <div class="compact-action"><button type="button" id="rethink" class="secondary">↻ Передумать</button><button type="button" id="sealPlan" class="primary">📜 Утвердить</button></div>
-</section>
-<section id="phase-finish" class="phase" hidden aria-labelledby="finishTitle">
- <div class="compact-finish">
-  <img src="images/council-sealed-scroll.svg" alt="Наградной свиток совета" draggable="false">
-  <div><h2 id="finishTitle">Совет завершён! ✦</h2>
-   <p id="finalSummary"></p><p class="reward-caption">📜 Свиток добавлен в коллекцию. Отряд пока в Ладабурге.</p>
-   <div class="finish-links"><a class="primary link-button" href="collection.html">🏅 Коллекция</a><a class="secondary link-button" href="ladaburg.html">🏰 В город</a><button id="replay" class="secondary" type="button">↻ Ещё раз</button></div>
-  </div>
+<div class="council-table-scene" aria-label="Четверо друзей сидят вокруг большого переговорного стола в украшенной знаменами ратуше. На столе лежит карта с лесом, мостом и рекой.">
+ <picture>
+  <source srcset="images/council-war-table.avif" type="image/avif">
+  <img class="scene-art" src="images/ladaburg-council-hall.svg" alt="Волшебная ратуша Ладабурга" draggable="false">
+ </picture>
+ <nav class="exit-links" aria-label="Возврат в город">
+  <a href="ladaburg.html" aria-label="Вернуться в Ладабург">← Ладабург</a>
+ </nav>
+ <div class="scene-brand">ЛАДАБУРГ · СОВЕТ ЧЕТЫРЁХ</div>
+ <div class="council-progress" aria-label="Этап совета">
+  <span id="step-compare">Ⅰ</span><span id="step-news">Ⅱ</span><span id="step-helpers">Ⅲ</span><span id="step-finish">Ⅳ</span>
  </div>
-</section>
-  </div>
+ <div class="people-hotspots" aria-label="Четыре героя за переговорным столом">
+  <button class="person-hotspot lada" type="button" data-speaker="lada" aria-label="Лада — командир отряда"><span>Лада</span></button>
+  <button class="person-hotspot cat" type="button" data-speaker="cat" aria-label="Кот-разведчик"><span>Кот</span></button>
+  <button class="person-hotspot rabbit" type="button" data-speaker="rabbit" aria-label="Сильный заяц"><span>Заяц</span></button>
+  <button class="person-hotspot monkey" type="button" data-speaker="monkey" aria-label="Умняшка"><span>Умняшка</span></button>
  </div>
- <p id="gameConnection" class="sync-line" aria-live="polite"></p>
+ <div class="table-paths" aria-label="Выбери маршрут прямо на карте">
+  <button class="table-route forest" data-route="forest" type="button" aria-label="Тёмный лес. Рассмотреть плюсы и минусы"><span class="route-glow">🌲</span><span class="route-caption">Лес</span></button>
+  <button class="table-route bridge" data-route="bridge" type="button" aria-label="Старый мост. Рассмотреть плюсы и минусы"><span class="route-glow">🌉</span><span class="route-caption">Мост</span></button>
+  <button class="table-route river" data-route="river" type="button" aria-label="Подземная река. Рассмотреть плюсы и минусы"><span class="route-glow">⛵</span><span class="route-caption">Река</span></button>
+ </div>
+ <div class="council-bubble" id="speech" role="status" aria-live="polite">
+  <strong id="speakerName">Умняшка</strong>
+  <span id="speechText">Какой путь выберем?</span>
+ </div>
+ <div class="storm-window" id="stormOverlay" hidden aria-hidden="true">🌧️</div>
+ <div id="sceneNote" class="sceneNote" hidden></div>
+ <div class="table-parchment council-workspace" aria-label="Волшебный пергамент с решениями совета">
+  <section id="phase-intro" class="phase" aria-labelledby="introTitle">
+   <h1 id="introTitle">Куда идти?</h1>
+   <div class="mini-illustrations" aria-hidden="true"><span>🌲</span><span>🌉</span><span>🌊</span></div>
+   <button class="advance" type="button" id="begin">Начать совет <b>→</b></button>
+  </section>
+  <section id="phase-compare" class="phase" aria-labelledby="compareTitle" hidden>
+   <h2 id="compareTitle">Выбери путь</h2>
+   <div id="routeCards" class="sr-engine" aria-hidden="true"></div>
+   <div id="routeDetails" class="route-details" aria-live="polite"></div>
+   <div class="table-actions"><span id="compareStatus" class="live-status" aria-live="polite"></span><button class="advance" id="chooseFirst" type="button" disabled>Дальше →</button></div>
+  </section>
+  <section id="phase-news" class="phase" aria-labelledby="newsTitle" hidden>
+   <h2 id="newsTitle">🌧️ Дождь!</h2>
+   <p class="news-short">Лес — грязь · Мост — скользко · Река — течение</p>
+   <button class="advance" id="readNews" type="button">Что теперь? →</button>
+  </section>
+  <section id="phase-reconsider" class="phase" aria-labelledby="reconsiderTitle" hidden>
+   <h2 id="reconsiderTitle">Передумаешь?</h2>
+   <div id="revisedRouteCards" class="sr-engine" aria-hidden="true"></div>
+   <div id="revisedRouteDetails" class="route-details" aria-live="polite"></div>
+   <div class="table-actions"><span id="reconsiderStatus" class="live-status" aria-live="polite"></span><button class="advance" id="confirmRoute" type="button">Выбрать →</button></div>
+  </section>
+  <section id="phase-helpers" class="phase" aria-labelledby="helpersTitle" hidden>
+   <h2 id="helpersTitle">Два разведчика</h2>
+   <p id="helpersIntro" class="micro"></p>
+   <div id="helperCards" class="sr-engine" aria-hidden="true"></div>
+   <p class="point-up">☝ Нажми на двух друзей за столом</p>
+   <div class="table-actions"><span id="helpersStatus" class="live-status" aria-live="polite"></span><button class="advance" id="confirmHelpers" type="button" disabled>Готово →</button></div>
+  </section>
+  <section id="phase-plan" class="phase" aria-labelledby="planTitle" hidden>
+   <h2 id="planTitle">Наш план</h2>
+   <div class="plan-paper"><span id="planRoad" class="plan-line"></span><span id="planAdvantage" class="plan-line"></span><span id="planRisk" class="plan-line"></span><span id="planTeam" class="plan-line"></span></div>
+   <div class="table-actions"><button type="button" id="rethink" class="secondary">↶ Изменить</button><button type="button" id="sealPlan" class="advance">📜 Утвердить</button></div>
+  </section>
+  <section id="phase-finish" class="phase" aria-labelledby="finishTitle" hidden>
+   <h2 id="finishTitle">✦ План готов!</h2>
+   <p id="finalSummary" class="final-short"></p>
+   <div class="finish-links">
+    <a class="advance" href="collection.html">📜 Свиток</a>
+    <a class="secondary" href="ladaburg.html">🏰 В город</a>
+    <button id="replay" type="button" class="secondary">↻ Ещё раз</button>
+   </div>
+  </section>
+ </div>
+</div>
+<p id="gameConnection" class="connection" aria-live="polite"></p>
 </main>
-</body>
-</html>
+</body></html>
