@@ -8,44 +8,41 @@ const KEY='tivvig_reward_council_plan_v1';
 const PLAN_KEY='tivvig_council_plan_v1';
 const STAGES=['intro','compare','news','reconsider','helpers','plan','finish'];
 const ROUTES=[
- {id:'forest',name:'Тёмный лес',icon:'🌲',subtitle:'Тропа сквозь старые деревья',
-  pros:['Кот умеет незаметно исследовать тропинки.','Деревья укрывают от ветра и чужих глаз.'],
-  cons:['В чаще могут встретиться чудовища.','Тропинки запутаны: легко потерять время.'],
-  afterPro:'Кроны деревьев закрывают часть дороги от дождя.',
-  afterCon:'Под ногами грязь: продвигаться придётся осторожно.'},
- {id:'bridge',name:'Старый мост',icon:'🌉',subtitle:'Короткая дорога над ущельем',
-  pros:['Самая короткая дорога к пограничным воротам.','По мосту можно перейти, не спускаясь в ущелье.'],
-  cons:['Некоторые доски старые и могут не выдержать.','Высота и открытый ветер мешают переходу.'],
-  afterPro:'Даже после дождя этот путь остаётся самым быстрым.',
-  afterCon:'Доски теперь скользкие: понадобится страховочная верёвка.'},
- {id:'river',name:'Подземная река',icon:'🌊',subtitle:'Вода у старой пристани',
-  pros:['Можно обойти чудовищ, которые сторожат сухопутные тропы.','Умняшка умеет читать древние знаки на пристани.'],
-  cons:['Для переправы нужна лодка и помощь при посадке.','Этот путь длиннее остальных.'],
-  afterPro:'Высокая вода позволяет лодке пройти над мелкими камнями.',
-  afterCon:'Течение стало быстрее: без верёвки и осторожности нельзя.'}
+ {id:'forest',name:'Тёмный лес',icon:'🌲',subtitle:'Скрытая тропа',
+  pros:['Кот найдёт дорогу.','Деревья укроют от ветра.'],
+  cons:['В лесу чудовища.','Легко заблудиться.'],
+  afterPro:'Кроны укрывают от дождя.',afterCon:'На тропах скользко.'},
+ {id:'bridge',name:'Старый мост',icon:'🌉',subtitle:'Быстрый путь',
+  pros:['Самая короткая дорога.','Не нужна лодка.'],
+  cons:['Гнилые доски.','Сильный ветер.'],
+  afterPro:'Путь всё ещё самый быстрый.',afterCon:'Мост стал скользким.'},
+ {id:'river',name:'Подземная река',icon:'🌊',subtitle:'Дорога по воде',
+  pros:['В обход лесных чудовищ.','Умняшка знает знаки пристани.'],
+  cons:['Нужна лодка.','Дорога длиннее.'],
+  afterPro:'Лодка пройдёт над камнями.',afterCon:'Течение стало сильнее.'}
 ];
 const HELPERS=[
- {id:'cat',name:'Ловкий кот',tag:'Тихий разведчик',src:'images/blue-cat.webp',
+ {id:'cat',name:'Кот',tag:'Разведка',src:'images/blue-cat.webp',
   route:{
-   forest:{pro:'Незаметно проверит лесную тропу.',con:'Не сможет один перенести тяжёлые припасы.'},
-   bridge:{pro:'Осторожно проверит узкие доски.',con:'Не сможет укрепить большие балки.'},
-   river:{pro:'Найдёт удобный спуск к воде.',con:'Не переправит весь отряд в одиночку.'}}},
- {id:'rabbit',name:'Сильный заяц',tag:'Сила и помощь',src:'images/rabbit-cutout.webp',
+   forest:{pro:'Проверит тропу.',con:'Не унесёт груз.'},
+   bridge:{pro:'Проверит доски.',con:'Не укрепит мост.'},
+   river:{pro:'Найдёт пристань.',con:'Не переправит всех.'}}},
+ {id:'rabbit',name:'Заяц',tag:'Сила',src:'images/rabbit-cutout.webp',
   route:{
-   forest:{pro:'Расчистит дорогу от упавших деревьев.',con:'Шум может привлечь лесных чудовищ.'},
-   bridge:{pro:'Натянет прочную страховочную верёвку.',con:'Ему придётся ступать особенно осторожно на старые доски.'},
-   river:{pro:'Донесёт припасы и поможет с лодкой.',con:'Одной силы недостаточно против быстрого течения.'}}},
- {id:'monkey',name:'Умняшка',tag:'Знания и находчивость',src:'images/monkey-cutout.webp',
+   forest:{pro:'Уберёт брёвна.',con:'Шум привлечёт зверей.'},
+   bridge:{pro:'Натянет верёвку.',con:'Тяжёлый для досок.'},
+   river:{pro:'Поможет с лодкой.',con:'Не остановит течение.'}}},
+ {id:'monkey',name:'Умняшка',tag:'Знания',src:'images/monkey-cutout.webp',
   route:{
-   forest:{pro:'Прочитает старые знаки у развилок.',con:'Пока она читает, кто-то должен следить за безопасностью.'},
-   bridge:{pro:'Разберёт древние пометки о ремонте моста.',con:'На изучение надписей потребуется время.'},
-   river:{pro:'Расшифрует подсказки на старой пристани.',con:'Сама она не сумеет грести за весь отряд.'}}}
+   forest:{pro:'Прочтёт знаки.',con:'Нужно время.'},
+   bridge:{pro:'Найдёт план ремонта.',con:'Нужно время.'},
+   river:{pro:'Прочтёт карту пристани.',con:'Не умеет грести за всех.'}}}
 ];
 const ADVICE={
- lada:'Мне нужно выслушать всех. На любой дороге есть и хорошие стороны, и опасности.',
- cat:'Я могу незаметно разведать путь. Но тяжёлые вещи лучше доверить зайцу!',
- rabbit:'Силы у меня много. Я помогу с верёвками и грузом, только действовать надо осторожно.',
- monkey:'Я умею читать древние знаки. Давайте сначала узнаем, какие у дорог преимущества и риски.'
+ lada:'Я выберу путь и объясню почему!',
+ cat:'Я тихо разведаю путь, но тяжёлое не унесу.',
+ rabbit:'Я сильный! Помогу с грузом и верёвками.',
+ monkey:'Сначала сравним плюсы и минусы.'
 };
 const state={stage:'intro',selected:null,first:null,visited:new Set(),helpers:new Set(),saved:false};
 const scroll=()=>{if(window.matchMedia?.('(prefers-reduced-motion:reduce)').matches)return;const main=document.querySelector('.council-workspace');if(main)window.setTimeout(()=>main.scrollIntoView({block:'start',behavior:'smooth'}),100)};
@@ -76,13 +73,13 @@ function setStage(next){
  if(next==='plan')renderPlan();
  if(next==='finish')finishGame();
  highlightMap();
- if(next==='intro')say('monkey','Перед нами три дороги. У каждой есть свои плюсы и минусы. Давайте обсудим!');
- if(next==='compare')say('monkey','Нажми на каждую дорогу. Обсуди, что у неё хорошего и что опасного.');
- if(next==='news')say('messenger','Срочная весть! Ночью прошёл дождь — условия изменились сразу на всех трёх дорогах.');
- if(next==='reconsider')say('lada','Я могу сохранить первый выбор или передумать. Нужно взвесить новые плюсы и минусы!');
- if(next==='helpers')say('rabbit','Все четверо пойдут вместе, но двое могут подготовить дорогу впереди остальных.');
- if(next==='plan')say('lada','Сейчас я объясню друзьям свой план — и мы скрепим его печатью.');
- if(next==='finish')say('monkey','Маршрут готов! Мы остались в Ладабурге, но теперь знаем, что делать дальше.');
+ if(next==='intro')say('monkey','Все за столом. С чего начнём?');
+ if(next==='compare')say('monkey','Нажми на лес, мост и реку. У каждого пути есть плюс и минус.');
+ if(next==='news')say('messenger','Дождь! Дороги изменились!');
+ if(next==='reconsider')say('lada','Может, выбрать другой путь?');
+ if(next==='helpers')say('rabbit','Мы идём вместе. Кто пойдёт на разведку?');
+ if(next==='plan')say('lada','Я расскажу свой план.');
+ if(next==='finish')say('monkey','Ура! План готов!');
  if(next!=='intro')scroll();
 }
 function highlightMap(){
@@ -112,32 +109,37 @@ function makeArgument(label,items,type,extra=false){
 function renderRouteCards(revised){
  const target=$(revised?'revisedRouteCards':'routeCards');target.replaceChildren();
  for(const item of ROUTES){
-  const card=make('article','route-card'+(state.selected===item.id?' selected':''));card.dataset.card=item.id;
-  const head=make('div','route-head');
-  head.append(make('span','route-icon',item.icon));
-  const name=make('div');name.append(make('h3',null,item.name),make('small',null,item.subtitle));
-  head.append(name);card.append(head);
-  const body=make('div','route-body');
-  body.append(makeArgument('✓ ПЛЮСЫ · За этот путь',item.pros,'positive'));
-  body.append(makeArgument('! МИНУСЫ · Против этого пути',item.cons,'negative'));
-  if(revised){
-   body.append(makeArgument('✓ ПОСЛЕ ДОЖДЯ · Новый плюс',item.afterPro,'positive',true));
-   body.append(makeArgument('! ПОСЛЕ ДОЖДЯ · Новый минус',item.afterCon,'negative',true));
-  }
-  card.append(body);
-  const button=make('button','route-select',state.selected===item.id?'✓ Выбрано':'Обсудить и выбрать');
-  button.type='button';button.dataset.pickRoute=item.id;
-  button.setAttribute('aria-pressed',String(state.selected===item.id));
-  button.addEventListener('click',()=>selectRoute(item.id));
-  card.append(button);
-  if(!revised)card.append(make('span','route-reviewed',state.visited.has(item.id)?'✓ Аргументы рассмотрены':'Нажми, чтобы обсудить маршрут'));
+  const selected=state.selected===item.id;
+  const card=make('button','route-token'+(selected?' selected':''));
+  card.type='button';card.dataset.pickRoute=item.id;
+  card.setAttribute('aria-pressed',String(selected));
+  card.setAttribute('aria-label',item.name+'. Плюс: '+item.pros[0]+' Минус: '+item.cons[0]);
+  card.append(make('span','route-emoji',item.icon),make('strong','route-name',item.name));
+  const preview=make('div','route-preview');
+  preview.append(make('span','pro-preview','＋ '+item.pros[0]),make('span','con-preview','－ '+item.cons[0]));
+  card.append(preview);
+  if(!revised&&state.visited.has(item.id))card.append(make('span','visited-stamp','✓'));
+  card.addEventListener('click',()=>selectRoute(item.id));
   target.append(card);
  }
+ const detail=$(revised?'revisedRouteDetails':'routeDetails');
+ detail.replaceChildren();
+ if(state.selected){
+  const active=route(state.selected);
+  const title=make('div','detail-title',active.icon+' '+active.name);
+  detail.append(title);
+  detail.append(makeArgument('＋ ПЛЮСЫ',active.pros,'positive'));
+  detail.append(makeArgument('－ МИНУСЫ',active.cons,'negative'));
+  if(revised){
+   detail.append(makeArgument('＋ После дождя',active.afterPro,'positive',true));
+   detail.append(makeArgument('－ После дождя',active.afterCon,'negative',true));
+  }
+ }else detail.append(make('div','detail-placeholder','👆 Нажми на дорогу на столе'));
  if(revised){
-  text('reconsiderStatus',state.selected?(state.first===state.selected?'Ты пока оставила прежнюю дорогу: '+route(state.selected).name+'. Это допустимый выбор.':'Ты решила изменить путь на «'+route(state.selected).name+'». Объясни почему.'):'Выбери дорогу после донесения.');
+  text('reconsiderStatus',state.selected?(state.first===state.selected?'Можно оставить этот путь.':'Можно изменить решение.'):'Выбери дорогу.');
   $('confirmRoute').disabled=!state.selected;
  }else{
-  text('compareStatus','Обсуждено '+state.visited.size+' из 3 дорог. '+(state.visited.size===3?'Теперь можно отправить гонца.':'Рассмотри плюсы и минусы каждой.'));
+  text('compareStatus','Изучено '+state.visited.size+'/3'+(state.visited.size===3?' ✓':''));
   $('chooseFirst').disabled=!(state.selected&&state.visited.size===ROUTES.length);
  }
  highlightMap();
@@ -151,7 +153,7 @@ function selectRoute(id){
  if(state.stage==='compare')renderRouteCards(false);else renderRouteCards(true);
  const plus=state.stage==='reconsider'?target.afterPro:target.pros[0];
  const minus=state.stage==='reconsider'?target.afterCon:target.cons[0];
- say('lada','Дорога: '+target.name+'. За: '+plus+' Против: '+minus+'');
+ say('lada',target.name+': плюс — '+plus+' Минус — '+minus);
 }
 function speakerTalk(id){
  if(id==='lada'){say(id,'Я — командир. Я должна учесть и плюсы, и минусы каждого пути.');return}
@@ -174,22 +176,25 @@ function confirmRoute(){
 function renderHelpers(){
  if(state.stage!=='helpers')return;
  const r=route(state.selected);if(!r)return;
- text('helpersIntro','Дорога «'+r.name+'». Все четверо останутся вместе. Выбери двух друзей для передового отряда: прочитай, чем каждый поможет и что ему трудно.');
+ text('helpersIntro','Путь: '+r.icon+' '+r.name+'. Выбери двоих на разведку.');
  const box=$('helperCards');box.replaceChildren();
  for(const helper of HELPERS){
   const item=helper.route[r.id],selected=state.helpers.has(helper.id);
-  const card=make('article','helper-card'+(selected?' selected':''));
-  const head=make('div','helper-head');const img=make('img');img.src=helper.src;img.alt='';img.draggable=false;
-  const summary=make('div');summary.append(make('h3',null,helper.name),make('small',null,helper.tag));
-  head.append(img,summary);card.append(head);
-  card.append(makeArgument('✓ Что поможет',item.pro,'positive'));
-  card.append(makeArgument('! Что учесть',item.con,'negative'));
-  const btn=make('button','route-select',selected?'✓ В передовом отряде':'Поручить разведку');
-  btn.type='button';btn.dataset.pickHelper=helper.id;btn.setAttribute('aria-pressed',String(selected));
-  btn.addEventListener('click',()=>toggleHelper(helper.id));card.append(btn);
+  const card=make('button','helper-token'+(selected?' selected':''));
+  card.type='button';card.dataset.pickHelper=helper.id;
+  card.setAttribute('aria-pressed',String(selected));
+  card.setAttribute('aria-label',helper.name+'. Плюс: '+item.pro+'. Минус: '+item.con);
+  const head=make('div','helper-portrait');
+  const img=make('img');img.src=helper.src;img.alt='';img.draggable=false;
+  const name=make('div');name.append(make('strong',null,helper.name),make('small',null,helper.tag));
+  head.append(img,name);card.append(head);
+  const notes=make('div','helper-arguments');
+  notes.append(make('span','helper-pro','＋ '+item.pro),make('span','helper-con','－ '+item.con));
+  card.append(notes,make('span','helper-check',selected?'✓ Выбран':'Выбрать'));
+  card.addEventListener('click',()=>toggleHelper(helper.id));
   box.append(card);
  }
- text('helpersStatus','Выбрано '+state.helpers.size+' из 2 помощников. '+(state.helpers.size===2?'Теперь готовим приказ!':'Можешь выбрать любого — у каждого есть преимущество и ограничение.'));
+ text('helpersStatus','Друзья: '+state.helpers.size+'/2');
  $('confirmHelpers').disabled=state.helpers.size!==2;
  highlightMap();
 }
@@ -206,10 +211,10 @@ function confirmHelpers(){if(state.stage==='helpers'&&state.helpers.size===2)set
 function renderPlan(){
  const r=route(state.selected),hs=[...state.helpers].map(friend);
  if(!r||hs.length!==2)return;
- text('planRoad','МАРШРУТ: '+r.icon+' '+r.name);
- text('planAdvantage','✓ ЗА: '+r.pros[0]+' Дополнительный плюс после дождя: '+r.afterPro);
- text('planRisk','! ПРОТИВ: '+r.cons[0]+' После дождя: '+r.afterCon);
- text('planTeam','ПЕРВЫМИ ГОТОВЯТ ПУТЬ: '+hs.map(h=>h.name).join(' и ')+'. Остальные остаются рядом с отрядом.');
+ text('planRoad','🗺 '+r.icon+' '+r.name);
+ text('planAdvantage','✓ ПЛЮС: '+r.pros[0]);
+ text('planRisk','! РИСК: '+r.afterCon);
+ text('planTeam','👣 РАЗВЕДКА: '+hs.map(h=>h.name).join(' и '));
 }
 function persist(){
  const r=route(state.selected),helpers=[...state.helpers];
@@ -228,7 +233,7 @@ function finishGame(){
  if(state.saved)return;
  state.saved=true;
  const p=persist(),names=p.helpers.map(id=>friend(id).name).join(' и ');
- text('finalSummary','Лада выбрала путь «'+p.routeName+'» и поручила передовую подготовку: '+names+'. Сильные стороны и опасности маршрута учтены.');
+ text('finalSummary',route(p.route).icon+' '+p.routeName+'. Впереди: '+names+'.');
 }
 function reopen(){if(state.stage==='plan')setStage('reconsider')}
 function reset(){
