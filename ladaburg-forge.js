@@ -159,11 +159,13 @@ function renderReading(){
  text('reading-count','Пергамент '+(readingRound+1)+' из '+READING.length);
  scroll.replaceChildren();
  task.chunks.forEach((part,index)=>{
-  if(index && readingRound<3){
-   const dash=document.createElement('span');dash.className='scroll-dash';dash.textContent='-';dash.setAttribute('aria-hidden','true');scroll.appendChild(dash);
-  }
-  if(index && readingRound===3 && (index===2||index===4)){
-   const gap=document.createElement('span');gap.className='scroll-space';gap.setAttribute('aria-hidden','true');scroll.appendChild(gap);
+  if(index){
+   const newWord=readingRound===3&&(index===2||index===4);
+   const separator=document.createElement('span');
+   separator.className=newWord?'scroll-space':'scroll-dash';
+   separator.textContent=newWord?' ':'-';
+   separator.setAttribute('aria-hidden','true');
+   scroll.appendChild(separator);
   }
   const b=document.createElement('button');
   b.type='button';b.className='scroll-syllable';b.id='read-syllable-'+index;
