@@ -65,6 +65,11 @@ main{max-width:1500px;margin:auto}
 .fialka-hotspot:hover,.fialka-hotspot:focus-visible{background:#bc82e84a;border-color:#f3dcff;outline:2px solid #53376b;outline-offset:2px}
 .fialka-sign{position:absolute;bottom:0;left:50%;transform:translateX(-50%);color:#4a2e5f;background:#f9e9fcec;border:2px solid #bb8bc6;border-radius:9px;padding:5px 9px;text-align:center;line-height:1.24;white-space:nowrap;font:bold clamp(11px,1.3vw,17px) Georgia,serif;box-shadow:0 3px 9px #27132b8e;pointer-events:none}
 @media(max-width:680px){.fialka-hotspot{left:65%;top:49%;width:19%;height:23%}.fialka-sign{padding:4px 5px;font-size:10px;white-space:normal;min-width:83px}}
+
+/* New district gateway: outside all existing building hotspots. */
+.oak-quarter-hotspot{position:absolute;right:1.8%;bottom:4%;z-index:10;display:flex;align-items:center;justify-content:center;min-height:52px;min-width:clamp(116px,18%,238px);max-width:25%;padding:9px 15px;white-space:normal;text-align:center;line-height:1.2;font:bold clamp(12px,1.65vw,22px) Georgia,serif;color:#50385f;text-decoration:none;border:3px solid #c39e71;border-radius:14px;background:linear-gradient(135deg,#fff4da,#e9d5f2);box-shadow:0 7px 14px #2d193e8a;touch-action:manipulation}
+.oak-quarter-hotspot:hover,.oak-quarter-hotspot:focus-visible{background:#fff1b7;outline:3px solid #704ca1;outline-offset:2px}
+@media(max-width:680px){.oak-quarter-hotspot{right:1%;bottom:2%;min-height:44px;min-width:86px;max-width:28%;padding:4px;font-size:11px;border-width:2px}}
 </style>
 </head>
 <body>
@@ -83,6 +88,7 @@ main{max-width:1500px;margin:auto}
 <a class="fountain-hotspot" href="ladaburg-fountain.html?v=3" aria-label="Войти к фонтану семи духов"><span class="fountain-sign">👻 Фонтан</span></a>
 <a class="garden-hotspot" href="ladaburg-garden.html?v=2" aria-label="Войти в сад с призраками"><span class="garden-sign">🌿 Сад</span></a>
 <a class="fialka-hotspot" href="ladaburg-fialka.html?v=1" aria-label="Войти в школу феи Фиалки и посмотреть рисунки Лады"><span class="fialka-sign">🎨 Школа Фиалки</span></a>
+<a class="oak-quarter-hotspot" href="ladaburg-oak-quarter.html?v=1" aria-label="Перейти в новый Дубовый квартал Ладабурга">→ К дубу</a>
 </div>
 <div class="caption">
 <h1>Ладабург</h1>
