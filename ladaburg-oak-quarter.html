@@ -30,6 +30,12 @@ main{max-width:1550px;margin:auto}.scene{position:relative;border:7px double var
 .monkey-house:hover,.monkey-house:focus-visible{background:#d7aeff6b;border-color:#ffe9aa;outline:3px solid #5a3478;outline-offset:-3px}
 .monkey-label{position:absolute;bottom:0;left:45%;transform:translateX(-50%);min-width:112px;padding:7px 10px;white-space:normal;text-align:center;border-radius:13px;background:#f9ebdff1;color:#523b65;border:3px solid #ad85bd;box-shadow:0 5px 14px #26163c8c;pointer-events:none;font:bold clamp(12px,1.45vw,21px)/1.18 Georgia,serif}
 @media(max-width:720px){.monkey-house{left:23.5%;top:25%;width:20%;height:33%}.monkey-label{min-width:78px;padding:4px 5px;font-size:10px}}
+
+/* Clickable old oak: first mission after recruitment. Preserve all houses. */
+.oak-rescue{position:absolute;left:46%;top:43%;width:29%;height:39%;display:block;cursor:pointer;touch-action:manipulation;border:3px solid transparent;border-radius:45% 40% 22% 20%;background:radial-gradient(ellipse,#fdebbc17,transparent 70%);transition:background .18s,border-color .18s}
+.oak-rescue:hover,.oak-rescue:focus-visible{background:#ffe9b65c;border-color:#fff0b8;outline:3px solid #76518c;outline-offset:-3px}
+.oak-rescue-label{position:absolute;bottom:2%;left:50%;transform:translateX(-50%);padding:8px 11px;border:3px solid #c7a378;border-radius:14px;background:#fff1ddec;color:#53334c;text-align:center;box-shadow:0 5px 13px #21102aa8;font:bold clamp(12px,1.7vw,22px)/1.2 Georgia,serif;white-space:nowrap;pointer-events:none}
+@media(max-width:720px){.oak-rescue{left:44%;top:43%;width:32%;height:38%}.oak-rescue-label{font-size:11px;padding:5px 6px;white-space:normal;min-width:96px}}
 </style>
 </head>
 <body>
@@ -39,6 +45,7 @@ main{max-width:1550px;margin:auto}.scene{position:relative;border:7px double var
 <a class="house" href="ladaburg-cat-home.html" aria-label="Войти в первый дом слева, в гости к ловкому синему коту"><span class="house-label">🐈 Дом кота</span></a>
 <a class="rabbit-house" href="ladaburg-rabbit-home.html" aria-label="Войти в дом сильного розового зайца, в гости к силачу"><span class="rabbit-house-label">🐰 Дом силача</span></a>
 <a class="monkey-house" href="ladaburg-monkey-home.html" aria-label="Войти в дом Умняшки Обезьяны с библиотекой"><span class="monkey-label">📖 Умняшка</span></a>
+<a class="oak-rescue" href="ladaburg-nosferatu-oak.html" aria-label="Подойти к древнему дубу и спасти Умняшку от Носферату"><span class="oak-rescue-label">🌰 К дубу · Спасение</span></a>
 </div>
 <div class="caption"><h1>Дубовый квартал</h1><p>На площади растёт древний дуб. В этом квартале живут три будущих героя: ловкий кот, сильный заяц и Умняшка Обезьяна.</p></div>
 <p id="gameConnection" style="text-align:center;font-size:13px" aria-live="polite"></p>
