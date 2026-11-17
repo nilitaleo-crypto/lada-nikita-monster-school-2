@@ -1,0 +1,38 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="760" viewBox="0 0 1200 760" role="img" aria-label="Светлая лесная поляна и огромный старый дуб">
+<defs>
+<linearGradient id="sky" x1="0" x2="0" y1="0" y2="1"><stop stop-color="#9ad8dd"/><stop offset=".64" stop-color="#d4e9bb"/><stop offset="1" stop-color="#f7dfa9"/></linearGradient>
+<linearGradient id="meadow" x1="0" y1="0" x2="0" y2="1"><stop stop-color="#a6c38d"/><stop offset=".6" stop-color="#789964"/><stop offset="1" stop-color="#536f54"/></linearGradient>
+<linearGradient id="wood" x1="0" x2="1"><stop stop-color="#6d463c"/><stop offset=".38" stop-color="#9a6e4c"/><stop offset=".66" stop-color="#b88b5b"/><stop offset="1" stop-color="#60443c"/></linearGradient>
+<radialGradient id="leaf"><stop stop-color="#9ab778"/><stop offset=".64" stop-color="#567b59"/><stop offset="1" stop-color="#385c54"/></radialGradient>
+<radialGradient id="sun"><stop stop-color="#fffde2" stop-opacity=".8"/><stop offset="1" stop-color="#fffde2" stop-opacity="0"/></radialGradient>
+<filter id="blur"><feGaussianBlur stdDeviation="12"/></filter>
+</defs>
+<rect width="1200" height="760" fill="url(#sky)"/>
+<ellipse cx="1024" cy="132" rx="230" ry="182" fill="url(#sun)"/>
+<path d="M0 426Q145 366 279 397T551 386T879 376T1200 388V760H0Z" fill="#90aa87" opacity=".65"/>
+<path d="M0 492Q177 424 339 466T717 442T1200 459V760H0Z" fill="url(#meadow)"/>
+<path d="M0 565Q255 501 480 555T909 536T1200 527V760H0Z" fill="#7a9b6b" opacity=".7"/>
+<path d="M0 660Q266 608 512 666T918 623T1200 641V760H0Z" fill="#5d845c" opacity=".55"/>
+<ellipse cx="604" cy="690" rx="365" ry="35" fill="#2e4a40" opacity=".26" filter="url(#blur)"/>
+<!-- The oak trunk belongs to the quiet background; the hollow, branch, stone and logs are separate scene pieces. -->
+<g stroke="#634434" stroke-linejoin="round" stroke-linecap="round">
+<path d="M440 760Q481 690 488 616Q501 494 494 353Q480 287 440 226L471 209Q527 286 539 326Q567 220 601 164L626 173Q571 296 575 370Q574 475 590 588Q598 679 671 760Z" fill="url(#wood)" stroke-width="9"/>
+<path d="M488 587Q440 677 358 713L326 750Q449 725 513 684M586 590Q684 674 774 718L796 760Q658 743 564 677" fill="none" stroke="#6b4c3b" stroke-width="29"/>
+<path d="M510 337Q505 441 519 565M550 314Q535 452 553 625M566 485Q574 581 585 682" fill="none" stroke="#d9a575" stroke-width="6" opacity=".5"/>
+<path d="M495 416Q474 441 473 486M581 400Q603 439 599 510M528 661Q512 694 480 719" fill="none" stroke="#503c34" stroke-width="5" opacity=".5"/>
+</g>
+<g fill="url(#leaf)">
+<ellipse cx="492" cy="137" rx="262" ry="116"/>
+<ellipse cx="322" cy="165" rx="175" ry="91"/>
+<ellipse cx="671" cy="141" rx="223" ry="105"/>
+<ellipse cx="835" cy="199" rx="146" ry="85"/>
+<ellipse cx="548" cy="66" rx="226" ry="78"/>
+</g>
+<g fill="#94b67b" opacity=".8"><ellipse cx="276" cy="143" rx="82" ry="38"/><ellipse cx="414" cy="84" rx="113" ry="37"/><ellipse cx="620" cy="69" rx="132" ry="41"/><ellipse cx="797" cy="171" rx="87" ry="38"/><ellipse cx="488" cy="174" rx="79" ry="29"/></g>
+<g fill="#d4dca0" opacity=".75"><circle cx="202" cy="184" r="4"/><circle cx="339" cy="124" r="4"/><circle cx="440" cy="183" r="3"/><circle cx="646" cy="126" r="3"/><circle cx="830" cy="203" r="4"/></g>
+<g stroke="#397258" stroke-width="4" stroke-linecap="round" opacity=".75">
+<path d="M35 620l8-21 10 20M123 670l13-25 8 23M231 586l5-19 8 16M862 605l10-20 7 21M1011 655l11-24 9 26M1130 572l9-18 9 16"/>
+</g>
+<g fill="#f2d5ae" opacity=".9"><circle cx="81" cy="590" r="5"/><circle cx="896" cy="576" r="5"/><circle cx="1092" cy="621" r="5"/></g>
+<g fill="#d4b3dd" opacity=".8"><circle cx="101" cy="596" r="3"/><circle cx="919" cy="580" r="3"/><circle cx="1110" cy="612" r="3"/></g>
+</svg>
