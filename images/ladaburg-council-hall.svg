@@ -1,0 +1,73 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 720" width="1280" height="720">
+<defs>
+<linearGradient id="wall" x1="0" x2="1" y1="0" y2="1"><stop stop-color="#55475c"/><stop offset=".45" stop-color="#2e283f"/><stop offset="1" stop-color="#1e2334"/></linearGradient>
+<linearGradient id="stone" x1="0" y1="0" x2="0" y2="1"><stop stop-color="#85778b"/><stop offset=".6" stop-color="#4b4258"/><stop offset="1" stop-color="#24273b"/></linearGradient>
+<linearGradient id="window" x1="0" x2=".7" y1="0" y2="1"><stop stop-color="#ab9ebc"/><stop offset=".35" stop-color="#7d749d"/><stop offset=".7" stop-color="#494c79"/><stop offset="1" stop-color="#272f5d"/></linearGradient>
+<radialGradient id="lamp"><stop stop-color="#ffe6a0" stop-opacity=".65"/><stop offset=".35" stop-color="#f9b969" stop-opacity=".26"/><stop offset="1" stop-color="#e9a566" stop-opacity="0"/></radialGradient>
+<linearGradient id="gold" x1="0" x2="1" y1="0" y2=".6"><stop stop-color="#e3c98e"/><stop offset=".4" stop-color="#9e794c"/><stop offset=".7" stop-color="#d7b97b"/><stop offset="1" stop-color="#80613c"/></linearGradient>
+<pattern id="brick" width="170" height="75" patternUnits="userSpaceOnUse"><path d="M0 0H170M0 75H170M84 0V37M0 37H170M13 37V75M155 37V75" fill="none" stroke="#d7c1b7" opacity=".095" stroke-width="3"/></pattern>
+<filter id="blur"><feGaussianBlur stdDeviation="19"/></filter>
+</defs>
+<rect width="1280" height="720" fill="url(#wall)"/><rect width="1280" height="720" fill="url(#brick)"/>
+<!-- Rib vaults and stonework -->
+<path d="M0 0H1280V111Q1022 45 864 113T446 85Q201 0 0 92Z" fill="#282438" stroke="#99827c" stroke-opacity=".45" stroke-width="12"/>
+<path d="M0 0Q221 87 288 268M1280 0Q1069 88 992 267M328 0Q473 97 489 213M948 0Q792 98 776 213" stroke="#9d8286" stroke-width="22" opacity=".24" fill="none"/>
+<path d="M0 0Q221 87 288 268M1280 0Q1069 88 992 267M328 0Q473 97 489 213M948 0Q792 98 776 213" stroke="#a99793" stroke-width="5" opacity=".27" fill="none"/>
+<rect y="549" width="1280" height="171" fill="#242436"/><path d="M0 553 622 680 1280 553M0 650 622 682 1280 650M188 553 160 720M459 553 441 720M785 553 807 720M1060 553 1124 720" stroke="#a48b8d" stroke-width="4" opacity=".18" fill="none"/>
+<!-- Tall bay windows -->
+<g stroke="#ac916b" stroke-width="18">
+<path d="M67 370V172Q67 94 157 94T247 172V370Z" fill="url(#window)"/>
+<path d="M1032 370V172Q1032 94 1122 94T1212 172V370Z" fill="url(#window)"/>
+</g>
+<g stroke="#b5a0bb" stroke-opacity=".52" stroke-width="6" fill="none">
+<path d="M156 102V370M77 243H238M1122 102V370M1042 243H1201"/>
+<path d="M84 183 157 236 230 183M1048 183 1122 236 1196 183"/>
+</g>
+<g fill="#e5e0fa" opacity=".2">
+<path d="M83 177Q95 137 125 130V233L83 199Z"/><path d="M1050 182Q1060 141 1098 130V231L1050 198Z"/>
+</g>
+<!-- Castle silhouettes through the windows -->
+<g fill="#242d50" opacity=".8">
+<path d="M73 365V291L100 269 100 254 128 254 128 278 155 290 155 249 178 230 199 250 199 278 240 295V365Z"/>
+<path d="M1038 365V305L1069 291 1069 268 1092 268 1092 297 1119 280 1119 242 1142 242 1142 278 1176 298 1213 291V365Z"/>
+</g>
+<!-- central arched burgundy banner -->
+<path d="M425 86Q642 127 855 86V335Q817 311 785 338Q640 409 493 338Q470 313 425 335Z" fill="#523448" stroke="#cba676" stroke-width="10"/>
+<path d="M444 108Q639 150 835 108V317Q801 294 776 318Q643 379 503 318Q470 298 444 317Z" fill="#6c4054" stroke="#a37a64" stroke-width="3"/>
+<path d="M639 151 687 205 676 251 639 291 601 251 588 205Z" fill="#d5b27d" stroke="#f2ddb1" stroke-width="6"/>
+<path d="M639 178 660 209 637 240 615 211Z" fill="#5e476a"/>
+<path d="M537 189Q593 177 609 204M668 204Q697 176 741 188" fill="none" stroke="#b99d87" stroke-width="5"/>
+<text x="639" y="326" font-family="Georgia,serif" font-size="17" text-anchor="middle" fill="#e7cfaf" letter-spacing="5">Л А Д А Б У Р Г</text>
+<!-- wall shelves -->
+<g fill="#3a2936" stroke="#9f794b" stroke-width="5">
+<rect x="274" y="333" width="153" height="25" rx="7"/><rect x="856" y="333" width="146" height="25" rx="7"/>
+</g>
+<g fill="#75617a" stroke="#ab8f6f" stroke-width="2">
+<rect x="286" y="271" width="19" height="59"/><rect x="310" y="254" width="20" height="75"/><rect x="335" y="278" width="17" height="51"/><rect x="357" y="258" width="23" height="71"/><rect x="389" y="283" width="22" height="47"/>
+<rect x="870" y="264" width="23" height="66"/><rect x="898" y="284" width="18" height="45"/><rect x="920" y="250" width="20" height="80"/><rect x="945" y="274" width="17" height="57"/><rect x="966" y="263" width="24" height="68"/>
+</g>
+<g stroke="#d2b386" stroke-width="4" opacity=".7">
+<path d="M300 283v42M367 267v57M925 263v61"/>
+</g>
+<!-- pillars -->
+<g>
+<rect x="-21" y="92" width="69" height="484" fill="url(#stone)" stroke="#998489" stroke-width="5"/>
+<rect x="1235" y="92" width="69" height="484" fill="url(#stone)" stroke="#998489" stroke-width="5"/>
+<path d="M-25 113H58M1223 113H1309M-25 547H58M1223 547H1309" stroke="#b79c98" stroke-width="21"/>
+</g>
+<!-- candle sconces with glow -->
+<circle cx="265" cy="235" r="117" fill="url(#lamp)" filter="url(#blur)"/>
+<circle cx="1013" cy="235" r="117" fill="url(#lamp)" filter="url(#blur)"/>
+<path d="M254 263 270 263 265 217Z M1003 263 1019 263 1013 217Z" fill="#f8bd59"/>
+<g stroke="url(#gold)" stroke-width="9" fill="none"><path d="M240 261 270 281 286 262M988 261 1016 281 1032 262"/></g>
+<g fill="#fbe7aa"><path d="M264 208Q245 236 265 245Q284 231 264 208Z"/><path d="M1012 208Q994 236 1013 245Q1033 231 1012 208Z"/></g>
+<g fill="#f6d29c" opacity=".36"><circle cx="260" cy="247" r="21"/><circle cx="1012" cy="247" r="21"/></g>
+<!-- wall flags and scroll stacks -->
+<g stroke="#8c684e" stroke-width="6" fill="#b59b7d">
+<rect x="62" y="409" width="115" height="69" rx="9" transform="rotate(-7 62 409)"/>
+<rect x="1114" y="412" width="115" height="72" rx="9" transform="rotate(7 1114 412)"/>
+</g>
+<path d="M81 438h81m-79 15h73m981-21h75m-71 16h64" stroke="#7b5e4e" stroke-width="4"/>
+<!-- background rug -->
+<ellipse cx="640" cy="634" rx="478" ry="76" fill="#6c3953" opacity=".55" stroke="#ad7f77" stroke-width="11"/>
+</svg>
