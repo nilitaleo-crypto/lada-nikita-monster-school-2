@@ -24,6 +24,12 @@ main{max-width:1550px;margin:auto}.scene{position:relative;border:7px double var
 .rabbit-house:hover,.rabbit-house:focus-visible{background:#ffcee65c;border-color:#ffe3aa;outline:3px solid #744879;outline-offset:-3px}
 .rabbit-house-label{position:absolute;bottom:0;right:7%;min-width:108px;max-width:96%;text-align:center;padding:8px 10px;border-radius:14px;background:#fce0ece9;color:#673c5a;border:3px solid #d5a0af;box-shadow:0 5px 13px #28193866;pointer-events:none;font:bold clamp(12px,1.8vw,23px)/1.2 Georgia,serif}
 @media(max-width:720px){.rabbit-house{right:0;top:29%;width:24%;height:54%}.rabbit-house-label{min-width:82px;padding:5px 4px;font-size:11px}}
+
+/* Third recruit: the book-filled house behind the left staircase. */
+.monkey-house{position:absolute;left:23.5%;top:26%;width:18.5%;height:31%;display:block;border:3px solid transparent;border-radius:20% 23% 12px 16px;cursor:pointer;touch-action:manipulation;background:radial-gradient(ellipse,#dab8ff1e,transparent 73%);transition:background .16s,border-color .16s}
+.monkey-house:hover,.monkey-house:focus-visible{background:#d7aeff6b;border-color:#ffe9aa;outline:3px solid #5a3478;outline-offset:-3px}
+.monkey-label{position:absolute;bottom:0;left:45%;transform:translateX(-50%);min-width:112px;padding:7px 10px;white-space:normal;text-align:center;border-radius:13px;background:#f9ebdff1;color:#523b65;border:3px solid #ad85bd;box-shadow:0 5px 14px #26163c8c;pointer-events:none;font:bold clamp(12px,1.45vw,21px)/1.18 Georgia,serif}
+@media(max-width:720px){.monkey-house{left:23.5%;top:25%;width:20%;height:33%}.monkey-label{min-width:78px;padding:4px 5px;font-size:10px}}
 </style>
 </head>
 <body>
@@ -32,8 +38,9 @@ main{max-width:1550px;margin:auto}.scene{position:relative;border:7px double var
 <div class="scene"><img src="images/oak-quarter.webp" alt="Новый жилой квартал Ладабурга, светлые дома в цветах и огромный древний дуб на центральной площади" width="1448" height="1086" draggable="false">
 <a class="house" href="ladaburg-cat-home.html" aria-label="Войти в первый дом слева, в гости к ловкому синему коту"><span class="house-label">🐈 Дом кота</span></a>
 <a class="rabbit-house" href="ladaburg-rabbit-home.html" aria-label="Войти в дом сильного розового зайца, в гости к силачу"><span class="rabbit-house-label">🐰 Дом силача</span></a>
+<a class="monkey-house" href="ladaburg-monkey-home.html" aria-label="Войти в дом Умняшки Обезьяны с библиотекой"><span class="monkey-label">📖 Умняшка</span></a>
 </div>
-<div class="caption"><h1>Дубовый квартал</h1><p>На площади растёт древний дуб. В левом доме живёт ловкий кот, а в правом — сильный заяц.</p></div>
+<div class="caption"><h1>Дубовый квартал</h1><p>На площади растёт древний дуб. В этом квартале живут три будущих героя: ловкий кот, сильный заяц и Умняшка Обезьяна.</p></div>
 <p id="gameConnection" style="text-align:center;font-size:13px" aria-live="polite"></p>
 </main><script src="game-runtime.js?v=1" defer></script>
 </body></html>
