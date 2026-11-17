@@ -7,30 +7,48 @@
 <title>Совет четырёх — ратуша Ладабурга</title>
 <meta name="description" content="Лада, кот, заяц и Умняшка выбирают дорогу на волшебной карте прямо за столом в ратуше Ладабурга.">
 <link rel="stylesheet" href="ladaburg-council-table.css?v=1">
+<link rel="stylesheet" href="ladaburg-council-table-v2.css?v=1">
 <script src="wardrobe.js?v=3" defer></script>
 <script src="game-registry.js?v=4" defer></script>
-<script src="ladaburg-council.js?v=4" defer></script>
+<script src="ladaburg-council.js?v=5" defer></script>
 <script src="world-coop-bridge.js?v=12" defer></script>
+<script src="lada-avatar.js?v=3" defer></script>
 </head>
 <body>
 <main>
 <div class="council-table-scene" aria-label="Четверо друзей сидят вокруг большого переговорного стола в украшенной знаменами ратуше. На столе лежит карта с лесом, мостом и рекой.">
- <picture>
-  <source srcset="images/council-war-table.avif" type="image/avif">
-  <img class="scene-art" src="images/ladaburg-council-hall.svg" alt="Волшебная ратуша Ладабурга" draggable="false">
- </picture>
+ <img class="scene-art" src="images/ladaburg-council-hall.svg" alt="Ратуша Ладабурга: высокие арки, городские гербы, окна и свечи" draggable="false">
+ <div class="council-lights" aria-hidden="true"></div>
+ <div class="grand-table" aria-hidden="true">
+   <div class="table-wood"></div>
+   <div class="table-map">
+     <img class="map-landscape map-forest" src="images/council-route-forest.svg" alt="" draggable="false">
+     <img class="map-landscape map-bridge" src="images/council-route-bridge.svg" alt="" draggable="false">
+     <img class="map-landscape map-river" src="images/council-route-river.svg" alt="" draggable="false">
+     <svg class="map-trails" viewBox="0 0 1000 490" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+       <g fill="none" stroke="#9d774c" stroke-width="12" stroke-linecap="round" stroke-dasharray="14 18" opacity=".85">
+         <path d="M500 418Q440 337 196 195"/><path d="M500 418Q505 318 501 192"/><path d="M500 418Q585 340 820 190"/>
+       </g>
+       <g fill="#f5d19a" stroke="#85573b" stroke-width="11">
+        <path d="M457 450V411H477V390L501 365 525 390V411H545V450Z"/>
+       </g>
+       <text x="501" y="480" fill="#6b493f" font-size="31" font-weight="bold" text-anchor="middle" font-family="Georgia,serif">ЛАДАБУРГ</text>
+     </svg>
+   </div>
+   <div class="table-book">✧</div><div class="table-candle">🕯️</div>
+ </div>
  <nav class="exit-links" aria-label="Возврат в город">
   <a href="ladaburg.html" aria-label="Вернуться в Ладабург">← Ладабург</a>
  </nav>
- <div class="scene-brand">ЛАДАБУРГ · СОВЕТ ЧЕТЫРЁХ</div>
+ <div class="scene-brand">СОВЕТ ЧЕТЫРЁХ</div>
  <div class="council-progress" aria-label="Этап совета">
   <span id="step-compare">Ⅰ</span><span id="step-news">Ⅱ</span><span id="step-helpers">Ⅲ</span><span id="step-finish">Ⅳ</span>
  </div>
  <div class="people-hotspots" aria-label="Четыре героя за переговорным столом">
-  <button class="person-hotspot lada" type="button" data-speaker="lada" aria-label="Лада — командир отряда"><span>Лада</span></button>
-  <button class="person-hotspot cat" type="button" data-speaker="cat" aria-label="Кот-разведчик"><span>Кот</span></button>
-  <button class="person-hotspot rabbit" type="button" data-speaker="rabbit" aria-label="Сильный заяц"><span>Заяц</span></button>
-  <button class="person-hotspot monkey" type="button" data-speaker="monkey" aria-label="Умняшка"><span>Умняшка</span></button>
+  <button class="person-hotspot lada" type="button" data-speaker="lada" aria-label="Лада — командир отряда"><img class="original-person" src="images/lada-cutout.webp" id="councilLada" alt="Лада" draggable="false"><span>Лада</span></button>
+  <button class="person-hotspot cat" type="button" data-speaker="cat" aria-label="Кот-разведчик"><img class="original-person" src="images/blue-cat.webp" alt="Кот" draggable="false"><span>Кот</span></button>
+  <button class="person-hotspot rabbit" type="button" data-speaker="rabbit" aria-label="Сильный заяц"><img class="original-person" src="images/rabbit-cutout.webp" alt="Заяц" draggable="false"><span>Заяц</span></button>
+  <button class="person-hotspot monkey" type="button" data-speaker="monkey" aria-label="Умняшка"><img class="original-person" src="images/monkey-cutout.webp" alt="Умняшка" draggable="false"><span>Умняшка</span></button>
  </div>
  <div class="table-paths" aria-label="Выбери маршрут прямо на карте">
   <button class="table-route forest" data-route="forest" type="button" aria-label="Тёмный лес. Рассмотреть плюсы и минусы"><span class="route-glow">🌲</span><span class="route-caption">Лес</span></button>
