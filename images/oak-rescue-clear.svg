@@ -14,13 +14,15 @@
 <path d="M0 565Q255 501 480 555T909 536T1200 527V760H0Z" fill="#7a9b6b" opacity=".7"/>
 <path d="M0 660Q266 608 512 666T918 623T1200 641V760H0Z" fill="#5d845c" opacity=".55"/>
 <ellipse cx="604" cy="690" rx="365" ry="35" fill="#2e4a40" opacity=".26" filter="url(#blur)"/>
-<!-- The oak trunk belongs to the quiet background; the hollow, branch, stone and logs are separate scene pieces. -->
+<!-- The oak trunk is quiet scenery; the objects and an open hollow rim are independent elements. -->
 <g stroke="#634434" stroke-linejoin="round" stroke-linecap="round">
 <path d="M440 760Q481 690 488 616Q501 494 494 353Q480 287 440 226L471 209Q527 286 539 326Q567 220 601 164L626 173Q571 296 575 370Q574 475 590 588Q598 679 671 760Z" fill="url(#wood)" stroke-width="9"/>
 <path d="M488 587Q440 677 358 713L326 750Q449 725 513 684M586 590Q684 674 774 718L796 760Q658 743 564 677" fill="none" stroke="#6b4c3b" stroke-width="29"/>
 <path d="M510 337Q505 441 519 565M550 314Q535 452 553 625M566 485Q574 581 585 682" fill="none" stroke="#d9a575" stroke-width="6" opacity=".5"/>
 <path d="M495 416Q474 441 473 486M581 400Q603 439 599 510M528 661Q512 694 480 719" fill="none" stroke="#503c34" stroke-width="5" opacity=".5"/>
 </g>
+<ellipse cx="553" cy="354" rx="66" ry="92" fill="#2a2226" stroke="#50362e" stroke-width="6"/>
+<ellipse cx="546" cy="354" rx="49" ry="75" fill="#241d25" opacity=".94"/>
 <g fill="url(#leaf)">
 <ellipse cx="492" cy="137" rx="262" ry="116"/>
 <ellipse cx="322" cy="165" rx="175" ry="91"/>
