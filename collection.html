@@ -216,7 +216,7 @@ window.addEventListener("tivvig:registry-ready",()=>{
    const title=document.createElement("h2");title.textContent=r.title;
    opened.append(note,button,title);
    if(r.description){const info=document.createElement('p');info.textContent=r.description;opened.append(info)}
-   if(r.id==='star-outfit'){const dress=document.createElement('a');dress.href='wardrobe.html';dress.className='back';dress.textContent='♛ Надеть наряд';opened.append(dress)}
+   if(r.id==='star-outfit'||r.id==='winged-armor'){const dress=document.createElement('a');dress.href='wardrobe.html';dress.className='back';dress.textContent='♛ Надеть наряд';opened.append(dress)}
    const locked=document.createElement("article");locked.className="page locked";locked.id="extra-"+r.id+"-sealed";
    const label=document.createElement("div");label.className="status";label.textContent="🔒 Будущее открытие";
    const seal=document.createElement("div");seal.className="sealed";seal.textContent=r.sealedIcon||"✦";
