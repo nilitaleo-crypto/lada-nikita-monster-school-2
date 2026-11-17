@@ -32,6 +32,116 @@ main{width:min(1400px,100%);margin:auto}.scene{position:relative;border:6px ridg
 @media(max-width:760px){.screen{padding:5px 6px 17px}.top{gap:4px}.top h1{font-size:16px}.top a,.top button{padding:5px 7px;font-size:12px;min-height:40px}.scene{border-width:4px;border-radius:12px}.room{min-height:640px;height:calc(100dvh - 68px);max-height:850px;background-position:center center}.speech{left:4%;top:3%;width:92%;padding:13px;border-width:3px}.speech h2{font-size:26px}.speech p{font-size:18px}.speech .hint{font-size:14px}.lada{left:4%;height:45%;width:37%;bottom:16%}.monkey-wrap{right:1%;height:48%;max-width:45%;bottom:16%}#start{bottom:3%;font-size:18px;white-space:normal;width:min(93%,390px)}.board{min-height:650px;padding:8px;gap:9px}.paper{padding:16px 11px;border-width:5px}.paper h2{font-size:26px}.paper p{font-size:16px}.equation{font-size:clamp(38px,9vw,70px)}.equation .unknown{min-width:54px}.choice{min-width:72px;min-height:67px;font-size:35px}.frog-board .paper{padding:10px}.frog-options,.frog-slots{gap:4px}.frog-option{padding:2px;min-height:85px;border-width:2px}.frog-option span{font-size:11px}.frog-slot{min-height:75px;border-width:2px}.member{min-height:150px}.member img{height:140px}}
 @media(max-width:520px){.room{min-height:600px}.speech h2{font-size:24px}.speech p{font-size:16px}.lada{height:40%;width:40%;left:1%;bottom:17%}.monkey-wrap{height:45%;right:0;max-width:47%;bottom:16%}.board{min-height:640px}.paper h2{font-size:23px}.steps{gap:3px}.step{font-size:11px;padding:5px}.frog-options,.frog-slots{grid-template-columns:repeat(5,minmax(0,1fr))}.frog-option span{font-size:10px}.frog-slot strong{font-size:10px}.frog-slot .num{font-size:25px}.member{min-height:123px;padding:7px 4px}.member img{height:99px}.member span{font-size:12px}.finish-card{padding:10px}.finish-card h2{font-size:25px}.team{gap:5px}}
 @media(prefers-reduced-motion:reduce){*,*::after,*::before{animation-duration:.01ms!important;transition-duration:.01ms!important}}
+
+/* v2.0: storybook library layout. All original interactive element IDs,
+   event handlers, button nodes and state changes remain untouched. */
+.scene.board{
+  display:grid;grid-template-columns:minmax(240px,30%) minmax(0,1fr);
+  grid-template-rows:auto 1fr;align-items:center;justify-content:center;
+  column-gap:clamp(10px,1.7vw,24px);row-gap:10px;
+  width:100%;min-height:700px;padding:clamp(13px,2vw,30px);
+  background:linear-gradient(120deg,#25112b28,#21133626 62%,#2d1c45b0),url('images/monkey-library.webp') center / cover no-repeat;
+}
+.board .chapter-bar{grid-column:1/-1;grid-row:1;justify-self:center;
+  padding:9px clamp(17px,3vw,42px);border:2px solid #e5c18c;border-radius:24px;
+  color:#fff1d4;background:linear-gradient(135deg,#60316edb,#34234bdf);
+  box-shadow:0 4px 15px #170c29b8;font-size:clamp(13px,1.8vw,21px);line-height:1.2}
+.mentor-scene{grid-column:1;grid-row:2;position:relative;isolation:isolate;
+  width:100%;height:100%;min-height:550px;align-self:stretch;overflow:hidden;
+  border:2px solid #dac18b99;border-radius:22px;
+  background:linear-gradient(180deg,#482a6278 0%,#42214c0a 47%,#27162b72 100%);
+  box-shadow:inset 0 0 35px #170a238a,0 8px 22px #130e2066;pointer-events:none}
+.mentor-lights{position:absolute;top:10px;right:15px;font-size:20px;color:#ffd996;text-shadow:0 0 13px #ffe39d;opacity:.8}
+.mentor-label{position:absolute;z-index:4;top:16px;left:15px;right:48px;
+  color:#ffe5b3;text-shadow:0 2px 7px #221129;font-weight:bold;font-size:clamp(14px,1.5vw,18px)}
+.mentor-chair{position:absolute;z-index:1;left:13%;bottom:17%;width:74%;height:53%;
+  background:radial-gradient(ellipse at 48% 46%,#9e6596 0%,#693861 58%,#452347 85%);
+  border:clamp(5px,.65vw,11px) ridge #bb8b54;border-radius:46% 46% 24% 24%;
+  box-shadow:inset 0 0 15px #3d1945aa,0 15px 25px #110a1cae}
+.mentor-chair:before,.mentor-chair:after{content:'';position:absolute;bottom:-6%;width:35%;height:35%;
+  border:6px ridge #bf925f;background:#713d63;border-radius:40%;z-index:1}
+.mentor-chair:before{left:-24%}.mentor-chair:after{right:-24%}
+.mentor-figure{position:absolute;z-index:2;left:11%;bottom:12%;width:79%;height:68%;
+  filter:drop-shadow(0 9px 5px #1c102b96);pointer-events:none}
+.mentor-figure>img{display:block;width:100%;height:100%;object-fit:contain;object-position:bottom}
+.mentor-desk{position:absolute;z-index:3;left:-2%;right:-2%;bottom:3%;height:19%;
+  border-radius:28px 28px 12px 12px;background:linear-gradient(160deg,#9f6c4c,#6d3d43 65%,#49233a);
+  border:7px ridge #d2a574;box-shadow:0 13px 0 #40243c,0 15px 20px #190d25b8}
+.mentor-desk:before{content:'';position:absolute;inset:7px 12px;pointer-events:none;
+  border:2px solid #dcae7b78;border-radius:19px}
+.mentor-desk span{display:block;text-align:center;font-size:clamp(42px,5.2vw,69px);
+  transform:translateY(-28%);filter:drop-shadow(0 2px 4px #2a1b2c)}
+.mentor-quip{position:absolute;z-index:5;bottom:25%;left:2.5%;right:2.5%;
+  padding:9px 11px;max-width:100%;border:2px solid #cb9b6c;border-radius:12px;
+  font-size:clamp(12px,1.35vw,16px);line-height:1.26;text-align:center;font-weight:bold;
+  background:#fff1d7f0;color:#613e5b;box-shadow:0 4px 12px #24102799}
+.board .paper{grid-column:2;grid-row:2;z-index:2;align-self:center;
+  width:100%;max-width:none;min-width:0;margin:0;
+  border:6px double #bb8554;border-left-width:10px;
+  background:linear-gradient(105deg,#d6aa79 0 7px,#fff7e4 9px,#f4dfbc 72%,#ead0a6 100%);
+  border-radius:14px 29px 29px 14px;
+  box-shadow:0 14px 31px #150d25ab,inset 0 0 0 3px #fff8e8,
+             inset 13px 0 16px #ba967080;
+  padding:clamp(16px,2.4vw,31px)}
+.board .paper h2{color:#61366b;text-shadow:0 1px #fff9eb}
+#math .visual{position:relative;max-width:95%;margin:9px auto 17px;
+  padding:12px 12px 19px;border-radius:12px 12px 5px 5px;
+  background:linear-gradient(#f9eaceaa,#edcf9dba);border:2px solid #d0ab78;
+  box-shadow:inset 0 0 12px #bc946359}
+#math .visual:after{content:'';position:absolute;left:-2%;right:-2%;bottom:-7px;height:10px;
+  background:linear-gradient(#b9855a,#835243);border:2px ridge #e1ba89;border-radius:4px}
+#math .equation{padding:7px 4px;color:#60326e;text-shadow:0 2px #fff4dc}
+#reading .reader-word{border:6px ridge #b88c68;border-left-width:15px;
+  background:linear-gradient(105deg,#d0a68b,#fff0d6 15%,#fff8ec 90%);
+  box-shadow:4px 7px 0 #b7a19a4a;padding:12px 23px}
+#reading .picture-choice{border-radius:9px 18px 18px 9px;border-left:9px solid #b98f75;
+  background:linear-gradient(90deg,#e9cfae,#fff7ec 18%);box-shadow:3px 7px 0 #ac8f7455}
+#reading .sentence-area{background:repeating-linear-gradient(0deg,#fffaf0 0 43px,#f0e0d3 44px 45px);
+  border:3px double #b98c91;box-shadow:inset 0 0 15px #dcc5a44d}
+#frog .paper{background:linear-gradient(110deg,#d5b68c 0 7px,#fff7dc 10px,#eaf0d8 100%)}
+#frog .frog-option{background:linear-gradient(#fffaed,#e7f1d5);border-color:#93a97a;
+ box-shadow:0 5px 0 #a3a87d}
+#frog .frog-slot{background:linear-gradient(#fff9ec,#e4e8d6);border-color:#b8a98c}
+#frog .frog-slot.filled{background:#d9efc7;border-color:#89b274}
+#frog .story-panel{background:linear-gradient(#fff9ec,#e8f2d6);border-color:#9fa978}
+@media(max-width:1080px){
+ .scene.board{grid-template-columns:minmax(0,1fr);grid-template-rows:auto auto auto;
+   padding:clamp(8px,1.8vw,18px);gap:8px;min-height:0}
+ .board .chapter-bar{grid-column:1;grid-row:1;font-size:clamp(13px,2vw,18px)}
+ .mentor-scene{grid-column:1;grid-row:2;height:190px;min-height:190px;border-radius:16px;overflow:hidden}
+ .mentor-label{top:9px;left:15px;font-size:16px}
+ .mentor-chair{left:40px;bottom:7px;width:145px;height:140px;border-width:6px}
+ .mentor-chair:before,.mentor-chair:after{border-width:4px}
+ .mentor-figure{left:40px;bottom:0;width:145px;height:170px}
+ .mentor-desk{left:15px;right:auto;bottom:-9px;width:200px;height:43px;border-width:4px}
+ .mentor-desk span{font-size:36px;transform:translateY(-39%)}
+ .mentor-quip{top:61px;bottom:auto;left:235px;right:20px;padding:11px 13px;
+   font-size:clamp(14px,2.2vw,19px);max-width:none;text-align:left}
+ .board .paper{grid-column:1;grid-row:3;max-width:100%;padding:clamp(12px,2.3vw,22px)}
+}
+@media(max-width:560px){
+ .scene.board{padding:6px;gap:7px}
+ .board .chapter-bar{padding:7px 12px;font-size:12px;letter-spacing:.02em}
+ .mentor-scene{height:139px;min-height:139px}
+ .mentor-label{top:7px;left:10px;font-size:12px}
+ .mentor-lights{top:4px;right:7px;font-size:15px}
+ .mentor-chair{left:16px;bottom:4px;width:113px;height:102px;border-width:4px}
+ .mentor-figure{left:16px;bottom:-4px;width:115px;height:122px}
+ .mentor-desk{left:3px;bottom:-13px;width:140px;height:34px;border-width:3px}
+ .mentor-desk span{font-size:27px}
+ .mentor-quip{left:149px;right:8px;top:43px;font-size:clamp(12px,3.2vw,15px);padding:8px;line-height:1.22}
+ .board .paper{padding:11px 8px;border-width:4px;border-left-width:7px}
+ .board .paper h2{font-size:clamp(22px,6vw,28px)}
+ .board .paper p{font-size:clamp(14px,4vw,17px)}
+ #math .visual{padding:7px 4px 12px;font-size:clamp(25px,8vw,39px)}
+ #math .equation{font-size:clamp(35px,10vw,54px);gap:7px;min-height:67px}
+ #math .equation .unknown{min-width:50px}
+ #math .answers{gap:8px}
+ #reading .picture-choice{min-width:0;flex:1;max-width:31%;padding:6px;min-height:111px}
+ #reading .picture-choice .symbol{font-size:41px}
+ #reading .picture-choice small{font-size:12px}
+ .frog-option{min-height:83px!important}
+}
 </style>
 </head>
 <body><div class="screen">
@@ -43,9 +153,9 @@ main{width:min(1400px,100%);margin:auto}.scene{position:relative;border:6px ridg
 <div class="speech"><h2>Привет, Лада!</h2><p>Я — Умняшка Обезьяна. В моей библиотеке спрятаны три испытания: <b>счёт, чтение и тайна лягушки</b>. Пройдёшь все — я отправлюсь с тобой в царство Аида!</p><p class="hint">Проверять себя можно сколько угодно — здесь не ставят плохих оценок.</p></div>
 <button class="bigbutton" id="start" type="button">📚 Начать испытания!</button>
 </section>
-<section class="scene board" id="math" hidden><div class="chapter-bar">✦ Испытание I · Счёт и сравнение ✦</div><div class="paper"><div class="steps" id="mathSteps"></div><h2 id="mathHeading">Математическая загадка</h2><p id="mathPrompt"></p><div class="visual" id="mathVisual" aria-hidden="true"></div><div class="equation" id="equation" aria-label="Математическая задача"></div><div class="answers" id="mathAnswers"></div><div class="feedback" id="mathFeedback" role="status" aria-live="polite"></div><button class="bigbutton secondary" id="mathNext" type="button" hidden>Следующая задача →</button></div></section>
-<section class="scene board" id="reading" hidden><div class="chapter-bar">✦ Испытание II · Заговорившие книги ✦</div><div class="paper"><div class="steps" id="readingSteps"></div><h2 id="readingHeading">Книги ищут свои обложки</h2><p id="readingPrompt">Прочитай слово и найди подходящую картинку.</p><div id="readSingle"><div class="reader-word" id="readingWord"></div><div class="syllables" id="syllables"></div><div class="answers" id="readingAnswers"></div></div><div id="sentence" hidden><p>Кто что делает? Поставь слова по порядку и прочитай предложение.</p><div class="sentence-area" id="sentenceSlots" aria-label="Собранное предложение"></div><div class="answers" id="sentenceTokens"></div><button type="button" class="bigbutton secondary" id="sentenceUndo">↶ Убрать последнее слово</button><button type="button" class="bigbutton" id="sentenceCheck" hidden>Проверить предложение</button></div><div class="feedback" id="readingFeedback" role="status" aria-live="polite"></div><button type="button" class="bigbutton secondary" id="readingNext" hidden>Следующее слово →</button></div></section>
-<section class="scene board frog-board" id="frog" hidden><div class="chapter-bar">✦ Испытание III · Тайна лягушки ✦</div><div class="paper"><h2>Как появляется лягушка?</h2><p>Умняшка перепутала страницы природной книги! Нажимай на картинки в том порядке, в котором лягушка растёт: от икринки до взрослой лягушки.</p><div class="frog-slots" id="frogSlots" aria-label="Пять этапов жизненного цикла"></div><div class="frog-options" id="frogOptions" aria-label="Выбери следующий этап"></div><div class="feedback" id="frogFeedback" role="status" aria-live="polite"></div><div class="story-panel" id="storyPanel" hidden><h3>🎤 Расскажи историю Умняшке!</h3><p class="prompts">Откуда появляются головастики? Когда у них вырастают лапки? Куда исчезает хвост? Где живёт взрослая лягушка? Что будет потом?</p><p>Расскажи всё вслух. Когда закончишь рассказ, нажмите вместе на кнопку.</p><button class="bigbutton" id="storyConfirm" type="button">✓ История рассказана!</button></div></div></section>
+<section class="scene board" id="math" hidden><div class="chapter-bar">✦ Испытание I · Счёт и сравнение ✦</div><aside class="mentor-scene" aria-hidden="true"><span class="mentor-lights">✦ ✧ ✦</span><span class="mentor-label">Счёт и сравнение</span><div class="mentor-chair"></div><div class="mentor-figure" aria-hidden="true"><img src="images/monkey-cutout.webp" alt="Умняшка в розовом вязаном платье" draggable="false"><svg class="glasses" viewBox="0 0 474 815" aria-hidden="true"><g fill="none" stroke-linecap="round"><path d="M158 142 Q134 133 116 126 M309 142 Q333 132 357 126" stroke="#6c4170" stroke-width="9"/><ellipse cx="196" cy="146" rx="39" ry="34" stroke="#f9dc9d" stroke-width="10"/><ellipse cx="270" cy="146" rx="39" ry="34" stroke="#f9dc9d" stroke-width="10"/><ellipse cx="196" cy="146" rx="39" ry="34" stroke="#56345c" stroke-width="5"/><ellipse cx="270" cy="146" rx="39" ry="34" stroke="#56345c" stroke-width="5"/><path d="M234 142 Q234 133 232 143" stroke="#56345c" stroke-width="8"/></g></svg></div><div class="mentor-desk"><span>📖</span></div><div class="mentor-quip">«Разложим все книги по местам!»</div></aside><div class="paper"><div class="steps" id="mathSteps"></div><h2 id="mathHeading">Математическая загадка</h2><p id="mathPrompt"></p><div class="visual" id="mathVisual" aria-hidden="true"></div><div class="equation" id="equation" aria-label="Математическая задача"></div><div class="answers" id="mathAnswers"></div><div class="feedback" id="mathFeedback" role="status" aria-live="polite"></div><button class="bigbutton secondary" id="mathNext" type="button" hidden>Следующая задача →</button></div></section>
+<section class="scene board" id="reading" hidden><div class="chapter-bar">✦ Испытание II · Заговорившие книги ✦</div><aside class="mentor-scene" aria-hidden="true"><span class="mentor-lights">✦ ✧ ✦</span><span class="mentor-label">Книжная загадка</span><div class="mentor-chair"></div><div class="mentor-figure" aria-hidden="true"><img src="images/monkey-cutout.webp" alt="Умняшка в розовом вязаном платье" draggable="false"><svg class="glasses" viewBox="0 0 474 815" aria-hidden="true"><g fill="none" stroke-linecap="round"><path d="M158 142 Q134 133 116 126 M309 142 Q333 132 357 126" stroke="#6c4170" stroke-width="9"/><ellipse cx="196" cy="146" rx="39" ry="34" stroke="#f9dc9d" stroke-width="10"/><ellipse cx="270" cy="146" rx="39" ry="34" stroke="#f9dc9d" stroke-width="10"/><ellipse cx="196" cy="146" rx="39" ry="34" stroke="#56345c" stroke-width="5"/><ellipse cx="270" cy="146" rx="39" ry="34" stroke="#56345c" stroke-width="5"/><path d="M234 142 Q234 133 232 143" stroke="#56345c" stroke-width="8"/></g></svg></div><div class="mentor-desk"><span>📖</span></div><div class="mentor-quip">«Каждая книга ждёт своё имя!»</div></aside><div class="paper"><div class="steps" id="readingSteps"></div><h2 id="readingHeading">Книги ищут свои обложки</h2><p id="readingPrompt">Прочитай слово и найди подходящую картинку.</p><div id="readSingle"><div class="reader-word" id="readingWord"></div><div class="syllables" id="syllables"></div><div class="answers" id="readingAnswers"></div></div><div id="sentence" hidden><p>Кто что делает? Поставь слова по порядку и прочитай предложение.</p><div class="sentence-area" id="sentenceSlots" aria-label="Собранное предложение"></div><div class="answers" id="sentenceTokens"></div><button type="button" class="bigbutton secondary" id="sentenceUndo">↶ Убрать последнее слово</button><button type="button" class="bigbutton" id="sentenceCheck" hidden>Проверить предложение</button></div><div class="feedback" id="readingFeedback" role="status" aria-live="polite"></div><button type="button" class="bigbutton secondary" id="readingNext" hidden>Следующее слово →</button></div></section>
+<section class="scene board frog-board" id="frog" hidden><div class="chapter-bar">✦ Испытание III · Тайна лягушки ✦</div><aside class="mentor-scene" aria-hidden="true"><span class="mentor-lights">✦ ✧ ✦</span><span class="mentor-label">Тайна пруда</span><div class="mentor-chair"></div><div class="mentor-figure" aria-hidden="true"><img src="images/monkey-cutout.webp" alt="Умняшка в розовом вязаном платье" draggable="false"><svg class="glasses" viewBox="0 0 474 815" aria-hidden="true"><g fill="none" stroke-linecap="round"><path d="M158 142 Q134 133 116 126 M309 142 Q333 132 357 126" stroke="#6c4170" stroke-width="9"/><ellipse cx="196" cy="146" rx="39" ry="34" stroke="#f9dc9d" stroke-width="10"/><ellipse cx="270" cy="146" rx="39" ry="34" stroke="#f9dc9d" stroke-width="10"/><ellipse cx="196" cy="146" rx="39" ry="34" stroke="#56345c" stroke-width="5"/><ellipse cx="270" cy="146" rx="39" ry="34" stroke="#56345c" stroke-width="5"/><path d="M234 142 Q234 133 232 143" stroke="#56345c" stroke-width="8"/></g></svg></div><div class="mentor-desk"><span>📖</span></div><div class="mentor-quip">«Как же головастик станет лягушкой?»</div></aside><div class="paper"><h2>Как появляется лягушка?</h2><p>Умняшка перепутала страницы природной книги! Нажимай на картинки в том порядке, в котором лягушка растёт: от икринки до взрослой лягушки.</p><div class="frog-slots" id="frogSlots" aria-label="Пять этапов жизненного цикла"></div><div class="frog-options" id="frogOptions" aria-label="Выбери следующий этап"></div><div class="feedback" id="frogFeedback" role="status" aria-live="polite"></div><div class="story-panel" id="storyPanel" hidden><h3>🎤 Расскажи историю Умняшке!</h3><p class="prompts">Откуда появляются головастики? Когда у них вырастают лапки? Куда исчезает хвост? Где живёт взрослая лягушка? Что будет потом?</p><p>Расскажи всё вслух. Когда закончишь рассказ, нажмите вместе на кнопку.</p><button class="bigbutton" id="storyConfirm" type="button">✓ История рассказана!</button></div></div></section>
 <section class="scene finish" id="finish" hidden role="dialog" aria-modal="true" aria-labelledby="finishTitle"><div class="finish-card"><div>✦ Три испытания пройдены ✦</div><h2 id="finishTitle">Умняшка с нами!</h2><p id="finishLine">Ты умеешь считать, читать и открывать тайны природы. Я отправляюсь с тобой к Аиду!</p><div class="team" id="team"><div class="member" id="teamCat"><img src="images/blue-cat.webp" alt="Ловкий синий кот"><span>🐈 Ловкость</span></div><div class="member" id="teamRabbit"><img src="images/rabbit-cutout.webp" alt="Розовый сильный заяц"><span>🐰 Сила</span></div><div class="member"><img src="images/monkey-cutout.webp" alt="Умная вязаная обезьянка"><span>🐒 Интеллект</span></div></div><p class="team-note" id="teamNote"></p><div class="finish-actions"><a href="ladaburg-oak-quarter.html">🌳 К дубу</a><a href="collection.html">🏅 Коллекция героев</a><button type="button" id="again">↻ Испытания ещё раз</button></div></div></section>
 <p id="gameConnection" aria-live="polite" style="font-size:13px;text-align:center"></p>
 </main></div>
