@@ -1,0 +1,155 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#3e2d42">
+<meta name="description" content="Лада и трое друзей на военном совете в ратуше Ладабурга. Сравни три пути к Аиду, взвесь преимущества и опасности и подготовь маршрут.">
+<title>Совет отряда — ратуша Ладабурга</title>
+<link rel="stylesheet" href="ladaburg-council.css?v=1">
+<script src="wardrobe.js?v=3" defer></script>
+<script src="game-registry.js?v=4" defer></script>
+<script src="ladaburg-council.js?v=1" defer></script>
+<script src="world-coop-bridge.js?v=12" defer></script>
+<script src="lada-avatar.js?v=3" defer></script>
+</head>
+<body>
+<header class="topbar">
+ <a href="ladaburg.html">← Ладабург</a>
+ <span>Ратуша · Совет отряда</span>
+ <a href="ladaburg-oak-quarter.html">🌳 Дубовый квартал</a>
+</header>
+<main>
+ <div class="hall">
+  <div class="hall-scene" aria-label="В ратуше Ладабурга четверо героев сидят за большим овальным столом. Перед ними — карта трёх дорог, ведущих к царству Аида.">
+   <img class="hall-backdrop" src="images/ladaburg-council-hall.svg" alt="" aria-hidden="true" draggable="false">
+   <div class="scene-heading"><span>ЗАЛ ЧЕТЫРЁХ СОВЕТНИКОВ</span><strong>Военный совет</strong></div>
+   <div class="seated-friends">
+    <button class="seat cat-seat" type="button" data-speaker="cat" aria-label="Послушать мнение ловкого кота">
+      <span class="seat-chair" aria-hidden="true"></span>
+      <img class="avatar" src="images/blue-cat.webp" alt="" draggable="false">
+      <span class="person-label">Кот</span>
+    </button>
+    <button class="seat monkey-seat" type="button" data-speaker="monkey" aria-label="Послушать мнение Умняшки">
+      <span class="seat-chair" aria-hidden="true"></span>
+      <img class="avatar" src="images/monkey-cutout.webp" alt="" draggable="false">
+      <span class="person-label">Умняшка</span>
+    </button>
+    <button class="seat lada-seat" type="button" data-speaker="lada" aria-label="Лада — командир отряда">
+      <span class="seat-chair" aria-hidden="true"></span>
+      <img class="avatar" id="councilLada" src="images/lada-cutout.webp" alt="" draggable="false">
+      <span class="person-label">Лада</span>
+    </button>
+    <button class="seat rabbit-seat" type="button" data-speaker="rabbit" aria-label="Послушать мнение сильного зайца">
+      <span class="seat-chair" aria-hidden="true"></span>
+      <img class="avatar" src="images/rabbit-cutout.webp" alt="" draggable="false">
+      <span class="person-label">Заяц</span>
+    </button>
+   </div>
+   <div class="wood-table" aria-hidden="true">
+    <svg viewBox="0 0 1180 365" preserveAspectRatio="none">
+     <defs>
+      <linearGradient id="mahogany" x1="0" y1="0" x2=".7" y2="1"><stop stop-color="#86543e"/><stop offset=".3" stop-color="#5b362d"/><stop offset=".65" stop-color="#402b2f"/><stop offset="1" stop-color="#251d2b"/></linearGradient>
+      <linearGradient id="parchment" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#f3e5bf"/><stop offset=".45" stop-color="#d9c091"/><stop offset="1" stop-color="#a88765"/></linearGradient>
+      <radialGradient id="light"><stop stop-color="#e7bb84" stop-opacity=".75"/><stop offset="1" stop-color="#9a5f54" stop-opacity="0"/></radialGradient>
+     </defs>
+     <ellipse cx="590" cy="183" rx="568" ry="165" fill="#1a111e" opacity=".55"/>
+     <ellipse cx="590" cy="160" rx="568" ry="157" fill="url(#mahogany)" stroke="#9d794e" stroke-width="13"/>
+     <ellipse cx="590" cy="160" rx="543" ry="141" fill="none" stroke="#c59a61" stroke-width="3" opacity=".75"/>
+     <ellipse cx="590" cy="160" rx="519" ry="125" fill="none" stroke="#34252b" stroke-width="7" opacity=".8"/>
+     <path d="M108 160Q591 130 1074 160M151 104Q565 160 1021 103M186 226Q596 160 995 226" fill="none" stroke="#d3a078" stroke-width="4" opacity=".19"/>
+     <ellipse cx="568" cy="132" rx="445" ry="119" fill="url(#light)" opacity=".4"/>
+     <path d="M302 46Q559 18 864 54L886 259Q578 299 276 257Z" fill="url(#parchment)" stroke="#826048" stroke-width="9"/>
+     <path d="M314 62Q571 38 849 67L866 242Q572 273 297 242Z" fill="none" stroke="#a58766" stroke-width="3"/>
+     <!-- A map contains three colored route lines; buttons on the map are separately interactive. -->
+     <path d="M363 172C468 42 639 44 795 167" fill="none" stroke="#746191" stroke-width="10" stroke-dasharray="11 10" stroke-linecap="round"/>
+     <path d="M363 172Q565 137 795 167" fill="none" stroke="#a66152" stroke-width="10" stroke-dasharray="11 10" stroke-linecap="round"/>
+     <path d="M363 172C500 277 671 275 795 167" fill="none" stroke="#4c827f" stroke-width="10" stroke-dasharray="11 10" stroke-linecap="round"/>
+     <g fill="#654e43" stroke="#f0d8aa" stroke-width="3"><circle cx="363" cy="172" r="26"/><circle cx="795" cy="167" r="25"/></g>
+     <path d="M354 178V160L363 148 373 160V178Z" fill="#f0d9b1"/>
+     <path d="M783 178V146L795 137 809 146V178Z" fill="#d6bdd1"/>
+     <g fill="#5a4764" opacity=".64"><circle cx="539" cy="108" r="10"/><circle cx="577" cy="94" r="10"/><circle cx="613" cy="108" r="10"/></g>
+     <g fill="#447a81" opacity=".55"><path d="M532 240q32-18 60 0t65-5" stroke="#447a81" stroke-width="7" fill="none"/></g>
+     <g fill="#996c53"><circle cx="239" cy="137" r="13"/><circle cx="929" cy="198" r="14"/></g>
+     <path d="M224 136 250 138M915 197 942 198" stroke="#dab98d" stroke-width="5"/>
+     <g fill="#d7b782" stroke="#65483d" stroke-width="3"><ellipse cx="174" cy="146" rx="22" ry="35"/><ellipse cx="996" cy="128" rx="19" ry="30"/></g>
+     <g font-family="Georgia,serif" font-size="22" font-weight="bold" fill="#5a493c"><text x="350" y="229">ЛАДАБУРГ</text><text x="747" y="219">АИД</text></g>
+    </svg>
+   </div>
+   <button type="button" class="map-route forest" data-route="forest" aria-label="Рассмотреть путь через Тёмный лес"><span aria-hidden="true">🌲</span><small>Лес</small></button>
+   <button type="button" class="map-route bridge" data-route="bridge" aria-label="Рассмотреть путь по Старому мосту"><span aria-hidden="true">🌉</span><small>Мост</small></button>
+   <button type="button" class="map-route river" data-route="river" aria-label="Рассмотреть путь по Подземной реке"><span aria-hidden="true">🌊</span><small>Река</small></button>
+   <div class="speech" id="speech" role="status" aria-live="polite"><strong id="speakerName">Умняшка</strong><span id="speechText">Перед нами три дороги. У каждой есть свои преимущества и опасности. Давайте всё обсудим!</span></div>
+   <div class="scene-note" id="sceneNote">Нажми на героя, чтобы послушать его совет</div>
+   <div class="storm-window" id="stormOverlay" hidden aria-hidden="true">☁ ☂ ☁</div>
+  </div>
+  <div class="seal-progress" aria-label="Этапы совета">
+   <span id="step-compare">I · Сравнение</span>
+   <span id="step-news">II · Донесение</span>
+   <span id="step-helpers">III · Отряд</span>
+   <span id="step-finish">IV · Решение</span>
+  </div>
+  <div class="council-workspace">
+   <section id="phase-intro" class="phase" aria-labelledby="introTitle">
+    <div class="intro-paper">
+     <span class="eyebrow">РАСПОРЯЖЕНИЕ РАТУШИ ЛАДАБУРГА</span>
+     <h1 id="introTitle">Перед походом — военный совет</h1>
+     <p>Лада, кот, заяц и Умняшка собрались за одним столом. Куда идти, чтобы добраться до царства Аида? Есть три дороги. У каждой — <strong>свои плюсы и минусы</strong>.</p>
+     <p>Выслушай друзей, сравни пути, получи новые сведения и реши, кому доверить разведку. <strong>Здесь нет единственного правильного пути.</strong></p>
+     <button class="primary" type="button" id="begin">📜 Разложить карты на столе</button>
+    </div>
+   </section>
+   <section id="phase-compare" class="phase" hidden aria-labelledby="compareTitle">
+    <div class="heading-line"><div><span class="eyebrow">ЭТАП I · СОВЕТ НАЧИНАЕТСЯ</span><h2 id="compareTitle">Взвесь три дороги</h2></div><div class="wax-stamp" aria-hidden="true">I</div></div>
+    <p class="explain">Рассмотри все три маршрута: нажимай на карту или на карточки. **Плюсы** помогут отряду, **минусы** могут создать трудности. После обсуждения выбери предварительную дорогу.</p>
+    <div id="routeCards" class="route-cards" aria-label="Три дороги с преимуществами и опасностями"></div>
+    <div class="council-action"><p id="compareStatus" class="live-status" aria-live="polite">Изучи все три дороги.</p><button class="primary" id="chooseFirst" type="button" disabled>Отправить гонца за сведениями</button></div>
+   </section>
+   <section id="phase-news" class="phase" hidden aria-labelledby="newsTitle">
+    <div class="dispatch"><span class="eyebrow">СРОЧНАЯ ВЕСТЬ ИЗ ГОРОДСКИХ ВОРОТ</span><h2 id="newsTitle">Гонец принёс новое донесение!</h2>
+     <p>Ночью прошёл сильный дождь. Лесные тропы размокли, доски старого моста стали скользкими, а вода в реке поднялась. <strong>Но все три дороги по-прежнему доступны.</strong></p>
+     <p>Разве можно выбирать дорогу, не учитывая новые обстоятельства? Пусть Лада ещё раз сравнит <strong>за</strong> и <strong>против</strong>.</p>
+     <button id="readNews" type="button" class="primary">🔍 Пересмотреть маршруты</button>
+    </div>
+   </section>
+   <section id="phase-reconsider" class="phase" hidden aria-labelledby="reconsiderTitle">
+    <div class="heading-line"><div><span class="eyebrow">ЭТАП II · ПОСЛЕ ДОЖДЯ</span><h2 id="reconsiderTitle">Изменится ли твой план?</h2></div><div class="wax-stamp" aria-hidden="true">II</div></div>
+    <p class="explain">В каждом маршруте появились новые обстоятельства. Посмотри, <strong>что стало лучше, а что хуже</strong>. Можно оставить прежнюю дорогу — если объяснишь почему. Можно и передумать.</p>
+    <div id="revisedRouteCards" class="route-cards" aria-label="Три дороги после нового донесения"></div>
+    <div class="council-action"><p id="reconsiderStatus" class="live-status" aria-live="polite">Выбор может измениться.</p><button class="primary" id="confirmRoute" type="button">Утвердить дорогу →</button></div>
+   </section>
+   <section id="phase-helpers" class="phase" hidden aria-labelledby="helpersTitle">
+    <div class="heading-line"><div><span class="eyebrow">ЭТАП III · РАЗДЕЛЕНИЕ ОБЯЗАННОСТЕЙ</span><h2 id="helpersTitle">Кому доверить разведку?</h2></div><div class="wax-stamp" aria-hidden="true">III</div></div>
+    <p id="helpersIntro" class="explain">Все четверо отправятся вместе. Выбери <strong>двух друзей</strong>, которые подготовят путь впереди отряда. У каждого есть сильная сторона, но и ограничение.</p>
+    <div id="helperCards" class="helper-cards" aria-label="Помощники, их преимущества и ограничения"></div>
+    <div class="council-action"><p id="helpersStatus" class="live-status" aria-live="polite">Выбери двух помощников.</p><button class="primary" id="confirmHelpers" type="button" disabled>Составить приказ →</button></div>
+   </section>
+   <section id="phase-plan" class="phase" hidden aria-labelledby="planTitle">
+    <div class="heading-line"><div><span class="eyebrow">ЭТАП IV · РЕШЕНИЕ КОМАНДИРА</span><h2 id="planTitle">Расскажи свой план отряду</h2></div><div class="wax-stamp" aria-hidden="true">IV</div></div>
+    <div class="plan-paper">
+     <h3>✦ Приказ отряда ✦</h3>
+     <p id="planRoad" class="plan-line"></p>
+     <p id="planAdvantage" class="plan-line"></p>
+     <p id="planRisk" class="plan-line"></p>
+     <p id="planTeam" class="plan-line"></p>
+    </div>
+    <p class="explain">Объясни друзьям вслух: <em>«Я выбираю эту дорогу, потому что… Но нам нужно остерегаться… Я поручаю друзьям…»</em></p>
+    <div class="council-action"><button type="button" id="rethink" class="secondary">↻ Поменять решение</button><button type="button" id="sealPlan" class="primary">🔏 Я рассказала — скрепить печатью</button></div>
+   </section>
+   <section id="phase-finish" class="phase" hidden aria-labelledby="finishTitle">
+    <div class="finish-layout">
+     <img src="images/council-sealed-scroll.svg" alt="Свиток военного совета Ладабурга, украшенный тремя дорогами и печатью" draggable="false">
+     <div class="finish-card"><span class="eyebrow">НАГРАДА РАТУШИ</span><h2 id="finishTitle">План экспедиции утверждён!</h2>
+      <p id="finalSummary"></p>
+      <p>У любой дороги есть риск. Главное, что Лада выслушала друзей, сравнила доводы и смогла объяснить своё решение.</p>
+      <p><strong>Свиток военного совета добавлен в коллекцию.</strong> Путешествие к Аиду пока не начинается — отряд ещё в Ладабурге.</p>
+      <div class="finish-links"><a class="primary link-button" href="collection.html">🏅 Книга наград</a><a class="secondary link-button" href="ladaburg.html">🏰 Вернуться в город</a><button id="replay" class="secondary" type="button">↻ Провести новый совет</button></div>
+     </div>
+    </div>
+   </section>
+  </div>
+ </div>
+ <p id="gameConnection" class="sync-line" aria-live="polite"></p>
+</main>
+</body>
+</html>
