@@ -36,6 +36,11 @@ main{max-width:1550px;margin:auto}.scene{position:relative;border:7px double var
 .oak-rescue:hover,.oak-rescue:focus-visible{background:#ffe9b65c;border-color:#fff0b8;outline:3px solid #76518c;outline-offset:-3px}
 .oak-rescue-label{position:absolute;bottom:2%;left:50%;transform:translateX(-50%);padding:8px 11px;border:3px solid #c7a378;border-radius:14px;background:#fff1ddec;color:#53334c;text-align:center;box-shadow:0 5px 13px #21102aa8;font:bold clamp(12px,1.7vw,22px)/1.2 Georgia,serif;white-space:nowrap;pointer-events:none}
 @media(max-width:720px){.oak-rescue{left:44%;top:43%;width:32%;height:38%}.oak-rescue-label{font-size:11px;padding:5px 6px;white-space:normal;min-width:96px}}
+
+/* Entrance to Vulcan's forge: top-right rooftops, away from the four established click targets. */
+.forge-gate{position:absolute;right:3.5%;top:5%;z-index:8;display:grid;place-items:center;min-width:clamp(130px,19%,240px);min-height:clamp(56px,8vw,110px);padding:10px 13px;border:4px ridge #bd9466;border-radius:15px 15px 30px 30px;text-align:center;line-height:1.23;font:bold clamp(14px,1.7vw,24px) Georgia,serif;color:#fff0db;background:linear-gradient(150deg,#553039ef,#37273dea),radial-gradient(#f5a35255,transparent);box-shadow:0 5px 0 #422626,0 7px 17px #211327aa;text-decoration:none;touch-action:manipulation}
+.forge-gate:hover,.forge-gate:focus-visible{background:#845064;outline:3px solid #ffda8c;outline-offset:2px}
+@media(max-width:720px){.forge-gate{right:1%;top:3%;min-width:80px;max-width:24%;min-height:46px;border-width:2px;font-size:clamp(10px,2.5vw,13px);padding:5px 4px}}
 </style>
 </head>
 <body>
@@ -45,6 +50,7 @@ main{max-width:1550px;margin:auto}.scene{position:relative;border:7px double var
 <a class="house" href="ladaburg-cat-home.html" aria-label="Войти в первый дом слева, в гости к ловкому синему коту"><span class="house-label">🐈 Дом кота</span></a>
 <a class="rabbit-house" href="ladaburg-rabbit-home.html" aria-label="Войти в дом сильного розового зайца, в гости к силачу"><span class="rabbit-house-label">🐰 Дом силача</span></a>
 <a class="monkey-house" href="ladaburg-monkey-home.html" aria-label="Войти в дом Умняшки Обезьяны с библиотекой"><span class="monkey-label">📖 Умняшка</span></a>
+<a class="forge-gate" href="ladaburg-forge.html?v=1" aria-label="Войти в кузницу Вулкана и выковать волшебные крылатые доспехи">⚒ Кузница Вулкана</a>
 <a class="oak-rescue" href="ladaburg-nosferatu-oak.html" aria-label="Подойти к древнему дубу и спасти Умняшку от Носферату"><span class="oak-rescue-label">🌰 К дубу · Спасение</span></a>
 </div>
 <div class="caption"><h1>Дубовый квартал</h1><p>На площади растёт древний дуб. В этом квартале живут три будущих героя: ловкий кот, сильный заяц и Умняшка Обезьяна.</p></div>
