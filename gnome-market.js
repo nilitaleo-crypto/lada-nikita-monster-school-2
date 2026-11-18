@@ -52,7 +52,13 @@ function playOrders(){
   {buyer:'Лучик',portrait:'luchik',ask:'Положи хлеб и яблоко — мой завтрак!',want:['bread','apple']},
   {buyer:'Кубик',portrait:'kubik',ask:'Положи два разных овоща: морковь и капусту.',want:['carrot','cabbage']}
  ];
- sceneBadge('🍎 Лавка перепутанных заказов');addPortraits(['bantik','ponchik','yula']);
+ sceneBadge('🍎 Лавка перепутанных заказов');
+ // The illustrated cover already depicts home/help/restart buttons. Make them real,
+ // touch-sized hit targets so no visible control is inert.
+ const visualHome=el('a','gm-scene-touch home');visualHome.id='gmSceneHome';visualHome.href='gnome-village.html';visualHome.setAttribute('aria-label','Вернуться в деревню гномов');scene.append(visualHome);
+ const visualHelp=el('button','gm-scene-touch help');visualHelp.type='button';visualHelp.id='gmSceneHelp';visualHelp.setAttribute('aria-label','Попросить подсказку к заказу');visualHelp.addEventListener('click',()=>hint('Сначала внимательно послушай просьбу гнома. Какие два товара ему нужны?'));scene.append(visualHelp);
+ const visualRestart=el('button','gm-scene-touch reload');visualRestart.type='button';visualRestart.id='gmSceneRestart';visualRestart.setAttribute('aria-label','Заново начать игру');visualRestart.addEventListener('click',()=>restart.click());scene.append(visualRestart);
+
  const counter=el('div','gm-goods');counter.id='gmProducts';
  const ids=Object.keys(products);
  for(const id of ids){const p=products[id],btn=el('button','gm-good');btn.type='button';btn.id='gm-item-'+id;btn.setAttribute('aria-label','Положить в заказ: '+p.name);
@@ -98,7 +104,7 @@ function playScales(){
  scene.append(choices);
  for(let i=0;i<3;i++){const b=el('button','gm-weight');b.type='button';b.id='gm-weight-'+i;b.setAttribute('aria-label','Выбрать гирьки');b.addEventListener('click',()=>choose(i));$('gmWeights').append(b)}
  let round=0,chosen=null,ready=false;
- function paint(){const task=tasks[round];setCount('Весы '+(round+1)+' / 6');speaker.src=avatar('kubik');say('Кубик','На левой чаше '+task.name.toLowerCase()+': они весят '+task.need+' гирь'+(task.need===2?'ки':'ки')+'. Подбери столько же гирек на правую чашу.');
+ function paint(){const task=tasks[round];setCount('Весы '+(round+1)+' / 6');speaker.src=avatar('kubik');say('Кубик','На левой чаше '+task.name.toLowerCase()+': они весят '+task.need+' '+(task.need>=2&&task.need<=4?'гирьки':'гирек')+'. Подбери столько же гирек на правую чашу.');
   $('gmLeftIcon').textContent=task.item;$('gmLeftWeight').textContent=task.need+' ⚙';$('gmRightIcon').textContent=chosen===null?'⚖️':'🪙';$('gmRightWeight').textContent=chosen===null?'?':String(task.opts[chosen])+' ⚙';
   for(let i=0;i<3;i++){const b=$('gm-weight-'+i);b.textContent=task.opts[i]+' ⚙';b.setAttribute('aria-label',task.opts[i]+' гирек');b.classList.toggle('chosen',chosen===i)}
   box.style.setProperty('--tilt',chosen===null?'0deg':task.opts[chosen]===task.need?'0deg':task.opts[chosen]>task.need?'8deg':'-8deg');
