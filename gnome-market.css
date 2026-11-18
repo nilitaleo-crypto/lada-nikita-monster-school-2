@@ -93,3 +93,17 @@ a,button{touch-action:manipulation;font:inherit}a:focus-visible,button:focus-vis
 .gm-scene-touch:hover,.gm-scene-touch:focus-visible{outline:3px solid #ffe28f;outline-offset:-4px;background:#fffac01f}
 .gm-nameplate{font-size:18px}}
 @media(prefers-reduced-motion:reduce){.gm-scale-top,.gm-good{transition:none}}
+/* Market mechanics revision 2: product inference, readable arithmetic, compact suspect comparison. */
+[data-game="orders"] .gm-goods .gm-good .label{display:none}
+[data-game="orders"] .gm-goods .gm-good{min-height:75px}
+[data-game="scales"] .gm-pan strong{font-variant-numeric:tabular-nums;background:#3a2a20d9;padding:4px 8px;border:2px solid #ebcb89;border-radius:9px;white-space:nowrap;font-size:clamp(18px,1.8vw,26px);line-height:1.14}
+[data-game="scales"] .gm-pan .big{font-size:clamp(27px,3.1vw,48px)}
+[data-game="scales"] .gm-scale-challenge{z-index:8;background:#fff0cffa;right:2.5%;width:30%;bottom:5%;min-height:104px}
+[data-game="scales"] .gm-scale-challenge b{font-size:clamp(12px,1.12vw,18px)}
+[data-game="scales"] .gm-scale-challenge .gm-weight{font-variant-numeric:tabular-nums}
+.gm-suspects{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:7px;margin:10px 0 0;align-items:stretch}
+.gm-suspects .gm-suspect{display:flex;flex-direction:column;gap:4px;align-items:center;justify-content:flex-start;padding:8px 7px;min-width:0;white-space:normal;line-height:1.18;text-align:center}
+.gm-suspect-icon{display:block;font-size:clamp(23px,3vw,34px);line-height:1}
+.gm-suspect-name{font-size:clamp(13px,1.45vw,17px)}
+.gm-suspect-traits{font-size:clamp(11px,1.18vw,14px);font-weight:normal;color:#61473a}
+@media(max-width:600px){.gm-suspects{gap:5px}.gm-suspects .gm-suspect{padding:6px 4px}.gm-suspect-traits{font-size:11px}}
