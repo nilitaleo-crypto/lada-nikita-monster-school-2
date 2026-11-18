@@ -174,7 +174,7 @@
           },
           "selected": {
             ".write": "auth != null && (auth.uid === root.child('rooms').child($roomId).child('owner').val() || auth.token.firebase.sign_in_provider === 'anonymous')",
-            ".validate": "newData.isString() && (newData.val() === 'default' || newData.val() === 'mermaid' || newData.val() === 'stars')"
+            ".validate": "newData.isString() && (newData.val() === 'default' || newData.val() === 'mermaid' || newData.val() === 'stars' || newData.val() === 'monankaka')"
           }
         }
       }
@@ -191,7 +191,7 @@
           },
           "selected": {
             ".write": "auth != null && auth.uid === $teacherId && auth.token.firebase.sign_in_provider === 'google.com'",
-            ".validate": "newData.isString() && (newData.val() === 'default' || newData.val() === 'mermaid' || newData.val() === 'stars')"
+            ".validate": "newData.isString() && (newData.val() === 'default' || newData.val() === 'mermaid' || newData.val() === 'stars' || newData.val() === 'monankaka')"
           }
         }
       }
