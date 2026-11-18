@@ -50,7 +50,7 @@ body.expedition-open{padding:0}body.expedition-open > header{display:none}
 #expeditionShop .shop-nav{max-width:1250px;margin:0 auto 12px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px;color:#fff4d1;font-size:clamp(15px,2vw,24px)}
 #expeditionShop .shop-nav button,#expeditionShop .shop-buttons button{border:2px solid #c5a26e;border-radius:12px;background:#fff0cd;color:#48322a;padding:10px 15px;min-height:46px;font-weight:bold}
 #expeditionShop .shop-frame{max-width:1250px;margin:auto;border:6px ridge #b69260;border-radius:16px;overflow:hidden;box-shadow:0 18px 40px #1e1110a6}
-#expeditionShop .shop-stage{position:relative;aspect-ratio:1672/941;min-width:665px;isolation:isolate;overflow:hidden;background:linear-gradient(180deg,#564c68 0%,#b88e61 50%,#714a35 66%,#50311f 100%);background-image:url('images/anubis-expedition-shop.webp'),url('images/bookshop-background.webp');background-position:center;background-size:100% 100%}
+#expeditionShop .shop-stage{position:relative;aspect-ratio:1672/941;min-width:665px;isolation:isolate;overflow:hidden;background:linear-gradient(180deg,#564c68 0%,#b88e61 50%,#714a35 66%,#50311f 100%);background-image:url('images/anubis-expedition-shop.webp?v=1'),url('images/bookshop-background.webp');background-position:center;background-size:100% 100%}
 #expeditionShop .shop-stage:before{content:"";position:absolute;inset:0;pointer-events:none;background:linear-gradient(0deg,#24110d55,transparent 28%)}
 #expeditionShop .shop-fallback-counter{position:absolute;inset:auto 0 0;height:53%;background:linear-gradient(180deg,#81503a 0%,#aa7045 27%,#50311f 100%);border-top:18px solid #bb8752;box-shadow:0 -8px 20px #30221b;opacity:.92;pointer-events:none}
 #expeditionShop .shop-fallback-merchant{position:absolute;left:41%;top:4%;height:62%;width:23%;filter:drop-shadow(0 8px 5px #29171255);pointer-events:none}
@@ -100,7 +100,7 @@ for(const g of goods){
 }
 const picture=new Image();
 picture.onload=()=>{$("shopStage").classList.add("has-illustration")};
-picture.src="images/anubis-expedition-shop.webp";
+picture.src="images/anubis-expedition-shop.webp?v=1";
 function say(title,msg){speaker.textContent=title;speech.textContent=msg;}
 function paint(){
  $("shopCount").textContent=selected.length+" из 6 · нажми на вещь в рюкзаке, чтобы вернуть";
