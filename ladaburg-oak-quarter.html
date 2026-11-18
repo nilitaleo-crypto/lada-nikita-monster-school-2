@@ -45,15 +45,16 @@ main{max-width:1550px;margin:auto}.scene{position:relative;border:7px double var
 </head>
 <body>
 <header><a href="ladaburg.html" aria-label="Вернуться к центральной площади Ладабурга">← Ладабург</a><span>Дубовый квартал · Жилые дома</span></header>
-<main>
+<main id="oakMapMain">
 <div class="scene"><img src="images/oak-quarter.webp" alt="Новый жилой квартал Ладабурга, светлые дома в цветах и огромный древний дуб на центральной площади" width="1448" height="1086" draggable="false">
 <a class="house" href="ladaburg-cat-home.html" aria-label="Войти в первый дом слева, в гости к ловкому синему коту"><span class="house-label">🐈 Дом кота</span></a>
 <a class="rabbit-house" href="ladaburg-rabbit-home.html" aria-label="Войти в дом сильного розового зайца, в гости к силачу"><span class="rabbit-house-label">🐰 Дом силача</span></a>
 <a class="monkey-house" href="ladaburg-monkey-home.html" aria-label="Войти в дом Умняшки Обезьяны с библиотекой"><span class="monkey-label">📖 Умняшка</span></a>
 <a class="forge-gate" href="ladaburg-forge.html?v=1" aria-label="Войти в кузницу Вулкана и выковать волшебные крылатые доспехи">⚒ Кузница Вулкана</a>
+<button type="button" id="expeditionGate" aria-label="Войти к Анубису в магазин экспедиционных припасов">🏺 Магазин<br>припасов</button>
 <a class="oak-rescue" href="ladaburg-nosferatu-oak.html" aria-label="Подойти к древнему дубу и спасти Умняшку от Носферату"><span class="oak-rescue-label">🌰 К дубу · Спасение</span></a>
 </div>
 <div class="caption"><h1>Дубовый квартал</h1><p>На площади растёт древний дуб. В этом квартале живут три будущих героя: ловкий кот, сильный заяц и Умняшка Обезьяна.</p></div>
 <p id="gameConnection" style="text-align:center;font-size:13px" aria-live="polite"></p>
-</main><script src="game-runtime.js?v=1" defer></script>
+</main><section id="expeditionShop" hidden aria-label="Магазин припасов Анубиса"></section><script src="expedition-shop.js?v=1"></script><script src="game-runtime.js?v=1" defer></script>
 </body></html>
