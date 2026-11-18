@@ -40,6 +40,7 @@ const svgMerchant=String.raw`<svg viewBox="0 0 260 365" xmlns="http://www.w3.org
 </svg>`;
 const style=document.createElement("style");
 style.textContent=String.raw`
+body.expedition-open{padding:0}body.expedition-open > header{display:none}
 #expeditionGate{position:absolute;left:43%;top:5%;z-index:8;min-width:clamp(110px,19%,260px);min-height:clamp(55px,7vw,90px);border:4px ridge #b89053;border-radius:16px;cursor:pointer;touch-action:manipulation;background:linear-gradient(145deg,#45354de8,#22494fef);color:#fff1c8;line-height:1.2;font:bold clamp(13px,1.75vw,24px) Georgia,serif;box-shadow:0 7px 20px #201929aa;padding:9px}
 #expeditionGate:hover,#expeditionGate:focus-visible{outline:3px solid #ffe8a3;outline-offset:2px;background:#355f67}
 #expeditionShop[hidden],#expeditionShop [hidden]{display:none!important}
@@ -144,8 +145,8 @@ function remove(id){
  selected=selected.filter(x=>x!==id);focusId=null;decision.hidden=true;paint();
  say("Анубис:","Вернули предмет на прилавок. В рюкзаке снова есть место!");
 }
-function enter(){document.getElementById("oakMapMain").hidden=true;root.hidden=false;document.body.scrollTop=0;window.scrollTo(0,0);}
-function exit(){root.hidden=true;document.getElementById("oakMapMain").hidden=false;window.scrollTo(0,0);}
+function enter(){document.body.classList.add("expedition-open");document.getElementById("oakMapMain").hidden=true;root.hidden=false;document.body.scrollTop=0;window.scrollTo(0,0);}
+function exit(){document.body.classList.remove("expedition-open");root.hidden=true;document.getElementById("oakMapMain").hidden=false;window.scrollTo(0,0);}
 gate.addEventListener("click",enter);
 $("shopExit").addEventListener("click",exit);
 $("shopBackFinished").addEventListener("click",exit);
