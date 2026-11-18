@@ -8,7 +8,7 @@ const stageDefs={
  orders:{name:'Перепутанные заказы',count:6,speaker:'Бантик',portrait:'bantik',reward:'tivvig_reward_gnome_orders_v1',next:'gnome-market-scales.html',nextText:'Дальше — честные весы'},
  scales:{name:'Честные весы',count:6,speaker:'Кубик',portrait:'kubik',reward:'tivvig_reward_gnome_scales_v1',next:'gnome-market-trinkets.html',nextText:'Дальше — барахолка'},
  trinkets:{name:'Барахолка гномов',count:0,speaker:'Долька',portrait:'dolka',reward:'tivvig_reward_gnome_trinkets_v1',next:'gnome-market-clues.html',nextText:'Дальше — расследование'},
- clues:{name:'Кто раскидал припасы?',count:5,speaker:'Лучик',portrait:'luchik',reward:'tivvig_reward_gnome_clues_v1',next:'gnome-village.html',nextText:'Вернуться в деревню'}
+ clues:{name:'Кто раскидал припасы?',count:5,speaker:'Лучик',portrait:'luchik',reward:'tivvig_reward_gnome_clues_v1',next:'gnome-elder.html',nextText:'К старейшине гномов'}
 };
 const current=stageDefs[game];if(!current)return;
 const $=id=>document.getElementById(id);

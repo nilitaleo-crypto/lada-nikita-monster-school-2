@@ -1,0 +1,135 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#392b28">
+<meta name="description" content="Лада знакомится со старейшиной гномов и листает древнюю летопись о деревне.">
+<title>Дом старейшины — летопись семи огней · Тиввиг</title>
+<style>
+:root{--ink:#503825;--paper:#fff0cb;--gold:#c89c62;--forest:#233e36}
+*{box-sizing:border-box}
+html{background:#1e2d2a}body{margin:0;background:radial-gradient(ellipse at top,#694938,#192d29 80%);color:#f9e9c9;font:16px/1.4 Georgia,'Times New Roman',serif;min-height:100dvh}
+[hidden]{display:none!important}button,a{font:inherit;touch-action:manipulation}button:focus-visible,a:focus-visible{outline:3px solid #ffe498;outline-offset:3px}
+.shell{max-width:1380px;padding:clamp(7px,1.5vw,20px);margin:auto}
+.header{display:flex;align-items:center;flex-wrap:wrap;gap:9px 18px;justify-content:space-between;margin-bottom:11px}
+.header h1{font-size:clamp(23px,2.7vw,36px);margin:0;font-weight:normal;line-height:1.12;text-shadow:0 3px 4px #1b201c}
+.header small{color:#eedbbb;font-size:clamp(13px,1.2vw,16px)}
+.back,.back-secondary{color:#503a27;background:#f8e2af;border:2px solid #cfad79;border-radius:10px;padding:9px 12px;text-decoration:none;min-height:44px;display:inline-flex;align-items:center;justify-content:center;font-weight:bold}
+.scene{position:relative;aspect-ratio:1440/810;overflow:hidden;border:6px ridge #b59062;box-shadow:0 12px 32px #0e1713a8;border-radius:12px;background:#68452f}
+.scene img{width:100%;height:100%;object-fit:cover;display:block;user-select:none;-webkit-user-drag:none}
+.scene::after{content:"";position:absolute;inset:0;pointer-events:none;box-shadow:inset 0 0 25px #150e0c85}
+.book-hotspot{position:absolute;z-index:2;right:9%;top:43%;width:24%;height:37%;background:transparent;border:3px solid transparent;border-radius:25%;cursor:pointer;display:flex;align-items:flex-end;justify-content:center}
+.book-hotspot:hover,.book-hotspot:focus-visible{background:#ffdd8a27;border-color:#f5cf84}
+.book-hotspot span{font:bold clamp(11px,1.5vw,18px)/1.1 Georgia,serif;padding:8px 12px;color:#452c1f;text-shadow:none;background:#f8e1aaed;border:2px ridge #8d6438;border-radius:9px;box-shadow:0 4px 8px #241b1588}
+.arrival{max-width:1020px;margin:12px auto;padding:12px 18px;border:3px ridge #ad895d;border-radius:12px;background:linear-gradient(125deg,#f9ebc7,#dac197);color:#4b382b;display:flex;align-items:center;gap:13px;justify-content:space-between}
+.arrival p{font-size:clamp(16px,1.5vw,20px);margin:0;line-height:1.45}
+.action{min-height:45px;padding:9px 15px;border:2px solid #a07747;border-radius:11px;background:#31594d;color:#fff2d0;cursor:pointer;font-weight:bold;line-height:1.2}
+.action:hover{background:#477665}.action:disabled{opacity:.46;cursor:not-allowed}.action.secondary{background:#fbedd0;color:#62462f}.action.secondary:hover{background:#f4d7a1}
+#elderBook{max-width:1020px;margin:14px auto;border:5px ridge #d0aa6e;border-radius:15px;background:radial-gradient(ellipse at top,#745035,#432b23);padding:14px;box-shadow:0 14px 34px #0a1511c7}
+.book-head{display:flex;align-items:center;gap:12px;justify-content:space-between;flex-wrap:wrap;color:#f7ddac;margin-bottom:11px}
+.book-head strong{font-size:clamp(19px,2vw,25px);font-weight:normal}.book-head span{background:#30261fbb;padding:5px 12px;border:1px solid #bc905b;border-radius:15px;font-size:14px}
+.book-spread{display:grid;grid-template-columns:41% 59%;box-shadow:0 10px 22px #2d1d16a1;border:2px solid #bb8954;border-radius:8px 18px 18px 8px;overflow:hidden;min-height:275px;background:#f7e5ba}
+.book-art{position:relative;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:18px 12px;border-right:7px double #b18b5b;background:radial-gradient(circle at 50% 35%,#fbe8aa,#cfb68b 80%);color:#624a2f}
+.book-art .illustration{font-size:clamp(53px,7vw,104px);filter:drop-shadow(1px 5px 3px #69452555);line-height:1.1}
+.book-art .symbol{font-style:italic;font-size:clamp(16px,1.7vw,22px);margin-top:14px;font-weight:bold}
+.book-page{color:#4d3828;padding:clamp(13px,2.2vw,28px);display:flex;flex-direction:column;justify-content:center;gap:8px;background:repeating-linear-gradient(0deg,transparent,transparent 31px,#98784f14 32px),linear-gradient(100deg,#e1c99d,#fff0c9 12%,#ffefca)}
+.book-page h2{font-size:clamp(22px,2.4vw,31px);margin:0;color:#69442f;line-height:1.18;font-weight:normal}
+.book-page p{font-size:clamp(17px,1.8vw,23px);line-height:1.46;margin:0}
+.book-page .talk{font-size:clamp(14px,1.3vw,17px);margin-top:5px;color:#6b5a43;padding-top:9px;border-top:1px dashed #b09a76;font-style:italic}
+.book-footer{display:flex;align-items:center;flex-wrap:wrap;gap:8px;justify-content:space-between;margin-top:12px}
+.page-dots{display:flex;gap:5px;justify-content:center;flex:1;align-items:center}
+.page-dot{width:11px;height:11px;border-radius:50%;border:1px solid #ccac78;background:#503d2e}
+.page-dot.active{background:#ffcf64;border-color:#ffdd93}
+.choice-list{margin-top:13px;display:flex;flex-wrap:wrap;justify-content:center;gap:8px}
+.choice-list button{flex:1 1 190px;max-width:300px;min-height:48px;background:#f8e9c9;border:2px solid #d0ac75;border-radius:9px;color:#513c2e;padding:10px 13px;font-weight:bold;cursor:pointer}
+.choice-list button:hover,.choice-list button:focus-visible{background:#ffe39f}
+#elderFeedback{margin-top:9px;min-height:24px;text-align:center;color:#f8eacb;font-size:clamp(14px,1.5vw,18px)}
+#elderFinished{margin:10px auto 0;max-width:940px;border:2px solid #e2c690;background:#f4e3bf;color:#4a382c;border-radius:11px;padding:14px 16px;display:flex;flex-wrap:wrap;gap:12px;align-items:center;justify-content:space-between}
+#elderFinished p{font-size:17px;margin:0;flex:1 1 270px}
+.trail{max-width:1020px;margin:9px auto 4px;font-size:14px;color:#e6d2af;text-align:center}
+@media(max-width:760px){.shell{padding:7px}.header{justify-content:center;text-align:center}.header h1{width:100%}.scene{border-width:3px}.book-hotspot span{font-size:10px;padding:4px 6px}.arrival{flex-direction:column;align-items:stretch;padding:10px 12px}.book-spread{grid-template-columns:1fr;min-height:auto}.book-art{border-right:0;border-bottom:5px double #b18b5b;min-height:105px;padding:8px 10px}.book-art .illustration{font-size:47px}.book-art .symbol{font-size:15px;margin-top:5px}.book-page{min-height:205px}.book-page p{font-size:17px}.book-footer{gap:7px}.book-footer button{flex:1 1 115px}.page-dots{order:-1;flex-basis:100%}}
+@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+</style>
+</head>
+<body>
+<main class="shell">
+ <header class="header"><a class="back" href="gnome-village.html">← Деревня гномов</a><h1>Дом старейшины</h1><small>Древняя летопись Семи Огней</small></header>
+ <div class="scene" aria-label="Старинная комната старейшины с книгами, картой, глобусом, свитками и большой книгой">
+  <img src="images/gnome-elder-house.webp?v=1" alt="Старый гном с белой бородой и в красной шапке держит большую книгу. В каменном доме стоят древние книги, карты, свечи, глобус и старинные приборы." width="1440" height="810" draggable="false" fetchpriority="high">
+  <button type="button" id="elderSceneBook" class="book-hotspot" aria-label="Открыть старинную книгу в руках старейшины"><span>📖 Открыть книгу</span></button>
+ </div>
+ <div class="arrival"><p id="elderGreeting"><strong>Старейшина Дубобород:</strong> «Заходи, Лада. Лучик рассказал мне о странных следах на рынке. Я старейший гном нашей долины и храню книгу, которой сотни лет. В ней записано, как появился наш город. Хочешь послушать?»</p><button class="action" id="elderOpenBook" type="button">📜 Слушать историю</button></div>
+ <section id="elderBook" hidden aria-label="Интерактивная летопись гномьего города">
+  <div class="book-head"><strong>✦ Книга Семи Огней ✦</strong><span id="elderCounter" aria-live="polite">Страница 1 из 6</span></div>
+  <div class="book-spread" id="elderSpread">
+   <div class="book-art" aria-hidden="true"><span class="illustration" id="elderIllustration">🏔️</span><span class="symbol" id="elderSymbol">Далёкая долина</span></div>
+   <div class="book-page"><h2 id="elderPageTitle">Первый камень</h2><p id="elderPageText"></p><p class="talk" id="elderTalk"></p></div>
+  </div>
+  <div class="choice-list" id="elderChoices" hidden aria-label="Что следует сделать, чтобы помочь деревне?">
+   <button id="elderChoice0" type="button">Погасить все огни</button>
+   <button id="elderChoice1" type="button">Предупредить жителей и зажечь семь фонарей</button>
+   <button id="elderChoice2" type="button">Спрятать книгу под кровать</button>
+  </div>
+  <div id="elderFeedback" role="status" aria-live="polite"></div>
+  <div class="book-footer"><button type="button" class="action secondary" id="elderPrev">← Назад</button><span class="page-dots" id="elderDots" aria-label="Прогресс чтения"></span><button type="button" class="action" id="elderNext">Следующая страница →</button></div>
+  <div id="elderFinished" hidden><p><strong>✦ Старейшина вручает Ладе схему семи старых фонарей.</strong> Теперь можно рассказать гномам, что их нужно зажечь перед наступлением ночи. История сохранена!</p><a class="back-secondary" href="gnome-village.html">🏡 Вернуться в деревню</a></div>
+ </section>
+ <div class="trail">Всё перелистывается нажатием — мышью на компьютере или пальцем на планшете. Вопросы к страницам можно обсуждать вслух.</div>
+ <p id="gameConnection" aria-live="polite" style="text-align:center;color:#ebd2ad;font-size:13px"></p>
+</main>
+<script>
+(()=>{
+'use strict';
+const $=id=>document.getElementById(id);
+const pages=[
+ {title:'Первый камень',icon:'🏔️',symbol:'Долина под горами',text:'Много лет назад семь маленьких гномов пришли с далёких гор. Они нашли тёплую долину с рекой, цветами и зелёными холмами. «Здесь мы построим дом», — решили друзья.',talk:'Как думаешь, почему гномам понравилась именно эта долина?'},
+ {title:'Семь домов',icon:'🏡',symbol:'Круглые двери',text:'Каждый гном умел что-то своё: один выращивал овощи, другой пёк хлеб, третий строил мосты. Они выкопали в холмах уютные дома с круглыми дверями. Вместе работать оказалось легче.',talk:'Что ты умеешь делать особенно хорошо? Чем могла бы помочь Лада?'},
+ {title:'Главная площадь',icon:'🧺',symbol:'Рождение рынка',text:'Гномы построили рынок посередине деревни. Здесь пекарь делился хлебом, садовод приносил яблоки, а мастер чинил чужие вещи. С тех пор никто не должен был оставаться один в беде.',talk:'Почему гномам было выгоднее помогать друг другу, а не жить поодиночке?'},
+ {title:'Семь огней',icon:'🏮',symbol:'Старые фонари',text:'Вдоль дороги и возле рынка поставили семь фонарей. Вечером их зажигали один за другим, чтобы путешественники находили дорогу домой. А большой колокол предупреждал, если у леса замечали опасность.',talk:'Что помогает путешественнику найти путь в темноте?'},
+ {title:'Ночь без колокола',icon:'🔔',symbol:'Давнее предупреждение',text:'Однажды ночью сторож уснул и не ударил в колокол. Из тёмного леса пришли странные существа, похожие на раскрытые цветы. Гномы собрались вместе, зажгли все фонари и закрыли ворота. До рассвета они берегли друг друга.',talk:'Что было важнее всего: спрятаться по одному или объединиться?'},
+ {title:'Последняя запись',icon:'🌒',symbol:'Новая опасность',text:'Снежный человек действительно утащил мешок еды с рынка. Но в лесу нашли и другие следы — не его. Старые страницы называют ночных цветкоголовых чудовищ демогоргонами. «Если они вернутся, вспомните семь огней и предупредите всех», — прочитал старейшина.',talk:'Какую подсказку оставили древние гномы? Что нужно сделать перед ночью?'}
+];
+const reward='tivvig_reward_gnome_elder_story_v1';
+let opened=false,index=0,finished=false;
+function rewardNow(){
+ try{localStorage.setItem(reward,'unlocked')}catch{}
+ const unlock=()=>{if(window.TivvigRegistry?.byReward?.[reward])window.TivvigRegistry.unlockReward(reward)};
+ if(window.TivvigRegistry?.byReward?.[reward])unlock();
+ else window.addEventListener('tivvig:registry-ready',unlock,{once:true});
+}
+function update(){
+ const p=pages[index];$('elderCounter').textContent='Страница '+(index+1)+' из '+pages.length;
+ $('elderIllustration').textContent=p.icon;$('elderSymbol').textContent=p.symbol;
+ $('elderPageTitle').textContent=p.title;$('elderPageText').textContent=p.text;$('elderTalk').textContent='Обсудим: '+p.talk;
+ const dots=$('elderDots');dots.replaceChildren();for(let i=0;i<pages.length;i++){const d=document.createElement('span');d.className='page-dot'+(i===index?' active':'');d.setAttribute('aria-hidden','true');dots.append(d)}
+ $('elderPrev').disabled=index===0||finished;$('elderNext').disabled=finished;
+ $('elderNext').textContent=index===pages.length-1?'Вспомнить подсказку →':'Следующая страница →';
+ $('elderChoices').hidden=index!==pages.length-1||finished;
+ if(!finished&&index!==pages.length-1)$('elderFeedback').textContent='';
+}
+function openBook(){opened=true;$('elderBook').hidden=false;$('elderOpenBook').textContent='📖 Книга открыта';$('elderSceneBook').setAttribute('aria-expanded','true');update();}
+$('elderSceneBook').setAttribute('aria-expanded','false');
+$('elderSceneBook').addEventListener('click',openBook);
+$('elderOpenBook').addEventListener('click',openBook);
+$('elderPrev').addEventListener('click',()=>{if(!opened||index===0||finished)return;index--;update();$('elderFeedback').textContent='';});
+$('elderNext').addEventListener('click',()=>{
+ if(!opened||finished)return;
+ if(index<pages.length-1){index++;update();return;}
+ $('elderChoices').hidden=false;$('elderFeedback').textContent='Старейшина спрашивает: какой совет из древней книги поможет деревне перед ночью?';
+});
+$('elderChoice0').addEventListener('click',()=>{if(!opened||finished)return;$('elderFeedback').textContent='Если фонари погаснут, жители не найдут дорогу. Что ещё можно сделать?';});
+$('elderChoice2').addEventListener('click',()=>{if(!opened||finished)return;$('elderFeedback').textContent='Книга подсказывает, как защитить деревню. Прятать её сейчас не стоит. Попробуй ещё.';});
+$('elderChoice1').addEventListener('click',()=>{
+ if(!opened||finished||index!==pages.length-1)return;
+ finished=true;$('elderChoices').hidden=true;$('elderFinished').hidden=false;
+ $('elderFeedback').textContent='Верно! Нужно собрать жителей, зажечь семь фонарей и подготовиться к ночи.';
+ $('elderGreeting').textContent='Дубобород: «Молодец, Лада. Теперь ты знаешь историю нашей долины. Держи схему семи огней — пригодится вам вечером!»';
+ rewardNow();update();
+});
+window.TivvigElderDebug=Object.freeze({pages:pages.length,open:()=>opened,page:()=>index,finished:()=>finished,reward});
+})();
+</script>
+<script src="game-runtime.js?v=1" defer></script>
+</body>
+</html>
