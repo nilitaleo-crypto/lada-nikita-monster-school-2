@@ -80,12 +80,12 @@ button:focus-visible,a:focus-visible{outline:3px solid #ffe69b;outline-offset:3p
 const W="https://commons.wikimedia.org/wiki/File:";
 const U="https://upload.wikimedia.org/wikipedia/commons/";
 const pictures=[
- {title:"Проделка Локи",src:U+"1/1b/How_loki_wrought_mischief_in_Asgard_by_Willy_Pogany.png",file:"How_loki_wrought_mischief_in_Asgard_by_Willy_Pogany.png",credit:"Вилли Погани, 1920",alt:"Локи срезает золотые волосы Сив, пока она спит"},
+ {title:"Проделка Локи",src:"images/thor-book-01.webp",original:U+"1/1b/How_loki_wrought_mischief_in_Asgard_by_Willy_Pogany.png",file:"How_loki_wrought_mischief_in_Asgard_by_Willy_Pogany.png",credit:"Вилли Погани, 1920",alt:"Локи срезает золотые волосы Сив, пока она спит"},
  {title:"Золотые волосы Сив",src:U+"5/58/The_Gold_Hair_that_Loki_Made.jpg",file:"The_Gold_Hair_that_Loki_Made.jpg",credit:"Иллюстрация к The Gordon Readers, 1910",alt:"Локи приносит волшебные золотые волосы для Сив"},
  {title:"Локи и подземные мастера",src:U+"f/f4/Loki_and_Dvalin.jpg",file:"Loki_and_Dvalin.jpg",credit:"Локи с гномом Двалином, старинная книжная иллюстрация",alt:"Локи и гном Двалин рассматривают пряди из золотых нитей"},
- {title:"Муха в кузнице",src:U+"f/f3/Once_again_the_buzzing_fly_came_in_at_the_window_%281901%29_by_Arthur_Rackham.jpg",file:"Once_again_the_buzzing_fly_came_in_at_the_window_(1901)_by_Arthur_Rackham.jpg",credit:"Артур Рэкхем, 1901",alt:"Брокк раздувает кузнечные мехи, пока Локи в виде мухи пытается ему помешать"},
- {title:"Последний дар кузнецов",src:U+"4/4c/The_third_gift_%E2%80%94_an_enormous_hammer_by_Elmer_Boyd_Smith.jpg",file:"The_third_gift_—_an_enormous_hammer_by_Elmer_Boyd_Smith.jpg",credit:"Элмер Бойд Смит, 1902",alt:"Подземные кузнецы выковывают могучий молот Мьёльнир"},
- {title:"Молот для Тора",src:U+"5/50/Journeys_through_Bookland_-_a_new_and_original_plan_for_reading_applied_to_the_world%27s_best_literature_for_children_%281922%29_%2814596644918%29.jpg",file:"Journeys_through_Bookland_-_a_new_and_original_plan_for_reading_applied_to_the_world's_best_literature_for_children_(1922)_(14596644918).jpg",credit:"Донн П. Крейн, 1922",alt:"Брокк показывает богам сокровища, в том числе молот для Тора"}
+ {title:"Муха в кузнице",src:"images/thor-book-04.webp",original:U+"f/f3/Once_again_the_buzzing_fly_came_in_at_the_window_%281901%29_by_Arthur_Rackham.jpg",file:"Once_again_the_buzzing_fly_came_in_at_the_window_(1901)_by_Arthur_Rackham.jpg",credit:"Артур Рэкхем, 1901",alt:"Брокк раздувает кузнечные мехи, пока Локи в виде мухи пытается ему помешать"},
+ {title:"Последний дар кузнецов",src:"images/thor-book-05.webp",original:U+"4/4c/The_third_gift_%E2%80%94_an_enormous_hammer_by_Elmer_Boyd_Smith.jpg",file:"The_third_gift_—_an_enormous_hammer_by_Elmer_Boyd_Smith.jpg",credit:"Элмер Бойд Смит, 1902",alt:"Подземные кузнецы выковывают могучий молот Мьёльнир"},
+ {title:"Молот для Тора",src:"images/thor-book-06.webp",original:U+"5/50/Journeys_through_Bookland_-_a_new_and_original_plan_for_reading_applied_to_the_world%27s_best_literature_for_children_%281922%29_%2814596644918%29.jpg",file:"Journeys_through_Bookland_-_a_new_and_original_plan_for_reading_applied_to_the_world's_best_literature_for_children_(1922)_(14596644918).jpg",credit:"Донн П. Крейн, 1922",alt:"Брокк показывает богам сокровища, в том числе молот для Тора"}
 ];
 const pages=[
  {type:"cover",title:"Как гномы выковали молот Тора"},
@@ -137,11 +137,12 @@ function render(){
   attribution.href=W+encodeURIComponent(a.file);attribution.target="_blank";attribution.rel="noopener noreferrer";
   attribution.textContent=a.credit;caption.append(attribution);
   im.addEventListener("error",()=>{
+   if(a.original&&!im.dataset.fallback){im.dataset.fallback="1";im.src=a.original;return;}
    im.hidden=true;
    const note=document.createElement("p");note.className="image-error";
    note.textContent="Не удалось загрузить историческую иллюстрацию. Открой оригинал по ссылке ниже.";
    fig.prepend(note);
-  },{once:true});
+  });
   fig.append(im,caption);body.append(fig);
  }
  if(pos===pages.length-1)award();
