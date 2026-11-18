@@ -95,6 +95,13 @@ button:focus-visible,a:focus-visible{outline:3px solid #f5cb77;outline-offset:3p
 }
 
 /* Новая точка на карте: вход в деревню гномов. */
+
+/* Старый мост на дороге от Ладабурга к деревне гномов. */
+.map-hit.bridge-route{left:59.5%;top:65%;width:11%;height:11%;z-index:8;display:flex;align-items:center;justify-content:center;border:2px solid #f5d5a1;background:#536b59;border-radius:50%;box-shadow:0 0 0 2px #493326,0 3px 8px #28150e91}
+.map-hit.bridge-route .bridge-icon{font-size:clamp(15px,2.25vw,28px);line-height:1}
+.map-hit.bridge-route .bridge-label{position:absolute;top:100%;left:50%;transform:translate(-50%,3px);font:bold clamp(9px,.86vw,12px)/1.13 Georgia,serif;white-space:nowrap;color:#473528;background:#fae8bfef;border:1px solid #ad8356;border-radius:6px;padding:3px 6px;pointer-events:none;box-shadow:0 2px 5px #24150d70}
+.map-hit.bridge-route:hover,.map-hit.bridge-route:focus-visible{box-shadow:0 0 0 3px #ffe4a6,0 0 14px 5px #ffce79}
+@media(max-width:760px){.map-hit.bridge-route .bridge-label{font-size:9px;padding:2px 4px}.map-hit.bridge-route .bridge-icon{font-size:17px}}
 .map-hit.gnomes{left:67%;top:51%;width:12%;height:13%;z-index:5;border:2px solid #cfad70;border-radius:50%;background:#7c8b4d;box-shadow:0 0 0 2px #493725,0 2px 9px #1e120d8c;transition:box-shadow .18s,filter .18s}
 .map-hit.gnomes img{display:block;width:100%;height:100%;object-fit:cover;border-radius:50%;pointer-events:none}
 .map-hit.gnomes:hover,.map-hit.gnomes:focus-visible{box-shadow:0 0 0 3px #fae39c,0 0 14px 5px #f5d17c;filter:saturate(1.2)}
@@ -124,6 +131,7 @@ button:focus-visible,a:focus-visible{outline:3px solid #f5cb77;outline-offset:3p
           <button class="map-hit tristalia" type="button" data-place="tristalia" aria-label="Исследовать Тристалию"></button>
           <button class="map-hit ladaburg" type="button" data-place="ladaburg" aria-label="Исследовать Ладабург"></button>
           <a class="map-hit vulcano" href="vulkan-labirint.html" aria-label="Начать экспедицию на вулкан Эмпедокла"></a>
+          <a class="map-hit bridge-route" href="bridge-troll.html" aria-label="Открыть мост тролля по дороге в деревню гномов"><span class="bridge-icon" aria-hidden="true">🌉</span><span class="bridge-label">Мост тролля</span></a>
           <a class="map-hit gnomes" id="gnomeVillagePin" href="gnome-village.html" aria-label="Открыть карту деревни семи гномов"><img src="images/gnome-village-full.webp?v=1" alt="" draggable="false"><span class="gnome-label">Деревня гномов</span></a>
           <a class="map-hit forest" href="michael-jackson-jungle.html" aria-label="Открыть джунгли Майкла Джексона и найти подруг"></a>
         </div>
@@ -136,9 +144,9 @@ button:focus-visible,a:focus-visible{outline:3px solid #f5cb77;outline-offset:3p
         <div class="divider" aria-hidden="true">❦</div>
         <div class="quest">
           <div class="quest-label">Экспедиция на сегодня</div>
-          <h2>Джунгли Майкла Джексона</h2>
-          <p>🌸 🌿 Найди подруг среди цветов и волшебной пыльцы!</p>
-          <a class="go" href="michael-jackson-jungle.html">Искать подруг →</a>
+          <h2>Мост тролля</h2>
+          <p>🌉 Лада, Ловкач и Умняшка должны отгадать восемь загадок и спасти построенный мост!</p>
+          <a class="go" href="bridge-troll.html">К мосту тролля →</a>
           <a class="go" href="coop.html" style="margin-top:9px;background:linear-gradient(180deg,#665169,#3e2c4d)">✦ Играть вместе</a>
         </div>
         <p class="status" id="mapStatus" aria-live="polite">Выбери землю на карте…</p>
