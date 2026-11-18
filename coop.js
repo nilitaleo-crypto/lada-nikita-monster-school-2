@@ -447,7 +447,7 @@ function startPage(path,epoch){
  $("resetGame").hidden=path!=="vulkan-labirint.html";
  updatePresence();updateReadyStatus();
  report('Получена общая страница из Firebase: '+(titles[path]||path));
- const url=new URL(path,location.href);url.searchParams.set("coop","1");url.searchParams.set("role",role);url.searchParams.set("seed",epoch);url.searchParams.set("build","7");
+ const url=new URL(path,location.href);url.searchParams.set("coop","1");url.searchParams.set("role",role);url.searchParams.set("seed",epoch);url.searchParams.set("build","8");
  $frame.src=url.href;
  refreshRemotePointer();
  offEvents=onChildAdded(query(dbref("actions/"+epoch),orderByKey(),limitToLast(160)),snapshot=>{
@@ -482,7 +482,7 @@ async function reloadSharedFrame(){
  if(p.path!==currentPage||p.epoch!==currentEpoch)return; // startPage already reopened the latest room page.
  const url=new URL(currentPage,location.href);
  url.searchParams.set('coop','1');url.searchParams.set('role',role);
- url.searchParams.set('seed',currentEpoch);url.searchParams.set('build','7');
+ url.searchParams.set('seed',currentEpoch);url.searchParams.set('build','8');
  url.searchParams.set('retry',String(Date.now()));
  frameReady=false;
  // A reloaded iframe starts at the intro: reconstruct its state from buffered room events.
