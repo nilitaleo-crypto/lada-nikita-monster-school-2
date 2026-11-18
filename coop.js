@@ -75,7 +75,7 @@ let skipLegacyRoomSelectionSave=false;
 // state snapshot must not cancel the latest selection on either device.
 let pendingWardrobeOutfit=null;
 let outfitWriteInFlight=null;
-const outfits=['default','mermaid','stars'];
+const outfits=['default','mermaid','stars','monankaka'];
 function profileRef(path=''){
  return ref(db,'teacherProfiles/'+uid+'/lada'+(path?'/'+path:''));
 }
@@ -91,7 +91,7 @@ function localRewardSnapshot(){
  return found;
 }
 function localSelectedOutfit(){
- try{const stored=localStorage.getItem(selectedKey);if(['mermaid','default','stars'].includes(stored))return stored}catch(e){}
+ try{const stored=localStorage.getItem(selectedKey);if(outfits.includes(stored))return stored}catch(e){}
  return 'default';
 }
 async function restoreTeacherCollection(){
@@ -105,8 +105,8 @@ async function restoreTeacherCollection(){
     rewards[key]='unlocked';cloudSavedRewards.add(key);
    }
   }
-  if(['default','mermaid','stars'].includes(saved.selected))selected=saved.selected;
-  cloudSavedSelection=['default','mermaid','stars'].includes(saved.selected)?saved.selected:null;
+  if(outfits.includes(saved.selected))selected=saved.selected;
+  cloudSavedSelection=outfits.includes(saved.selected)?saved.selected:null;
   cloudProfileReady=true;
   saveInfo('☁ Коллекция Лады загружена из Firebase. Полученные картины сохраняются между занятиями.');
  }catch(e){
@@ -130,7 +130,7 @@ function persistTeacherRewards(values){
  }
 }
 function persistTeacherSelection(value){
- if(role!=='teacher'||!cloudProfileReady||!['default','mermaid','stars'].includes(value))return;
+ if(role!=='teacher'||!cloudProfileReady||!outfits.includes(value))return;
  // A temporary default in an old room must not overwrite a saved star outfit.
  if(skipLegacyRoomSelectionSave){skipLegacyRoomSelectionSave=false;if(value==='default')return;}
  if(cloudSavedSelection===value)return;
@@ -153,8 +153,8 @@ function pushSelected(value){
   if(pendingWardrobeOutfit===value)persistTeacherSelection(value);
  }).catch(e=>{
   if(outfitWriteInFlight===value)outfitWriteInFlight=null;
-  if(value==='stars'&&String(e?.code||e).includes('permission-denied')){
-   saveInfo('⚠ Звёздный наряд надет на этом занятии, но для облачного сохранения нужны обновлённые правила Firebase.',true);
+  if((value==='stars'||value==='monankaka')&&String(e?.code||e).includes('permission-denied')){
+   saveInfo('⚠ Новый наряд надет в этом занятии, но для облачного сохранения нужны обновлённые правила Firebase.',true);
    report('⚠ Наряд выбран в занятии; для постоянного сохранения обнови правила Firebase.');
    return;
   }
@@ -182,7 +182,7 @@ async function seedStudentState(){
   const chosen=await get(dbref('state/selected'));
   if(!chosen.exists()){
    const outfit=localStorage.getItem(selectedKey);
-   if(['mermaid','default','stars'].includes(outfit))promises.push(set(dbref('state/selected'),outfit));
+   if(outfits.includes(outfit))promises.push(set(dbref('state/selected'),outfit));
   }
  }catch(e){console.warn('Tivvig: student outfit preload',e);}
  await Promise.allSettled(promises);
@@ -447,7 +447,7 @@ function startPage(path,epoch){
  $("resetGame").hidden=path!=="vulkan-labirint.html";
  updatePresence();updateReadyStatus();
  report('Получена общая страница из Firebase: '+(titles[path]||path));
- const url=new URL(path,location.href);url.searchParams.set("coop","1");url.searchParams.set("role",role);url.searchParams.set("seed",epoch);url.searchParams.set("build","6");
+ const url=new URL(path,location.href);url.searchParams.set("coop","1");url.searchParams.set("role",role);url.searchParams.set("seed",epoch);url.searchParams.set("build","7");
  $frame.src=url.href;
  refreshRemotePointer();
  offEvents=onChildAdded(query(dbref("actions/"+epoch),orderByKey(),limitToLast(160)),snapshot=>{
@@ -482,9 +482,11 @@ async function reloadSharedFrame(){
  if(p.path!==currentPage||p.epoch!==currentEpoch)return; // startPage already reopened the latest room page.
  const url=new URL(currentPage,location.href);
  url.searchParams.set('coop','1');url.searchParams.set('role',role);
- url.searchParams.set('seed',currentEpoch);url.searchParams.set('build','6');
+ url.searchParams.set('seed',currentEpoch);url.searchParams.set('build','7');
  url.searchParams.set('retry',String(Date.now()));
  frameReady=false;
+ // A reloaded iframe starts at the intro: reconstruct its state from buffered room events.
+ appliedEvents.clear();
  pageGate(true,'Восстанавливаем подключение к общей игре '+(titles[currentPage]||currentPage)+'…');
  if(frameWatchdog)clearTimeout(frameWatchdog);
  frameWatchdog=setTimeout(()=>{if(!frameReady)pageGate(true,'Не удалось открыть игру: проверь интернет и правила Firebase.')},10000);
@@ -576,11 +578,11 @@ teacher.addEventListener("click",async()=>{
    await set(dbref(""),initialRoom);
   }catch(error){
    // Older deployed rules do not accept the "stars" outfit. Keep the lesson usable.
-   if(initialRoom.state.selected!=='stars'||!String(error?.code||error).includes('permission-denied'))throw error;
+   if(!['stars','monankaka'].includes(initialRoom.state.selected)||!String(error?.code||error).includes('permission-denied'))throw error;
    initialRoom.state.selected='default';
    await set(dbref(""),initialRoom);
    skipLegacyRoomSelectionSave=true;
-   saveInfo('⚠ Занятие открыто со стандартным нарядом. Обнови правила Firebase для синхронизации звёздного костюма.',true);
+   saveInfo('⚠ Занятие открыто со стандартным нарядом. Обнови правила Firebase для синхронизации новых костюмов.',true);
   }
   initClient();
  }catch(e){message(explain(e),true);}
