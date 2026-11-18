@@ -93,6 +93,21 @@ button:focus-visible,a:focus-visible{outline:3px solid #f5cb77;outline-offset:3p
  .collection .label{font-size:11px}
  .status{font-size:12px}
 }
+
+/* Новая точка на карте: деревня гномов, без отдельной игровой страницы. */
+.map-hit.gnomes{left:67%;top:51%;width:12%;height:13%;z-index:5;border:2px solid #cfad70;border-radius:50%;background:#7c8b4d;box-shadow:0 0 0 2px #493725,0 2px 9px #1e120d8c;transition:box-shadow .18s,filter .18s}
+.map-hit.gnomes img{display:block;width:100%;height:100%;object-fit:cover;border-radius:50%;pointer-events:none}
+.map-hit.gnomes:hover,.map-hit.gnomes:focus-visible{box-shadow:0 0 0 3px #fae39c,0 0 14px 5px #f5d17c;filter:saturate(1.2)}
+.map-hit.gnomes .gnome-label{position:absolute;left:50%;top:100%;transform:translate(-50%,3px);white-space:nowrap;pointer-events:none;max-width:150px;padding:3px 6px;background:#f7e7c8f5;color:#513b30;border:1px solid #ad8751;border-radius:6px;box-shadow:0 2px 3px #271b1866;font:bold clamp(9px,.85vw,12px)/1.1 Georgia,serif}
+[hidden]{display:none!important}
+.gnome-dialog{position:fixed;z-index:9999;inset:0;padding:16px;background:#120d16dc;display:flex;align-items:center;justify-content:center}
+.gnome-dialog__panel{position:relative;max-width:560px;width:100%;background:linear-gradient(155deg,#fff2d3,#e5cf9b);color:#49352b;border:6px double #9e7850;border-radius:15px;padding:clamp(18px,3vw,28px);box-shadow:0 12px 44px #0009;font-size:clamp(16px,1.5vw,20px);line-height:1.45}
+.gnome-dialog__panel h2{font-size:clamp(24px,3vw,34px);line-height:1.12;font-weight:normal;margin:0 0 10px}
+.gnome-dialog__panel p{margin:7px 0}
+.gnome-dialog__panel .gnome-preview{float:left;width:128px;height:96px;max-width:36%;object-fit:cover;border:3px solid #aa895d;border-radius:9px;margin:0 16px 8px 0}
+.gnome-dialog__panel .gnome-note{font-size:14px;color:#765841;font-style:italic;clear:both;margin-top:12px}
+.gnome-dialog__close{position:absolute;top:7px;right:8px;min-width:44px;min-height:44px;border-radius:50%;border:2px solid #967044;background:#fff5dc;color:#4d392c;font-size:22px;cursor:pointer;touch-action:manipulation}
+@media(max-width:760px){.map-hit.gnomes .gnome-label{font-size:9px;padding:2px 4px}.map-hit.gnomes{border-width:2px}.gnome-dialog__panel h2{padding-right:33px}}
 @media(prefers-reduced-motion:reduce){.map-hit.vulcano::after{animation:none}}
 </style>
 </head>
@@ -117,6 +132,7 @@ button:focus-visible,a:focus-visible{outline:3px solid #f5cb77;outline-offset:3p
           <button class="map-hit tristalia" type="button" data-place="tristalia" aria-label="Исследовать Тристалию"></button>
           <button class="map-hit ladaburg" type="button" data-place="ladaburg" aria-label="Исследовать Ладабург"></button>
           <a class="map-hit vulcano" href="vulkan-labirint.html" aria-label="Начать экспедицию на вулкан Эмпедокла"></a>
+          <button class="map-hit gnomes" id="gnomeVillagePin" type="button" aria-label="Деревня семи гномов на дороге к горам Аида" aria-haspopup="dialog" aria-controls="gnomeVillageInfo"><img src="images/gnome-village-marker.webp" alt="" draggable="false"><span class="gnome-label">Деревня гномов</span></button>
           <a class="map-hit forest" href="michael-jackson-jungle.html" aria-label="Открыть джунгли Майкла Джексона и найти подруг"></a>
         </div>
       </section>
@@ -137,6 +153,16 @@ button:focus-visible,a:focus-visible{outline:3px solid #f5cb77;outline-offset:3p
       </section>
     </div>
   </article>
+  <section class="gnome-dialog" id="gnomeVillageInfo" role="dialog" aria-modal="true" aria-labelledby="gnomeVillageTitle" hidden>
+    <div class="gnome-dialog__panel">
+      <button type="button" class="gnome-dialog__close" id="gnomeVillageClose" aria-label="Вернуться к карте">×</button>
+      <img class="gnome-preview" src="images/gnome-village-marker.webp" width="128" height="96" alt="Ярмарка гномов среди зелёных холмов">
+      <h2 id="gnomeVillageTitle">Деревня семи гномов</h2>
+      <p>Между Ладабургом и горами Аида лежит уютная деревня: домики в холмах, мельница и шумный рынок.</p>
+      <p>Лада и её отряд встретят здесь гномов перед следующим этапом экспедиции.</p>
+      <p class="gnome-note">Игровые задания и ночную оборону деревни добавим позже.</p>
+    </div>
+  </section>
   <p class="credit">Книжный ассет: MELLE (Melissa Krautheim), <a href="https://opengameart.org/content/epic-collection-book">CC0</a>.</p>
 </main>
 
@@ -149,6 +175,23 @@ window.addEventListener("tivvig:registry-ready",()=>{
  const status=document.getElementById('mapStatus');
  const setOutfit=()=>window.TivvigWardrobe?.equip(document.getElementById('homeLada'));
  setOutfit();window.addEventListener('pageshow',setOutfit);window.addEventListener('tivvig-outfit-changed',setOutfit);
+
+ const gnomePin=document.getElementById('gnomeVillagePin');
+ const gnomeInfo=document.getElementById('gnomeVillageInfo');
+ const gnomeClose=document.getElementById('gnomeVillageClose');
+ if(gnomePin&&gnomeInfo&&gnomeClose){
+  const openGnomes=()=>{
+   gnomeInfo.hidden=false;
+   status.textContent='На пути к горам Аида открыта деревня семи гномов.';
+   gnomeClose.focus({preventScroll:true});
+  };
+  const closeGnomes=()=>{gnomeInfo.hidden=true;gnomePin.focus({preventScroll:true});};
+  gnomePin.addEventListener('click',openGnomes);
+  gnomeClose.addEventListener('click',closeGnomes);
+  window.addEventListener('keydown',event=>{
+   if(event.key==='Escape'&&!gnomeInfo.hidden)closeGnomes();
+  });
+ }
  const places={
   astraluna:'Астралуна пока ждёт исследователей.',
   tristalia:'Тристалия ещё хранит свои тайны.',
