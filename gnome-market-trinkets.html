@@ -1,0 +1,18 @@
+<!doctype html>
+<html lang="ru"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="theme-color" content="#2b4c39">
+<title>Барахолка гномов — Тиввиг</title><meta name="description" content="Четыре последовательных приключения Лады на гномьем рынке">
+<link rel="stylesheet" href="gnome-market.css?v=1"></head>
+<body data-game="trinkets">
+<main class="gm-shell" aria-label="Барахолка гномов">
+<header class="gm-head"><a class="gm-toplink" href="gnome-village.html">← Деревня гномов</a><h1>Барахолка гномов</h1><span class="gm-counter" id="gmCounter" aria-live="polite">Загрузка…</span></header>
+<div class="gm-frame"><div class="gm-scroll" role="region" tabindex="0" aria-label="Иллюстрированная рыночная сцена, на телефоне её можно листать горизонтально">
+<section class="gm-scene" id="gmScene"><img class="gm-backdrop" src="images/gnome-trinkets-bg.webp?v=1" width="1440" height="810" alt="Сказочный рынок гномов, домики в холмах и деревянные лавки" draggable="false" fetchpriority="high"><div class="gm-tint"></div><div id="gmOverlay" class="gm-overlay"></div></section>
+</div></div>
+<section class="gm-foot" aria-label="Задание и диалог">
+<img class="gm-speaker" id="gmSpeaker" src="images/gnome-ponchik.webp?v=1" alt="Гном" draggable="false">
+<div class="gm-story"><h2 id="gmSpeakerName">Гном:</h2><p id="gmSpeech" aria-live="polite">Добро пожаловать на рынок!</p><div class="gm-feedback" id="gmFeedback" aria-live="polite"></div><div class="gm-bag" id="gmBag" aria-live="polite"></div><div class="gm-answers" id="gmAnswersRoot"></div></div>
+<div class="gm-controls"><button class="gm-btn alt" id="gmClear" type="button" hidden>↶ Убрать один товар</button><button class="gm-btn" id="gmCommit" type="button">Проверить</button><a class="gm-btn" id="gmNext" href="gnome-village.html" hidden>Дальше →</a></div>
+</section>
+<div class="gm-more"><span>✦ Экспедиция через деревню семи гномов · Всё управляется нажатием</span><button class="gm-btn alt" id="gmRestart" type="button">↻ Начать заново</button></div>
+<p id="gameConnection" aria-live="polite" style="text-align:center;color:#ffe7bc;font-size:13px"></p>
+</main><script src="gnome-market.js?v=1"></script><script src="game-runtime.js?v=1" defer></script></body></html>

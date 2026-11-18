@@ -55,7 +55,7 @@ button:focus-visible,a:focus-visible{outline:3px solid #fff29b;outline-offset:3p
   <img class="scene-art" src="images/gnome-village-full.webp?v=1" width="1448" height="1086" alt="Большая живописная гномья деревня: домики с круглыми дверьми в зелёных холмах, мельница, ярмарка с палатками, фонтан, огороды, арка и дорога к горам" draggable="false" fetchpriority="high">
   <button class="hotspot" id="village-home" type="button" style="--x:16%;--y:78%" data-id="home" aria-label="Посмотреть на дома гномов" aria-pressed="false"><span aria-hidden="true">🏡</span></button>
   <button class="hotspot" id="village-mill" type="button" style="--x:12%;--y:31%" data-id="mill" aria-label="Посмотреть на мельницу" aria-pressed="false"><span aria-hidden="true">⚙️</span></button>
-  <button class="hotspot" id="village-market" type="button" style="--x:51%;--y:46%" data-id="market" aria-label="Посмотреть на гномий рынок" aria-pressed="false"><span aria-hidden="true">🧺</span></button>
+  <a class="hotspot" id="village-market" href="gnome-market-orders.html" style="--x:51%;--y:46%" aria-label="Играть в лавку перепутанных заказов гномов"><span aria-hidden="true">🧺</span></a>
   <button class="hotspot" id="village-garden" type="button" style="--x:87%;--y:79%" data-id="garden" aria-label="Посмотреть на огороды" aria-pressed="false"><span aria-hidden="true">🥕</span></button>
   <button class="hotspot" id="village-gate" type="button" style="--x:65%;--y:26%" data-id="gate" aria-label="Посмотреть на дорогу к горам Аида" aria-pressed="false"><span aria-hidden="true">🗺️</span></button>
   <button class="hotspot" id="village-forest" type="button" style="--x:92%;--y:18%" data-id="forest" aria-label="Посмотреть на тревожный тёмный лес" aria-pressed="false"><span aria-hidden="true">🌲</span></button>
@@ -66,8 +66,8 @@ button:focus-visible,a:focus-visible{outline:3px solid #fff29b;outline-offset:3p
  <p id="placeStory">Лада и её друзья впервые попали в долину гномов. Здесь живут семь маленьких жителей, на рынке пахнет свежим хлебом, а за зелёными холмами начинается дорога к горам Аида. Выбирай места на рисунке и знакомься с деревней.</p></div>
  <div class="tag" id="placeTag">☀️ Мирный день</div>
 </section>
-<div class="introduction"><p>Нажми на домики, мельницу, рынок, огород, ворота или тёмный лес. Пока это знакомство с деревней; её приключения и ночная оборона появятся позже.</p></div>
-<div class="bottom"><a href="bridge-troll.html">🌉 Вернуться к мосту тролля</a><a href="index.html">← Вернуться в атлас</a><a href="ladaburg.html">🏰 Ладабург</a></div>
+<div class="introduction"><p>На центральном рынке начинаются четыре приключения: заказы, весы, необычные покупки и расследование. Нажми на корзинку на иллюстрации, чтобы начать. Ночная оборона деревни будет позже.</p></div>
+<div class="bottom"><a href="gnome-market-orders.html">🧺 На гномий рынок — первая игра</a><a href="bridge-troll.html">🌉 Вернуться к мосту тролля</a><a href="index.html">← Вернуться в атлас</a><a href="ladaburg.html">🏰 Ладабург</a></div>
 <p id="gameConnection" aria-live="polite"></p>
 </main>
 <script>
