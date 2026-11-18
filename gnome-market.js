@@ -199,21 +199,29 @@ function playTrinkets(){
 }
 // ---------- Scene 4: compare distinctive tracks and evidence with three suspects ----------
 function playClues(){
- sceneBadge('🔎 Расследование у гномов');addPortraits(['luchik','ponchik']);
- for(const pos of [{x:'7%',y:'16%'},{x:'89%',y:'17%'}]){
-  const l=el('span','gm-night-lamp','🏮');l.style.left=pos.x;l.style.top=pos.y;l.setAttribute('aria-hidden','true');scene.append(l);
- }
+ // Улики теперь нарисованы в самой рыночной сцене.
+ // Никаких видимых кружков, эмодзи, галочек или подсветок поверх изображения.
  const clues=[
-  {id:'bag',x:30,y:70,icon:'🧺',name:'Порванный мешок',text:'Кто-то утащил еду. Мешок разорван, будто его схватили большими руками.'},
-  {id:'track',x:51,y:75,icon:'👣',name:'Следы ступней',text:'Огромные отпечатки ДВУХ ступней. На каждой видно ПЯТЬ пальцев. Это не волчьи лапы.'},
-  {id:'fur',x:70,y:49,icon:'🧶',name:'Белая шерсть',text:'На ветке застрял клок густой БЕЛОЙ шерсти. У волка обычно серый или бурый мех.'},
-  {id:'branch',x:88,y:32,icon:'🌳',name:'Высокая ветка',text:'Сломана ветка выше головы взрослого гнома. Незнакомец был очень высоким.'},
-  {id:'mud',x:43,y:43,icon:'💧',name:'Сухая тропинка',text:'В грязи остались следы ног, но нет мокрой полосы от хвоста и нет рыбьей чешуи.'}
+  {id:'flake',icon:'❄️',name:'Неожиданная снежинка',
+   areas:[{x:31.1,y:25.5,w:7.2,h:12}],
+   text:'Среди товаров появилась настоящая снежинка! Сейчас тёплый день. Кто мог принести с собой такой холод?'},
+  {id:'tracks',icon:'👣',name:'Огромные следы',
+   areas:[{x:57.0,y:73.3,w:10,h:12},{x:72.0,y:52.5,w:10,h:18},{x:72.5,y:7,w:8,h:13}],
+   text:'Смотри: это следы ДВУХ огромных босых ступней с пальцами, а не четырёх волчьих лап. Следы ведут к лесу.'},
+  {id:'cold',icon:'🥶',name:'Замёрзший гном',
+   areas:[{x:27.4,y:66,w:11,h:23}],
+   text:'Гном дрожит, а на шапке повисли сосульки! Он рассказал, что рядом прошёл огромный лохматый незнакомец — и стало холодно.'},
+  {id:'fur',icon:'🧶',name:'Клок белой шерсти',
+   areas:[{x:62.0,y:79.5,w:9,h:13}],
+   text:'У мостика зацепился за ограду клок густой белой шерсти. Вспомни, у кого может быть такая шуба.'},
+  {id:'frost',icon:'🧊',name:'Иней на камнях',
+   areas:[{x:28.2,y:82.7,w:9,h:10}],
+   text:'У ног замёрзшего гнома камни покрыты инеем. Почему здесь замёрзло, если весь остальной рынок залит солнцем?'}
  ];
  const suspects=[
-  {id:'wolf',icon:'🐺',label:'Волк',traits:'Четыре лапы, следы когтей, серый мех.'},
-  {id:'mermaid',icon:'🧜‍♀️',label:'Злая русалка',traits:'Рыбий хвост, мокрый след, чешуя.'},
-  {id:'yeti',icon:'❄️',label:'Снежный человек',traits:'Огромные ступни с пальцами, белая шерсть, высокий рост.'}
+  {id:'wolf',icon:'🐺',label:'Волк',traits:'Бегает на четырёх лапах, есть когти и серый мех.'},
+  {id:'mermaid',icon:'🧜‍♀️',label:'Злая русалка',traits:'Плавает с рыбьим хвостом, оставляет мокрый след.'},
+  {id:'yeti',icon:'❄️',label:'Снежный человек',traits:'Большой, лохматый и привык к холоду.'}
  ];
  const answerRow=el('div','gm-answers gm-suspects');answerRow.id='gmAnswers';answerRow.hidden=true;bag.after(answerRow);
  for(const a of suspects){
@@ -223,37 +231,42 @@ function playClues(){
   b.addEventListener('click',()=>answer(a.id));answerRow.append(b);
  }
  for(const c of clues){
-  const b=el('button','gm-clue',c.icon);b.type='button';b.id='gm-clue-'+c.id;
-  b.style.setProperty('--x',c.x+'%');b.style.setProperty('--y',c.y+'%');
-  b.setAttribute('aria-label','Осмотреть: '+c.name);b.addEventListener('click',()=>look(c.id));scene.append(b);
+  c.areas.forEach((area,i)=>{
+   const b=el('button','gm-search-area');b.type='button';b.id='gm-clue-'+c.id+'-'+i;
+   b.style.setProperty('--x',area.x+'%');b.style.setProperty('--y',area.y+'%');
+   b.style.setProperty('--w',area.w+'%');b.style.setProperty('--h',area.h+'%');
+   b.setAttribute('aria-label','Осмотреть участок рынка');
+   b.addEventListener('click',()=>look(c.id));scene.append(b);
+  });
  }
  let found=new Set();
  function paint(){
-  setCount('Улики '+found.size+' / '+clues.length);
-  for(const c of clues){
-   const b=$('gm-clue-'+c.id);b.classList.toggle('found',found.has(c.id));
-   b.setAttribute('aria-pressed',String(found.has(c.id)));b.textContent=found.has(c.id)?'✓':c.icon;
+  setCount('Найдено улик: '+found.size+' / '+clues.length);
+  for(const c of clues)for(let i=0;i<c.areas.length;i++){
+   const b=$('gm-clue-'+c.id+'-'+i);
+   b.setAttribute('aria-pressed',String(found.has(c.id)));
+   b.disabled=found.has(c.id);
   }
-  answerRow.hidden=found.size!==clues.length;
-  if(found.size===clues.length){
-   say('Ловкач','Все пять улик собраны. Сравни следы каждого подозреваемого с тем, что мы нашли. Кто взял припасы?');
-   hint('Выбери одного из трёх подозреваемых по следам и приметам.');
+  answerRow.hidden=found.size!==clues.length||completed;
+  if(found.size===clues.length&&!completed){
+   say('Ловкач','Все пять странностей найдены! Посмотри на улики и подумай, кто мог прийти в тёплую деревню и оставить после себя холод.');
+   hint('Выбери подозреваемого и объясни свой ответ.');
   }else if(found.size===0){
-   say('Лучик','Кто-то забрал еду с рынка! Найди пять улик на площади. Потом выберем подозреваемого.');
+   say('Лучик','С рынка пропали припасы! Пожалуйста, внимательно осмотри саму площадь. Там есть пять странных деталей. Никаких подсказок на картинке!');
    hint('Найдено 0 из 5 улик.');
   }
-  redrawBag(found.size?[...found].map(id=>clues.find(x=>x.id===id).icon+' '+clues.find(x=>x.id===id).name):[]);
+  redrawBag(found.size?[...found].map(id=>{const c=clues.find(x=>x.id===id);return c.icon+' '+c.name}):[]);
  }
  function look(id){
   if(completed||found.has(id))return;
   const c=clues.find(x=>x.id===id);if(!c)return;
   found.add(id);paint();
-  if(found.size<clues.length){say('Улика — '+c.name,c.text);hint('Найдено '+found.size+' из 5. Ищи остальные следы.');}
+  if(found.size<clues.length){say('Улика — '+c.name,c.text);hint('Найдено '+found.size+' из 5. Ищи дальше прямо на картинке.');}
  }
  function answer(id){
   if(completed||found.size!==clues.length)return;
-  if(id==='wolf'){hint('Волк оставил бы следы ЧЕТЫРЁХ лап с когтями. Но здесь две огромные ступни с пятью пальцами. Подумай ещё.',true);return;}
-  if(id==='mermaid'){hint('Русалка оставила бы мокрый след хвоста и чешую. А здесь сухие следы ступней и БЕЛАЯ шерсть. Попробуй ещё.',true);return;}
+  if(id==='wolf'){hint('У волка четыре лапы. А мы нашли следы двух огромных ступней. Подумай ещё.',true);return;}
+  if(id==='mermaid'){hint('Русалка оставила бы мокрый след от хвоста. Но мы нашли ступни и белую шерсть. Попробуй ещё.',true);return;}
   if(id!=='yeti')return;
   let note='';
   try{
@@ -263,12 +276,14 @@ function playClues(){
     items.includes('whistle')?' Свистком можно позвать гномов!':
     items.includes('rope')?' Верёвка поможет укрепить ворота!':'';
   }catch{}
-  say('Умняшка','Это снежный человек! У него две огромные ступни, белая шерсть и высокий рост. Он пришёл за едой. Но из тёмного леса доносятся и другие звуки — деревню ещё нужно защитить.'+note);
-  answerRow.hidden=true;markFinished('Разгадано: припасы забрал снежный человек. Гномы благодарят Ладу и собираются готовить деревню к ночи.');setCount('5 / 5 ✓');
+  say('Умняшка','Правильно, это снежный человек! У него огромные ступни, белая шерсть, и с ним приходит холод. Он унёс еду, но ночью из леса могут прийти и другие существа.'+note);
+  answerRow.hidden=true;markFinished('Расследование закончено! Пять улик раскрыли тайну. Гномы благодарят Ладу и готовятся к ночи.');
+  setCount('5 / 5 ✓');
  }
- restart.addEventListener('click',()=>{resetChrome();found=new Set();answerRow.hidden=true;paint()});
+ restart.addEventListener('click',()=>{resetChrome();found=new Set();answerRow.hidden=true;paint();});
  hidePrimary();paint();
 }
+
 // The chrome is identical on all four pages. The only navigation between them is an <a>,
 // handled by the existing shared room navigator; do not fake redirects in JavaScript.
 $('gmClear').hidden=true;

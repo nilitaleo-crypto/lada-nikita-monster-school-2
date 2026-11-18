@@ -107,3 +107,21 @@ a,button{touch-action:manipulation;font:inherit}a:focus-visible,button:focus-vis
 .gm-suspect-name{font-size:clamp(13px,1.45vw,17px)}
 .gm-suspect-traits{font-size:clamp(11px,1.18vw,14px);font-weight:normal;color:#61473a}
 @media(max-width:600px){.gm-suspects{gap:5px}.gm-suspects .gm-suspect{padding:6px 4px}.gm-suspect-traits{font-size:11px}}
+
+
+/* Поиск внутри нарисованной картины: невидимые области вместо отмеченных улик. */
+[data-game="clues"] .gm-backdrop{filter:none!important}
+[data-game="clues"] .gm-tint{background:transparent!important}
+[data-game="clues"] .gm-overlay{z-index:3}
+[data-game="clues"] .gm-search-area{
+ position:absolute;left:var(--x);top:var(--y);width:var(--w);height:var(--h);
+ transform:translate(-50%,-50%);border:0;padding:0;margin:0;
+ appearance:none;-webkit-appearance:none;background:transparent;
+ border-radius:38%;box-shadow:none;color:transparent;cursor:pointer;
+ touch-action:manipulation;pointer-events:auto;line-height:0;
+}
+[data-game="clues"] .gm-search-area:hover{background:rgba(255,239,184,.035)}
+[data-game="clues"] .gm-search-area:focus-visible{
+ outline:3px dashed #fff3b4;outline-offset:2px;background:rgba(255,239,184,.1);
+}
+[data-game="clues"] .gm-search-area:disabled{cursor:default;opacity:1;background:transparent;outline:none}
