@@ -24,6 +24,18 @@ const reduce=!!window.matchMedia?.('(prefers-reduced-motion:reduce)').matches;
 let stage='intro',round=0,played=[],hasListened=false,busy=false,serial=0;
 let selectedPart=null,doneParts=new Set(),readingRound=0,readingPressed=new Set(),runeRound=0,transitioning=false;
 let audio=null;
+// On iPad Safari a Firebase-replayed click is not a trusted gesture.
+ // Prime WebAudio on the child's first real touch so rhythm notes can play later.
+function primeAudioOnGesture(){
+ try{
+  const Context=window.AudioContext||window.webkitAudioContext;
+  if(!Context)return;
+  if(!audio)audio=new Context();
+  if(audio.state==='suspended')audio.resume().catch(()=>{});
+ }catch(e){ /* Silent visual rhythm still works. */ }
+}
+window.addEventListener?.('pointerdown',primeAudioOnGesture,{passive:true});
+window.addEventListener?.('keydown',primeAudioOnGesture);
 const text=(id,value)=>{const el=$(id);if(el)el.textContent=value};
 function status(id,message,kind=''){
  const el=$(id);if(!el)return;el.textContent=message;el.classList.toggle('good',kind==='good');el.classList.toggle('bad',kind==='bad');
