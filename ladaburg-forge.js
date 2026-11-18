@@ -23,19 +23,50 @@ const sleep=ms=>new Promise(resolve=>setTimeout(resolve,ms));
 const reduce=!!window.matchMedia?.('(prefers-reduced-motion:reduce)').matches;
 let stage='intro',round=0,played=[],hasListened=false,busy=false,serial=0;
 let selectedPart=null,doneParts=new Set(),readingRound=0,readingPressed=new Set(),runeRound=0,transitioning=false;
-let audio=null;
-// On iPad Safari a Firebase-replayed click is not a trusted gesture.
- // Prime WebAudio on the child's first real touch so rhythm notes can play later.
+let audio=null, audioSeeded=false;
+function soundIndicator(message){
+ const button=$('enableForgeSound'),hint=$('forgeSoundHint');if(!button||!hint)return;
+ const ready=audio?.state==='running';
+ button.textContent=ready?'🔊 Звук включён':'🔈 Включить звук';
+ button.setAttribute('aria-pressed',String(ready));
+ hint.textContent=message||(ready?'Звук включён на этом устройстве':'Нажми один раз здесь, чтобы слышать удары.');
+}
+// Safari keeps a separate audio permission for the game iframe. Replayed
+// Firebase .click() events cannot unlock it: a real touch inside this frame can.
 function primeAudioOnGesture(){
  try{
   const Context=window.AudioContext||window.webkitAudioContext;
-  if(!Context)return;
-  if(!audio)audio=new Context();
-  if(audio.state==='suspended')audio.resume().catch(()=>{});
- }catch(e){ /* Silent visual rhythm still works. */ }
+  if(!Context){soundIndicator('Этот браузер не поддерживает звук. Ритм виден на экране.');return}
+  if(!audio){
+   audio=new Context();
+   audio.addEventListener?.('statechange',()=>soundIndicator());
+  }
+  // Start a silent node while the *trusted* gesture is still executing.
+  // It provides the first iOS WebAudio activation without playing a note.
+  if(!audioSeeded){
+   const osc=audio.createOscillator(),gain=audio.createGain();
+   gain.gain.value=0;osc.connect(gain);gain.connect(audio.destination);
+   osc.start();osc.stop(audio.currentTime+.012);audioSeeded=true;
+  }
+  if(audio.state!=='running'){
+   const result=audio.resume();
+   if(result?.then)result.then(()=>soundIndicator()).catch(()=>soundIndicator('Коснись кнопки ещё раз для включения звука.'));
+  }
+  soundIndicator();
+ }catch(e){soundIndicator('Звук заблокирован. Коснись кнопки ещё раз.')}
 }
-window.addEventListener?.('pointerdown',primeAudioOnGesture,{passive:true});
-window.addEventListener?.('keydown',primeAudioOnGesture);
+function activateLocalSound(){
+ primeAudioOnGesture();
+ // This button is never replayed via Firebase; it runs in the user's actual tap.
+ if(audio?.state==='running'){tone('S');soundIndicator();return}
+ if(audio?.resume){
+  audio.resume().then(()=>{if(audio.state==='running')tone('S');soundIndicator()})
+   .catch(()=>soundIndicator('Не удалось включить звук. Проверь громкость iPad.'));
+ }
+}
+window.addEventListener('pointerdown',primeAudioOnGesture,{passive:true});
+window.addEventListener('touchend',primeAudioOnGesture,{passive:true});
+window.addEventListener('keydown',primeAudioOnGesture);
 const text=(id,value)=>{const el=$(id);if(el)el.textContent=value};
 function status(id,message,kind=''){
  const el=$(id);if(!el)return;el.textContent=message;el.classList.toggle('good',kind==='good');el.classList.toggle('bad',kind==='bad');
@@ -271,6 +302,7 @@ function reset(){
  serial++;round=0;played=[];hasListened=false;busy=false;selectedPart=null;doneParts.clear();readingRound=0;readingPressed.clear();runeRound=0;transitioning=false;
  $('equipArmor').textContent='♛ Надеть доспехи';setStage('intro');
 }
+$('enableForgeSound').addEventListener('click',activateLocalSound);
 $('begin').addEventListener('click',()=>setStage('rhythm'));
 $('listen').addEventListener('click',listen);
 document.querySelectorAll('[data-hit]').forEach(button=>button.addEventListener('click',()=>strike(button.dataset.hit)));
@@ -289,5 +321,5 @@ window.__vulcanForgeTest={
  rune:symbol=>document.querySelectorAll('[data-rune]').forEach(b=>{if(b.dataset.rune===symbol)b.click()}),
  equip:()=>$('equipArmor').click(),reset
 };
-reset();
+reset();soundIndicator();
 })();
