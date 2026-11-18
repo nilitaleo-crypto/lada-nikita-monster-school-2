@@ -36,7 +36,16 @@ jobs:
             error=None
             for attempt in range(4):
               try:
-                req=urllib.request.Request(url,headers={"User-Agent":"TivvigChildrenBook/1.0 (historical public-domain illustrations; Github Actions)","Accept":"image/*"})
+                import urllib.parse
+                urls=[
+                  url,
+                  "https://wsrv.nl/?url="+urllib.parse.quote(url,safe="")+"&w=1400&output=webp",
+                  "https://images.weserv.nl/?url="+urllib.parse.quote(url,safe="")+"&w=1400&output=webp"
+                ]
+                if name=="thor-book-06.webp":
+                  urls.insert(0,"https://live.staticflickr.com/5556/14596644918_e23a474624_o.jpg")
+                option=urls[attempt%len(urls)]
+                req=urllib.request.Request(option,headers={"User-Agent":"Mozilla/5.0 (Tivvig original illustrated book)","Accept":"image/avif,image/webp,image/jpeg,image/png,image/*"})
                 with urllib.request.urlopen(req,timeout=35) as response:
                   blob=response.read()
                 if len(blob)<1000 or len(blob)>12_000_000:raise ValueError("Unexpected image size")
@@ -49,8 +58,9 @@ jobs:
                 break
               except Exception as e:
                 error=e
-                if attempt==3:raise RuntimeError(f"Could not fetch {name}: {error}") from e
-                time.sleep((attempt+1)*3)
+                if attempt==3:
+                  print(f"WARNING: Could not fetch {name}: {error}")
+                time.sleep(1)
           PY
       - name: Commit images to the repository
         run: |
