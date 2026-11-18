@@ -23,53 +23,65 @@ const sleep=ms=>new Promise(resolve=>setTimeout(resolve,ms));
 const reduce=!!window.matchMedia?.('(prefers-reduced-motion:reduce)').matches;
 let stage='intro',round=0,played=[],hasListened=false,busy=false,serial=0;
 let selectedPart=null,doneParts=new Set(),readingRound=0,readingPressed=new Set(),runeRound=0,transitioning=false;
-let audio=null, audioSeeded=false;
+/* Two engines: local WAV samples for iOS/Android; WebAudio as fallback.
+   A real tap on this device plays an audible hammer sample. Firebase still
+   replicates all gameplay clicks, but not the local audio-test button. */
+let audio=null, audioSeeded=false, mediaUnlocked=false, clips=null;
 function soundIndicator(message){
  const button=$('enableForgeSound'),hint=$('forgeSoundHint');if(!button||!hint)return;
- const ready=audio?.state==='running';
- button.textContent=ready?'🔊 Звук включён':'🔈 Включить звук';
- button.setAttribute('aria-pressed',String(ready));
- hint.textContent=message||(ready?'Звук включён на этом устройстве':'Нажми один раз здесь, чтобы слышать удары.');
+ button.textContent=mediaUnlocked?'🔊 Проверить звук':'🔈 Включить звук';
+ button.setAttribute('aria-pressed',String(mediaUnlocked));
+ hint.textContent=message||(mediaUnlocked?'Нажми ещё раз, чтобы услышать молот.':'Нажми здесь на своём телефоне.');
 }
-// Safari keeps a separate audio permission for the game iframe. Replayed
-// Firebase .click() events cannot unlock it: a real touch inside this frame can.
+function sampleWav(which){
+ const rate=22050,count=Math.round(rate*(which==='B'?.36:.30));
+ const bytes=new Uint8Array(44+count*2),data=new DataView(bytes.buffer);
+ function name(at,value){for(let i=0;i<value.length;i++)bytes[at+i]=value.charCodeAt(i)}
+ name(0,'RIFF');data.setUint32(4,bytes.length-8,true);name(8,'WAVE');
+ name(12,'fmt ');data.setUint32(16,16,true);data.setUint16(20,1,true);
+ data.setUint16(22,1,true);data.setUint32(24,rate,true);data.setUint32(28,rate*2,true);
+ data.setUint16(32,2,true);data.setUint16(34,16,true);
+ name(36,'data');data.setUint32(40,count*2,true);
+ let seed=which==='B'?1234567:918273;
+ for(let i=0;i<count;i++){
+  const t=i/rate,attack=Math.min(1,t*240);
+  seed=(Math.imul(seed,1664525)+1013904223)>>>0;
+  const noise=(seed/2147483648)-1;
+  const metal=which==='B'
+   ? .52*Math.sin(2*Math.PI*(166*t-70*t*t))+.23*Math.sin(2*Math.PI*286*t)+.14*Math.sin(2*Math.PI*606*t)
+   : .43*Math.sin(2*Math.PI*735*t)+.30*Math.sin(2*Math.PI*1168*t)+.22*Math.sin(2*Math.PI*1730*t);
+  const value=attack*(metal*Math.exp(-(which==='B'?11:12)*t)+noise*.23*Math.exp(-36*t));
+  data.setInt16(44+i*2,Math.max(-32767,Math.min(32767,Math.round(value*30000))),true);
+ }
+ let raw='';
+ for(let i=0;i<bytes.length;i+=8192)raw+=String.fromCharCode.apply(null,bytes.subarray(i,i+8192));
+ return 'data:audio/wav;base64,'+btoa(raw);
+}
+function getClips(){
+ if(clips)return clips;
+ clips={};
+ try{
+  if(typeof Audio!=='function'||typeof btoa!=='function')return clips;
+  for(const kind of ['B','S']){
+   const player=new Audio(sampleWav(kind));
+   player.preload='auto';player.volume=1;player.setAttribute?.('playsinline','');
+   clips[kind]=player;
+  }
+ }catch(e){clips={}}
+ return clips;
+}
 function primeAudioOnGesture(){
  try{
   const Context=window.AudioContext||window.webkitAudioContext;
-  if(!Context){soundIndicator('Этот браузер не поддерживает звук. Ритм виден на экране.');return}
-  if(!audio){
-   audio=new Context();
-   audio.addEventListener?.('statechange',()=>soundIndicator());
-  }
-  // Start a silent node while the *trusted* gesture is still executing.
-  // It provides the first iOS WebAudio activation without playing a note.
+  if(!Context)return;
+  if(!audio)audio=new Context();
   if(!audioSeeded){
    const osc=audio.createOscillator(),gain=audio.createGain();
    gain.gain.value=0;osc.connect(gain);gain.connect(audio.destination);
    osc.start();osc.stop(audio.currentTime+.012);audioSeeded=true;
   }
-  if(audio.state!=='running'){
-   const result=audio.resume();
-   if(result?.then)result.then(()=>soundIndicator()).catch(()=>soundIndicator('Коснись кнопки ещё раз для включения звука.'));
-  }
-  soundIndicator();
- }catch(e){soundIndicator('Звук заблокирован. Коснись кнопки ещё раз.')}
-}
-function activateLocalSound(){
- primeAudioOnGesture();
- // This button is never replayed via Firebase; it runs in the user's actual tap.
- if(audio?.state==='running'){tone('S');soundIndicator();return}
- if(audio?.resume){
-  audio.resume().then(()=>{if(audio.state==='running')tone('S');soundIndicator()})
-   .catch(()=>soundIndicator('Не удалось включить звук. Проверь громкость iPad.'));
- }
-}
-window.addEventListener('pointerdown',primeAudioOnGesture,{passive:true});
-window.addEventListener('touchend',primeAudioOnGesture,{passive:true});
-window.addEventListener('keydown',primeAudioOnGesture);
-const text=(id,value)=>{const el=$(id);if(el)el.textContent=value};
-function status(id,message,kind=''){
- const el=$(id);if(!el)return;el.textContent=message;el.classList.toggle('good',kind==='good');el.classList.toggle('bad',kind==='bad');
+  if(audio.state==='suspended')audio.resume().catch(()=>{});
+ }catch(e){}
 }
 function tone(which){
  try{
@@ -82,16 +94,45 @@ function tone(which){
   osc.frequency.setValueAtTime(which==='B'?145:620,start);
   osc.frequency.exponentialRampToValueAtTime(which==='B'?80:350,start+.17);
   volume.gain.setValueAtTime(.0001,start);
-  volume.gain.exponentialRampToValueAtTime(which==='B'?.16:.09,start+.014);
-  volume.gain.exponentialRampToValueAtTime(.0001,start+.24);
-  osc.connect(volume);volume.connect(audio.destination);osc.start(start);osc.stop(start+.26);
- }catch(e){ /* Visual feedback is sufficient when audio playback is unavailable. */ }
+  volume.gain.exponentialRampToValueAtTime(which==='B'?.24:.18,start+.014);
+  volume.gain.exponentialRampToValueAtTime(.0001,start+.3);
+  osc.connect(volume);volume.connect(audio.destination);osc.start(start);osc.stop(start+.31);
+ }catch(e){}
+}
+function playHammer(which,test=false){
+ const player=getClips()[which];
+ if(!player){tone(which);if(test)soundIndicator('Нет поддержки аудиосэмплов. Проверь громкость.');return}
+ try{
+  player.pause();player.currentTime=0;
+  const result=player.play();
+  if(result?.then){
+   result.then(()=>{
+    if(test){mediaUnlocked=true;soundIndicator('Звук запущен. Услышал удар? Если нет — проверь громкость и беззвучный режим.')}
+   }).catch(()=>{
+    tone(which);
+    if(test)soundIndicator('Браузер заблокировал звук. Коснись кнопки ещё раз.');
+   });
+  }else if(test){mediaUnlocked=true;soundIndicator('Услышал удар? Если нет — проверь громкость.')}
+ }catch(e){tone(which);if(test)soundIndicator('Не получилось воспроизвести. Коснись кнопки ещё раз.')}
+}
+function activateLocalSound(){
+ primeAudioOnGesture();
+ // Called synchronously by the phone's trusted click, never by Firebase.
+ playHammer('B',true);
+}
+window.addEventListener('pointerdown',primeAudioOnGesture,{passive:true});
+window.addEventListener('touchend',primeAudioOnGesture,{passive:true});
+window.addEventListener('keydown',primeAudioOnGesture);
+const text=(id,value)=>{const el=$(id);if(el)el.textContent=value};
+function status(id,message,kind=''){
+ const el=$(id);if(!el)return;el.textContent=message;
+ el.classList.toggle('good',kind==='good');el.classList.toggle('bad',kind==='bad');
 }
 function hitEffect(which){
  const anvil=$('anvil');
  anvil.classList.remove('strike');void anvil.offsetWidth;anvil.classList.add('strike');
  text('forgeSound',which==='B'?'⚒ БАМ! Искры летят!':'✦ ДЗИНЬ! Звонкий удар!');
- tone(which);window.setTimeout(()=>anvil.classList.remove('strike'),reduce?45:220);
+ playHammer(which);window.setTimeout(()=>anvil.classList.remove('strike'),reduce?45:220);
 }
 function setStage(next){
  stage=next;transitioning=false;serial++;busy=false;
