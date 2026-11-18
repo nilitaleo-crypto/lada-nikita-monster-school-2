@@ -118,7 +118,7 @@ function paint(){
  }
  finished=selected.length===6&&required.every(id=>selected.includes(id));
  result.hidden=!finished;
- if(finished){decision.hidden=true;focusId=null;say("Анубис:","Отлично! Ты выбрала всё необходимое. Почему мы не взяли фотографию слона?");}
+ if(finished){window.TivvigRegistry?.unlockReward("tivvig_reward_expedition_supplies_v1");decision.hidden=true;focusId=null;say("Анубис:","Отлично! Ты выбрала всё необходимое. Почему мы не взяли фотографию слона?");}
  else if(selected.length===6){say("Анубис:","Рюкзак заполнен, но всё ли в нём пригодится? Может быть, стоит заменить что-то?");}
 }
 function inspect(id){
