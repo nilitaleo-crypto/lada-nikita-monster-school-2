@@ -39,7 +39,7 @@ filter:saturate(1.2)}
 .table-book{position:absolute;z-index:2;bottom:14%;left:3%;font-size:clamp(22px,3.6vw,56px);width:7%;height:16%;display:grid;place-items:center;color:#ebd2a1;border:4px ridge #9e7b50;border-radius:6px;background:linear-gradient(90deg,#37233e,#69394d,#3f2447);box-shadow:3px 5px 6px #261c21}
 .table-candle{position:absolute;z-index:2;bottom:13%;right:4%;font-size:clamp(24px,4vw,55px);filter:drop-shadow(0 0 10px #ffcb7b)}
 .table-route{z-index:13;min-width:clamp(51px,7vw,96px);min-height:clamp(47px,6.2vw,78px);background:#fff5d333;border:3px solid #fff0c6a6;box-shadow:0 0 13px #f9cb7c88,inset 0 0 17px #fff5a76a}
-.table-route.forest{left:24%;top:63%}.table-route.bridge{left:50%;top:63%}.table-route.river{left:76%;top:63%}
+.table-route.forest{left:24%;top:58%}.table-route.bridge{left:50%;top:58%}.table-route.river{left:76%;top:58%}
 .table-route .route-glow{font-size:clamp(28px,3.5vw,48px)}
 .table-route .route-caption{bottom:-11px}
 .table-route.selected{background:#69ffe155;box-shadow:0 0 17px #6afde4,0 0 0 4px #a4ffde57}
@@ -52,7 +52,7 @@ filter:saturate(1.2)}
 .person-hotspot.rabbit{left:51%;top:16%;width:24%;height:43%}
 .person-hotspot.monkey{left:75%;top:22%;width:23%;height:36%}
 .grand-table{top:48%;left:0;width:100%;height:57%}
-.table-route.forest{left:24%;top:63%}.table-route.bridge{left:50%;top:63%}.table-route.river{left:76%;top:63%}
+.table-route.forest{left:24%;top:58%}.table-route.bridge{left:50%;top:58%}.table-route.river{left:76%;top:58%}
 .table-parchment{left:14%;right:14%;bottom:1%;max-height:40%}
 .table-route .route-glow{font-size:23px}
 .scene-brand{left:36%;width:28%;font-size:clamp(11px,1.7vw,16px)}
@@ -66,7 +66,7 @@ filter:saturate(1.2)}
 .person-hotspot.cat{left:27%;top:25%;width:22%;height:33%}
 .person-hotspot.rabbit{left:50%;top:18%;width:26%;height:41%}
 .person-hotspot.monkey{left:76%;top:22%;width:24%;height:36%}
-.table-parchment{left:6%;right:6%;bottom:1%;max-height:42%}
-.table-route.forest{left:25%;top:60%}.table-route.bridge{left:50%;top:60%}.table-route.river{left:75%;top:60%}
+.table-parchment{left:6%;right:6%;bottom:1%;max-height:31%}
+.table-route.forest{left:25%;top:57%}.table-route.bridge{left:50%;top:57%}.table-route.river{left:75%;top:57%}
 }
 @media(prefers-reduced-motion:reduce){*,*:before,*:after{transition:none!important;animation:none!important}}
