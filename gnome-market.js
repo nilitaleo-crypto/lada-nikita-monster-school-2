@@ -42,80 +42,120 @@ function avatar(name){return 'images/gnome-'+name+'.webp'}
 function sceneBadge(label){const d=el('div','gm-nameplate',label);scene.append(d)}
 function addPortraits(names){const box=el('div','gm-portrait-row');for(const name of names){const img=el('img','gm-portrait'+(names.length>2?' gm-portrait-small':''));img.src=avatar(name);img.alt='';img.setAttribute('aria-hidden','true');box.append(img)}scene.append(box)}
 function resetChrome(){completed=false;next.hidden=true;bag.replaceChildren();hint('');commit.disabled=false}
-// ---------- Scene 1: orders on the physical market counter ----------
+// ---------- Scene 1: decode descriptive food orders rather than hearing the names ----------
 function playOrders(){
  const orders=[
-  {buyer:'Бантик',portrait:'bantik',ask:'Для праздника мне нужны ДВА красных яблока.',want:['apple','apple']},
-  {buyer:'Пончик',portrait:'ponchik',ask:'Хочу морковь и гроздь винограда. Это два разных продукта!',want:['carrot','grapes']},
-  {buyer:'Юла',portrait:'yula',ask:'Возьми для меня зелёную капусту и жёлтую грушу.',want:['cabbage','pear']},
-  {buyer:'Долька',portrait:'dolka',ask:'Мне нужны ДВА оранжевых апельсина.',want:['orange','orange']},
-  {buyer:'Лучик',portrait:'luchik',ask:'Положи хлеб и яблоко — мой завтрак!',want:['bread','apple']},
-  {buyer:'Кубик',portrait:'kubik',ask:'Положи два разных овоща: морковь и капусту.',want:['carrot','cabbage']}
+  {buyer:'Бантик',portrait:'bantik',ask:'Я забыл название! Нужны ДВА одинаковых красных круглых плода. Они сочные и хрустят, когда их кусаешь.',want:['apple','apple']},
+  {buyer:'Пончик',portrait:'ponchik',ask:'Найди длинный оранжевый хрустящий овощ, который растёт под землёй, и гроздь маленьких сладких ягод.',want:['carrot','grapes']},
+  {buyer:'Юла',portrait:'yula',ask:'Хочу большой зелёный овощ из множества листьев и жёлтый сладкий плод: сверху узкий, снизу широкий.',want:['cabbage','pear']},
+  {buyer:'Долька',portrait:'dolka',ask:'Положи ДВА одинаковых круглых оранжевых плода: под толстой кожурой прячутся сочные кисло-сладкие дольки.',want:['orange','orange']},
+  {buyer:'Лучик',portrait:'luchik',ask:'Мне нужны ТРИ вещи: румяная буханка с хрустящей корочкой, красный сладкий хрустящий плод и оранжевый плод с дольками внутри.',want:['bread','apple','orange']},
+  {buyer:'Кубик',portrait:'kubik',ask:'Найди ТРИ продукта: длинный овощ, который грызут зайцы; зелёный овощ из листьев; гроздь маленьких сладких ягод.',want:['carrot','cabbage','grapes']}
  ];
- sceneBadge('🍎 Лавка перепутанных заказов');
- // The illustrated cover already depicts home/help/restart buttons. Make them real,
- // touch-sized hit targets so no visible control is inert.
+ sceneBadge('🍎 Лавка забытых названий');
  const visualHome=el('a','gm-scene-touch home');visualHome.id='gmSceneHome';visualHome.href='gnome-village.html';visualHome.setAttribute('aria-label','Вернуться в деревню гномов');scene.append(visualHome);
- const visualHelp=el('button','gm-scene-touch help');visualHelp.type='button';visualHelp.id='gmSceneHelp';visualHelp.setAttribute('aria-label','Попросить подсказку к заказу');visualHelp.addEventListener('click',()=>hint('Сначала внимательно послушай просьбу гнома. Какие два товара ему нужны?'));scene.append(visualHelp);
- const visualRestart=el('button','gm-scene-touch reload');visualRestart.type='button';visualRestart.id='gmSceneRestart';visualRestart.setAttribute('aria-label','Заново начать игру');visualRestart.addEventListener('click',()=>restart.click());scene.append(visualRestart);
-
+ const visualHelp=el('button','gm-scene-touch help');visualHelp.type='button';visualHelp.id='gmSceneHelp';visualHelp.setAttribute('aria-label','Подсказка к заказу');visualHelp.addEventListener('click',()=>hint('Слушай признаки: вкус, форма, цвет и количество. Какой товар подходит под описание?'));scene.append(visualHelp);
+ const visualRestart=el('button','gm-scene-touch reload');visualRestart.type='button';visualRestart.id='gmSceneRestart';visualRestart.setAttribute('aria-label','Начать заново');visualRestart.addEventListener('click',()=>restart.click());scene.append(visualRestart);
  const counter=el('div','gm-goods');counter.id='gmProducts';
- const ids=Object.keys(products);
- for(const id of ids){const p=products[id],btn=el('button','gm-good');btn.type='button';btn.id='gm-item-'+id;btn.setAttribute('aria-label','Положить в заказ: '+p.name);
- const img=el('span','emoji',p.icon),label=el('span','label',p.name);btn.append(img,label);btn.addEventListener('click',()=>addItem(id));counter.append(btn)}scene.append(counter);
+ for(const id of Object.keys(products)){
+  const p=products[id],btn=el('button','gm-good');btn.type='button';btn.id='gm-item-'+id;
+  btn.setAttribute('aria-label','Положить в заказ: '+p.name);
+  btn.append(el('span','emoji',p.icon),el('span','label',p.name));
+  btn.addEventListener('click',()=>addItem(id));counter.append(btn);
+ }
+ scene.append(counter);
  let round=0,selected=[],ready=false;
  function paint(){
+  const o=orders[round],max=o.want.length;
   setCount('Заказ '+(round+1)+' / '+orders.length);
-  const o=orders[round];speaker.src=avatar(o.portrait);speaker.alt='Гном '+o.buyer;say(o.buyer,o.ask+' Выбери два товара на прилавке.');
+  speaker.src=avatar(o.portrait);speaker.alt='Гном '+o.buyer;
+  say(o.buyer,o.ask+' Посмотри на товары и выбери '+(max===2?'два':'три')+'.');
   redrawBag(selected.map(id=>products[id].icon+' '+products[id].name));
-  const basket=el('span','bag-pill','🧺 '+selected.length+' / 2');bag.prepend(basket);
+  bag.prepend(el('span','bag-pill','🧺 '+selected.length+' / '+max));
   $('gmClear').hidden=!selected.length||ready;
   commit.textContent=ready?(round===orders.length-1?'Завершить торговлю':'Следующий покупатель'):'Отдать заказ';
-  commit.disabled=!ready&&selected.length!==2;
-  scene.querySelectorAll('.gm-good').forEach(b=>b.classList.toggle('is-picked',selected.includes(b.id.replace('gm-item-',''))));
+  commit.disabled=!ready&&selected.length!==max;
+  counter.querySelectorAll('.gm-good').forEach(b=>b.classList.toggle('is-picked',selected.includes(b.id.replace('gm-item-',''))));
  }
- function addItem(id){if(completed||ready)return;if(selected.length>=2){hint('В корзине уже два товара. Можно убрать один.',true);return;}selected.push(id);hint('');paint()}
- function check(){if(completed)return;const o=orders[round];
-  if(!ready){if(selected.length!==2)return;
-   if(!checkMultiset(selected,o.want)){hint('Кажется, заказ перепутался! Сравни товары со словами покупателя, затем исправь корзинку.',true);return;}
-   ready=true;hint('✓ '+o.buyer+' благодарит Ладу. Ты собрала заказ правильно!');paint();return;
+ function addItem(id){
+  if(completed||ready)return;
+  if(selected.length>=orders[round].want.length){hint('В корзине уже достаточно товаров. Убери один, если хочешь заменить.',true);return;}
+  selected.push(id);hint('');paint();
+ }
+ function check(){
+  if(completed)return;
+  const o=orders[round];
+  if(!ready){
+   if(selected.length!==o.want.length)return;
+   if(!checkMultiset(selected,o.want)){hint('Что-то не совпадает. Проверь вкус, форму, цвет и количество в просьбе гнома.',true);return;}
+   ready=true;hint('✓ Верно! Это '+o.want.map(id=>products[id].name.toLowerCase()).join(', ')+'. Гном благодарит Ладу!');paint();return;
   }
-  if(round===orders.length-1){markFinished('Все шесть заказов выполнены! Гномы приглашают тебя к весам.');setCount('6 / 6 ✓');return;}
-  round++;selected=[];ready=false;hint('Новый покупатель подошёл к прилавку.');paint();
+  if(round===orders.length-1){markFinished('Ты разгадала все шесть заказов по описаниям! Теперь гномы зовут тебя к весам.');setCount('6 / 6 ✓');return;}
+  round++;selected=[];ready=false;hint('Пришёл следующий покупатель. Он тоже забыл названия.');paint();
  }
- $('gmClear').addEventListener('click',()=>{if(!ready&&selected.length){selected.pop();hint('Товар возвращён на прилавок.');paint()}});
- restart.addEventListener('click',()=>{resetChrome();round=0;selected=[];ready=false;paint();showPrimary('Отдать заказ')});
+ $('gmClear').addEventListener('click',()=>{if(!ready&&selected.length){selected.pop();hint('Вернули последний продукт на прилавок.');paint()}});
+ restart.addEventListener('click',()=>{resetChrome();round=0;selected=[];ready=false;showPrimary('Отдать заказ');paint()});
  commit.addEventListener('click',check);
  showPrimary('Отдать заказ');paint();
 }
-// ---------- Scene 2: weights and balance, no arbitrary shape-to-weight guessing ----------
+// ---------- Scene 2: balance the DIFFERENCE between two visible weights ----------
 function playScales(){
  const tasks=[
- {item:'🍎',name:'Яблоки',need:2,opts:[1,2,3]},
- {item:'🥕',name:'Морковь',need:3,opts:[4,3,2]},
- {item:'🥖',name:'Хлеб',need:4,opts:[3,5,4]},
- {item:'🍐',name:'Груши',need:5,opts:[4,5,6]},
- {item:'🍇',name:'Виноград',need:6,opts:[7,5,6]},
- {item:'🥬',name:'Капуста',need:7,opts:[7,8,6]}
+  {left:7,right:4,opts:[2,3,5]},
+  {left:3,right:6,opts:[4,2,3]},
+  {left:9,right:5,opts:[3,4,5]},
+  {left:6,right:8,opts:[2,3,1]},
+  {left:4,right:9,opts:[4,6,5]},
+  {left:10,right:6,opts:[5,3,4]}
  ];
  sceneBadge('⚖️ Весовая палатка Кубика');addPortraits(['kubik','yula']);
- const box=el('div','gm-scales');box.id='gmScale';box.innerHTML='<div class="gm-scale-top"></div><div class="gm-pan left"><span class="big" id="gmLeftIcon">🍎</span><strong id="gmLeftWeight">2</strong></div><div class="gm-pan right"><span class="big" id="gmRightIcon">⚖️</span><strong id="gmRightWeight">?</strong></div>';scene.append(box);
- const choices=el('div','gm-scale-challenge');choices.innerHTML='<b>Сколько гирек положить справа?</b><div class="gm-weights" id="gmWeights"></div>';
- scene.append(choices);
- for(let i=0;i<3;i++){const b=el('button','gm-weight');b.type='button';b.id='gm-weight-'+i;b.setAttribute('aria-label','Выбрать гирьки');b.addEventListener('click',()=>choose(i));$('gmWeights').append(b)}
- let round=0,chosen=null,ready=false;
- function paint(){const task=tasks[round];setCount('Весы '+(round+1)+' / 6');speaker.src=avatar('kubik');say('Кубик','На левой чаше '+task.name.toLowerCase()+': они весят '+task.need+' '+(task.need>=2&&task.need<=4?'гирьки':'гирек')+'. Подбери столько же гирек на правую чашу.');
-  $('gmLeftIcon').textContent=task.item;$('gmLeftWeight').textContent=task.need+' ⚙';$('gmRightIcon').textContent=chosen===null?'⚖️':'🪙';$('gmRightWeight').textContent=chosen===null?'?':String(task.opts[chosen])+' ⚙';
-  for(let i=0;i<3;i++){const b=$('gm-weight-'+i);b.textContent=task.opts[i]+' ⚙';b.setAttribute('aria-label',task.opts[i]+' гирек');b.classList.toggle('chosen',chosen===i)}
-  box.style.setProperty('--tilt',chosen===null?'0deg':task.opts[chosen]===task.need?'0deg':task.opts[chosen]>task.need?'8deg':'-8deg');
-  commit.textContent=ready?(round===tasks.length-1?'Завершить взвешивание':'Следующие весы'):'Проверить равновесие';commit.disabled=chosen===null&&!ready;
-  redrawBag([task.item+' '+task.need+' гирьки','⚖️ '+(chosen===null?'Выбери груз':'Справа '+task.opts[chosen]+' гирьки')]);
+ const box=el('div','gm-scales');box.id='gmScale';
+ box.innerHTML='<div class="gm-scale-top"></div><div class="gm-pan left"><span class="big" id="gmLeftIcon">⚙️</span><strong id="gmLeftWeight">7 ⚙</strong></div><div class="gm-pan right"><span class="big" id="gmRightIcon">⚙️</span><strong id="gmRightWeight">4 ⚙</strong></div>';
+ scene.append(box);
+ const choices=el('div','gm-scale-challenge');choices.innerHTML='<b>Сколько добавить на более лёгкую чашу?</b><div class="gm-weights" id="gmWeights"></div>';scene.append(choices);
+ for(let i=0;i<3;i++){
+  const b=el('button','gm-weight');b.type='button';b.id='gm-weight-'+i;
+  b.addEventListener('click',()=>choose(i));$('gmWeights').append(b);
  }
- function choose(index){if(completed||ready)return;chosen=index;hint('Посмотри, как наклонились весы. Уравновесились ли чаши?');paint()}
- function check(){if(completed)return;if(ready){if(round===tasks.length-1){markFinished('Все весы уравновешены! Теперь можно выбирать необычные припасы.');setCount('6 / 6 ✓');return;}round++;chosen=null;ready=false;hint('Новое взвешивание.');paint();return;}
- if(chosen===null)return;
- if(tasks[round].opts[chosen]!==tasks[round].need){hint('Чаши не на одном уровне. Сколько гирек должно быть справа?',true);return;}
- ready=true;hint('✓ Весы стоят ровно!');paint();
+ let round=0,chosen=null,ready=false;
+ function paint(){
+  const task=tasks[round],side=task.left>task.right?'правую':'левую';
+  const toLeft=side==='левую',addition=chosen===null?0:task.opts[chosen];
+  const l=task.left+(toLeft?addition:0),r=task.right+(!toLeft?addition:0);
+  setCount('Весы '+(round+1)+' / '+tasks.length);
+  speaker.src=avatar('kubik');
+  say('Кубик','Слева '+task.left+' гирек, справа '+task.right+'. Сколько гирек нужно ДОБАВИТЬ на '+side+' чашу, чтобы стало поровну?');
+  $('gmLeftIcon').textContent='⚙️';$('gmRightIcon').textContent='⚙️';
+  $('gmLeftWeight').textContent=task.left+(toLeft&&chosen!==null?' + '+addition:'')+' ⚙';
+  $('gmRightWeight').textContent=task.right+(!toLeft&&chosen!==null?' + '+addition:'')+' ⚙';
+  for(let i=0;i<3;i++){
+   const b=$('gm-weight-'+i),n=task.opts[i];b.textContent='+'+n+' ⚙';
+   b.setAttribute('aria-label','Добавить '+n+' гирек на '+side+' чашу');
+   b.classList.toggle('chosen',chosen===i);b.setAttribute('aria-pressed',String(chosen===i));
+  }
+  box.style.setProperty('--tilt',l===r?'0deg':l>r?'-8deg':'8deg');
+  commit.textContent=ready?(round===tasks.length-1?'Завершить взвешивание':'Следующее взвешивание'):'Проверить равновесие';
+  commit.disabled=chosen===null&&!ready;
+  redrawBag(['Слева: '+l+' ⚙','Справа: '+r+' ⚙',chosen===null?'Выбери, сколько добавить':'Добавили '+addition+' на '+side+' чашу']);
+ }
+ function choose(i){
+  if(completed||ready)return;
+  chosen=i;paint();hint('Посмотри: слева и справа теперь одинаковое число гирек?');
+ }
+ function check(){
+  if(completed)return;
+  const task=tasks[round],need=Math.abs(task.left-task.right);
+  if(ready){
+   if(round===tasks.length-1){markFinished('Шесть раз ты нашла разницу между грузами и уравновесила весы! Пора на барахолку.');setCount('6 / 6 ✓');return;}
+   round++;chosen=null;ready=false;paint();hint('На весах новая пара грузов.');return;
+  }
+  if(chosen===null)return;
+  if(task.opts[chosen]!==need){
+   const side=task.left>task.right?'справа':'слева';
+   hint('Весы ещё наклонены! На одной чаше '+Math.max(task.left,task.right)+', а '+side+' было '+Math.min(task.left,task.right)+'. Сколько шагов надо досчитать до большого числа?',true);
+   return;
+  }
+  ready=true;paint();hint('✓ Правильно! '+Math.min(task.left,task.right)+' + '+need+' = '+Math.max(task.left,task.right)+'. Весы в равновесии.');
  }
  restart.addEventListener('click',()=>{resetChrome();round=0;chosen=null;ready=false;showPrimary('Проверить равновесие');paint()});
  commit.addEventListener('click',check);
@@ -157,39 +197,76 @@ function playTrinkets(){
  restart.addEventListener('click',()=>{resetChrome();picked=[];showPrimary('Закончить покупки');paint()});
  commit.addEventListener('click',checkout);showPrimary('Закончить покупки');paint();
 }
-// ---------- Scene 4: evidence hunt at dusk, gentle deduction rather than scary jump-scares ----------
+// ---------- Scene 4: compare distinctive tracks and evidence with three suspects ----------
 function playClues(){
- sceneBadge('🔎 Вечерняя загадка рынка');addPortraits(['luchik','ponchik']);
- for(const pos of [{x:'7%',y:'16%'},{x:'89%',y:'17%'}]){const l=el('span','gm-night-lamp', '🏮');l.style.left=pos.x;l.style.top=pos.y;l.setAttribute('aria-hidden','true');scene.append(l)}
+ sceneBadge('🔎 Расследование у гномов');addPortraits(['luchik','ponchik']);
+ for(const pos of [{x:'7%',y:'16%'},{x:'89%',y:'17%'}]){
+  const l=el('span','gm-night-lamp','🏮');l.style.left=pos.x;l.style.top=pos.y;l.setAttribute('aria-hidden','true');scene.append(l);
+ }
  const clues=[
-  {id:'bag',x:30,y:70,icon:'🧺',name:'Порванный мешок',text:'Мешок разорван снаружи. Кто-то пытался достать припасы.'},
-  {id:'track',x:51,y:75,icon:'🐾',name:'Большой след',text:'На грязной дорожке три длинных отпечатка пальцев. У гномов ступни гораздо меньше.'},
-  {id:'branch',x:70,y:49,icon:'🌿',name:'Сломанная ветка',text:'Ветки над тропой сломаны высоко. Существо, похоже, довольно большое.'},
-  {id:'forest',x:88,y:32,icon:'🌲',name:'Лесная тропа',text:'Цепочка следов ведёт прямо в тёмный лес за деревней.'},
-  {id:'flour',x:43,y:43,icon:'🌾',name:'Просыпанная мука',text:'Крошки и мука тянутся от разорванного мешка в сторону леса.'}
+  {id:'bag',x:30,y:70,icon:'🧺',name:'Порванный мешок',text:'Кто-то утащил еду. Мешок разорван, будто его схватили большими руками.'},
+  {id:'track',x:51,y:75,icon:'👣',name:'Следы ступней',text:'Огромные отпечатки ДВУХ ступней. На каждой видно ПЯТЬ пальцев. Это не волчьи лапы.'},
+  {id:'fur',x:70,y:49,icon:'🧶',name:'Белая шерсть',text:'На ветке застрял клок густой БЕЛОЙ шерсти. У волка обычно серый или бурый мех.'},
+  {id:'branch',x:88,y:32,icon:'🌳',name:'Высокая ветка',text:'Сломана ветка выше головы взрослого гнома. Незнакомец был очень высоким.'},
+  {id:'mud',x:43,y:43,icon:'💧',name:'Сухая тропинка',text:'В грязи остались следы ног, но нет мокрой полосы от хвоста и нет рыбьей чешуи.'}
  ];
- const answers=[{id:'dwarf',label:'Гном украл мешок'},{id:'wind',label:'Это был ветер'},{id:'creature',label:'Пришло большое существо из леса'}];
- const answerRow=el('div','gm-answers');answerRow.id='gmAnswers';answerRow.hidden=true;bag.after(answerRow);
- for(const a of answers){const b=el('button','gm-answer',a.label);b.type='button';b.id='gm-answer-'+a.id;b.addEventListener('click',()=>answer(a.id));answerRow.append(b)}
- for(const c of clues){const b=el('button','gm-clue',c.icon);b.type='button';b.id='gm-clue-'+c.id;b.style.setProperty('--x',c.x+'%');b.style.setProperty('--y',c.y+'%');b.setAttribute('aria-label','Осмотреть: '+c.name);b.addEventListener('click',()=>look(c.id));scene.append(b)}
- let found=new Set();let solved=false;
- function paint(){setCount('Улики '+found.size+' / 5');for(const c of clues){const b=$('gm-clue-'+c.id);b.classList.toggle('found',found.has(c.id));b.setAttribute('aria-pressed',String(found.has(c.id)));b.textContent=found.has(c.id)?'✓':c.icon;}
-  if(found.size===clues.length){answerRow.hidden=false;hint('Все улики найдены. Кто мог прийти на рынок?');say('Ловкач','Мы собрали улики. Посмотри на размер следов и куда они ведут. Кто мог здесь побывать?')}
-  else if(!found.size){say('Лучик','По вечерам с прилавков исчезает еда! Лада, найди пять улик на рынке. Прикоснись к светящимся значкам.');hint('Найдено 0 из 5 улик.');}
+ const suspects=[
+  {id:'wolf',icon:'🐺',label:'Волк',traits:'Четыре лапы, следы когтей, серый мех.'},
+  {id:'mermaid',icon:'🧜‍♀️',label:'Злая русалка',traits:'Рыбий хвост, мокрый след, чешуя.'},
+  {id:'yeti',icon:'❄️',label:'Снежный человек',traits:'Огромные ступни с пальцами, белая шерсть, высокий рост.'}
+ ];
+ const answerRow=el('div','gm-answers gm-suspects');answerRow.id='gmAnswers';answerRow.hidden=true;bag.after(answerRow);
+ for(const a of suspects){
+  const b=el('button','gm-answer gm-suspect');b.type='button';b.id='gm-answer-'+a.id;
+  b.append(el('span','gm-suspect-icon',a.icon),el('strong','gm-suspect-name',a.label),el('small','gm-suspect-traits',a.traits));
+  b.setAttribute('aria-label','Подозреваемый: '+a.label+'. '+a.traits);
+  b.addEventListener('click',()=>answer(a.id));answerRow.append(b);
+ }
+ for(const c of clues){
+  const b=el('button','gm-clue',c.icon);b.type='button';b.id='gm-clue-'+c.id;
+  b.style.setProperty('--x',c.x+'%');b.style.setProperty('--y',c.y+'%');
+  b.setAttribute('aria-label','Осмотреть: '+c.name);b.addEventListener('click',()=>look(c.id));scene.append(b);
+ }
+ let found=new Set();
+ function paint(){
+  setCount('Улики '+found.size+' / '+clues.length);
+  for(const c of clues){
+   const b=$('gm-clue-'+c.id);b.classList.toggle('found',found.has(c.id));
+   b.setAttribute('aria-pressed',String(found.has(c.id)));b.textContent=found.has(c.id)?'✓':c.icon;
+  }
+  answerRow.hidden=found.size!==clues.length;
+  if(found.size===clues.length){
+   say('Ловкач','Все пять улик собраны. Сравни следы каждого подозреваемого с тем, что мы нашли. Кто взял припасы?');
+   hint('Выбери одного из трёх подозреваемых по следам и приметам.');
+  }else if(found.size===0){
+   say('Лучик','Кто-то забрал еду с рынка! Найди пять улик на площади. Потом выберем подозреваемого.');
+   hint('Найдено 0 из 5 улик.');
+  }
   redrawBag(found.size?[...found].map(id=>clues.find(x=>x.id===id).icon+' '+clues.find(x=>x.id===id).name):[]);
  }
- function look(id){if(completed||found.has(id))return;const clue=clues.find(c=>c.id===id);if(!clue)return;found.add(id);paint();
-  if(found.size!==clues.length){say('Улика: '+clue.name,clue.text);hint('Найдено '+found.size+' из 5 улик. Продолжай исследовать.');}
+ function look(id){
+  if(completed||found.has(id))return;
+  const c=clues.find(x=>x.id===id);if(!c)return;
+  found.add(id);paint();
+  if(found.size<clues.length){say('Улика — '+c.name,c.text);hint('Найдено '+found.size+' из 5. Ищи остальные следы.');}
  }
- function answer(id){if(completed||found.size<clues.length)return;
-  if(id!=='creature'){hint('Вспомни большой след и сломанную ветку. Мог ли это сделать ветер или маленький гном?',true);return;}
-  solved=true;try{const p=JSON.parse(localStorage.getItem('tivvig_gnome_market_purchases_v1')||'null');const items=p?.items||[];
-    const note=items.includes('bell')?' Пригодится купленный колокольчик: им можно поднять тревогу!':items.includes('lantern')?' Ночью поможет купленный фонарь!':items.includes('whistle')?' Свистком можно позвать гномов!':items.includes('rope')?' Верёвка поможет укрепить ворота!':'';
-    say('Умняшка','Следы ведут в лес. Это было большое неизвестное существо. Нужно предупредить жителей деревни.'+note);
-  }catch{say('Умняшка','Следы ведут в лес. Это было большое неизвестное существо. Нужно предупредить жителей деревни.');}
-  answerRow.hidden=true;markFinished('Расследование завершено. Гномы собираются готовить оборону перед ночью.');setCount('5 / 5 ✓');
+ function answer(id){
+  if(completed||found.size!==clues.length)return;
+  if(id==='wolf'){hint('Волк оставил бы следы ЧЕТЫРЁХ лап с когтями. Но здесь две огромные ступни с пятью пальцами. Подумай ещё.',true);return;}
+  if(id==='mermaid'){hint('Русалка оставила бы мокрый след хвоста и чешую. А здесь сухие следы ступней и БЕЛАЯ шерсть. Попробуй ещё.',true);return;}
+  if(id!=='yeti')return;
+  let note='';
+  try{
+   const p=JSON.parse(localStorage.getItem('tivvig_gnome_market_purchases_v1')||'null'),items=p?.items||[];
+   note=items.includes('bell')?' Колокольчиком можно предупредить всех гномов!':
+    items.includes('lantern')?' Купленный фонарь поможет осмотреть дорогу в темноте!':
+    items.includes('whistle')?' Свистком можно позвать гномов!':
+    items.includes('rope')?' Верёвка поможет укрепить ворота!':'';
+  }catch{}
+  say('Умняшка','Это снежный человек! У него две огромные ступни, белая шерсть и высокий рост. Он пришёл за едой. Но из тёмного леса доносятся и другие звуки — деревню ещё нужно защитить.'+note);
+  answerRow.hidden=true;markFinished('Разгадано: припасы забрал снежный человек. Гномы благодарят Ладу и собираются готовить деревню к ночи.');setCount('5 / 5 ✓');
  }
- restart.addEventListener('click',()=>{resetChrome();found=new Set();solved=false;answerRow.hidden=true;paint()});
+ restart.addEventListener('click',()=>{resetChrome();found=new Set();answerRow.hidden=true;paint()});
  hidePrimary();paint();
 }
 // The chrome is identical on all four pages. The only navigation between them is an <a>,
