@@ -1,0 +1,102 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#34543a">
+<meta name="description" content="Деревня семи гномов — новая остановка экспедиции Лады между Ладабургом и горами Аида.">
+<title>Деревня семи гномов — Мир Тиввиг</title>
+<style>
+:root{--gold:#dcad67;--ink:#3f342a;--forest:#2b4835;--parchment:#fff0c9}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;min-height:100dvh;background:radial-gradient(ellipse at 50% 12%,#567551 0%,#263d34 58%,#192c28 100%);font-family:Georgia,"Times New Roman",serif;color:var(--parchment)}
+button,a{touch-action:manipulation;font:inherit}
+button:focus-visible,a:focus-visible{outline:3px solid #fff29b;outline-offset:3px}
+.top{width:min(100%,1510px);margin:auto;padding:clamp(10px,1.6vw,22px) clamp(10px,2vw,28px) 12px;display:flex;gap:12px;flex-wrap:wrap;align-items:center;justify-content:space-between}
+.top .back{display:inline-flex;justify-content:center;align-items:center;padding:9px 14px;min-height:45px;border:2px solid #cfb381;background:#f5e5bc;color:#51402d;border-radius:9px;text-decoration:none;font-weight:bold;box-shadow:0 3px 0 #352b2560}
+.top h1{margin:0;font-size:clamp(22px,3.1vw,41px);font-weight:normal;letter-spacing:.025em;text-shadow:0 2px 3px #17251b}
+.top small{font-size:clamp(12px,1.25vw,16px);color:#ecdbad}
+.main{max-width:1510px;margin:0 auto;padding:0 clamp(7px,1.5vw,22px) 30px}
+.scroll-scene{overflow:auto;overscroll-behavior-x:contain;border:6px ridge #cba879;border-radius:14px 14px 5px 5px;box-shadow:0 17px 45px #0a1d17af;background:#36593d;scrollbar-color:#e0bc7e #3e6248}
+.stage{position:relative;isolation:isolate;min-width:730px;aspect-ratio:1448 / 1086;margin:auto;line-height:0}
+.scene-art{display:block;width:100%;height:100%;object-fit:contain;-webkit-user-drag:none;user-select:none}
+.stage::after{content:"";position:absolute;inset:0;pointer-events:none;box-shadow:inset 0 0 24px #162a1b69}
+.hotspot{position:absolute;z-index:3;left:var(--x);top:var(--y);width:clamp(41px,5.2vw,66px);height:clamp(41px,5.2vw,66px);padding:3px;display:flex;align-items:center;justify-content:center;transform:translate(-50%,-50%);border:3px solid #fff1ba;background:#275b4dca;border-radius:50%;color:white;box-shadow:0 3px 0 #172d267e,0 5px 12px #0f231c9c,0 0 0 3px #17362669;cursor:pointer;line-height:1;transition:transform .17s,box-shadow .17s}
+.hotspot span{font-size:clamp(23px,2.9vw,34px);line-height:1}
+.hotspot:hover,.hotspot:focus-visible,.hotspot[aria-pressed="true"]{transform:translate(-50%,-50%) scale(1.08);background:#9e5d38f0;box-shadow:0 0 0 5px #ffe09ca3,0 6px 14px #21160e}
+.hotspot[data-id="gate"]{background:#70494acc}
+.hotspot[data-id="forest"]{background:#39404bcc}
+.info{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:12px;align-items:center;padding:17px clamp(14px,3vw,28px);background:linear-gradient(120deg,#ffefd1,#e4ca9c);color:#493829;border:3px ridge #c4a071;border-top:0;border-radius:0 0 14px 14px}
+.info h2{font-size:clamp(21px,2.7vw,33px);font-weight:normal;margin:0 0 4px;color:#523a31}
+.info p{font-size:clamp(16px,1.6vw,20px);line-height:1.45;margin:0;max-width:930px}
+.info .tag{font:bold clamp(11px,1.2vw,15px)/1.25 Georgia,serif;color:#f9e7c5;background:#426147;border-radius:30px;padding:9px 12px;text-align:center}
+.introduction{margin:14px auto;max-width:1250px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px;color:#f7edd3;line-height:1.45;font-size:clamp(15px,1.45vw,19px)}
+.introduction p{margin:0}
+.route-note{max-width:1250px;margin:0 auto 8px;padding:12px 16px;border:1px solid #aab28d;border-radius:12px;background:#e3d8b91c;color:#f6e9d0;font-size:clamp(14px,1.35vw,18px)}
+.bottom{display:flex;gap:12px;flex-wrap:wrap;align-items:center;justify-content:center;padding-top:15px}
+.bottom a{border:2px solid #d3b684;border-radius:10px;padding:10px 17px;color:#fef1d4;text-decoration:none;background:#3b5e4c;min-height:46px;display:inline-flex;align-items:center;font-weight:bold}
+.bottom a:hover{background:#57785f}
+#gameConnection{margin:8px auto;max-width:1200px;color:#f5dfbb;text-align:center;font-size:13px}
+@media(max-width:720px){.top{justify-content:center;text-align:center}.top h1{width:100%}.stage{min-width:730px}.info{grid-template-columns:1fr}.info .tag{justify-self:start}.hotspot span{font-size:26px}.info p{font-size:16px}.scroll-scene{border-width:4px}}
+@media(prefers-reduced-motion:reduce){.hotspot{transition:none}}
+</style>
+</head>
+<body>
+<header class="top">
+<a href="index.html" class="back" aria-label="Вернуться в атлас Тиввига">← Атлас Тиввига</a>
+<h1>Деревня семи гномов</h1>
+<small>Между Ладабургом и горами Аида</small>
+</header>
+<main class="main">
+<div class="route-note" id="routeNote" aria-live="polite">🧭 Лада и друзья приближаются к гномьей долине. Впереди — рынок, мельница и уютные дома в холмах.</div>
+<div class="scroll-scene" role="region" aria-label="Иллюстрированная карта деревни гномов, на телефоне можно прокручивать вбок" tabindex="0">
+ <section class="stage" aria-label="Интерактивная карта деревни семи гномов">
+  <img class="scene-art" src="images/gnome-village-full.webp?v=1" width="1448" height="1086" alt="Большая живописная гномья деревня: домики с круглыми дверьми в зелёных холмах, мельница, ярмарка с палатками, фонтан, огороды, арка и дорога к горам" draggable="false" fetchpriority="high">
+  <button class="hotspot" id="village-home" type="button" style="--x:16%;--y:78%" data-id="home" aria-label="Посмотреть на дома гномов" aria-pressed="false"><span aria-hidden="true">🏡</span></button>
+  <button class="hotspot" id="village-mill" type="button" style="--x:12%;--y:31%" data-id="mill" aria-label="Посмотреть на мельницу" aria-pressed="false"><span aria-hidden="true">⚙️</span></button>
+  <button class="hotspot" id="village-market" type="button" style="--x:51%;--y:46%" data-id="market" aria-label="Посмотреть на гномий рынок" aria-pressed="false"><span aria-hidden="true">🧺</span></button>
+  <button class="hotspot" id="village-garden" type="button" style="--x:87%;--y:79%" data-id="garden" aria-label="Посмотреть на огороды" aria-pressed="false"><span aria-hidden="true">🥕</span></button>
+  <button class="hotspot" id="village-gate" type="button" style="--x:65%;--y:26%" data-id="gate" aria-label="Посмотреть на дорогу к горам Аида" aria-pressed="false"><span aria-hidden="true">🗺️</span></button>
+  <button class="hotspot" id="village-forest" type="button" style="--x:92%;--y:18%" data-id="forest" aria-label="Посмотреть на тревожный тёмный лес" aria-pressed="false"><span aria-hidden="true">🌲</span></button>
+ </section>
+</div>
+<section class="info" aria-live="polite" aria-label="Рассказ о выбранном месте">
+ <div><h2 id="placeTitle">Добро пожаловать в деревню!</h2>
+ <p id="placeStory">Лада и её друзья впервые попали в долину гномов. Здесь живут семь маленьких жителей, на рынке пахнет свежим хлебом, а за зелёными холмами начинается дорога к горам Аида. Выбирай места на рисунке и знакомься с деревней.</p></div>
+ <div class="tag" id="placeTag">☀️ Мирный день</div>
+</section>
+<div class="introduction"><p>Нажми на домики, мельницу, рынок, огород, ворота или тёмный лес. Пока это знакомство с деревней; её приключения и ночная оборона появятся позже.</p></div>
+<div class="bottom"><a href="index.html">← Вернуться в атлас</a><a href="ladaburg.html">🏰 Ладабург</a></div>
+<p id="gameConnection" aria-live="polite"></p>
+</main>
+<script>
+(()=>{
+"use strict";
+const places={
+ home:{title:"Домики в холмах",text:"Здесь живут гномы. Круглые двери открываются прямо в зелёные холмы, а у окон цветут цветы. Скоро мы узнаем, кто живёт в каждом домике.",tag:"🏡 Гномьи дома"},
+ mill:{title:"Мельница и ручей",text:"Вода крутит колесо мельницы. Интересно, как гномы превращают зерно в муку и откуда берётся хлеб для рынка?",tag:"⚙️ Мельница"},
+ market:{title:"Ярмарка семи гномов",text:"На центральной площади продают хлеб, овощи, цветы и удивительные вещи. Сейчас рынок полон покупателей. Здесь мы начнём знакомство с гномами.",tag:"🧺 Центральный рынок"},
+ garden:{title:"Огороды гномов",text:"На грядках растут морковь, капуста и другие овощи. Гномы заботятся о растениях и собирают урожай для своей деревни.",tag:"🥕 Огороды"},
+ gate:{title:"Дорога к горам Аида",text:"За старой каменной аркой тропа ведёт к далёким горам. Экспедиция скоро продолжится, но сначала Ладе предстоит помочь жителям деревни.",tag:"🗺️ Дорога"},
+ forest:{title:"Тёмный лес",text:"За деревней прячется загадочный лес. Гномы рассказывают, что по ночам оттуда доносятся странные звуки. Пока деревня спокойно живёт своей жизнью.",tag:"🌲 Тревожная граница"}
+};
+const title=document.getElementById("placeTitle"),story=document.getElementById("placeStory"),tag=document.getElementById("placeTag");
+document.querySelectorAll(".hotspot[data-id]").forEach(b=>{
+ b.addEventListener("click",()=>{
+  const p=places[b.dataset.id];if(!p)return;
+  title.textContent=p.title;story.textContent=p.text;tag.textContent=p.tag;
+  document.querySelectorAll(".hotspot").forEach(x=>x.setAttribute("aria-pressed",String(x===b)));
+ });
+});
+try{
+ const p=JSON.parse(localStorage.getItem("tivvig_council_plan_v1")||"null");
+ const routes={forest:"через тёмный лес",bridge:"через старый мост",river:"вдоль подземной реки"};
+ if(p&&routes[p.route])document.getElementById("routeNote").textContent="🧭 На совете в ратуше Лада выбрала путь "+routes[p.route]+". Какой бы маршрут ни привёл отряд сюда, впереди — деревня семи гномов.";
+}catch{}
+window.TivvigGnomeVillageDebug=Object.freeze({places:Object.keys(places),art:"images/gnome-village-full.webp"});
+})();
+</script>
+<script src="game-runtime.js?v=1" defer></script>
+</body>
+</html>
