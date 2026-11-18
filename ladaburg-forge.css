@@ -166,3 +166,12 @@ main{max-width:1340px;margin:auto;padding:0 10px 20px}
 @media(max-width:430px){.recipe-scroll{min-height:245px;padding:19px 8px 13px}.scroll-syllable{font-size:clamp(24px,6vw,32px);min-height:50px;min-width:35px;padding:4px}.scroll-dash{font-size:24px;margin:0 -3px}.scroll-space{width:8px}.scroll-hint{font-size:12px}.reading-yard{min-height:315px;aspect-ratio:1.27}.reading-target{min-width:76px;min-height:75px}.reading-target.water{width:26%;left:4%;bottom:21%}.reading-target.rune-stone{left:5%;width:28%}.reading-target.wing{right:11%;width:37%}.reading-target.sword{right:6%;width:23%}.reading-yard-caption{font-size:12px}}
 
 @media(prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;transition-duration:.01ms!important}}
+
+
+/* Audio needs one trusted tap inside an iPad's own game iframe. This control
+   stays local and is not sent into the shared Firebase action queue. */
+.local-sound-controls{display:flex;align-items:center;justify-content:flex-end;gap:7px;flex-wrap:wrap;min-width:155px;max-width:300px}
+.local-sound-controls button{min-height:44px;min-width:124px;padding:8px 11px;border:2px solid #87c9b7;border-radius:11px;background:linear-gradient(#e4fbef,#90c3b3);color:#264e4a;font-size:clamp(13px,1.3vw,16px);font-weight:700}
+.local-sound-controls button[aria-pressed="true"]{background:#2f715b;color:#f7ffe7}
+.local-sound-controls span{font-size:11px;line-height:1.2;color:#eed6bd;max-width:154px}
+@media(max-width:680px){.top{gap:6px}.top .loc{display:none}.local-sound-controls{min-width:0;max-width:200px;gap:3px}.local-sound-controls button{min-width:108px;min-height:44px;padding:6px 8px;font-size:13px}.local-sound-controls span{font-size:10px;max-width:120px}}
