@@ -31,7 +31,7 @@ const CLOCK=[{a:2,b:3,op:'+',choices:[5,4,7],correct:5},
 const SEASONS=[{label:'Весна',emoji:'🌸'},{label:'Лето',emoji:'☀️'},{label:'Осень',emoji:'🍂'},{label:'Зима',emoji:'❄️'}];
 const KEY='tivvig_hades_journey_stage_v1',FINAL='tivvig_hades_persephone_freed_v1';
 const reduce=!!window.matchMedia?.('(prefers-reduced-motion: reduce)').matches;
-const delay=ms=>new Promise(resolve=>setTimeout(resolve,reduced?Math.min(ms,80):ms));
+const delay=ms=>new Promise(resolve=>setTimeout(resolve,reduce?Math.min(ms,80):ms));
 const read=k=>{try{return localStorage.getItem(k)}catch{return null}};
 const write=(k,v)=>{try{localStorage.setItem(k,v)}catch{}};
 let stage=0,busy=false,transitioning=false,epoch=0;
