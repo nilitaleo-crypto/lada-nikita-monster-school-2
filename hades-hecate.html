@@ -40,6 +40,33 @@ header h1{margin:0;font-size:clamp(18px,2.4vw,29px);font-weight:normal;letter-sp
 @keyframes arrive{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
 .dust{position:absolute;z-index:2;width:4px;height:4px;border-radius:50%;background:#bedfe7;opacity:.38;box-shadow:0 0 9px #a5deee;pointer-events:none;animation:glimmer var(--time,3s) ease-in-out infinite alternate}
 @keyframes glimmer{from{opacity:.12;transform:scale(.6)}to{opacity:.54;transform:scale(1.2)}}
+
+/* On-art storybook: a full spread, without a second game window or extraneous text. */
+.book-hotspot{position:absolute;z-index:12;left:65%;top:42%;width:15%;height:30%;border:0;border-radius:12px;background:radial-gradient(ellipse at 50% 50%,#d2eff317 0%,#80d1ef0b 48%,transparent 75%);filter:drop-shadow(0 0 7px #acd3ec60);cursor:pointer;touch-action:manipulation}
+.book-hotspot::after{content:'✧';position:absolute;right:6%;top:-12%;font-size:clamp(18px,2.4vw,29px);color:#d4f9ff;text-shadow:0 0 10px #a9edfa;animation:book-wink 3s ease-in-out infinite alternate}
+.book-hotspot:hover,.book-hotspot:focus-visible{outline:2px solid #b5eaf6;outline-offset:3px;background:#a9eeff26}
+@keyframes book-wink{to{opacity:.45;transform:scale(.7) rotate(30deg)}}
+.book-scene{position:absolute;z-index:22;inset:0;display:grid;place-items:center;padding:1.2%;background:#031522cf;backdrop-filter:blur(3px);animation:open-book .3s ease-out both}
+@keyframes open-book{from{opacity:0;transform:scale(.93)}to{opacity:1;transform:scale(1)}}
+.book-spread{position:relative;display:grid;grid-template-columns:1fr 1fr;gap:0;width:100%;height:98%;max-height:690px;min-height:0;border:6px solid #2b2534;border-radius:11px 18px 18px 11px;box-shadow:0 16px 35px #000b,0 0 0 2px #799caa;background:#c4b69c}
+.book-spread::after{content:'';position:absolute;left:50%;top:0;bottom:0;width:11px;z-index:3;pointer-events:none;transform:translateX(-50%);background:linear-gradient(90deg,#432d30b0,transparent 35%,#74585a8c 75%,transparent);box-shadow:0 0 8px #27202f6b}
+.book-leaf{position:relative;min-width:0;min-height:0;display:flex;flex-direction:column;padding:clamp(9px,1.5vw,20px);background:linear-gradient(130deg,#e4dcc6,#e6d9c0 61%,#c9b79e);color:#322b37;overflow:hidden}
+.book-leaf:first-child{border-radius:6px 0 0 7px;background:linear-gradient(110deg,#c6b89e,#e9e1c9 14%,#ddceb2)}
+.book-leaf:last-child{border-radius:0 9px 9px 0;background:linear-gradient(100deg,#d9ceb8,#ede5cc 15%,#e3d8bb)}
+.book-illustration{display:block;width:100%;flex:1;min-height:0;object-fit:contain;object-position:center;background:#202029;box-shadow:0 3px 8px #231c2455}
+.book-caption{min-height:2.4em;display:grid;place-items:center;font:italic clamp(10px,1.15vw,14px)/1.2 Georgia,serif;color:#514c4b;text-align:center;padding:5px 0 0}
+.book-leaf h2{margin:2% 5% 0;text-align:center;font:normal clamp(22px,2.8vw,37px)/1.08 Georgia,serif;color:#39334c}
+.book-story{margin:auto 8%;padding:0;text-align:left;font:normal clamp(18px,2.5vw,33px)/1.4 Georgia,serif;color:#373040;letter-spacing:.005em}
+.book-num{font:600 clamp(11px,1.2vw,15px)/1.2 system-ui,sans-serif;color:#83745d;text-align:center;padding:7px 0 2px}
+.book-nav{display:flex;gap:10px;justify-content:center;align-items:center;padding:4px 0 3px}
+.book-nav button{min-height:45px;min-width:56px;border:1px solid #98866d;border-radius:8px;background:#d5c5a6;color:#3a3144;font:bold clamp(22px,2.4vw,32px) Georgia,serif;box-shadow:0 2px 3px #0003}
+.book-nav button:hover{background:#f6e8c9}
+.book-nav button[disabled]{opacity:.25;cursor:default;box-shadow:none}
+.book-close{position:absolute;right:7px;top:7px;z-index:5;display:grid;place-items:center;width:42px;height:42px;border:1px solid #b7a68f;border-radius:50%;background:#d9cbb6;color:#574757;font:normal 27px Georgia,serif}
+.book-close:hover{background:#fff0d8}
+@media(max-width:780px){.book-spread{border-width:4px}.book-leaf{padding:8px}.book-leaf h2{font-size:22px}.book-story{font-size:18px;line-height:1.24;margin:auto 4%}.book-caption{font-size:10px}.book-nav button{min-height:44px;min-width:48px}.book-hotspot{width:16%}}
+@media(prefers-reduced-motion:reduce){.book-scene,.book-hotspot::after{animation:none}}
+
 @media(max-width:800px){main{padding:5px}.board{border-width:2px}.scene{min-width:730px}.nav{padding:5px 8px}.party{height:29%;left:3%}}
 @media(prefers-reduced-motion:reduce){.fog,.dust,.actor{animation:none}}
 </style>
@@ -59,6 +86,26 @@ header h1{margin:0;font-size:clamp(18px,2.4vw,29px);font-weight:normal;letter-sp
 <div class="actor merchant" style="--enter:370ms"><img src="images/market-merchant.webp" alt="Зелёный бумажный торговец" draggable="false"></div>
 <div class="actor bookseller" style="--enter:440ms"><img src="images/bookshop-merchant.webp" alt="Фиолетовая бумажная продавщица книг" draggable="false"></div>
 </div>
+
+<button type="button" class="book-hotspot" id="hecateOpenBook" aria-label="Открыть книгу об Орфее и Эвридике" title="Книга Орфея и Эвридики"></button>
+<div class="book-scene" id="hecateBook" role="dialog" aria-modal="true" aria-label="Книга Орфея и Эвридики" hidden>
+  <div class="book-spread">
+    <div class="book-leaf">
+      <img id="hecateBookPainting" class="book-illustration" src="images/orpheus-01-love.webp" alt="Картина с Орфеем и Эвридикой" draggable="false">
+      <div class="book-caption" id="hecateBookCaption">Никола Пуссен. Пейзаж с Орфеем и Эвридикой</div>
+    </div>
+    <div class="book-leaf">
+      <button type="button" id="hecateCloseBook" class="book-close" aria-label="Закрыть книгу">×</button>
+      <h2 id="hecateBookHeading">Песни Орфея</h2>
+      <p id="hecateBookStory" class="book-story">Орфей играл на лире так прекрасно, что даже звери слушали его. Он полюбил Эвридику, и они поженились.</p>
+      <div class="book-num" id="hecateBookCounter">1 / 9</div>
+      <div class="book-nav" aria-label="Листать книгу">
+        <button type="button" id="hecatePrev" aria-label="Предыдущая страница" disabled>←</button>
+        <button type="button" id="hecateNext" aria-label="Следующая страница">→</button>
+      </div>
+    </div>
+  </div>
+</div>
 </section>
 </div>
 </main>
@@ -73,6 +120,48 @@ header h1{margin:0;font-size:clamp(18px,2.4vw,29px);font-weight:normal;letter-sp
    dot.style.setProperty('--time',(2.9+i%4*.66)+'s');dot.style.animationDelay=(-i*.3)+'s';
    scene.appendChild(dot);
  }
+
+ const BOOK=[
+  {img:"images/orpheus-01-love.webp",title:"Песни Орфея",text:"Орфей играл на лире так прекрасно, что даже звери слушали его. Он полюбил Эвридику, и они поженились.",credit:"Никола Пуссен. Пейзаж с Орфеем и Эвридикой"},
+  {img:"images/orpheus-02-eurydice.webp",title:"Змея в траве",text:"Однажды Эвридику укусила змея. Она умерла, и Орфей остался один.",credit:"Никколо дель Аббате. Смерть Эвридики"},
+  {img:"images/orpheus-03-lament.webp",title:"Печальная песня",text:"Орфей очень горевал. Он решил отправиться в царство Аида и попросить вернуть любимую.",credit:"Ари Шеффер. Орфей оплакивает Эвридику"},
+  {img:"images/orpheus-04-descent.webp",title:"В мире теней",text:"Орфей спустился под землю. Его музыка тронула даже самых суровых обитателей царства мёртвых.",credit:"Ян Брейгель Старший. Орфей в подземном царстве"},
+  {img:"images/orpheus-05-permission.webp",title:"Условие богов",text:"Аид и Персефона согласились отпустить Эвридику. Но велели Орфею не оглядываться, пока он не выйдет на свет.",credit:"Питер Пауль Рубенс. Орфей и Эвридика"},
+  {img:"images/orpheus-06-path.webp",title:"Дорога к свету",text:"Орфей шёл впереди, а Эвридика следовала за ним. Вокруг было так тихо, что он почти не слышал её шагов.",credit:"Камиль Коро. Орфей выводит Эвридику из подземного царства"},
+  {img:"images/orpheus-07-doubt.webp",title:"Не оглядывайся!",text:"Они уже были близко к выходу. Орфей испугался, что Эвридика отстала, и не выдержал: оглянулся.",credit:"Фредерик Лейтон. Орфей и Эвридика"},
+  {img:"images/orpheus-08-loss.webp",title:"Второе прощание",text:"Эвридика стала исчезать, словно туман. Орфей протянул к ней руки, но было уже поздно.",credit:"Джордж Фредерик Уоттс. Орфей и Эвридика"},
+  {img:"images/orpheus-09-elysium.webp",title:"Встреча навсегда",text:"Позже Орфей тоже оказался в царстве теней. Там он снова нашёл Эвридику. Теперь он мог смотреть на неё сколько хотел.",credit:"Морис Дени. Орфей и Эвридика (поэтический образ финала)"}
+ ];
+ const book=document.getElementById('hecateBook');
+ const pic=document.getElementById('hecateBookPainting');
+ const heading=document.getElementById('hecateBookHeading');
+ const content=document.getElementById('hecateBookStory');
+ const caption=document.getElementById('hecateBookCaption');
+ const counter=document.getElementById('hecateBookCounter');
+ const prev=document.getElementById('hecatePrev'),next=document.getElementById('hecateNext');
+ let page=0,swipeStart=null;
+ function displayPage(){
+   const item=BOOK[page];
+   pic.src=item.img;pic.alt=item.credit;
+   heading.textContent=item.title;content.textContent=item.text;caption.textContent=item.credit;
+   counter.textContent=(page+1)+' / '+BOOK.length;
+   prev.disabled=page===0;next.disabled=page===BOOK.length-1;
+ }
+ function openBook(){page=0;displayPage();book.hidden=false;next.focus({preventScroll:true})}
+ function closeBook(){book.hidden=true;document.getElementById('hecateOpenBook').focus({preventScroll:true})}
+ function turn(delta){if(book.hidden)return;page=Math.max(0,Math.min(BOOK.length-1,page+delta));displayPage()}
+ document.getElementById('hecateOpenBook').addEventListener('click',openBook);
+ document.getElementById('hecateCloseBook').addEventListener('click',closeBook);
+ prev.addEventListener('click',()=>turn(-1));next.addEventListener('click',()=>turn(1));
+ const coop=new URLSearchParams(location.search).get('coop')==='1';
+ // Touch swipe is local in solo mode; in co-op large arrows are authoritative room clicks.
+ if(!coop){
+   book.addEventListener('pointerdown',e=>{if(e.isPrimary)swipeStart={x:e.clientX,y:e.clientY,id:e.pointerId}});
+   book.addEventListener('pointerup',e=>{if(!swipeStart||swipeStart.id!==e.pointerId)return;const x=e.clientX-swipeStart.x,y=e.clientY-swipeStart.y;swipeStart=null;if(Math.abs(x)>65&&Math.abs(x)>Math.abs(y)*1.4)turn(x<0?1:-1)});
+ }
+ document.addEventListener('keydown',e=>{if(book.hidden||coop)return;if(e.key==='Escape'){closeBook();e.preventDefault()}else if(e.key==='ArrowRight'){turn(1);e.preventDefault()}else if(e.key==='ArrowLeft'){turn(-1);e.preventDefault()}});
+ window.TivvigHecateBookDebug=Object.freeze({state:()=>({open:!book.hidden,page:page+1,total:BOOK.length}),open:openBook,close:closeBook,next:()=>turn(1),prev:()=>turn(-1),pages:BOOK.map(x=>({img:x.img,title:x.title,text:x.text,credit:x.credit}))});
+
  window.addEventListener('tivvig-outfit-changed',dress);
  window.addEventListener('tivvig-inventory-changed',dress);
  window.addEventListener('pageshow',dress);
