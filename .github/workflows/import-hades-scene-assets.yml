@@ -1,0 +1,39 @@
+name: Import Hades finale scene assets
+on:
+  push:
+    paths:
+      - '.github/workflows/import-hades-scene-assets.yml'
+      - '.assets/hades-scene-assets.tar.gz'
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  extract:
+    runs-on: ubuntu-latest
+    timeout-minutes: 6
+    steps:
+      - uses: actions/checkout@v4
+      - name: Unpack local high-resolution scene and seal files
+        shell: bash
+        run: |
+          test -f .assets/hades-scene-assets.tar.gz || { echo 'Already imported'; exit 0; }
+          tar -tzf .assets/hades-scene-assets.tar.gz
+          tar -xzf .assets/hades-scene-assets.tar.gz
+          python - <<'PY'
+          from pathlib import Path
+          from PIL import Image
+          paths=sorted(Path('images').glob('hades-*.webp'))
+          assert len(paths)>=8, f'Asset transfer incomplete: {len(paths)}'
+          for p in paths:print('ASSET',p,p.stat().st_size)
+          PY
+          rm .assets/hades-scene-assets.tar.gz
+      - name: Commit scenes and remove transfer archive
+        shell: bash
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A -- images/hades-*.webp .assets/hades-scene-assets.tar.gz
+          if ! git diff --cached --quiet; then
+            git commit -m "Import user-provided Hades backgrounds and detailed generated seals"
+            git push
+          fi
