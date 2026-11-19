@@ -114,6 +114,6 @@ $('reset').addEventListener('click',reset);$('retry').addEventListener('click',r
 reset();
 window.__gardenTest={getState:()=>({pL,pE,changed,busy,over,answer,choices:[...choices.children].map(x=>Number(x.textContent)),taskNo}),reset,playCorrect:()=>{let b=[...choices.children].find(x=>Number(x.textContent)===answer);if(b)b.click()},playWrong:()=>{let b=[...choices.children].find(x=>Number(x.textContent)!==answer);if(b)b.click()}};
 })();
-</script><script src="game-runtime.js?v=1" defer></script><script src="wardrobe.js?v=2" defer></script>
+</script><script src="game-runtime.js?v=1" defer></script><script src="wardrobe.js?v=5" defer></script>
 <script src="lada-avatar.js?v=1" defer></script>
 </body></html>
