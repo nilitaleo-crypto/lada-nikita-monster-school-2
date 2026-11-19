@@ -81,7 +81,7 @@ button,a{font:inherit;touch-action:manipulation;-webkit-tap-highlight-color:tran
 /* Integrated gameplay: the actual painting's parchment board is the only game surface. */
 .scene-scroll{width:100%;overflow-x:auto;overscroll-behavior-x:contain;border-radius:12px;scrollbar-color:#bc9162 #2e4233}
 .scene{border-radius:13px}
-.board-game{pointer-events:auto;z-index:6;left:63.8%;top:12%;width:31.2%;height:64.5%;padding:0 0.45%;display:flex;flex-direction:column;align-items:stretch;justify-content:flex-start;gap:clamp(2px,.37vw,6px);overflow:hidden;color:#5c3d28;text-align:center}
+.board-game{pointer-events:auto;z-index:6;left:63.8%;top:12%;width:31.2%;height:64.5%;padding:0 0.45%;display:flex;flex-direction:column;align-items:stretch;justify-content:flex-start;gap:clamp(2px,.37vw,6px);overflow-x:hidden;overflow-y:auto;overscroll-behavior-y:contain;scrollbar-width:thin;color:#5c3d28;text-align:center}
 .board-head{display:flex;justify-content:center;align-items:center;gap:6px;flex-wrap:wrap;min-height:22px}
 .board-head strong{font-size:clamp(14px,1.8vw,27px);line-height:1.15;font-weight:bold}
 .board-head .count{font:bold clamp(10px,.9vw,15px)/1 Georgia,serif;color:#75502c;white-space:nowrap}
@@ -109,15 +109,15 @@ button,a{font:inherit;touch-action:manipulation;-webkit-tap-highlight-color:tran
 .collection-holder .monster-collection{margin:0}
 .sr-only{position:absolute!important;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
 @media(max-width:900px){
- .scene{min-width:850px}
+ .scene{min-width:1000px}
  .board-game{top:12.3%;height:64.2%;width:31.2%;left:63.7%;gap:2px}
  .board-head strong{font-size:16px}
  .board-head .count{font-size:11px}
  .board-word .word{font-size:16px}
  .board-game .phrase{font-size:12px}
  .board-game .word-track{min-height:33px;font-size:19px}
- .board-game .tile{min-height:36px;font-size:19px}
- .board-game .action{min-height:34px;font-size:12px}
+ .board-game .tile{min-height:40px;font-size:19px}
+ .board-game .action{min-height:40px;font-size:12px}
  .board-game .feedback{font-size:11px;max-height:38px}
  .board-game .loot{font-size:10px}
  .board-game .loot .item{font-size:10px}
@@ -221,7 +221,7 @@ function collection(){
 }
 function update(){
  const m=monsters[index];
- if(window.innerWidth<=900){if(phase==='gear')sceneScroll.scrollLeft=0;else revealBoard();}
+ if(window.innerWidth<=900)revealBoard();
  $('lessonCounter').textContent=(finished?'8 / 8 ✓':'Слово '+(index+1)+' из '+monsters.length);
  const caption=$('sceneCaption'),beast=$('sceneBeast'),word=$('sceneWord');
  caption.textContent=finished?'Секреты чудовищ изучены':'Чудовище № '+(index+1);
@@ -253,14 +253,14 @@ function update(){
  }
  $('undoSyllable').disabled=phase!=='assemble'||selected.length===0;
  $('readConfirm').hidden=phase!=='read';
- $('nextMonster').hidden=phase!=='ready'||finished;
- $('nextMonster').textContent=index===monsters.length-1?'Завершить подготовку':'Следующее чудовище →';
+ $('nextMonster').hidden=(phase!=='ready'&&phase!=='gear')||finished;
+ $('nextMonster').textContent=phase==='gear'?'Взять '+equipment[Math.floor(index/2)].name.toLowerCase()+' и продолжить →':index===monsters.length-1?'Завершить подготовку':'Следующее чудовище →';
  for(const item of equipment){const btn=$('gear'+item.id);btn.disabled=phase!=='gear'||equipment[Math.floor(index/2)]?.id!==item.id;}
  if(finished){$('lessonSpeech').textContent='Готово! Восемь слов и четыре предмета.';}
  else if(phase==='assemble')$('lessonSpeech').textContent='Собери слоги и прочитай слово вслух.';
  else if(phase==='read')$('lessonSpeech').textContent='Прочитай вслух и нажми «Прочитано».';
  else if(phase==='reward')$('lessonSpeech').textContent='Ты прочитала слово! Забери карточку чудовища в свой маленький бестиарий.';
- else if(phase==='gear'){$('lessonSpeech').textContent='Найди '+equipment[Math.floor(index/2)].name.toLowerCase()+' в комнате и нажми на предмет.';}
+ else if(phase==='gear'){$('lessonSpeech').textContent='Найди '+equipment[Math.floor(index/2)].name.toLowerCase()+' слева в комнате или нажми кнопку «Взять и продолжить».';}
  else $('lessonSpeech').textContent='Отлично! Теперь продолжим изучать чудовищ.';
  const loot=$('loot');loot.replaceChildren(el('strong','', '🎒 Снаряжение:'));
  if(!gears.length)loot.append(el('span','', 'Рюкзак пуст'));
@@ -307,7 +307,14 @@ function complete(){
  say('Все чудовища изучены. Снаряжение собрано, гномы смогут подготовиться к ночи!');
 }
 function advance(){
- if(phase!=='ready'||finished)return;
+ if(finished)return;
+ // Gear is part of the story but cannot block reading the next word.
+ // The board button collects the same item as tapping the highlighted object.
+ if(phase==='gear'){
+  collectGear(equipment[Math.floor(index/2)].id);
+  if(finished)return;
+ }
+ if(phase!=='ready')return;
  if(index===monsters.length-1){complete();update();return;}
  index++;selected=[];phase='assemble';say('Новое имя в книге чудовищ.');update();
 }
