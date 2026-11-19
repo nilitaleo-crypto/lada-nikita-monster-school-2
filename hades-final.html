@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#101a2a">
-<meta name="description" content="Шесть испытаний во дворце Аида: печати, звуки, мост из слов, часы, сад и песня для Персефоны.">
+<meta name="description" content="Пять испытаний во дворце Аида: печати, звуки, мост из слов, часы и песня для Персефоны.">
 <title>Дворец Аида — освобождение Персефоны · Тиввиг</title>
 <style>
 :root{--silver:#deedf1;--glow:#71d7e7;--gold:#e5bb79;--ink:#101526}
@@ -30,7 +30,7 @@ header h1{margin:0;font-size:clamp(18px,2.5vw,28px);font-weight:normal;letter-sp
 .scene[data-stage="3"] .backdrop{object-position:center 50%}
 .scene[data-stage="4"] .backdrop{object-position:center 58%}
 .scene[data-stage="5"] .backdrop{object-position:center 35%}
-.scene[data-stage="3"]:before,.scene[data-stage="5"]:before{background:linear-gradient(0deg,#1a090bd9,transparent 49%,#050e2385)}
+.scene[data-stage="3"]:before,.scene[data-stage="4"]:before{background:linear-gradient(0deg,#1a090bd9,transparent 49%,#050e2385)}
 .mist{position:absolute;inset:auto -10% 0;width:120%;height:30%;z-index:2;pointer-events:none;background:radial-gradient(ellipse at center,var(--mist) 0%,transparent 68%);filter:blur(22px);opacity:.11;animation:mist 12s ease-in-out infinite alternate}
 @keyframes mist{to{transform:translateX(5%);opacity:.17}}
 .ambience{position:absolute;inset:0;z-index:2;pointer-events:none}
@@ -54,20 +54,19 @@ header h1{margin:0;font-size:clamp(18px,2.5vw,28px);font-weight:normal;letter-sp
 .actor.green{height:73%;z-index:3}
 .actor.purple{height:82%;z-index:4}
 .actor.lada [hidden]{display:none!important}
-.scene[data-stage="5"] .party{left:5%;bottom:2.5%;width:48%}
+.scene[data-stage="4"] .party{left:1%;bottom:1%;width:33%}
 .hades{position:absolute;z-index:4;right:6%;bottom:11%;height:58%;width:27%;pointer-events:none;filter:drop-shadow(0 0 13px #00a0d982) drop-shadow(0 10px 10px #020916)}
 .hades svg{width:100%;height:100%}
 .hades .fire{transform-origin:50% 12%;animation:firePulse 2.1s ease-in-out infinite alternate}
 @keyframes firePulse{to{filter:brightness(1.7);transform:scaleY(1.07)}}
 .hades .hades-smile{transform-origin:center;transition:opacity .5s}
-.scene[data-stage="1"] .hades,.scene[data-stage="2"] .hades,.scene[data-stage="3"] .hades,.scene[data-stage="4"] .hades{display:none}
-.scene[data-stage="5"] .hades{right:5%;height:48%;bottom:15%;opacity:.9}
+.scene[data-stage="1"] .hades,.scene[data-stage="2"] .hades,.scene[data-stage="3"] .hades{display:none}
+.scene[data-stage="4"] .hades{right:21%;height:50%;bottom:13%;opacity:.9}
 .scene.is-free .hades{filter:grayscale(.5) drop-shadow(0 7px 6px #060e16)}
 .persephone{position:absolute;right:1.6%;bottom:5%;width:19%;height:42%;z-index:5;pointer-events:none;object-fit:cover;object-position:50% 10%;mask-image:radial-gradient(ellipse at 52% 48%,#000 27%,#000c 48%,transparent 74%);-webkit-mask-image:radial-gradient(ellipse at 52% 48%,#000 27%,#000c 48%,transparent 74%);filter:drop-shadow(1px 4px 7px #050812) grayscale(.4)}
 .scene[data-stage="0"] .persephone{right:1%;bottom:3.5%;width:15%;height:37%;opacity:.82}
 .scene[data-stage="1"] .persephone,.scene[data-stage="2"] .persephone,.scene[data-stage="3"] .persephone{display:none}
-.scene[data-stage="4"] .persephone{right:5%;bottom:6%;width:20%;height:43%;filter:brightness(1.05)}
-.scene[data-stage="5"] .persephone{right:17%;bottom:7%;width:17%;height:41%;filter:brightness(.7) saturate(.7)}
+.scene[data-stage="4"] .persephone{right:1%;bottom:9%;width:20%;height:43%;filter:brightness(.78) saturate(.75)}
 .scene.is-free .persephone{filter:brightness(1.2) saturate(1.3);opacity:1;transition:filter 1s}
 .chains{position:absolute;right:16%;top:59%;width:2px;height:21%;z-index:6;border-left:2px solid #9be7fdb5;transform:rotate(22deg);box-shadow:7px 1px 12px #39bde8,21px 3px 9px #39bde8;pointer-events:none;opacity:.75;transition:opacity 1.5s}
 .scene[data-stage="1"] .chains,.scene[data-stage="2"] .chains,.scene[data-stage="3"] .chains{display:none}
@@ -119,42 +118,72 @@ header h1{margin:0;font-size:clamp(18px,2.5vw,28px);font-weight:normal;letter-sp
 .clock-answer{display:flex;gap:clamp(7px,1.4vw,18px)}
 .clock-answer button{min-width:clamp(59px,6.5vw,92px);min-height:clamp(47px,5.1vw,71px);border:2px solid #c69460;background:linear-gradient(#f1d1a0,#b68157);color:#342333;border-radius:9px;font:bold clamp(21px,2.4vw,33px) Georgia,serif;box-shadow:0 4px 0 #58362c}
 .clock-answer button:disabled{opacity:.7}
-.garden-area{padding-top:13%;max-width:57%;width:57%}
-.pomegranate-tree{position:absolute;z-index:5;left:15%;top:16%;width:65%;height:63%;pointer-events:none;opacity:.78}
-.pomegranate-tree svg{width:100%;height:100%;overflow:visible}
-.pomegranate-tree .petal{opacity:0;transition:opacity .7s}
-.scene[data-bloom="1"] .pomegranate-tree .petal,.scene[data-bloom="2"] .pomegranate-tree .petal,.scene[data-bloom="3"] .pomegranate-tree .petal,.scene[data-bloom="4"] .pomegranate-tree .petal{opacity:.8}
-.garden-controls{display:flex;justify-content:center;gap:clamp(7px,1vw,15px);width:100%}
-.garden-controls button{min-width:clamp(53px,7vw,95px);min-height:clamp(51px,6vw,81px);border:2px solid #d6c09aab;background:#203846d9;border-radius:50%;font-size:clamp(23px,3vw,41px);box-shadow:0 3px 5px #0009}
-.garden-controls button:disabled{opacity:.33}
-.garden-controls button.chosen{background:#ecdec3;color:#322329;box-shadow:0 0 18px #f8e8a6}
-.seeds{display:flex;justify-content:center;gap:clamp(18px,2vw,32px);width:100%}
-.seeds button{min-width:clamp(53px,6.8vw,80px);min-height:clamp(53px,6.8vw,80px);border:2px solid #e0b6acaa;border-radius:52% 48% 47% 51%;background:radial-gradient(circle at 30% 28%,#fb978e,#a11c4d 48%,#371929 90%);box-shadow:0 0 12px #ee4b69b3,0 4px 8px #000b;color:#fbe3ce;font-size:clamp(23px,3vw,34px)}
-.seeds button:disabled{opacity:.23;box-shadow:none}
 .finale{position:absolute;inset:0;z-index:17;display:grid;place-items:center;background:radial-gradient(ellipse at center,#2a4359e6,#071522ec);text-align:center;padding:12px}
 .finale div{display:flex;flex-direction:column;align-items:center;gap:15px}
 .finale h2{font:normal clamp(28px,4vw,58px) Georgia,serif;color:#fff0ce;text-shadow:0 3px 15px #4ddde9;margin:0}
 .finale a,.finale button{min-height:45px;padding:11px 18px;border-radius:12px;border:1px solid #e5c18a;background:#eadbb9;color:#3d2930;font:bold 17px Georgia,serif}
 .message{position:absolute;z-index:14;left:50%;bottom:2%;transform:translateX(-50%);color:#d0e6ea;background:#071a2bc9;border-radius:20px;border:1px solid #718b9a70;padding:6px 14px;max-width:37%;min-width:17%;text-align:center;font:normal clamp(12px,1.25vw,17px) Georgia,serif;pointer-events:none;opacity:.9}
-.scene[data-stage="1"] .message,.scene[data-stage="5"] .message{bottom:2%}
-@media(max-width:760px){.scene{width:100%;aspect-ratio:4/3;min-height:410px}.scene .backdrop{object-position:center}.control-area{max-width:64%}.chapter{max-width:40%;font-size:15px}.party{width:46%;height:26%}.seal-area{max-width:61%;padding-top:23%}.seal{width:31%}.sound-area{width:56%;max-width:56%;padding-top:21%}.word-area{width:67%;max-width:67%;padding-top:27%}.clock-area{width:58%;max-width:58%;padding-top:17%}.clock{width:164px}.garden-area{width:68%;max-width:68%;padding-top:25%}.pomegranate-tree{left:6%;width:87%;height:62%}.message{max-width:50%}.persephone{right:0;width:18%}.hades{right:2%;height:46%}}
+.scene[data-stage="1"] .message,.scene[data-stage="4"] .message{bottom:2%}
+@media(max-width:760px){.scene{width:100%;aspect-ratio:4/3;min-height:410px}.scene .backdrop{object-position:center}.control-area{max-width:64%}.chapter{max-width:40%;font-size:15px}.party{width:46%;height:26%}.seal-area{max-width:61%;padding-top:23%}.seal{width:31%}.sound-area{width:56%;max-width:56%;padding-top:21%}.word-area{width:67%;max-width:67%;padding-top:27%}.clock-area{width:58%;max-width:58%;padding-top:17%}.clock{width:164px}.message{max-width:50%}.persephone{right:0;width:18%}.hades{right:2%;height:46%}}
 @media(max-height:500px) and (min-width:800px){main{gap:3px}.scene{width:min(100%,calc((100dvh - 68px)*1.777))}.chapter{font-size:15px}.prompt{font-size:14px}}
 @media(prefers-reduced-motion:reduce){.mist,.ambience i,.hades .fire{animation:none}.party{transition:none}}
+
+/* Five-scene art direction: gameplay remains in the world, never beneath the crew. */
+.party{left:1%;bottom:1.6%;width:32%;height:18.5%;z-index:7;justify-content:flex-start;animation:party-breathe 6s ease-in-out infinite alternate}
+.actor{flex-basis:15.5%}.actor.lada{flex-basis:22%}
+.panel{z-index:14;padding-top:4.2%}
+.control-area{max-width:67%}
+.seal-area{max-width:65%;padding-top:4%;gap:10px}
+.sound-area{width:43%;max-width:43%;padding-top:4%;gap:7px}
+.word-area{width:60%;max-width:60%;padding-top:7%;gap:7px}
+.clock-area{width:47%;max-width:47%;padding-top:3%}
+.music-slab{padding:7px 10px;gap:3px;border-radius:65px 65px 14px 14px}
+.music-slab svg{height:clamp(51px,8vw,100px)}
+.message{left:auto;right:2%;bottom:2%;transform:none;max-width:30%;min-width:0}
+.hades{right:21%;bottom:11%;width:22%;height:62%;object-fit:contain;object-position:center bottom;clip-path:polygon(48% 0,60% 4%,67% 11%,64% 18%,66% 24%,77% 30%,86% 36%,96% 49%,100% 59%,100% 100%,0 100%,0 59%,8% 42%,18% 32%,31% 28%,39% 21%,41% 9%);filter:drop-shadow(0 0 10px #42c3ef9c);-webkit-mask-image:radial-gradient(ellipse 72% 75% at 50% 56%,#000 28%,#000 58%,transparent 91%);mask-image:radial-gradient(ellipse 72% 75% at 50% 56%,#000 28%,#000 58%,transparent 91%);animation:hades-ascend 4.8s ease-in-out infinite alternate}
+.persephone{right:2%;bottom:8%;width:20%;height:45%;opacity:.95;object-fit:cover;object-position:53% 12%;-webkit-mask-image:radial-gradient(ellipse at 52% 47%,#000 31%,#000d 54%,transparent 81%);mask-image:radial-gradient(ellipse at 52% 47%,#000 31%,#000d 54%,transparent 81%)}
+.scene[data-stage="0"] .persephone{right:2%;bottom:8%;width:20%;height:45%;opacity:.97}
+.scene[data-stage="4"] .persephone{right:2%;bottom:8%;width:20%;height:45%}
+.scene[data-stage="4"] .hades{right:14%;bottom:15%;width:15%;height:42%}
+.underworld-motion{position:absolute;inset:0;z-index:2;pointer-events:none;opacity:.45;mix-blend-mode:screen;animation:light-swell 9s ease-in-out infinite alternate;background:radial-gradient(ellipse at 51% 60%,transparent 21%,#53d8ee0d 63%,transparent 79%)}
+.underworld-motion:before{content:'';position:absolute;inset:4% -16%;background:radial-gradient(ellipse 25% 15% at 25% 50%,#4ac8f342,transparent),radial-gradient(ellipse 28% 17% at 75% 40%,#b9eafd29,transparent);filter:blur(26px);animation:deep-fog 13s ease-in-out infinite alternate}
+.underworld-motion:after{content:'';position:absolute;inset:18% 0 0;background:repeating-radial-gradient(ellipse at 55% 102%,transparent 0 20px,#9cecf217 23px,transparent 27px);opacity:.4;animation:water-flow 12s linear infinite}
+.scene[data-stage="2"] .underworld-motion:before{background:radial-gradient(ellipse at 14% 31%,#d8ffff37,transparent 28%),radial-gradient(ellipse at 82% 48%,#7ecfff29,transparent 26%);animation:ghost-drift 7s ease-in-out infinite alternate}
+.scene[data-stage="3"] .underworld-motion,.scene[data-stage="4"] .underworld-motion{background:radial-gradient(ellipse at 73% 91%,#ff5e167b,transparent 58%);animation:lava-pulse 4s ease-in-out infinite alternate}
+.scene[data-stage="3"] .underworld-motion:before,.scene[data-stage="4"] .underworld-motion:before{background:radial-gradient(ellipse 31% 18% at 20% 85%,#ff9b3655,transparent),radial-gradient(ellipse at 75% 55%,#e8553355,transparent);animation:deep-fog 6s ease-in-out infinite alternate}
+@keyframes party-breathe{to{transform:translateY(-5px)}}
+@keyframes hades-ascend{to{transform:translateY(-10px);filter:drop-shadow(0 0 17px #65e5ffb4)}}
+@keyframes deep-fog{to{transform:translateX(14%) translateY(-4%);opacity:.72}}
+@keyframes ghost-drift{to{transform:translate(-8%,-4%);filter:brightness(1.6)}}
+@keyframes light-swell{to{opacity:.9}}
+@keyframes water-flow{to{transform:translateY(24px)}}
+@keyframes lava-pulse{to{opacity:.84;filter:brightness(1.7)}}
+@media(max-width:760px){
+ .party{left:1%;bottom:1%;width:36%;height:16%;z-index:7}
+ .panel{padding-top:9%}
+ .control-area{max-width:69%}
+ .sound-area{width:55%;max-width:55%;padding-top:5%}
+ .seal-area{max-width:69%;padding-top:12%}
+ .word-area{width:69%;max-width:69%;padding-top:13%}
+ .clock-area{width:61%;max-width:61%;padding-top:7%}
+ .music-slab{padding:5px}
+ .music-slab svg{height:56px}
+ .hades{right:18%;bottom:9%;width:24%;height:45%}
+ .persephone,.scene[data-stage="0"] .persephone{right:0;bottom:7%;width:20%;height:37%}
+ .message{right:1%;bottom:1%;max-width:26%;font-size:12px}
+}
+@media(prefers-reduced-motion:reduce){.party,.hades,.underworld-motion,.underworld-motion:before,.underworld-motion:after{animation:none}}
 </style>
 </head>
 <body>
 <main>
 <header><a href="hades-hecate.html" class="back">← Геката</a><h1>Дворец Аида</h1><a href="index.html" class="back">⌂ Карта</a></header>
-<section class="scene" id="stage" data-stage="0" data-bloom="0" aria-label="Последовательное приключение в подземном царстве">
+<section class="scene" id="stage" data-stage="0" aria-label="Последовательное приключение в подземном царстве">
 <img id="backdrop" class="backdrop" src="images/hades-palace-blue.webp" alt="Тёмный подземный дворец, огромные маски в скале, река и огни" fetchpriority="high" draggable="false">
-<div class="mist" aria-hidden="true"></div><div class="ambience" id="ambience" aria-hidden="true"></div>
+<div class="mist" aria-hidden="true"></div><div class="underworld-motion" aria-hidden="true"></div><div class="ambience" id="ambience" aria-hidden="true"></div>
 <div class="chapter" id="chapter"><small id="chapterNo">ИСПЫТАНИЕ I</small><span id="chapterName">Печати Аида</span></div>
-<div class="progress" id="progress" aria-label="Шесть испытаний"></div>
-<div class="hades" id="hadesFigure" aria-label="Аид с голубым огнём вместо волос">
-<svg viewBox="0 0 300 460" aria-hidden="true"><defs><linearGradient id="hcloak" x1="0" x2="1"><stop stop-color="#191828"/><stop offset=".5" stop-color="#363244"/><stop offset="1" stop-color="#171827"/></linearGradient><linearGradient id="hface" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#9fc5c6"/><stop offset=".5" stop-color="#6b8299"/><stop offset="1" stop-color="#36495f"/></linearGradient><radialGradient id="hf"><stop stop-color="#9ffbfe"/><stop offset=".45" stop-color="#00cdf4"/><stop offset="1" stop-color="#085ef4"/></radialGradient></defs>
-<g class="fire"><path d="M98 128Q66 79 91 11Q112 42 115 49Q132 8 151 0Q158 56 169 50Q200 11 194 7Q230 71 208 127Z" fill="url(#hf)" stroke="#b3fbff" stroke-width="2" opacity=".85"/><path d="M102 119Q96 82 124 57Q144 43 150 19Q182 67 189 115" stroke="#b6ffff" stroke-width="9" fill="none" opacity=".55"/></g>
-<path d="M70 187Q42 218 26 354L9 454Q151 478 294 452L272 345Q244 232 225 180Z" fill="url(#hcloak)" stroke="#738aa0" stroke-width="5"/><path d="M79 198Q129 231 213 204L180 294 124 294Z" fill="#748398" opacity=".6"/><path d="M83 110Q71 157 85 192Q111 226 165 228Q213 211 231 164L225 120 201 107Z" fill="url(#hface)" stroke="#2e415c" stroke-width="5"/><path d="M91 152Q111 127 138 142M162 142Q196 122 215 142" fill="none" stroke="#203248" stroke-width="13" stroke-linecap="round"/><ellipse cx="128" cy="149" rx="10" ry="7" fill="#f9c84a"/><ellipse cx="189" cy="149" rx="10" ry="7" fill="#f9c84a"/><circle cx="130" cy="149" r="4"/><circle cx="190" cy="149" r="4"/><path d="M161 144 153 185 168 187" fill="none" stroke="#30445c" stroke-width="5"/><path class="hades-smile" d="M114 197Q167 218 210 187Q190 218 155 219Q130 219 114 197" fill="#293043" stroke="#c6d9df" stroke-width="3"/><path d="M112 227Q69 245 58 298M211 231Q258 244 264 310" stroke="#7e8fac" stroke-width="20" fill="none" stroke-linecap="round"/><path d="M79 287 109 367 67 417M235 299 204 365 257 402" stroke="#53617b" stroke-width="16" fill="none" stroke-linecap="round"/></svg>
-</div>
+<div class="progress" id="progress" aria-label="Пять испытаний"></div>
+<img class="hades" id="hadesFigure" src="images/hades-original-character.webp" alt="Аид с голубым пламенем вместо волос" draggable="false">
 <img class="persephone" id="persephone" src="images/hades-persephone-portrait.webp" alt="Персефона держит гранат" draggable="false">
 <div class="chains" aria-hidden="true"></div>
 <div class="party" id="party" aria-label="Лада, Ловкач, Силач, Умняшка, зелёный торговец и фиолетовая продавщица книг идут вместе">
@@ -167,7 +196,6 @@ header h1{margin:0;font-size:clamp(18px,2.5vw,28px);font-weight:normal;letter-sp
 </div>
 <div class="panel" id="sceneControls"></div>
 <div class="bridge-track" id="bridgeTrack" aria-hidden="true" hidden></div>
-<div class="pomegranate-tree" id="gardenTree" hidden aria-hidden="true"><svg viewBox="0 0 600 350"><g stroke="#443a39" stroke-width="14" stroke-linecap="round" fill="none"><path d="M300 350Q319 265 292 199Q276 151 238 130"/><path d="M288 213Q343 151 401 149"/><path d="M292 180Q260 102 190 72"/><path d="M330 174Q365 107 438 66"/><path d="M258 147Q207 171 149 140"/><path d="M370 157Q438 194 478 165"/></g><g fill="#548c77" opacity=".88"><ellipse cx="206" cy="83" rx="31" ry="15" transform="rotate(-26 206 83)"/><ellipse cx="268" cy="118" rx="28" ry="13" transform="rotate(-25 268 118)"/><ellipse cx="391" cy="136" rx="29" ry="13"/><ellipse cx="441" cy="74" rx="30" ry="13" transform="rotate(19 441 74)"/><ellipse cx="159" cy="137" rx="23" ry="10"/><ellipse cx="483" cy="166" rx="28" ry="12"/></g><g class="petal" fill="#f8bfd2"><circle cx="230" cy="109" r="10"/><circle cx="425" cy="150" r="11"/><circle cx="355" cy="111" r="9"/><circle cx="174" cy="127" r="11"/></g><g fill="#ad3455" stroke="#f5b3a5" stroke-width="2"><circle cx="214" cy="143" r="18"/><circle cx="366" cy="141" r="18"/><circle cx="432" cy="99" r="17"/><circle cx="176" cy="109" r="14"/></g></svg></div>
 <div class="message" id="message" role="status" aria-live="polite">Освободи Персефону</div>
 <div class="sound-hint" id="soundHint" hidden><button type="button" id="soundToggle" title="Проверить звук" aria-label="Проверить звук">🔈</button></div>
 <div class="finale" id="finale" hidden role="dialog" aria-modal="true" aria-label="Персефона свободна"><div><h2>Персефона свободна!</h2><a href="index.html">⌂ На карту</a><button id="replayAll" type="button">↻ С начала</button></div></div>
@@ -175,7 +203,7 @@ header h1{margin:0;font-size:clamp(18px,2.5vw,28px);font-weight:normal;letter-sp
 </main>
 <script src="wardrobe.js?v=5" defer></script>
 <script src="game-registry.js?v=3" defer></script>
-<script src="hades-final.js?v=1" defer></script>
+<script src="hades-final.js?v=2" defer></script>
 <script src="game-runtime.js?v=5" defer></script>
 </body>
 </html>

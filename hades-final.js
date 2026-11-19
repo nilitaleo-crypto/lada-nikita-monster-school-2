@@ -1,4 +1,4 @@
-/* Тиввиг / Дворец Аида: six deterministic chapters, one environment.
+/* Тиввиг / Дворец Аида: five deterministic chapters, one environment.
  * All input is via accessible click buttons for iPad and Firebase room replay.
  * The 2-tone rhythm is adapted from the tested ladaburg-forge hammer sequence.
  */
@@ -8,10 +8,9 @@ const $=id=>document.getElementById(id);
 const scene=$('stage'),control=$('sceneControls'),party=$('party'),message=$('message');
 const STAGES=[
  {name:'Печати Аида',bg:'images/hades-palace-blue.webp',msg:'Найди печать'},
- {name:'Забытые голоса',bg:'images/hades-spirits-cave.webp',msg:'Повтори ритм'},
- {name:'Мост из слов',bg:'images/hades-river-cave.webp',msg:'Построй мост'},
+ {name:'Забытые голоса',bg:'images/hades-echoes-dynamic.webp',msg:'Повтори ритм'},
+ {name:'Мост из слов',bg:'images/hades-word-ghost-bridge.webp',msg:'Построй мост'},
  {name:'Огненные часы',bg:'images/hades-palace-fire.webp',msg:'Запусти часы'},
- {name:'Гранатовый сад',bg:'images/hades-river-cave.webp',msg:'Верни времена года'},
  {name:'Последняя песня',bg:'images/hades-palace-fire.webp',msg:'Сыграй песню'}
 ];
 const BEATS=[['B','S','B'],['B','B','S','B'],['S','B','B','S']];
@@ -28,7 +27,6 @@ const CLOCK=[{a:2,b:3,op:'+',choices:[5,4,7],correct:5},
  {a:4,b:4,op:'+',choices:[6,9,8],correct:8},
  {a:9,b:6,op:'−',choices:[3,6,4],correct:3},
  {a:6,b:4,op:'+',choices:[8,9,10],correct:10}];
-const SEASONS=[{label:'Весна',emoji:'🌸'},{label:'Лето',emoji:'☀️'},{label:'Осень',emoji:'🍂'},{label:'Зима',emoji:'❄️'}];
 const KEY='tivvig_hades_journey_stage_v1',FINAL='tivvig_hades_persephone_freed_v1';
 const reduce=!!window.matchMedia?.('(prefers-reduced-motion: reduce)').matches;
 const delay=ms=>new Promise(resolve=>setTimeout(resolve,reduce?Math.min(ms,80):ms));
@@ -36,11 +34,11 @@ const read=k=>{try{return localStorage.getItem(k)}catch{return null}};
 const write=(k,v)=>{try{localStorage.setItem(k,v)}catch{}};
 let stage=0,busy=false,transitioning=false,epoch=0;
 let sealRound=0,rhythmRound=0,played=[],listened=false;
-let wordRound=0,wordStep=0,bridgeCount=0,clockRound=0,seasonIndex=0,seedIndex=0;
+let wordRound=0,wordStep=0,bridgeCount=0,clockRound=0;
 let finalPlayed=[],songReady=false,finalDone=false;
 let audio=null,clips=null,soundOn=true;
 const countSaved=Number(read(KEY));
-const freshStart=Number.isInteger(countSaved)&&countSaved>=0&&countSaved<=5?countSaved:0;
+const freshStart=Number.isInteger(countSaved)&&countSaved>=0&&countSaved<=5?Math.min(countSaved,4):0;
 function wardrobe(){window.TivvigWardrobe?.equip($('hadesLada'))}
 window.addEventListener('tivvig-outfit-changed',wardrobe);
 window.addEventListener('tivvig-inventory-changed',wardrobe);
@@ -99,7 +97,7 @@ function status(){return el('div','feedback','')}
 function wrap(cls){return el('div','control-area '+cls)}
 function put(nodes){control.replaceChildren(...nodes)}
 function chapter(){
- $('chapterNo').textContent='ИСПЫТАНИЕ '+['I','II','III','IV','V','VI'][stage];
+ $('chapterNo').textContent='ИСПЫТАНИЕ '+['I','II','III','IV','V'][stage];
  $('chapterName').textContent=STAGES[stage].name;
  const root=$('progress');root.replaceChildren();
  for(let i=0;i<STAGES.length;i++){const dot=el('i',(i<stage?'done':i===stage?'now':''));root.appendChild(dot)}
@@ -111,18 +109,18 @@ async function forward(){
  if(transitioning)return;transitioning=true;busy=true;const id=++epoch;
  savedStage(stage+1);setMessage('✦');party.classList.add('is-travelling');
  await delay(780);if(id!==epoch)return;party.classList.remove('is-travelling');
- stage++;if(stage>5){finish();return}renderScene();
+ stage++;if(stage>4){finish();return}renderScene();
 }
 function renderScene(){
  epoch++;busy=false;transitioning=false;sealRound=0;rhythmRound=0;played=[];listened=false;
- wordRound=0;wordStep=0;bridgeCount=0;clockRound=0;seasonIndex=0;seedIndex=0;finalPlayed=[];songReady=false;
- scene.dataset.stage=String(stage);scene.dataset.bloom='0';scene.classList.remove('is-free');
+ wordRound=0;wordStep=0;bridgeCount=0;clockRound=0;finalPlayed=[];songReady=false;
+ scene.dataset.stage=String(stage);scene.classList.remove('is-free');
  $('backdrop').src=STAGES[stage].bg;$('backdrop').alt=STAGES[stage].name;
- $('bridgeTrack').hidden=stage!==2;$('gardenTree').hidden=stage!==4;
- $('soundHint').hidden=!(stage===1||stage===5);$('finale').hidden=true;
+ $('bridgeTrack').hidden=stage!==2;
+ $('soundHint').hidden=!(stage===1||stage===4);$('finale').hidden=true;
  chapter();wardrobe();setMessage(STAGES[stage].msg);
  if(stage===0)renderSeals();if(stage===1)renderRhythm();if(stage===2)renderWords();
- if(stage===3)renderClock();if(stage===4)renderGarden();if(stage===5)renderFinalSong();
+ if(stage===3)renderClock();if(stage===4)renderFinalSong();
 }
 function markRunes(count,max){const group=el('div','runes');for(let i=0;i<max;i++)group.appendChild(el('span',i<count?'active':'','✦'));return group}
 function renderSeals(){
@@ -154,12 +152,12 @@ function rhythmPanel(final=false){
 function renderRhythm(){rhythmPanel(false)}
 function renderFinalSong(){rhythmPanel(true)}
 async function listen(final){
- if(stage!==(final?5:1)||busy)return;busy=true;
+ if(stage!==(final?4:1)||busy)return;busy=true;
  if(final){songReady=false;finalPlayed=[]}else{listened=false;played=[]}
  const id=++epoch;const seq=final?LAST_SONG:BEATS[rhythmRound];rhythmPanel(final);
  setMessage('Слушай и смотри');await delay(250);
  for(let i=0;i<seq.length;i++){
-   if(id!==epoch||stage!==(final?5:1))return;
+   if(id!==epoch||stage!==(final?4:1))return;
    const demo=$('hadesDemo').children[i];demo.classList.add('lit');demo.textContent=seq[i]==='B'?'●':'✧';
    flash(seq[i]==='B'?'hades-big':'hades-small');sound(seq[i]);
    await delay(490);if(id!==epoch)return;demo.classList.remove('lit');
@@ -168,7 +166,7 @@ async function listen(final){
  busy=false;if(final)songReady=true;else listened=true;rhythmPanel(final);setMessage('Твоя очередь');
 }
 async function hit(which,final){
- if(stage!==(final?5:1)||busy||!(final?songReady:listened))return;
+ if(stage!==(final?4:1)||busy||!(final?songReady:listened))return;
  primeAudio();sound(which);flash(which==='B'?'hades-big':'hades-small');
  const arr=final?finalPlayed:played,seq=final?LAST_SONG:BEATS[rhythmRound];
  if(seq[arr.length]!==which){setMessage('Попробуй ещё');if(final){songReady=false;finalPlayed=[]}else{listened=false;played=[]}rhythmPanel(final);return}
@@ -215,30 +213,9 @@ async function pickAnswer(i){if(stage!==3||busy)return;
  if(clockRound===CLOCK.length){await forward();return}
  busy=false;renderClock();
 }
-function renderGarden(){
- const box=wrap('garden-area');
- if(seasonIndex<4){
-   box.append(prompt('Время года: '+SEASONS[seasonIndex].label));
-   const row=el('div','garden-controls');SEASONS.forEach((v,i)=>row.appendChild(makeButton('season'+(i<seasonIndex?' chosen':''),'hades-season-'+i,v.emoji,()=>pickSeason(i),v.label)));
-   box.append(row,markRunes(seasonIndex,4),status());
- }else{
-   box.append(prompt('Найди три зёрнышка'));
-   const row=el('div','seeds');for(let i=0;i<3;i++){const b=makeButton('seed','hades-seed-'+i,'♦',()=>pickSeed(i),'Гранатовое зёрнышко '+(i+1));b.disabled=i<seedIndex;row.appendChild(b)}
-   box.append(row,markRunes(seedIndex,3),status());
- }
- put([box]);scene.dataset.bloom=String(seasonIndex);
-}
-async function pickSeason(i){if(stage!==4||busy||seasonIndex>=4)return;
- if(i!==seasonIndex){setMessage('Другое время года');return}
- seasonIndex++;setMessage('Сад оживает');renderGarden();
-}
-async function pickSeed(i){if(stage!==4||busy||seasonIndex<4||i!==seedIndex)return;
- seedIndex++;setMessage('Зёрнышко найдено');renderGarden();
- if(seedIndex===3){busy=true;await delay(560);await forward()}
-}
 function finish(){
  if(finalDone)return;finalDone=true;busy=true;songReady=false;
- write(FINAL,'unlocked');write(KEY,'5');
+ write(FINAL,'unlocked');write(KEY,'4');
  if(window.TivvigRegistry?.byReward?.[FINAL])window.TivvigRegistry.unlockReward(FINAL);
  scene.classList.add('is-free');$('finale').hidden=false;setMessage('Персефона свободна');
 }
@@ -247,13 +224,13 @@ function setup(){for(let i=0;i<19;i++){const dot=el('i','');dot.style.left=((i*2
  $('soundToggle').addEventListener('click',()=>{soundOn=true;primeAudio();sound('S');setMessage('Звук включён')});
  $('replayAll').addEventListener('click',startOver);
  stage=freshStart;renderScene();
- if(read(FINAL)==='unlocked'&&stage===5){finalDone=true;scene.classList.add('is-free');$('finale').hidden=false}
+ if(read(FINAL)==='unlocked'&&stage===4){finalDone=true;scene.classList.add('is-free');$('finale').hidden=false}
 }
 window.TivvigHadesDebug=Object.freeze({
- state:()=>({stage,busy,sealRound,rhythmRound,played:[...played],listened,wordRound,wordStep,bridgeCount,clockRound,seasonIndex,seedIndex,finalPlayed:[...finalPlayed],songReady,finalDone}),
+ state:()=>({stage,busy,sealRound,rhythmRound,played:[...played],listened,wordRound,wordStep,bridgeCount,clockRound,finalPlayed:[...finalPlayed],songReady,finalDone}),
  seal:i=>$('hades-seal-'+i)?.click(),listen:()=>$('hades-listen')?.click(),hit:x=>$(x==='B'?'hades-big':'hades-small')?.click(),
- word:i=>$('hades-word-'+i)?.click(),answer:i=>$('hades-answer-'+i)?.click(),season:i=>$('hades-season-'+i)?.click(),seed:i=>$('hades-seed-'+i)?.click(),
- reset:startOver,stage:n=>{epoch++;stage=Math.max(0,Math.min(5,n));renderScene()},
+ word:i=>$('hades-word-'+i)?.click(),answer:i=>$('hades-answer-'+i)?.click(),
+ reset:startOver,stage:n=>{epoch++;stage=Math.max(0,Math.min(4,n));renderScene()},
  data:()=>({seals:[...SEALS],beats:BEATS.map(a=>[...a]),words:WORDS.map(x=>({sentence:[...x.sentence],choices:[...x.choices]})),clock:CLOCK.map(x=>({...x})),song:[...LAST_SONG]})
 });
 setup();
