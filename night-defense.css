@@ -11,11 +11,11 @@ body.night-mode #nightDefense{display:block}
 .nd-progress i.current{background:#7cd2cd;box-shadow:0 0 10px #96d6e4}
 .nd-scroll{overflow-x:auto;overscroll-behavior-x:contain;border:4px ridge #bf9b64;border-radius:18px;box-shadow:0 14px 45px #01090bbd;scrollbar-color:#cfb581 #153443;background:#081626}
 .nd-scene{width:100%;min-width:960px;aspect-ratio:16/9;position:relative;isolation:isolate;overflow:hidden;background:#0c2439}
-.nd-background{position:absolute;inset:0;background-image:url('images/def-1.webp');background-size:146% 100%;background-position:right center;background-repeat:no-repeat;transition:filter .35s,opacity .35s;transform:translateZ(0)}
-.nd-scene[data-phase="1"] .nd-background{background-image:url('images/def-2.webp')}
-.nd-scene[data-phase="2"] .nd-background{background-image:url('images/def-leshy-q97.webp');filter:saturate(calc(.7 + var(--groom-level,0)*.07)) brightness(calc(.83 + var(--groom-level,0)*.045))}
-.nd-scene[data-phase="3"] .nd-background{background-image:url('images/def-4.webp')}
-.nd-scene[data-phase="4"] .nd-background{background-image:url('images/nd-victory-q97.webp');background-size:244% 100%;background-position:right center;filter:brightness(1.04) saturate(1.03)}
+.nd-background{position:absolute;inset:0;background-image:url('images/nd-snow-hq.webp');background-size:100% 100%;background-position:center center;background-repeat:no-repeat;transition:filter .35s,opacity .35s;transform:translateZ(0)}
+.nd-scene[data-phase="1"] .nd-background{background-image:url('images/nd-golem-hq.webp')}
+.nd-scene[data-phase="2"] .nd-background{background-image:url('images/nd-leshy-dirty-hq.webp');filter:saturate(calc(.72 + var(--groom-level,0)*.07)) brightness(calc(.73 + var(--groom-level,0)*.054))}
+.nd-scene[data-phase="3"] .nd-background{background-image:url('images/nd-demo-hq.webp')}
+.nd-scene[data-phase="4"] .nd-background{background-image:url('images/gnome-village-full.webp');background-size:cover;background-position:center;filter:brightness(1.04) saturate(1.03)}
 .nd-vignette{position:absolute;inset:0;background:linear-gradient(180deg,#02112040 0%,transparent 16%,transparent 80%,#07132040 100%);pointer-events:none;z-index:1}
 .nd-weather{position:absolute;inset:-20%;z-index:2;pointer-events:none;opacity:0;transition:opacity .4s}
 .nd-scene[data-phase="0"] .nd-weather{opacity:1;background-image:radial-gradient(circle,#fff 1.6px,transparent 2.5px),radial-gradient(circle,#d9f4ff 2px,transparent 3px);background-size:71px 91px,119px 173px;animation:nd-snow 10s linear infinite}
@@ -67,3 +67,37 @@ body.night-mode #nightDefense{display:block}
 @keyframes nd-beat{0%,100%{filter:brightness(1)}50%{filter:brightness(1.18)}}
 @media(max-width:900px){.nd-scene{min-width:960px}.nd-party{width:26%}.nd-lada{max-width:215px}.nd-gnome{width:58px;height:58px}.nd-alert{top:3%}.nd-info{top:12%}.nd-board{width:min(84%,900px)}.nd-top h2{font-size:22px}}
 @media(prefers-reduced-motion:reduce){#nightDefense *,#nightDefense *::before,#nightDefense *::after{animation:none!important;transition:none!important}}
+
+/* Real Lada photo + canonical wardrobe overlay; same dimensions as the existing wardrobe. */
+.nd-party{gap:4px;left:1.2%;bottom:1.1%;width:24%;max-width:300px}
+.nd-lada-doll{position:relative;width:min(80%,204px);aspect-ratio:1056/1448;filter:drop-shadow(0 8px 10px #051222aa)}
+.nd-lada-doll img{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;pointer-events:none;user-select:none}
+.nd-lada-doll [data-outfit-layer][hidden],.nd-lada-doll [data-outfit-face][hidden]{display:none}
+.nd-lada{max-width:none!important;max-height:none!important;width:100%!important;height:100%!important}
+.nd-gnomes{gap:6px;flex-wrap:nowrap;max-width:100%}
+.nd-gnome{width:clamp(48px,4.8vw,76px);height:clamp(48px,4.8vw,76px);flex:none;border:2px solid #efcc81;background:#f0d9a2}
+.nd-scene[data-phase="2"] .nd-party{display:flex}
+.nd-scene[data-phase="4"] .nd-party{left:1.2%;bottom:1.1%;width:24%;}
+.nd-scene[data-phase="4"] .nd-hammer{left:15%;top:32%;}
+.nd-scene[data-phase="2"]::after{content:"";position:absolute;pointer-events:none;z-index:2;left:70%;top:8%;height:75%;width:30%;opacity:calc(1 - var(--groom-level,0)/5);background:radial-gradient(ellipse at 55% 36%,#344b29a6 0%,transparent 19%),radial-gradient(ellipse at 70% 57%,#4a3d2588 0%,transparent 28%),radial-gradient(ellipse at 34% 69%,#5b6b3666 0%,transparent 23%);transition:opacity .45s}
+.nd-scene[data-phase="2"].nd-groomed .nd-background{filter:brightness(1.05) saturate(1.13)}
+.nd-scene.nd-groomed .nd-info{color:#fff6bd}
+/* Rune sequence: exact glyphs and known patterns of Vulcan's forge. */
+.nd-rune-etch{display:flex;gap:clamp(4px,.7vw,11px);align-items:center;justify-content:center;max-width:100%;flex-wrap:wrap}
+.nd-rune-symbol{display:grid;place-items:center;min-width:clamp(37px,4vw,60px);height:clamp(40px,4.3vw,64px);border:2px ridge #9fd1bd;border-radius:9px;font-size:clamp(24px,3vw,42px);font-weight:900;color:#aafbe5;background:#173849c7;text-shadow:0 0 15px #55f8cd;box-shadow:0 0 10px #43dbcc77,inset 0 0 10px #05242b99}
+.nd-rune-symbol.blank{border:3px dashed #ffdd85;background:#29364777;color:#fff2b2;animation:nd-beat 1.7s ease-in-out infinite}
+.nd-rune-choices button{min-width:68px;min-height:68px;font-size:clamp(27px,3.8vw,49px);background:linear-gradient(#deffec,#75adac);color:#143b44!important}
+/* Reward viewer only after victory; source image is exactly the user's supplied painting. */
+#nd-reward-view[hidden]{display:none!important}
+.nd-reward-view{position:fixed;inset:0;z-index:99999;background:#090e17ed;display:flex;justify-content:center;align-items:center;padding:12px;overflow:auto}
+.nd-reward-page{height:min(96dvh,100%);width:min(92vw,960px);display:flex;flex-direction:column;align-items:center;gap:6px;color:#f5e7c7;text-align:center}
+.nd-reward-page img{min-height:0;height:auto;max-height:calc(96dvh - 110px);max-width:100%;width:auto;object-fit:contain;border:5px ridge #c69f5b;box-shadow:0 10px 35px #000}
+.nd-reward-page button{flex:none;align-self:flex-end;border:2px solid #ffdc9d;border-radius:10px;padding:11px 17px;min-height:46px;background:#f4dfb2;color:#4b341d;font:bold 18px Georgia,serif}
+.nd-reward-page p{font-size:clamp(13px,1.3vw,18px);margin:2px 0 0}
+@media(max-width:900px){.nd-lada-doll{width:190px}.nd-gnome{width:48px;height:48px}.nd-rune-symbol{min-width:40px}}
+
+/* The same Leshy actually transforms as the tools are used: a smooth crossfade
+   from tangled / dirty to washed and neatly combed (not just a color filter). */
+.nd-leshy-clean{display:none;position:absolute;inset:0;z-index:1;pointer-events:none;background:url('images/nd-leshy-clean-hq.webp') center/100% 100% no-repeat;opacity:0;transition:opacity .65s ease-in-out}
+.nd-scene[data-phase="2"] .nd-leshy-clean{display:block;opacity:calc(var(--groom-level,0)/5)}
+.nd-scene[data-phase="2"].nd-groomed .nd-background{filter:none}

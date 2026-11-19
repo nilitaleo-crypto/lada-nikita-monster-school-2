@@ -41,7 +41,7 @@ button:focus-visible,a:focus-visible{outline:3px solid #fff29b;outline-offset:3p
 @media(max-width:720px){.top{justify-content:center;text-align:center}.top h1{width:100%}.stage{min-width:730px}.info{grid-template-columns:1fr}.info .tag{justify-self:start}.hotspot span{font-size:26px}.info p{font-size:16px}.scroll-scene{border-width:4px}}
 @media(prefers-reduced-motion:reduce){.hotspot{transition:none}}
 </style>
-<link rel="stylesheet" href="night-defense.css?v=2">
+<link rel="stylesheet" href="night-defense.css?v=4">
 </head>
 <body>
 <header class="top">
@@ -80,13 +80,15 @@ button:focus-visible,a:focus-visible{outline:3px solid #fff29b;outline-offset:3p
  <div class="nd-scroll" id="nd-scroll" role="region" tabindex="0" aria-label="Ночная оборона: на небольшом экране можно прокручивать поле вправо">
   <div class="nd-scene" id="nd-scene" data-phase="0">
    <div class="nd-background" role="img" aria-label="Ночная деревня гномов: ворота, колодец и лес"></div>
+   <div class="nd-leshy-clean" aria-hidden="true"></div>
    <div class="nd-vignette" aria-hidden="true"></div>
    <div class="nd-weather" aria-hidden="true"></div>
-   <div class="nd-party" aria-hidden="true"><img src="images/lada-cutout.webp" class="nd-lada" alt=""><div class="nd-gnomes"><span class="nd-gnome"><img src="images/gnome-bantik.webp" alt=""></span><span class="nd-gnome"><img src="images/gnome-kubik.webp" alt=""></span><span class="nd-gnome"><img src="images/gnome-dolka.webp" alt=""></span><span class="nd-gnome"><img src="images/gnome-luchik.webp" alt=""></span></div></div>
+   <div class="nd-party" aria-hidden="true"><div id="nd-lada-doll" class="nd-lada-doll"><img src="images/lada-cutout.webp" class="nd-lada" alt=""><img data-outfit-layer hidden alt="" draggable="false"></div><div class="nd-gnomes"><span class="nd-gnome"><img src="images/gnome-bantik.webp" alt=""></span><span class="nd-gnome"><img src="images/gnome-kubik.webp" alt=""></span><span class="nd-gnome"><img src="images/gnome-dolka.webp" alt=""></span><span class="nd-gnome"><img src="images/gnome-luchik.webp" alt=""></span></div></div>
    <div class="nd-hammer" aria-hidden="true"><svg viewBox="0 0 130 180"><defs><linearGradient id="hammerMetal" x1="0" x2="1"><stop stop-color="#8e969e"/><stop offset=".48" stop-color="#e6f0f0"/><stop offset="1" stop-color="#4b6475"/></linearGradient></defs><path d="M58 79h15v92H58z" fill="#6d4b32" stroke="#eed18e" stroke-width="4"/><path d="M23 13h84v65H23z" fill="url(#hammerMetal)" stroke="#d6b36e" stroke-width="7" rx="8"/><path d="M40 26h50M40 62h50M65 26v35" fill="none" stroke="#c69c52" stroke-width="5"/><path d="M44 102h41M44 126h41M44 150h41" stroke="#b89458" stroke-width="4"/></svg></div><div class="nd-alert" id="nd-alert">Снежный человек!</div><div class="nd-info" id="nd-info">Прочитай слово и выбери Р или Л</div>
    <div class="nd-board" id="nd-board" aria-label="Задание"></div>
   </div>
  </div>
+ <div id="nd-reward-view" class="nd-reward-view" hidden role="dialog" aria-modal="true" aria-label="Награда: картина о Торе"><div class="nd-reward-page"><button id="nd-reward-close" type="button" aria-label="Закрыть награду">× Закрыть</button><img src="images/nd-thor-painting.webp" alt="Тор с молотом Мьёльнир сражается с чудовищами" loading="lazy" draggable="false"><p>Картина получена! Она теперь хранится в коллекции Лады.</p></div></div>
  <div class="nd-foot"><span id="nd-flames" aria-label="Защитные огни деревни">🔥🔥🔥</span><p id="nd-feedback" class="nd-feedback" aria-live="polite"></p><button id="nd-reset" class="nd-restart" type="button">↻ Сначала</button></div>
 </section>
 <script>
@@ -116,7 +118,8 @@ try{
 window.TivvigGnomeVillageDebug=Object.freeze({places:Object.keys(places),art:"images/gnome-village-full.webp"});
 })();
 </script>
-<script src="night-defense.js?v=2" defer></script>
-<script src="game-runtime.js?v=1" defer></script>
+<script src="wardrobe.js?v=4" defer></script>
+<script src="night-defense.js?v=4" defer></script>
+<script src="game-runtime.js?v=4" defer></script>
 </body>
 </html>
