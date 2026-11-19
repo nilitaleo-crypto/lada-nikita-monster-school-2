@@ -19,6 +19,7 @@ main{max-width:1440px;min-height:100dvh;margin:auto;padding:8px 10px 13px;displa
 header{width:100%;max-width:1280px;min-height:44px;display:flex;justify-content:space-between;align-items:center;gap:10px}
 header h1{margin:0;font-size:clamp(18px,2.4vw,29px);font-weight:normal;letter-spacing:.035em;color:#dbe9f0;text-shadow:0 2px 8px #07131f}
 .nav{min-height:40px;display:inline-grid;place-items:center;padding:7px 12px;border:1px solid #8eaab58c;border-radius:12px;background:#162a40d4;color:#e3eff6;font-size:clamp(12px,1.4vw,15px)}
+.nav-actions{display:flex;gap:6px;align-items:center}.nav-next{background:#304f64e8;border-color:#a3d9dc;color:#fff5de;white-space:nowrap;font-weight:bold}.nav-next:hover{background:#446d7a}.nav-home{min-width:40px}
 .board{width:100%;max-width:1280px;overflow-x:auto;overscroll-behavior-x:contain;border:3px solid #597480;border-radius:16px;box-shadow:0 4px 0 #1b2c31,0 18px 42px #030911ba;background:#102b3d;-webkit-overflow-scrolling:touch}
 .scene{position:relative;isolation:isolate;width:100%;min-width:730px;aspect-ratio:1672/941;overflow:hidden;background:#12283c;touch-action:manipulation}
 .art{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center;z-index:0;user-select:none;pointer-events:none}
@@ -84,7 +85,7 @@ header h1{margin:0;font-size:clamp(18px,2.4vw,29px);font-weight:normal;letter-sp
 </head>
 <body>
 <main>
-<header><a class="nav" href="hades-hypnos.html" aria-label="Вернуться к Гипносу">← Гипнос</a><h1>Святилище Гекаты</h1><a class="nav" href="index.html" aria-label="На карту Тиввига">⌂ Карта</a></header>
+<header><a class="nav" href="hades-hypnos.html" aria-label="Вернуться к Гипносу">← Гипнос</a><h1>Святилище Гекаты</h1><div class="nav-actions"><a class="nav nav-home" href="index.html" aria-label="На карту Тиввига">⌂</a><a class="nav nav-next" href="hades-final.html" aria-label="Продолжить приключение во дворце Аида">К Аиду →</a></div></header>
 <div class="board" role="region" tabindex="0" aria-label="Призрачное святилище Гекаты, где Лада и друзья встречают трёхликую богиню с книгой сказаний">
 <section class="scene" id="hecateScene">
 <img class="art" src="images/hecate-ghostly-sanctuary.webp" alt="Трёхликая Геката с тремя лунами на короне и закрытой книгой, среди древних колонн, прозрачных призраков и голубого тумана" draggable="false" fetchpriority="high">
