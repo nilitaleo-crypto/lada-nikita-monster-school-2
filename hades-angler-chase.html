@@ -2,171 +2,252 @@
 <html lang="ru">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<meta name="theme-color" content="#081a24">
-<meta name="description" content="Переправа через Стикс: Харон, Лада и друзья спасаются от удильщиков. Десять примеров на счёт до 10.">
-<title>Побег от удильщиков — Царство Аида · Тиввиг</title>
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#071924">
+<title>Побег от удильщика — Стикс | Тиввиг</title>
+<meta name="description" content="Лада, Харон и друзья уплывают от удильщика. По речным ячейкам — как в Побеге от вампира.">
 <style>
-:root{color-scheme:dark;--gold:#e7c88c;--cream:#fff1d6}
-*{box-sizing:border-box}
-html,body{margin:0;min-height:100%;background:#07121b}
-body{color:var(--cream);font:16px Georgia,'Times New Roman',serif}
-a,button{font:inherit}a{text-decoration:none;color:inherit}button{cursor:pointer;-webkit-tap-highlight-color:transparent;touch-action:manipulation}
-button:focus-visible,a:focus-visible{outline:3px solid #f5dfa4;outline-offset:4px}
+:root{--cream:#ffeac2;--gold:#dca86a}
+*{box-sizing:border-box}html,body{margin:0;min-height:100%;background:#07111a}
+body{font-family:Georgia,"Times New Roman",serif;color:var(--cream);background:radial-gradient(ellipse at 50% 2%,#173646,#0a1825 66%,#060d16);overflow-x:hidden}
+button,a{font:inherit;-webkit-tap-highlight-color:transparent;touch-action:manipulation}button{cursor:pointer}a{text-decoration:none;color:inherit}
+button:focus-visible,a:focus-visible{outline:3px solid #f8e4a8;outline-offset:3px}
 [hidden]{display:none!important}
-main{width:min(1400px,100%);margin:0 auto;padding:8px 10px 20px}
-header{display:flex;align-items:center;justify-content:space-between;gap:8px;padding:5px 2px 12px}
-header h1{font-weight:normal;font-size:clamp(18px,2.2vw,27px);margin:0;color:#f8d6a5}
-.home,.restart{display:inline-flex;align-items:center;justify-content:center;min-height:44px;padding:7px 12px;border-radius:10px;background:#172b33;border:1px solid #b28e61;color:#f9e4b9;font-size:clamp(12px,1.5vw,16px)}
-.viewport{overflow-x:auto;overscroll-behavior-x:contain;border:4px ridge #82654a;border-radius:13px;background:#08151d;box-shadow:0 15px 40px #01060cb3;-webkit-overflow-scrolling:touch}
-.scene{position:relative;width:100%;min-width:780px;aspect-ratio:16/9;overflow:hidden;isolation:isolate;background:radial-gradient(ellipse at 40% 42%,#184252,#071722 75%,#020b11)}
-.bg{position:absolute;inset:0;z-index:0;width:100%;height:100%;object-fit:cover;filter:brightness(1.35) contrast(1.07) saturate(1.25);user-select:none;pointer-events:none}
-.scene:after{content:'';position:absolute;inset:0;z-index:4;pointer-events:none;box-shadow:inset 0 0 60px #020a159c;background:linear-gradient(to bottom,#030d1d85,transparent 23%,transparent 70%,#00111b55)}
-/* Stage is one canvas; no separate text panel. */
-.problem{position:absolute;top:2.2%;left:50%;transform:translateX(-50%);z-index:17;display:flex;align-items:center;flex-direction:column;gap:8px}
-.equation{padding:8px 27px;border-radius:13px;border:2px solid #c6a674;background:linear-gradient(150deg,#f7e2b6f5,#c59c71ec);box-shadow:0 7px 17px #0008;color:#2e2528;text-align:center;white-space:nowrap;font:bold clamp(27px,4.6vw,58px)/1.05 Georgia,serif;min-width:210px}
-.answers{display:flex;justify-content:center;gap:8px}
-.answer{min-width:clamp(55px,6.5vw,83px);min-height:clamp(48px,5.2vw,70px);border:2px solid #ba935f;border-radius:11px;background:linear-gradient(145deg,#f3dfa9,#c4aa80);color:#292b29;box-shadow:0 3px 0 #453625,0 7px 14px #03091499;font:bold clamp(26px,3.4vw,42px) Georgia,serif}
-.answer:active{transform:translateY(2px)}.answer.correct{background:#b9e8d6}.answer.wrong{background:#e5a6a1}.answer:disabled{pointer-events:none;opacity:.75}
-.progress{position:absolute;z-index:15;top:3%;right:2%;display:flex;gap:6px;padding:7px 9px;border-radius:17px;background:#071621bb;border:1px solid #8c77606e}
-.progress i{width:clamp(9px,1.2vw,15px);height:clamp(9px,1.2vw,15px);display:block;background:#6a7b80;border:1px solid #9aa5a8;border-radius:50%;transform:rotate(12deg)}
-.progress i.done{background:#f4d48b;box-shadow:0 0 8px #f6d388}
-.boat,.form-lada,.fish,.sparkles,.friends{position:absolute;pointer-events:none;user-select:none}
-.boat{z-index:9;left:25%;top:42%;width:29%;height:44%;transform:translate(var(--hero-x,0px),var(--hero-y,0px)) rotate(var(--boat-angle,-2deg));transition:transform .82s cubic-bezier(.25,.7,.19,1),opacity .65s;filter:drop-shadow(0 7px 8px #000b);transform-origin:45% 80%}
-.painting-boat{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;clip-path:polygon(6% 41%,18% 31%,26% 31%,27% 15%,37% 3%,48% 0%,56% 10%,62% 20%,70% 29%,82% 37%,96% 45%,96% 66%,90% 83%,77% 94%,58% 100%,28% 97%,7% 77%);mask-image:radial-gradient(ellipse 69% 72% at 51% 59%,#000 63%,transparent 96%);transition:opacity .65s}
-.boat-passenger{position:absolute;object-fit:contain;object-position:bottom;filter:drop-shadow(0 4px 3px #000d)}
-.boat .lada-doll{position:absolute;z-index:4;left:59%;top:47%;height:34%;width:17%;filter:drop-shadow(0 4px 4px #000e)}
+main{display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:100dvh;padding:8px 10px 13px;gap:8px}
+.head{width:min(1280px,100%);display:flex;gap:10px;justify-content:space-between;align-items:center}
+.head h1{font-size:clamp(18px,2.6vw,31px);margin:0;text-align:center;font-weight:normal;text-shadow:0 3px 5px #0009}
+.link,.reset{display:inline-grid;place-items:center;min-height:40px;border:1px solid #d6a978;border-radius:10px;background:linear-gradient(#e8d5b5,#bb986b);color:#382a26;padding:6px 12px;font-size:clamp(12px,1.4vw,16px);font-weight:bold;box-shadow:0 3px 0 #0005}
+.arena{position:relative;aspect-ratio:16/9;width:min(100%,calc((100dvh - 115px)*1.77777),1280px);border:4px ridge #b5966d;border-radius:15px;overflow:hidden;isolation:isolate;box-shadow:0 4px 0 #523a33,0 22px 50px #000a;background:#05212c;touch-action:manipulation}
+.land{position:absolute;inset:0;width:100%;height:100%;z-index:0;pointer-events:none}
+.arena::after{content:"";pointer-events:none;position:absolute;inset:0;z-index:13;box-shadow:inset 0 0 45px #020e1890}
+.trail{position:absolute;inset:0;z-index:2;width:100%;height:100%;pointer-events:none}
+.trail .rim{fill:none;stroke:#244f57;stroke-width:7;stroke-linecap:round;opacity:.68}
+.trail .inner{fill:none;stroke:#82d7ce;stroke-width:1.7;stroke-dasharray:1.4 1.5;stroke-linecap:round;opacity:.5}
+.stone{position:absolute;z-index:3;transform:translate(-50%,-50%) rotate(-3deg);width:6.1%;height:5%;border-radius:50%;background:radial-gradient(ellipse at 43% 36%,#94bfbeab,#35737b86 58%,#0a394866);border:1px solid #89e6d196;box-shadow:inset 0 1px 4px #d5ffe1a3,0 0 10px #1bafb46c,0 4px 9px #0006;pointer-events:none}
+.stone.goal{background:radial-gradient(ellipse,#f8d4b9b0,#937be283);border-color:#dfbbfa;box-shadow:0 0 14px #cb8eff}
+.crystal{position:absolute;z-index:6;left:92%;top:33%;height:14%;width:9%;transform:translate(-50%,-83%);pointer-events:none;animation:levitate 2.8s ease-in-out infinite;filter:drop-shadow(0 0 15px #b58aff)}
+.crystal svg{width:100%;height:100%}
+@keyframes levitate{50%{transform:translate(-50%,-96%)}}
+.spark{position:absolute;z-index:4;width:4px;height:4px;left:var(--x);top:var(--y);border-radius:50%;background:#c7fdf4;box-shadow:0 0 10px #a3f1ff;animation:shimmer var(--t) ease-in-out infinite alternate;pointer-events:none}
+@keyframes shimmer{from{opacity:.16;transform:scale(.65)}to{opacity:.85;transform:scale(1.4)}}
+.sprite{position:absolute;z-index:8;transform:translate(-50%,-72%);pointer-events:none;transition:left .8s cubic-bezier(.25,.8,.29,1),top .8s cubic-bezier(.25,.8,.29,1),filter .45s;will-change:left,top;filter:drop-shadow(1px 5px 5px #000b)}
+.boat-sprite{width:clamp(153px,20.2%,260px);height:clamp(100px,29%,185px);z-index:9;transform:translate(-50%,-64%) rotate(-2deg);filter:drop-shadow(0 7px 5px #000d)}
+.boat-art,.bow{position:absolute;inset:0;width:100%;height:100%;overflow:visible}
+.charon{transition:opacity .5s}
+.boat-sprite.changed .charon{opacity:0}
+.boat-passenger{position:absolute;object-fit:contain;object-position:bottom center;filter:drop-shadow(0 2px 2px #000a)}
+.lada-doll{position:absolute;left:49%;bottom:21%;width:17%;height:40%;filter:drop-shadow(0 2px 2px #000b)}
 .lada-doll img{position:absolute;inset:0;width:100%;height:100%;object-fit:contain}
 .lada-doll [hidden]{display:none!important}
-.boat .cat{left:41%;top:59%;height:23%;width:17%;z-index:5}.boat .rabbit{left:53%;top:67%;height:19%;width:16%;z-index:5}.boat .monkey{left:69%;top:66%;height:20%;width:16%;z-index:5}
-.boat .paper-fruit{left:78%;top:48%;height:38%;width:12%;z-index:8}.boat .paper-book{left:88%;top:48%;height:38%;width:12%;z-index:8}
-.fish{z-index:8;left:77%;top:37%;height:35%;width:19%;object-fit:contain;mask-image:radial-gradient(ellipse 62% 62% at 52% 49%,#000 47%,#000b 61%,transparent 83%);transform:translate(var(--fish-x,0px),var(--fish-y,0px)) scale(var(--fish-scale,1));transition:transform .84s cubic-bezier(.35,.8,.25,1),opacity .62s;filter:drop-shadow(0 0 11px #8aefff9e)}
-.fish.jeweled{left:77%;top:34%;height:37%;width:19%;filter:drop-shadow(0 0 15px #f35464a8)}
-.form-lada{z-index:6;left:21%;top:8%;width:26%;height:74%;object-fit:contain;opacity:0;transform:translateY(10%) scale(.85);transition:opacity .7s,transform .7s;mask-image:radial-gradient(ellipse 60% 72% at 51% 50%,#000 53%,transparent 90%);filter:drop-shadow(0 5px 8px #000d)}
-.friends{z-index:7;left:46%;top:58%;display:flex;gap:2px;width:35%;height:27%;opacity:0;transition:opacity .6s}
-.friends img{height:100%;width:32%;object-fit:contain;filter:drop-shadow(0 3px 4px #000c)}
-.boat::before{content:"";position:absolute;z-index:3;left:2%;bottom:10%;width:97%;height:39%;background:linear-gradient(180deg,#7f5c44,#423020 50%,#171921);clip-path:polygon(0 10%,100% 3%,93% 72%,76% 100%,22% 91%,3% 61%);border-bottom:3px solid #c69a65;opacity:0;transition:opacity .6s}
-.scene[data-form="monster"] .boat::before{opacity:1}
-.scene[data-form="monster"] .painting-boat{opacity:0}
-.scene[data-form="monster"] .boat .lada-doll,.scene[data-form="monster"] .boat .boat-passenger:not(.paper-fruit):not(.paper-book){opacity:0}
-.scene[data-form="monster"] .form-lada{opacity:1;transform:translateY(0) scale(1)}
-.scene[data-form="monster"] .friends{opacity:1}
-.sparkles{inset:0;z-index:19;opacity:0;background:radial-gradient(circle at 34% 51%,#ffb7dbb0 0%,#d298ff65 12%,transparent 35%),radial-gradient(circle at 83% 49%,#88dcffc9,transparent 30%);transition:opacity .4s}
-.scene[data-transform="1"] .sparkles{animation:change-form 1.2s ease-in-out both}
-@keyframes change-form{0%,100%{opacity:0}30%,68%{opacity:.95}}
-.hud{position:absolute;z-index:15;bottom:1.5%;left:50%;transform:translateX(-50%);max-width:72%;border-radius:14px;padding:5px 11px;color:#f3e2c2;background:#0a2232bc;text-align:center;text-shadow:0 1px 6px #000;font:600 clamp(12px,1.45vw,18px)/1.3 system-ui,sans-serif}
-.modal{position:absolute;inset:0;z-index:30;display:grid;place-items:center;padding:12px;background:#071522df;backdrop-filter:blur(5px)}
-.modal-inner{text-align:center;max-width:95%;display:flex;flex-direction:column;align-items:center;gap:10px;color:#fff0cd}
-.modal-inner h2{font-size:clamp(25px,4vw,51px);font-weight:normal;text-shadow:0 4px 16px #000;margin:0}
-.modal-inner img{max-width:100%;max-height:min(68vh,500px);border:4px ridge #cfad78;border-radius:14px;object-fit:contain;box-shadow:0 14px 25px #0009}
-.modal-inner .actions{display:flex;justify-content:center;gap:10px;flex-wrap:wrap}
-.modal-inner button,.modal-inner a{min-height:48px;padding:9px 18px;border:2px solid #d7bd8b;border-radius:11px;background:#ead1a1;color:#332637;font:bold clamp(16px,1.8vw,22px) Georgia,serif}
-@media(max-width:820px){main{padding:6px}.viewport{border-width:3px}.scene{min-width:780px}.home,.restart{font-size:13px}.progress{top:1.8%;right:1.5%;gap:4px}.problem{top:1.3%}.equation{font-size:31px;min-width:160px;padding:6px 14px}.answer{min-width:56px;min-height:49px;font-size:27px}}
-@media(prefers-reduced-motion:reduce){.boat,.fish,.form-lada,.friends,.sparkles{transition:none!important;animation:none!important}.scene[data-transform="1"] .sparkles{opacity:.25}}
+.boat-sprite.changed .lada-doll{opacity:0}
+.cat{left:38%;bottom:21%;width:17%;height:28%}
+.rabbit{left:61%;bottom:20%;width:14%;height:27%}
+.monkey{left:73%;bottom:21%;width:14%;height:29%}
+.paper-green{left:83%;bottom:22%;width:13%;height:31%}
+.paper-purple{left:92%;bottom:22%;width:13%;height:33%}
+.demogorgon{position:absolute;left:9%;bottom:22%;height:59%;width:29%;object-fit:contain;opacity:0;transform:scale(.7);transition:opacity .45s,transform .6s;filter:drop-shadow(0 4px 4px #000e);clip-path:polygon(45% 0,64% 0,70% 7%,91% 6%,100% 21%,83% 35%,88% 55%,76% 58%,82% 80%,79% 100%,18% 100%,17% 77%,21% 60%,6% 51%,1% 30%,14% 16%,28% 11%)}
+.boat-sprite.changed .demogorgon{opacity:1;transform:scale(1)}
+.bow{z-index:20;pointer-events:none}
+.enemy{width:clamp(72px,10.4%,138px);height:clamp(75px,19.5%,136px);z-index:7;transform:translate(-50%,-83%);filter:drop-shadow(0 0 11px #5ddfff) drop-shadow(0 4px 4px #000b)}
+.enemy svg{display:block;width:100%;height:100%;overflow:visible}
+.enemy .normal,.enemy .jewel{transition:opacity .6s}
+.enemy .jewel{opacity:0}
+.enemy.mid .normal{opacity:0}.enemy.mid .jewel{opacity:1}
+.question{position:absolute;z-index:14;top:3.5%;left:50%;transform:translateX(-50%);min-width:28%;max-width:64%;display:flex;flex-direction:column;align-items:center;gap:clamp(4px,.7vw,9px)}
+.parchment{min-width:min(100%,310px);padding:clamp(7px,1.1vw,13px) clamp(22px,3vw,43px);white-space:nowrap;text-align:center;color:#2d1a20;background:linear-gradient(140deg,#fceac8,#e4bf89 53%,#f2d6aa);border:3px double #a77452;border-radius:8px 16px 11px 19px;box-shadow:inset 0 0 10px #9e734a7a,0 4px 0 #493224,0 6px 15px #0008;font:bold clamp(30px,5.5vw,70px)/1.04 Georgia,serif}
+.choices{display:flex;justify-content:center;gap:clamp(7px,1.4vw,19px);width:100%}
+.answer{min-width:clamp(55px,7.2vw,88px);min-height:clamp(47px,6.1vw,75px);padding:4px 12px;font:bold clamp(25px,4vw,45px) Georgia,serif;color:#2c1b21;background:linear-gradient(140deg,#f9e7c6,#d8af75);border:3px solid #99704e;border-radius:9px;box-shadow:0 4px 0 #40271e,0 5px 12px #0009;transition:filter .15s,transform .15s}
+.answer:active{transform:translateY(3px);box-shadow:0 1px 0 #40271e}.answer[disabled]{cursor:default}.answer.right{background:#bfe8af}.answer.wrong{background:#f9b9b8}
+.hud{position:absolute;z-index:14;left:2%;top:3.5%;display:flex;gap:3px;align-items:center;color:#fff3cf;text-shadow:0 2px 4px #000;letter-spacing:.12em;font-size:clamp(13px,2vw,23px)}
+.status{position:absolute;bottom:1.8%;left:50%;transform:translateX(-50%);z-index:12;max-width:70%;padding:4px 13px;text-align:center;font-size:clamp(12px,1.4vw,18px);color:#f9dba7;text-shadow:0 2px 4px #000;background:#061823ba;border-radius:25px}
+.magic{position:absolute;z-index:17;font-size:clamp(30px,5vw,65px);transform:translate(-50%,-50%);pointer-events:none;animation:burst .9s both;color:#d9fcfd;text-shadow:0 0 18px #8acbfa}
+@keyframes burst{0%{opacity:0;scale:.1}42%{opacity:1;scale:1.4}100%{opacity:0;scale:2.2}}
+.panel{position:absolute;inset:0;z-index:25;display:grid;place-items:center;background:#031321d9;backdrop-filter:blur(4px);padding:10px}
+.card{width:min(610px,94%);max-height:96%;overflow:auto;display:flex;flex-direction:column;align-items:center;gap:8px;border:3px solid #b58e69;border-radius:17px;padding:12px;background:#172d38f5;color:#fff1d5;text-align:center;box-shadow:0 12px 30px #000a}
+.card h2{font-size:clamp(22px,3vw,34px);font-weight:normal;margin:0}
+.card p{margin:0;font-size:17px}
+.card img{width:auto;max-width:100%;max-height:54dvh;object-fit:contain;border:3px solid #b58e69;border-radius:10px}
+.actions{display:flex;gap:8px;flex-wrap:wrap;justify-content:center}
+.action{display:inline-grid;place-items:center;min-height:46px;padding:8px 13px;border:1px solid #d6b176;border-radius:10px;background:#f5dfad;color:#38242b;font-weight:bold}
+@media(max-width:760px){.head h1{font-size:17px}.link,.reset{font-size:12px;min-height:36px;padding:5px 8px}.arena{width:100%;aspect-ratio:4/3}.boat-sprite{width:18%;height:26%}.enemy{width:11%;height:20%}.question{top:3%}.parchment{font-size:clamp(28px,6vw,50px);min-width:160px;padding:7px 13px}.answer{min-width:52px;min-height:46px;font-size:26px}.stone{width:7%;height:4.5%}}
+@media(max-height:520px){.arena{width:min(100%,calc((100dvh - 72px)*1.77777))}.head h1{font-size:18px}.link,.reset{min-height:33px}.parchment{font-size:33px}.answer{min-height:42px}}
+@media(prefers-reduced-motion:reduce){.sprite{transition-duration:.05s}.spark,.crystal{animation:none}.magic{animation-duration:.05s}}
 </style>
 </head>
 <body>
 <main>
-<header><a class="home" href="hades-charon.html">← Харон</a><h1>Побег от удильщиков</h1><button class="restart" id="restart" type="button">↻</button></header>
-<div class="viewport" role="region" tabindex="0" aria-label="Подземная пещера со сталактитами, лодка Харона и преследующие удильщики">
-<section class="scene" id="anglerScene" data-form="boat" data-transform="0">
-<img class="bg" src="images/styx-cavern.webp?v=1" alt="Пещера Стикса со сталактитами и подземной рекой" draggable="false" fetchpriority="high">
-<div id="boat" class="boat">
-<img class="painting-boat" src="images/charon-boat-cutout.webp" draggable="false" alt="Харон в настоящей лодке с картины «Харон и Психея»">
-<div class="lada-doll" id="chaseLada"><img src="images/lada-cutout.webp" alt="Лада" draggable="false"><img data-outfit-layer hidden alt="" draggable="false"></div>
+<header class="head"><a class="link" href="hades-charon.html">← Харон</a><h1>Побег от удильщика</h1><button id="reset" type="button" class="reset">↻</button></header>
+<section class="arena" id="arena" aria-label="Подземная река Стикс, лодка с героями, тринадцать речных ячеек и удильщик">
+<svg class="land" viewBox="0 0 1200 675" preserveAspectRatio="none" aria-hidden="true">
+<defs>
+<linearGradient id="caveBg" x1="0" y1="0" x2="0" y2="1"><stop stop-color="#091a2e"/><stop offset=".42" stop-color="#103b4d"/><stop offset="1" stop-color="#071f32"/></linearGradient>
+<radialGradient id="caveLight"><stop stop-color="#3bc6d2" stop-opacity=".54"/><stop offset=".6" stop-color="#1e88a7" stop-opacity=".15"/><stop offset="1" stop-color="#0e1d2b" stop-opacity="0"/></radialGradient>
+<linearGradient id="water" x1="0" y1="0" x2="1" y2=".3"><stop stop-color="#103c4e"/><stop offset=".5" stop-color="#075166"/><stop offset="1" stop-color="#092a45"/></linearGradient>
+<linearGradient id="rock" x1="0" y1="0" x2=".6" y2="1"><stop stop-color="#183b48"/><stop offset=".5" stop-color="#071e30"/><stop offset="1" stop-color="#091924"/></linearGradient>
+<pattern id="waves" width="103" height="45" patternUnits="userSpaceOnUse"><path d="M-5 14Q22 7 48 14T100 12M20 29Q39 25 56 29" stroke="#6edcd6" stroke-opacity=".24" stroke-width="1.4" fill="none"/></pattern>
+</defs>
+<path fill="url(#caveBg)" d="M0 0H1200V675H0Z"/>
+<ellipse cx="290" cy="200" rx="390" ry="250" fill="url(#caveLight)"/>
+<ellipse cx="980" cy="280" rx="300" ry="200" fill="url(#caveLight)" opacity=".42"/>
+<image href="images/styx-cavern.webp" width="1200" height="675" preserveAspectRatio="xMidYMid slice" opacity=".26"/>
+<path d="M0 0H1200V113L1162 189 1127 57 1087 159 1048 44 1001 132 966 32 933 149 886 58 840 158 795 83 759 211 718 58 677 118 632 23 591 181 538 76 490 173 432 53 400 127 341 22 297 163 242 48 189 153 141 26 104 164 60 64 25 196 0 108Z" fill="url(#rock)" stroke="#305267" stroke-width="2"/>
+<path d="M0 0L27 134 49 17 82 188 123 27 150 168 184 17 213 124 247 6 272 158 309 35 339 85 367 8 396 107 420 12 457 138 501 24 538 113 559 0 583 101 621 14 650 90 698 0 736 134 764 33 790 94 826 0 866 120 897 0 921 87 946 5 983 117 1006 0 1023 92 1066 8 1092 154 1133 3 1165 119 1200 0Z" fill="#081a2d" opacity=".8"/>
+<path d="M0 308Q260 276 440 318T900 295T1200 316V675H0Z" fill="url(#water)"/>
+<path d="M0 308Q260 276 440 318T900 295T1200 316V675H0Z" fill="url(#waves)"/>
+<path d="M0 350Q305 322 493 364T894 350 1200 357" fill="none" stroke="#b4efe1" stroke-width="4" opacity=".2"/>
+<g fill="#0b2433" stroke="#38616b" stroke-opacity=".45" stroke-width="3"><path d="M0 675V430L35 380 48 520 88 420 117 500 142 390 169 510 207 427 242 589 276 675Z"/><path d="M1035 675 1050 510 1095 578 1120 426 1141 540 1175 398 1200 500V675Z"/></g>
+<g fill="#264656" stroke="#769197" stroke-opacity=".3" stroke-width="2">
+<path d="M0 675L20 552 36 654 66 498 89 675Z"/><path d="M171 675 185 610 201 659 233 544 252 675Z"/>
+<path d="M986 675 1003 572 1027 675 1051 595 1080 675Z"/><path d="M1142 675 1169 485 1184 592 1200 548V675Z"/>
+</g>
+<g fill="none" stroke="#9adee8" stroke-width="2" opacity=".3"><path d="M93 429Q263 412 426 428M360 514Q507 498 670 506M725 405Q892 394 1085 403M590 607Q752 589 899 600M80 629Q217 610 341 618"/></g>
+<g fill="#ffe6a2"><circle cx="300" cy="208" r="2"/><circle cx="371" cy="194" r="3"/><circle cx="542" cy="277" r="2"/><circle cx="831" cy="242" r="2"/><circle cx="1099" cy="239" r="2"/></g>
+</svg>
+<svg class="trail" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true">
+<path class="rim" d="M7 83Q23 78 33 72T53 63T73 52T92 39"/>
+<path class="inner" d="M7 83Q23 78 33 72T53 63T73 52T92 39"/>
+</svg>
+<div id="stones"></div>
+<div id="crystal" class="crystal" aria-hidden="true">
+<svg viewBox="0 0 90 130"><path d="M44 0 78 38 70 87 46 126 14 84 11 37Z" fill="#9755e1" stroke="#f5d9fa" stroke-width="3"/><path d="M44 0 46 126 11 37Z" fill="#d6affd"/><path d="M44 0 78 38 46 126Z" fill="#7141ad"/><path d="M46 126 14 84 70 87Z" fill="#a6dbf4"/></svg>
+</div>
+<div id="enemy" class="sprite enemy" aria-label="Удильщик плывёт вслед за лодкой">
+<svg viewBox="0 0 210 170" aria-hidden="true">
+<defs><radialGradient id="fishBody"><stop stop-color="#426b86"/><stop offset=".6" stop-color="#1b3959"/><stop offset="1" stop-color="#0a192d"/></radialGradient><linearGradient id="silverFish"><stop stop-color="#e9d5b3"/><stop offset=".4" stop-color="#8d9bac"/><stop offset=".8" stop-color="#455876"/><stop offset="1" stop-color="#e3c990"/></linearGradient></defs>
+<g class="normal">
+<path d="M61 75 14 44 24 117 67 106Z" fill="#315a70" stroke="#7496a8" stroke-width="3"/>
+<path d="M77 40 102 9 117 43 145 13 158 54 184 72 163 121 112 141 71 123 49 82Z" fill="url(#fishBody)" stroke="#658fa7" stroke-width="3"/>
+<path d="M69 100Q121 86 168 94Q148 156 92 140Z" fill="#0b1322" stroke="#b5b6a2" stroke-width="3"/>
+<path d="M85 100 99 120 107 99 118 123 125 96 139 121 145 95 157 114" stroke="#eff0d0" stroke-width="5" fill="none" stroke-linejoin="miter"/>
+<circle cx="148" cy="69" r="19" fill="#d0b397"/><circle cx="150" cy="69" r="11" fill="#dd9e53"/><circle cx="153" cy="69" r="6" fill="#0f141f"/>
+<path d="M112 37Q121 -5 160 0Q189 7 181 27" fill="none" stroke="#77a8b8" stroke-width="5"/>
+<circle cx="183" cy="30" r="10" fill="#c8fff4" stroke="#a8fcf0" stroke-width="3"/>
+</g>
+<g class="jewel">
+<path d="M61 75 14 44 24 117 67 106Z" fill="#8a9bb2" stroke="#efdaaf" stroke-width="3"/>
+<path d="M77 40 102 9 117 43 145 13 158 54 184 72 163 121 112 141 71 123 49 82Z" fill="url(#silverFish)" stroke="#f5deb0" stroke-width="4"/>
+<path d="M69 100Q121 86 168 94Q148 156 92 140Z" fill="#0a1624" stroke="#dbc7a1" stroke-width="3"/>
+<path d="M85 100 99 120 107 99 118 123 125 96 139 121 145 95 157 114" stroke="#fff8ea" stroke-width="5" fill="none"/>
+<circle cx="145" cy="69" r="18" fill="#ff6144"/><circle cx="145" cy="69" r="12" fill="#f2163c"/><circle cx="147" cy="69" r="5" fill="#fff0ad"/>
+<g fill="none" stroke="#cbd9d8" stroke-width="2"><path d="M82 40Q105 62 129 39M77 66Q101 88 126 72M82 110Q116 140 153 116"/><circle cx="96" cy="66" r="12"/><circle cx="127" cy="51" r="8"/></g>
+<path d="M112 37Q121 -5 160 0Q189 7 181 27" fill="none" stroke="#e7ce8f" stroke-width="5"/>
+<path d="M173 27 183 15 193 27 183 39Z" fill="#3776df" stroke="#e9e0cf" stroke-width="3"/>
+</g>
+</svg>
+</div>
+<div id="lada" class="sprite boat-sprite" aria-label="Лодка Харона: Лада, друзья и два бумажных персонажа">
+<svg class="boat-art" viewBox="0 0 500 310" aria-hidden="true">
+<defs><linearGradient id="wood" x1="0" y1="0" x2="0" y2="1"><stop stop-color="#92704c"/><stop offset=".43" stop-color="#573822"/><stop offset="1" stop-color="#241914"/></linearGradient><linearGradient id="charonCape" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#62402e"/><stop offset="1" stop-color="#251c23"/></linearGradient><linearGradient id="rowerSkin" x1="0" y1="0" x2=".6" y2="1"><stop stop-color="#f1c995"/><stop offset="1" stop-color="#9a6650"/></linearGradient></defs>
+<g class="charon">
+<path d="M110 161Q40 114 63 44Q86 8 131 55L174 149 138 222Z" fill="url(#charonCape)" stroke="#8e6240" stroke-width="4"/>
+<path d="M105 107Q96 146 83 196L132 213 148 159 168 139 151 99Z" fill="url(#rowerSkin)" stroke="#624234" stroke-width="4"/>
+<path d="M105 146 69 210 104 222 133 167Z" fill="#815746"/><path d="M133 147 177 205 156 228 118 177Z" fill="#784c39"/>
+<path d="M109 103Q85 93 91 60Q103 33 129 51L146 77Q154 99 131 113Z" fill="url(#rowerSkin)" stroke="#6c4232" stroke-width="3"/>
+<path d="M91 65Q90 42 109 34L126 45 137 63 121 56 106 67Z" fill="#3f302b"/>
+<path d="M121 86 151 81Q147 111 128 114Z" fill="#654a3d"/>
+<path d="M146 108 167 140 179 143" stroke="#d6a278" stroke-width="16" stroke-linecap="round" fill="none"/>
+<path d="M166 139 192 118 198 124" stroke="#c89471" stroke-width="11" stroke-linecap="round" fill="none"/>
+<path d="M197 122 83 296" stroke="#c7a071" stroke-width="11" stroke-linecap="round"/>
+</g>
+<path d="M25 204Q240 238 475 197L444 274Q252 310 57 265Z" fill="url(#wood)" stroke="#ba9569" stroke-width="6"/>
+<path d="M46 218Q238 264 460 212" fill="none" stroke="#b48b60" stroke-width="7"/>
+<path d="M54 244Q251 292 447 239M67 260Q252 310 441 259" fill="none" stroke="#b48b60" stroke-width="4" opacity=".65"/>
+<path d="M475 197Q483 171 466 164L446 192" fill="none" stroke="#c6a479" stroke-width="8" stroke-linecap="round"/>
+<path d="M19 200Q10 181 18 173L42 201" fill="none" stroke="#be9769" stroke-width="9" stroke-linecap="round"/>
+</svg>
+<div id="chaseLada" class="lada-doll"><img src="images/lada-cutout.webp" alt="" draggable="false"><img data-outfit-layer hidden alt="" draggable="false"></div>
 <img class="boat-passenger cat" src="images/blue-cat.webp" alt="" draggable="false">
 <img class="boat-passenger rabbit" src="images/rabbit-cutout.webp" alt="" draggable="false">
 <img class="boat-passenger monkey" src="images/monkey-cutout.webp" alt="" draggable="false">
-<img class="boat-passenger paper-fruit" src="images/market-merchant.webp" alt="Бумажный продавец фруктов" draggable="false">
-<img class="boat-passenger paper-book" src="images/bookshop-merchant.webp" alt="Бумажная продавщица книг" draggable="false">
-<img class="form-lada" src="images/lada-demogorgon-cutout.webp" alt="Лада в своём костюме демогоргона" draggable="false">
-<div class="friends" aria-hidden="true"><img src="images/blue-cat.webp" alt=""><img src="images/rabbit-cutout.webp" alt=""><img src="images/monkey-cutout.webp" alt=""></div>
+<img class="boat-passenger paper-green" src="images/market-merchant.webp" alt="" draggable="false">
+<img class="boat-passenger paper-purple" src="images/bookshop-merchant.webp" alt="" draggable="false">
+<img class="demogorgon" src="images/lada-demogorgon-cutout.webp" alt="Лада в настоящем костюме демогоргона" draggable="false">
+<svg class="bow" viewBox="0 0 500 310" aria-hidden="true"><path d="M25 205Q244 254 475 197" fill="none" stroke="#e1b57c" stroke-width="12" stroke-linecap="round"/><path d="M29 217Q242 266 471 210" fill="none" stroke="#51321e" stroke-width="5" stroke-linecap="round"/></svg>
 </div>
-<img class="fish" id="angler" src="images/angler-terrifying.webp?v=2" alt="Страшный удильщик преследует лодку" draggable="false">
-<div class="sparkles" aria-hidden="true"></div>
-<div class="problem"><div class="equation" id="equation" aria-live="polite">4 + 3 = ?</div><div class="answers" id="answers" aria-label="Выбери ответ"></div></div>
-<div class="progress" id="progress" aria-label="Продвижение по переправе"></div>
-<div class="hud" id="status" aria-live="polite">Решай примеры — спасай лодку!</div>
-<div class="modal" id="lose" role="dialog" aria-modal="true" aria-label="Удильщик догнал лодку" hidden><div class="modal-inner"><h2>Удильщик догнал! 🐟</h2><button id="retry" type="button">↻ Попробовать снова</button></div></div>
-<div class="modal" id="reward" role="dialog" aria-modal="true" aria-label="Награда: Лада подружилась с удильщиком" hidden><div class="modal-inner"><h2>Новый друг!</h2><img src="images/charon-friends-angler-reward.webp" alt="Лада в костюме демогоргона обнимает доброго удильщика в светящейся пещере"><div class="actions"><button id="again" type="button">↻ Ещё раз</button><a href="index.html">К карте →</a></div></div></div>
+<div class="hud" id="hud" aria-label="Осталось пройти десять ячеек">✦ ✦ ✦ ✦ ✦ ✦ ✦ ✦ ✦ ✦</div>
+<div class="question"><div class="parchment" id="equation" aria-live="polite">8 − 3 = ?</div><div class="choices" id="choices" aria-label="Ответы"></div></div>
+<div class="status" id="status" role="status" aria-live="polite">Уплывай от удильщика!</div>
+<div id="lose" class="panel" role="dialog" aria-modal="true" aria-label="Удильщик догнал лодку" hidden>
+<div class="card"><h2>Удильщик догнал!</h2><button id="retry" class="action" type="button">↻ Ещё раз</button></div>
+</div>
+<div id="win" class="panel" role="dialog" aria-modal="true" aria-label="Удильщик стал другом" hidden>
+<div class="card"><h2>Удильщик стал другом!</h2><img src="images/charon-friends-angler-reward.webp" alt="Лада в костюме демогоргона обнимает доброго удильщика в сияющей пещере"><div class="actions"><button class="action" id="again" type="button">↻ Повторить</button><a class="action" href="index.html">К карте</a></div></div>
+</div>
 </section>
-</div>
 </main>
 <script src="wardrobe.js?v=4" defer></script>
 <script>
 (()=>{
-'use strict';
-const scene=document.getElementById('anglerScene'),boat=document.getElementById('boat'),angler=document.getElementById('angler'),answers=document.getElementById('answers'),equation=document.getElementById('equation'),progress=document.getElementById('progress'),status=document.getElementById('status'),lose=document.getElementById('lose'),reward=document.getElementById('reward');
-const SAVE='tivvig_hades_angler_chase_v2',REWARD='tivvig_reward_charon_angler_friend_v1';
-const coop=new URLSearchParams(location.search).get('coop')==='1';
-const TASKS=[[4,'+',3],[9,'−',6],[2,'+',5],[10,'−',4],[7,'−',2],[3,'+',6],[8,'−',5],[6,'+',2],[9,'−',4],[5,'+',5]];
-function init(){return{step:0,boat:3,fish:0,finished:false,lost:false}}
-let state=init(),busy=false,transformTimer=null,moveTimer=null;
-function valid(x){if(!x||!Number.isInteger(x.step)||x.step<0||x.step>TASKS.length)return init();return{step:x.step,boat:Math.max(3,Math.min(13,Number(x.boat)||3)),fish:Math.max(0,Math.min(13,Number(x.fish)||0)),finished:!!x.finished,lost:!!x.lost}}
-if(!coop)try{state=valid(JSON.parse(localStorage.getItem(SAVE)||'null'))}catch{}
-function save(){if(!coop)try{localStorage.setItem(SAVE,JSON.stringify(state))}catch{}}
-function result(t){return t[1]==='+'?t[0]+t[2]:t[0]-t[2]}
-function opts(t,i){let a=result(t),v=[a,(a+2)%11,(a+7)%11];return i%3===0?[v[1],v[0],v[2]]:i%3===1?[v[2],v[1],v[0]]:[v[0],v[2],v[1]]}
-function equip(){window.TivvigWardrobe?.equip(document.getElementById('chaseLada'))}
-function redraw(){
- const step=state.step;
- scene.dataset.form=step>=5?'monster':'boat';
- // Both pursuer and hero move one step per question; a wrong answer advances the fish twice.
- const width=Math.max(780,scene.clientWidth);
- const shift=-Math.min(16,step*1.6)*(width/100);
- scene.style.setProperty('--hero-x',shift+'px');
- scene.style.setProperty('--fish-x',(-Math.min(45,state.fish*3.35)*width/100)+'px');
- scene.style.setProperty('--fish-y',Math.sin(step*.9)*8+'px');
- scene.style.setProperty('--hero-y',Math.sin(step*.85)*8+'px');
- scene.style.setProperty('--boat-angle',(Math.sin(step*.8)*1.6-1.2)+'deg');
- scene.style.setProperty('--fish-scale',step>=5?'1.04':'1');
- angler.src=step>=5?'images/angler-jewelled.webp':'images/angler-terrifying.webp?v=2';
- angler.alt=step>=5?'Удильщик превратился в металлического с красными глазами':'Страшный удильщик преследует Харона';
- angler.classList.toggle('jeweled',step>=5);
- progress.innerHTML=Array.from({length:TASKS.length},(_,i)=>'<i class="'+(i<step?'done':'')+'"></i>').join('');
- progress.setAttribute('aria-label','Шаг '+step+' из '+TASKS.length);
- lose.hidden=!state.lost;reward.hidden=!state.finished;
- document.getElementById('restart').disabled=busy;
- if(state.finished||state.lost){answers.replaceChildren();equation.textContent=state.finished?'✦':'!';status.textContent=state.finished?'Удильщик стал другом!':'Удильщик догнал лодку!';equip();return;}
- const t=TASKS[step];equation.textContent=t[0]+' '+t[1]+' '+t[2]+' = ?';
- answers.replaceChildren();opts(t,step).forEach(n=>{const b=document.createElement('button');b.type='button';b.id='angler-answer-'+n;b.className='answer';b.textContent=String(n);b.dataset.value=String(n);b.setAttribute('aria-label','Ответ '+n);answers.appendChild(b)});
- status.textContent=step<5?'Спасай лодку!':step===5?'Лада превратилась!':'Уходи от удильщика!';
- equip();
+"use strict";
+const P=[{x:7,y:83},{x:15,y:79},{x:23,y:76},{x:31,y:72},{x:38,y:69},{x:45,y:65},{x:52,y:62},{x:59,y:59},{x:66,y:55},{x:73,y:52},{x:79,y:48},{x:85,y:44},{x:90,y:41},{x:94,y:37}];
+const el=id=>document.getElementById(id),arena=el("arena"),enemy=el("enemy"),lada=el("lada"),choices=el("choices");
+const reduced=typeof matchMedia==="function"&&matchMedia("(prefers-reduced-motion: reduce)").matches;
+const pause=ms=>new Promise(resolve=>setTimeout(resolve,reduced?Math.min(ms,80):ms));
+const LAST=P.length-1,START=3,REWARD="tivvig_reward_charon_angler_friend_v1";
+let pL=START,pV=0,busy=false,over=false,turn=0,answer=0,lastSignature="",transformed=false,serial=0;
+const stoneHost=el("stones");
+P.forEach((p,i)=>{const s=document.createElement("i");s.className="stone"+(i===LAST?" goal":"");s.style.left=p.x+"%";s.style.top=p.y+"%";stoneHost.appendChild(s)});
+for(let j=0;j<19;j++){const i=document.createElement("i");i.className="spark";i.style.setProperty("--x",((j*31+7)%92)+"%");i.style.setProperty("--y",((j*17+18)%75)+"%");i.style.setProperty("--t",(2+j%5*.65)+"s");i.style.animationDelay=(-j*.38)+"s";arena.appendChild(i)}
+function at(node,n){const p=P[Math.max(0,Math.min(LAST,n))];node.style.left=p.x+"%";node.style.top=p.y+"%"}
+function equip(){window.TivvigWardrobe?.equip(el("chaseLada"))}
+function sync(){at(lada,pL);at(enemy,pV);const rest=Math.max(0,LAST-pL);el("hud").textContent=("✦ ".repeat(rest)).trim()||"✦";el("hud").setAttribute("aria-label","Осталось "+rest+" шагов");equip()}
+const coopSeed=new URLSearchParams(location.search).get("seed")||"tivvig-styx-chase-2026";
+let rngState=2166136261;
+function seed(){rngState=2166136261;for(const ch of coopSeed)rngState=Math.imul(rngState^ch.charCodeAt(0),16777619)>>>0}
+function rnd(){rngState^=rngState<<13;rngState^=rngState>>>17;rngState^=rngState<<5;return (rngState>>>0)/4294967296}
+function rand(n){return Math.floor(rnd()*n)}
+function makeTask(){
+ let a,b,op,value,sig;
+ for(let i=0;i<12;i++){if(rnd()<.5){a=rand(10);b=rand(11-a);op="+";value=a+b}else{a=rand(11);b=rand(a+1);op="−";value=a-b}sig=a+op+b;if(sig!==lastSignature)break}
+ lastSignature=sig;answer=value;el("equation").textContent=a+" "+op+" "+b+" = ?";
+ const opts=new Set([value]);const pool=[value+1,value-1,value+2,value-2,value+3,value-3,rand(11),rand(11)].filter(n=>n>=0&&n<=10&&n!==value);
+ while(opts.size<3&&pool.length)opts.add(pool.splice(rand(pool.length),1)[0]);
+ while(opts.size<3)opts.add(rand(11));
+ const arr=[...opts];for(let i=arr.length-1;i>0;i--){const j=rand(i+1);[arr[i],arr[j]]=[arr[j],arr[i]]}
+ choices.replaceChildren();for(const n of arr){const b=document.createElement("button");b.className="answer";b.id="angler-answer-"+n;b.type="button";b.textContent=n;b.dataset.value=String(n);b.setAttribute("aria-label","Ответ "+n);choices.appendChild(b)}
 }
-function endGame(){state.finished=true;save();redraw();try{window.TivvigRegistry?.unlockReward(REWARD)}catch{}try{localStorage.setItem(REWARD,'unlocked')}catch{} }
-function answer(n){
- if(busy||state.finished||state.lost)return;
- const t=TASKS[state.step];if(!t)return;
- busy=true;
- const yes=n===result(t),buttons=[...answers.querySelectorAll('button')];
- buttons.forEach(b=>{b.disabled=true;if(Number(b.dataset.value)===n)b.classList.add(yes?'correct':'wrong')});
- status.textContent=yes?'Верно! ✨':'Берегись!';
- clearTimeout(moveTimer);
- moveTimer=setTimeout(()=>{
-  state.step++;
-  state.boat++;state.fish+=yes?1:2;
-  const transformed=state.step===5;
-  if(transformed){scene.dataset.transform='1';clearTimeout(transformTimer);transformTimer=setTimeout(()=>{scene.dataset.transform='0'},1250)}
-  if(state.fish>=state.boat && state.step<10){state.lost=true}
-  if(state.step>=10&&!state.lost){endGame();busy=false;return}
-  save();redraw();
-  clearTimeout(moveTimer);
-  moveTimer=setTimeout(()=>{busy=false;redraw()},780);
- },290);
+function flash(n,char="✧"){const p=P[Math.min(LAST,n)],f=document.createElement("span");f.className="magic";f.textContent=char;f.style.left=p.x+"%";f.style.top=(p.y-11)+"%";arena.appendChild(f);setTimeout(()=>f.remove(),950)}
+async function transform(me){
+ transformed=true;flash(pL,"✦");flash(pV,"✧");await pause(240);if(me!==serial)return;
+ lada.classList.add("changed");enemy.classList.add("mid");el("status").textContent="Лада превратилась!";await pause(550)
 }
-function reset(){clearTimeout(moveTimer);clearTimeout(transformTimer);busy=false;scene.dataset.transform='0';state=init();save();redraw()}
-answers.addEventListener('click',e=>{const b=e.target.closest('[data-value]');if(b)answer(Number(b.dataset.value))});
-document.getElementById('restart').addEventListener('click',reset);
-document.getElementById('retry').addEventListener('click',reset);
-document.getElementById('again').addEventListener('click',reset);
-window.addEventListener('tivvig-outfit-changed',equip);
-window.addEventListener('tivvig-inventory-changed',equip);
-window.addEventListener('pageshow',equip);
-window.addEventListener('resize',redraw);
-window.TivvigAnglerDebug=Object.freeze({state:()=>JSON.parse(JSON.stringify(state)),tasks:TASKS.map(x=>x.slice()),answer,reset,skipToMiddle:()=>{state={step:5,boat:8,fish:5,finished:false,lost:false};save();redraw()},win:()=>endGame()});
-redraw();
+function show(which){el(which).hidden=false;const b=el(which).querySelector("button");if(b)b.focus({preventScroll:true})}
+function hide(){el("lose").hidden=true;el("win").hidden=true}
+function winGame(){
+ over=true;el("status").textContent="Удильщик стал другом!";flash(LAST,"✦");
+ try{window.TivvigRegistry?.unlockReward(REWARD)}catch{}
+ try{localStorage.setItem(REWARD,"unlocked")}catch{}
+ show("win")
+}
+async function play(n,button){
+ if(busy||over)return;
+ busy=true;const token=serial,correct=n===answer;
+ button.classList.add(correct?"right":"wrong");
+ [...choices.children].forEach(b=>b.disabled=true);
+ el("status").textContent=correct?"Верно!":"Удильщик приближается!";
+ await pause(230);if(token!==serial)return;
+ pL=Math.min(LAST,pL+1);pV=Math.min(LAST,pV+(correct?1:2));sync();
+ await pause(800);if(token!==serial)return;
+ if(pV>=pL){over=true;show("lose");return}
+ if(!transformed&&pL>=START+5){await transform(token);if(token!==serial)return}
+ if(pL>=LAST){winGame();return}
+ turn++;makeTask();busy=false;el("status").textContent="Уплывай от удильщика!"
+}
+function reset(){
+ ++serial;pL=START;pV=0;turn=0;busy=false;over=false;transformed=false;lastSignature="";
+ seed();lada.classList.remove("changed");enemy.classList.remove("mid");hide();sync();makeTask();el("status").textContent="Уплывай от удильщика!"
+}
+choices.addEventListener("click",e=>{const b=e.target.closest("button[data-value]");if(b)play(Number(b.dataset.value),b)});
+el("reset").addEventListener("click",reset);
+el("retry").addEventListener("click",reset);
+el("again").addEventListener("click",reset);
+window.addEventListener("tivvig-outfit-changed",equip);
+window.addEventListener("tivvig-inventory-changed",equip);
+window.addEventListener("pageshow",equip);
+document.addEventListener("DOMContentLoaded",equip);
+window.TivvigAnglerDebug=Object.freeze({state:()=>({boat:pL,fish:pV,step:turn,answer,transformed,busy,over}),reset,answer:n=>{const b=choices.querySelector('[data-value="'+n+'"]');if(b)b.click()},skipToMiddle:()=>{pL=START+5;pV=5;transformed=true;lada.classList.add("changed");enemy.classList.add("mid");sync()},win:winGame});
+reset();
 })();
 </script>
 <script src="game-runtime.js?v=5" defer></script>
-</body>
-</html>
+</body></html>
