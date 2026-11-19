@@ -50,6 +50,33 @@ button,a{font:inherit;touch-action:manipulation;-webkit-tap-highlight-color:tran
 #gameConnection{font-size:13px;color:#ffe4af;text-align:center}
 @media(max-width:780px){.head{justify-content:center}.head h1{width:100%;text-align:center}.scene{border-width:3px}.scene-caption strong{font-size:clamp(12px,2.5vw,19px)}.scene-caption .word{font-size:clamp(12px,2.5vw,22px)}.scene-caption .beast{font-size:clamp(19px,4.5vw,34px)}.lesson-main{grid-template-columns:1fr}.controls{flex-direction:row;flex-wrap:wrap}.controls .action{flex:1 1 155px}.tile{min-height:52px}.word-track{min-height:55px}}
 @media(max-width:470px){.scene-caption{display:none}.head small{display:none}.tile{min-width:84px;font-size:24px}.lesson{padding:10px}.loot .item{font-size:13px}}
+
+/* Eight miniature illustrated bestiary rewards; one shared image atlas, no emojis as portraits. */
+.card-art{display:block;background-image:url("images/gnome-monster-mini-cards.webp?v=1");background-repeat:no-repeat;background-size:400% 200%;background-position:var(--bx,0%) var(--by,0%);aspect-ratio:418 / 470.5;box-shadow:0 2px 5px #402c2170;border:1px solid #bd9562;border-radius:7px;overflow:hidden}
+.scene-caption .beast[hidden],.scene-monster-art[hidden]{display:none!important}
+.scene-monster-art{width:clamp(45px,9vw,120px);max-height:52%;margin:3px auto;box-shadow:0 4px 12px #69452566}
+.monster-collection{margin-top:15px;padding:12px 10px 13px;background:#fcf2dc;border:2px solid #c6a67d;border-radius:14px}
+.collection-heading{font-size:clamp(16px,1.65vw,22px);font-weight:bold;margin:0 0 10px;color:#5d412b}
+.monster-cards{display:grid;grid-template-columns:repeat(8,minmax(0,1fr));gap:clamp(5px,1vw,12px)}
+.mini-slot{display:flex;flex-direction:column;justify-content:flex-start;gap:5px;min-width:0;padding:5px;border:1px solid #cbaa76;border-radius:8px;background:#eedfbe;color:#654d36;text-align:center;box-shadow:0 2px 3px #5a3d2c24}
+.mini-slot .card-art{width:100%;height:auto}
+.mini-name{font:bold clamp(10px,1.05vw,15px)/1.17 Georgia,serif;overflow-wrap:anywhere}
+.mini-slot.locked{opacity:.7;background:#eee3d1}
+.mini-slot.locked .mini-place{display:grid;place-items:center;aspect-ratio:418 / 470.5;border:1px dashed #b19b81;border-radius:7px;color:#baa487;font:normal clamp(27px,3vw,42px)/1 Georgia,serif;background:linear-gradient(145deg,#ebdcc0,#f6ead4)}
+.mini-slot.locked .mini-name{color:#93836c}
+.monster-reward{position:fixed;inset:0;z-index:110;display:grid;place-items:center;padding:clamp(10px,2vw,25px);background:#121a17d9;overflow-y:auto}
+.monster-reward[hidden]{display:none!important}
+.reward-panel{width:min(93vw,410px);max-height:96dvh;display:flex;flex-direction:column;gap:clamp(6px,1vh,11px);align-items:center;justify-content:center;border:7px double #d1ac70;border-radius:16px;background:radial-gradient(circle at 50% 12%,#fff4db,#f0d6a5 92%);color:#4d3827;box-shadow:0 18px 48px #000b;padding:clamp(10px,1.7vw,20px)}
+.reward-eyebrow{font:italic clamp(18px,2.4vw,25px)/1.1 Georgia,serif;color:#88582f;text-align:center}
+.reward-panel .card-art{width:min(57%,185px);flex-shrink:1;min-height:0;box-shadow:0 7px 18px #54412c66;border-width:3px}
+.reward-monster-name{font:bold clamp(21px,4vw,34px)/1 Georgia,serif;text-align:center;letter-spacing:.055em}
+.reward-caption{font-size:clamp(12px,1.6vw,16px);line-height:1.3;text-align:center;max-width:330px}
+.reward-claim{width:100%;padding:11px 16px;min-height:48px;border-radius:12px;border:2px solid #a77c45;background:linear-gradient(#406b54,#294a3a);color:#fff1cd;font-weight:bold;font-size:clamp(16px,2vw,20px);box-shadow:0 4px 0 #183b2f77}
+.reward-claim:hover{background:#416f56}
+@media(max-width:680px){.monster-cards{grid-template-columns:repeat(4,minmax(0,1fr))}.mini-name{font-size:12px}.scene-monster-art{width:18%}.reward-panel .card-art{width:min(57%,155px)}}
+@media(max-height:600px){.reward-panel{padding:8px;gap:5px}.reward-panel .card-art{width:min(36%,110px)}.reward-eyebrow{font-size:17px}.reward-monster-name{font-size:23px}.reward-caption{font-size:12px}.reward-claim{min-height:40px;padding:5px}}
+@media(prefers-reduced-motion:no-preference){.reward-panel{animation:cardReveal .23s ease-out both}@keyframes cardReveal{from{transform:scale(.93);opacity:.7}to{transform:scale(1);opacity:1}}}
+
 @media(prefers-reduced-motion:reduce){*{scroll-behavior:auto!important}}
 </style>
 </head>
@@ -58,7 +85,7 @@ button,a{font:inherit;touch-action:manipulation;-webkit-tap-highlight-color:tran
 <header class="head"><a href="gnome-village.html" class="back">← Деревня гномов</a><h1>Дом гнома Чудоведа</h1><small>Подготовка к ночной обороне</small></header>
 <section class="scene" aria-label="Уютная хижина гнома-знатока чудовищ с предметами защиты">
  <img class="scene-art" src="images/gnome-monster-expert.webp?v=1" alt="Гном в зелёной шапке с книгой о чудовищах. В его комнате есть щит, зеркало, колокол, сеть, старые книги и таинственные предметы" width="1672" height="941" draggable="false" fetchpriority="high">
- <div class="scene-caption"><strong id="sceneCaption">Бестиарий Чудоведа</strong><span class="beast" id="sceneBeast" aria-hidden="true">📖</span><span class="word" id="sceneWord">Чудовища и их тайны</span></div>
+ <div class="scene-caption"><strong id="sceneCaption">Бестиарий Чудоведа</strong><span class="beast" id="sceneBeast" aria-hidden="true">📖</span><span class="scene-monster-art card-art" id="sceneMonsterArt" role="img" aria-label="Портрет прочитанного чудовища" hidden></span><span class="word" id="sceneWord">Чудовища и их тайны</span></div>
  <button type="button" id="gearShield" class="gear-spot" style="--x:36%;--y:43%" aria-label="Взять щит" disabled></button>
  <button type="button" id="gearMirror" class="gear-spot" style="--x:44.5%;--y:44%" aria-label="Взять зеркало" disabled></button>
  <button type="button" id="gearBell" class="gear-spot" style="--x:51%;--y:50%" aria-label="Взять колокол" disabled></button>
@@ -75,15 +102,25 @@ button,a{font:inherit;touch-action:manipulation;-webkit-tap-highlight-color:tran
    <p class="feedback" id="lessonFeedback" role="status" aria-live="polite"></p>
   </div>
   <div class="controls">
-   <button type="button" class="action" id="readConfirm" hidden>📣 Прочитала вслух!</button>
+   <button type="button" class="action" id="readConfirm" hidden>✓ Прочитано</button>
    <button type="button" class="action" id="nextMonster" hidden>Следующее чудовище →</button>
    <button type="button" class="action secondary" id="undoSyllable">↶ Убрать слог</button>
    <button type="button" class="action secondary" id="restartLesson">↻ Начать заново</button>
   </div>
  </div>
+ <section class="monster-collection" aria-label="Коллекция карточек изученных чудовищ"><h2 class="collection-heading">📖 Мой маленький бестиарий <span id="collectedCount">0 / 8</span></h2><div id="monsterCards" class="monster-cards" aria-live="polite"></div></section>
  <div class="loot" id="loot" aria-label="Снаряжение для обороны" aria-live="polite"><strong>🎒 Снаряжение:</strong><span>Рюкзак пока пуст</span></div>
  <div class="end" id="lessonDone" hidden><strong>✦ Лада готова к ночи!</strong><span>Восемь чудовищ изучены, четыре защитных предмета собраны.</span><a href="gnome-village.html">Вернуться к гномам →</a></div>
 </section>
+<div class="monster-reward" id="monsterReward" role="dialog" aria-modal="true" aria-labelledby="rewardName" hidden>
+ <div class="reward-panel">
+  <div class="reward-eyebrow">✦ Новая мини-награда! ✦</div>
+  <div id="rewardArt" class="card-art" role="img" aria-label="Иллюстрация чудовища"></div>
+  <div id="rewardName" class="reward-monster-name">Чудовище</div>
+  <div id="rewardCaption" class="reward-caption"></div>
+  <button type="button" class="reward-claim" id="rewardAccept">Забрать карточку в бестиарий →</button>
+ </div>
+</div>
 <p class="footer-note">Ты читаешь вслух, а взрослый слушает. Нажатия по слогам работают мышью и пальцем на планшете.</p>
 <p id="gameConnection" role="status" aria-live="polite"></p>
 </main>
@@ -109,17 +146,48 @@ const equipment=[
 ];
 const reward='tivvig_reward_gnome_bestiary_v1';
 const gearStorage='tivvig_gnome_defense_supplies_v1';
-let index=0,phase='assemble',selected=[],gears=[],finished=false;
+let index=0,phase='assemble',selected=[],gears=[],finished=false,found=new Set();
 const buttons=[$('syllable0'),$('syllable1'),$('syllable2'),$('syllable3')];
 const el=(name,cls,text)=>{const node=document.createElement(name);if(cls)node.className=cls;if(text!==undefined)node.textContent=text;return node};
 function say(text,warning=false){const feedback=$('lessonFeedback');feedback.textContent=text;feedback.classList.toggle('warn',warning)}
+function cardArt(node,n){
+ const xs=['0%','33.333333%','66.666667%','100%'];
+ node.style.setProperty('--bx',xs[n%4]);
+ node.style.setProperty('--by',n<4?'0%':'100%');
+}
+function collection(){
+ const grid=$('monsterCards');grid.replaceChildren();
+ for(let n=0;n<monsters.length;n++){
+  const card=el('div','mini-slot'+(found.has(n)?'':' locked'));
+  const pic=el('div',found.has(n)?'card-art':'mini-place');
+  if(found.has(n)){
+   cardArt(pic,n);
+   pic.setAttribute('role','img');
+   pic.setAttribute('aria-label','Иллюстрация: '+monsters[n].word);
+  }else pic.textContent='?';
+  const name=el('span','mini-name',found.has(n)?monsters[n].word:'Не открыто');
+  card.append(pic,name);grid.append(card);
+ }
+ $('collectedCount').textContent=found.size+' / '+monsters.length;
+}
 function update(){
  const m=monsters[index];
  $('lessonCounter').textContent=(finished?'8 / 8 ✓':'Слово '+(index+1)+' из '+monsters.length);
  const caption=$('sceneCaption'),beast=$('sceneBeast'),word=$('sceneWord');
  caption.textContent=finished?'Секреты чудовищ изучены':'Чудовище № '+(index+1);
- beast.textContent=m.icon;
+ const seen=found.has(index);
+ beast.textContent='🔍';beast.hidden=seen;
+ const portrait=$('sceneMonsterArt');portrait.hidden=!seen;
+ if(seen){cardArt(portrait,index);portrait.setAttribute('aria-label','Иллюстрация: '+m.word);}
  word.textContent=phase==='assemble'?'Прочитай моё имя':m.word;
+ collection();
+ const popup=$('monsterReward');popup.hidden=phase!=='reward';
+ if(phase==='reward'){
+  cardArt($('rewardArt'),index);
+  $('rewardArt').setAttribute('aria-label','Мини-награда: '+m.word);
+  $('rewardName').textContent=m.word;
+  $('rewardCaption').textContent=m.note;
+ }
  $('lessonTitle').textContent=finished?'Чудовед: «Молодец, Лада!»':'Чудовед: «Изучим новое чудовище!»';
  const target=$('wordTrack');target.replaceChildren();
  if(phase==='assemble'){
@@ -141,6 +209,7 @@ function update(){
  if(finished){$('lessonSpeech').textContent='Все восемь имён прочитаны! Четыре предмета готовы к обороне. Вернись на площадь и расскажи об этом гномам.';}
  else if(phase==='assemble')$('lessonSpeech').textContent='Собери слоги по порядку, затем прочитай название вслух. '+(m.parts.length>1?'Сколько слогов в слове?':'Это короткое, но непростое слово.');
  else if(phase==='read')$('lessonSpeech').textContent=m.note+' Прочитай слово крупными буквами и нажми «Прочитала вслух!»';
+ else if(phase==='reward')$('lessonSpeech').textContent='Ты прочитала слово! Забери карточку чудовища в свой маленький бестиарий.';
  else if(phase==='gear'){$('lessonSpeech').textContent='Время собирать снаряжение! Найди '+equipment[Math.floor(index/2)].name.toLowerCase()+' в комнате Чудоведа и нажми прямо на него на картине.';}
  else $('lessonSpeech').textContent='Отлично! Теперь продолжим изучать чудовищ.';
  const loot=$('loot');loot.replaceChildren(el('strong','', '🎒 Снаряжение:'));
@@ -160,8 +229,15 @@ function takeSyllable(k){
 function undo(){if(phase!=='assemble'||!selected.length)return;selected.pop();say('Убрали последний слог.');update()}
 function confirmReading(){
  if(phase!=='read')return;
- if(index%2===1){phase='gear';say('Прочитано два имени! Находи новый защитный предмет на картине.');}
- else {phase='ready';say('Название прочитано! Можно продолжать.');}
+ found.add(index);
+ phase='reward';
+ say('✓ Прочитано! Открылась новая мини-награда — '+monsters[index].word+'.');
+ update();
+}
+function acceptCard(){
+ if(phase!=='reward')return;
+ if(index%2===1){phase='gear';say('Карточка получена! Прочитаны два имени — теперь найди защитный предмет в комнате.');}
+ else {phase='ready';say('Карточка чудовища в твоём бестиарии! Продолжим чтение.');}
  update();
 }
 function collectGear(id){
@@ -174,6 +250,7 @@ function collectGear(id){
 function complete(){
  if(finished)return;finished=true;
  try{localStorage.setItem(gearStorage,JSON.stringify({items:gears.map(x=>x.id.toLowerCase()),count:gears.length}));localStorage.setItem(reward,'unlocked')}catch{}
+ try{localStorage.setItem('tivvig_gnome_monster_cards_v1',JSON.stringify(monsters.map(x=>x.word)))}catch{}
  const grant=()=>{try{if(window.TivvigRegistry?.byReward?.[reward])window.TivvigRegistry.unlockReward(reward)}catch(err){console.warn('Gnome monster expert reward',err)}};
  if(window.TivvigRegistry?.byReward?.[reward])grant();
  else window.addEventListener('tivvig:registry-ready',grant,{once:true});
@@ -184,16 +261,17 @@ function advance(){
  if(index===monsters.length-1){complete();update();return;}
  index++;selected=[];phase='assemble';say('Новое имя в книге чудовищ.');update();
 }
-function restart(){index=0;phase='assemble';selected=[];gears=[];finished=false;say('Книга открыта с самого начала.');update()}
+function restart(){index=0;phase='assemble';selected=[];gears=[];finished=false;found=new Set();say('Книга открыта с самого начала.');update()}
 buttons.forEach((b,i)=>b.addEventListener('click',()=>takeSyllable(i)));
 $('undoSyllable').addEventListener('click',undo);
 $('readConfirm').addEventListener('click',confirmReading);
+$('rewardAccept').addEventListener('click',acceptCard);
 $('nextMonster').addEventListener('click',advance);
 $('restartLesson').addEventListener('click',restart);
 for(const item of equipment)$('gear'+item.id).addEventListener('click',()=>collectGear(item.id));
 update();
 window.TivvigMonsterExpertDebug=Object.freeze({
- getState:()=>({index,phase,selected:[...selected],gears:gears.map(x=>x.id),finished}),
+ getState:()=>({index,phase,selected:[...selected],gears:gears.map(x=>x.id),found:[...found],finished}),
  words:monsters.map(x=>({word:x.word,parts:[...x.parts],order:[...x.order]})),reward
 });
 })();
