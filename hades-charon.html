@@ -121,7 +121,7 @@ function repaint(){
   setMessage(state.round===2?'Память крепка!':'Верно!');progress.textContent=(state.round+1)+'/3 · '+set.length+'/'+set.length;
   const next=document.createElement('button');next.type='button';next.id='charonNext';next.className='action';next.textContent=state.round===2?'В лодку →':'Дальше →';actions.appendChild(next);
  }
- if(state.phase==='boarding') {setMessage('Харон: «Садитесь!»');progress.textContent='Переправа начинается';}
+ if(state.phase==='boarding') {setMessage('Харон: «Садитесь!»');progress.textContent='Переправа начинается';actions.innerHTML='<a href="hades-angler-chase.html" class="action" style="display:inline-flex;align-items:center;justify-content:center;text-decoration:none">🐟 Продолжить →</a>';}
  window.TivvigWardrobe?.equip(document.getElementById('charonLada'));
 }
 function startWatch(){clearTimeout(watchTimer);clearTimeout(mistTimer);mist.classList.remove('active');state.phase='watch';state.placed=[];state.selected=null;save();repaint();watchTimer=setTimeout(()=>{

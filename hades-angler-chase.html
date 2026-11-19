@@ -1,0 +1,164 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#081a24">
+<meta name="description" content="Переправа через Стикс: Харон, Лада и друзья спасаются от удильщиков. Десять примеров на счёт до 10.">
+<title>Побег от удильщиков — Царство Аида · Тиввиг</title>
+<style>
+:root{color-scheme:dark;--gold:#e7c88c;--cream:#fff1d6}
+*{box-sizing:border-box}
+html,body{margin:0;min-height:100%;background:#07121b}
+body{color:var(--cream);font:16px Georgia,'Times New Roman',serif}
+a,button{font:inherit}a{text-decoration:none;color:inherit}button{cursor:pointer;-webkit-tap-highlight-color:transparent;touch-action:manipulation}
+button:focus-visible,a:focus-visible{outline:3px solid #f5dfa4;outline-offset:4px}
+[hidden]{display:none!important}
+main{width:min(1400px,100%);margin:0 auto;padding:8px 10px 20px}
+header{display:flex;align-items:center;justify-content:space-between;gap:8px;padding:5px 2px 12px}
+header h1{font-weight:normal;font-size:clamp(18px,2.2vw,27px);margin:0;color:#f8d6a5}
+.home,.restart{display:inline-flex;align-items:center;justify-content:center;min-height:44px;padding:7px 12px;border-radius:10px;background:#172b33;border:1px solid #b28e61;color:#f9e4b9;font-size:clamp(12px,1.5vw,16px)}
+.viewport{overflow-x:auto;overscroll-behavior-x:contain;border:4px ridge #82654a;border-radius:13px;background:#08151d;box-shadow:0 15px 40px #01060cb3;-webkit-overflow-scrolling:touch}
+.scene{position:relative;width:100%;min-width:780px;aspect-ratio:16/9;overflow:hidden;isolation:isolate;background:radial-gradient(ellipse at 40% 42%,#184252,#071722 75%,#020b11)}
+.bg{position:absolute;inset:0;z-index:0;width:100%;height:100%;object-fit:cover;filter:contrast(1.06) saturate(.93);user-select:none;pointer-events:none}
+.scene:after{content:'';position:absolute;inset:0;z-index:4;pointer-events:none;box-shadow:inset 0 0 60px #020a159c;background:linear-gradient(to bottom,#030d1d85,transparent 23%,transparent 70%,#00111b55)}
+/* Stage is one canvas; no separate text panel. */
+.problem{position:absolute;top:2.2%;left:50%;transform:translateX(-50%);z-index:17;display:flex;align-items:center;flex-direction:column;gap:8px}
+.equation{padding:8px 27px;border-radius:13px;border:2px solid #c6a674;background:linear-gradient(150deg,#f7e2b6f5,#c59c71ec);box-shadow:0 7px 17px #0008;color:#2e2528;text-align:center;white-space:nowrap;font:bold clamp(27px,4.6vw,58px)/1.05 Georgia,serif;min-width:210px}
+.answers{display:flex;justify-content:center;gap:8px}
+.answer{min-width:clamp(55px,6.5vw,83px);min-height:clamp(48px,5.2vw,70px);border:2px solid #ba935f;border-radius:11px;background:linear-gradient(145deg,#f3dfa9,#c4aa80);color:#292b29;box-shadow:0 3px 0 #453625,0 7px 14px #03091499;font:bold clamp(26px,3.4vw,42px) Georgia,serif}
+.answer:active{transform:translateY(2px)}.answer.correct{background:#b9e8d6}.answer.wrong{background:#e5a6a1}.answer:disabled{pointer-events:none;opacity:.75}
+.progress{position:absolute;z-index:15;top:3%;right:2%;display:flex;gap:6px;padding:7px 9px;border-radius:17px;background:#071621bb;border:1px solid #8c77606e}
+.progress i{width:clamp(9px,1.2vw,15px);height:clamp(9px,1.2vw,15px);display:block;background:#6a7b80;border:1px solid #9aa5a8;border-radius:50%;transform:rotate(12deg)}
+.progress i.done{background:#f4d48b;box-shadow:0 0 8px #f6d388}
+.boat,.form-lada,.fish,.sparkles,.friends{position:absolute;pointer-events:none;user-select:none}
+.boat{z-index:7;left:4%;top:17%;width:48%;height:76%;transform:translateX(var(--hero-x,0px)) rotate(var(--boat-angle,-2deg));transition:transform .82s cubic-bezier(.25,.7,.19,1),opacity .9s;filter:drop-shadow(0 10px 12px #000a)}
+.painting-boat{position:absolute;inset:0;width:100%;height:100%;object-fit:contain}
+.boat-passenger{position:absolute;object-fit:contain;object-position:bottom;filter:drop-shadow(0 4px 3px #000d)}
+.boat .lada-doll{position:absolute;left:59%;top:47%;height:34%;width:17%;filter:drop-shadow(0 4px 4px #000e)}
+.lada-doll img{position:absolute;inset:0;width:100%;height:100%;object-fit:contain}
+.lada-doll [hidden]{display:none!important}
+.boat .cat{left:40%;top:57%;height:23%;width:17%}.boat .rabbit{left:53%;top:65%;height:18%;width:16%}.boat .monkey{left:69%;top:65%;height:19%;width:16%}
+.fish{z-index:8;left:71%;top:22%;height:54%;width:30%;object-fit:contain;transform:translate(var(--fish-x,0px),var(--fish-y,0px)) scale(var(--fish-scale,1));transition:transform .84s cubic-bezier(.35,.8,.25,1),opacity .62s;filter:drop-shadow(0 0 16px #8aefff9e) drop-shadow(0 11px 9px #000e)}
+.fish.jeweled{left:73%;top:19%;height:61%;width:27%;filter:drop-shadow(0 0 17px #f35464a8) drop-shadow(0 7px 7px #01040bc9)}
+.form-lada{z-index:10;left:22%;top:25%;width:22%;height:66%;object-fit:contain;opacity:0;transform:translateY(15px) scale(.78);transition:opacity .8s,transform .8s;filter:drop-shadow(0 10px 11px #000e) drop-shadow(0 0 12px #f5a0bc)}
+.friends{z-index:11;left:15%;top:71%;display:flex;gap:8px;width:24%;height:19%;opacity:0;transition:opacity .8s}
+.friends img{height:100%;width:32%;object-fit:contain;filter:drop-shadow(0 3px 4px #000c)}
+.scene[data-form="monster"] .boat{opacity:0;transform:translateX(var(--hero-x,0px)) scale(.8)}
+.scene[data-form="monster"] .form-lada{opacity:1;transform:translateX(var(--hero-x,0px)) scale(1)}
+.scene[data-form="monster"] .friends{opacity:1;transform:translateX(var(--hero-x,0px))}
+.sparkles{inset:0;z-index:19;opacity:0;background:radial-gradient(circle at 34% 51%,#ffb7dbb0 0%,#d298ff65 12%,transparent 35%),radial-gradient(circle at 83% 49%,#88dcffc9,transparent 30%);transition:opacity .4s}
+.scene[data-transform="1"] .sparkles{animation:change-form 1.2s ease-in-out both}
+@keyframes change-form{0%,100%{opacity:0}30%,68%{opacity:.95}}
+.hud{position:absolute;z-index:15;bottom:1.5%;left:50%;transform:translateX(-50%);max-width:72%;border-radius:14px;padding:5px 11px;color:#f3e2c2;background:#0a2232bc;text-align:center;text-shadow:0 1px 6px #000;font:600 clamp(12px,1.45vw,18px)/1.3 system-ui,sans-serif}
+.modal{position:absolute;inset:0;z-index:30;display:grid;place-items:center;padding:12px;background:#071522df;backdrop-filter:blur(5px)}
+.modal-inner{text-align:center;max-width:95%;display:flex;flex-direction:column;align-items:center;gap:10px;color:#fff0cd}
+.modal-inner h2{font-size:clamp(25px,4vw,51px);font-weight:normal;text-shadow:0 4px 16px #000;margin:0}
+.modal-inner img{max-width:100%;max-height:min(68vh,500px);border:4px ridge #cfad78;border-radius:14px;object-fit:contain;box-shadow:0 14px 25px #0009}
+.modal-inner .actions{display:flex;justify-content:center;gap:10px;flex-wrap:wrap}
+.modal-inner button,.modal-inner a{min-height:48px;padding:9px 18px;border:2px solid #d7bd8b;border-radius:11px;background:#ead1a1;color:#332637;font:bold clamp(16px,1.8vw,22px) Georgia,serif}
+@media(max-width:820px){main{padding:6px}.viewport{border-width:3px}.scene{min-width:780px}.home,.restart{font-size:13px}.progress{top:1.8%;right:1.5%;gap:4px}.problem{top:1.3%}.equation{font-size:31px;min-width:160px;padding:6px 14px}.answer{min-width:56px;min-height:49px;font-size:27px}}
+@media(prefers-reduced-motion:reduce){.boat,.fish,.form-lada,.friends,.sparkles{transition:none!important;animation:none!important}.scene[data-transform="1"] .sparkles{opacity:.25}}
+</style>
+</head>
+<body>
+<main>
+<header><a class="home" href="hades-charon.html">← Харон</a><h1>Побег от удильщиков</h1><button class="restart" id="restart" type="button">↻</button></header>
+<div class="viewport" role="region" tabindex="0" aria-label="Подземная пещера со сталактитами, лодка Харона и преследующие удильщики">
+<section class="scene" id="anglerScene" data-form="boat" data-transform="0">
+<img class="bg" src="images/styx-cavern.webp?v=1" alt="Пещера Стикса со сталактитами и подземной рекой" draggable="false" fetchpriority="high">
+<div id="boat" class="boat">
+<img class="painting-boat" src="images/charon-boat-cutout.webp" draggable="false" alt="Харон в настоящей лодке с картины «Харон и Психея»">
+<div class="lada-doll" id="chaseLada"><img src="images/lada-cutout.webp" alt="Лада" draggable="false"><img data-outfit-layer hidden alt="" draggable="false"></div>
+<img class="boat-passenger cat" src="images/blue-cat.webp" alt="" draggable="false">
+<img class="boat-passenger rabbit" src="images/rabbit-cutout.webp" alt="" draggable="false">
+<img class="boat-passenger monkey" src="images/monkey-cutout.webp" alt="" draggable="false">
+</div>
+<img class="form-lada" src="images/lada-demogorgon-cutout.webp" alt="Лада в её костюме демогоргона" draggable="false">
+<div class="friends" aria-hidden="true"><img src="images/blue-cat.webp" alt=""><img src="images/rabbit-cutout.webp" alt=""><img src="images/monkey-cutout.webp" alt=""></div>
+<img class="fish" id="angler" src="images/angler-terrifying.webp" alt="Страшный удильщик преследует лодку" draggable="false">
+<div class="sparkles" aria-hidden="true"></div>
+<div class="problem"><div class="equation" id="equation" aria-live="polite">4 + 3 = ?</div><div class="answers" id="answers" aria-label="Выбери ответ"></div></div>
+<div class="progress" id="progress" aria-label="Продвижение по переправе"></div>
+<div class="hud" id="status" aria-live="polite">Решай примеры — спасай лодку!</div>
+<div class="modal" id="lose" role="dialog" aria-modal="true" aria-label="Удильщик догнал лодку" hidden><div class="modal-inner"><h2>Удильщик догнал! 🐟</h2><button id="retry" type="button">↻ Попробовать снова</button></div></div>
+<div class="modal" id="reward" role="dialog" aria-modal="true" aria-label="Награда: Лада подружилась с удильщиком" hidden><div class="modal-inner"><h2>Новый друг!</h2><img src="images/charon-friends-angler-reward.webp" alt="Лада в костюме демогоргона обнимает доброго удильщика в светящейся пещере"><div class="actions"><button id="again" type="button">↻ Ещё раз</button><a href="index.html">К карте →</a></div></div></div>
+</section>
+</div>
+</main>
+<script src="wardrobe.js?v=4" defer></script>
+<script>
+(()=>{
+'use strict';
+const scene=document.getElementById('anglerScene'),boat=document.getElementById('boat'),angler=document.getElementById('angler'),answers=document.getElementById('answers'),equation=document.getElementById('equation'),progress=document.getElementById('progress'),status=document.getElementById('status'),lose=document.getElementById('lose'),reward=document.getElementById('reward');
+const SAVE='tivvig_hades_angler_chase_v1',REWARD='tivvig_reward_charon_angler_friend_v1';
+const coop=new URLSearchParams(location.search).get('coop')==='1';
+const TASKS=[[4,'+',3],[9,'−',6],[2,'+',5],[10,'−',4],[7,'−',2],[3,'+',6],[8,'−',5],[6,'+',2],[9,'−',4],[5,'+',5]];
+function init(){return{step:0,boat:3,fish:0,finished:false,lost:false}}
+let state=init(),busy=false,transformTimer=null,moveTimer=null;
+function valid(x){if(!x||!Number.isInteger(x.step)||x.step<0||x.step>TASKS.length)return init();return{step:x.step,boat:Math.max(3,Math.min(13,Number(x.boat)||3)),fish:Math.max(0,Math.min(13,Number(x.fish)||0)),finished:!!x.finished,lost:!!x.lost}}
+if(!coop)try{state=valid(JSON.parse(localStorage.getItem(SAVE)||'null'))}catch{}
+function save(){if(!coop)try{localStorage.setItem(SAVE,JSON.stringify(state))}catch{}}
+function result(t){return t[1]==='+'?t[0]+t[2]:t[0]-t[2]}
+function opts(t,i){let a=result(t),v=[a,(a+2)%11,(a+7)%11];return i%3===0?[v[1],v[0],v[2]]:i%3===1?[v[2],v[1],v[0]]:[v[0],v[2],v[1]]}
+function equip(){window.TivvigWardrobe?.equip(document.getElementById('chaseLada'))}
+function redraw(){
+ const step=state.step;
+ scene.dataset.form=step>=5?'monster':'boat';
+ // Both pursuer and hero move one step per question; a wrong answer advances the fish twice.
+ const width=Math.max(780,scene.clientWidth);
+ const shift=-Math.min(72,step*2.4)*(width/100);
+ scene.style.setProperty('--hero-x',shift+'px');
+ scene.style.setProperty('--fish-x',(-Math.min(42,state.fish*2.7)*width/100)+'px');
+ scene.style.setProperty('--fish-y',Math.sin(step*.9)*5+'px');
+ scene.style.setProperty('--fish-scale',step>=5?'1.11':'1');
+ angler.src=step>=5?'images/angler-jewelled.webp':'images/angler-terrifying.webp';
+ angler.alt=step>=5?'Удильщик превратился в металлического с красными глазами':'Страшный удильщик преследует Харона';
+ angler.classList.toggle('jeweled',step>=5);
+ progress.innerHTML=Array.from({length:TASKS.length},(_,i)=>'<i class="'+(i<step?'done':'')+'"></i>').join('');
+ progress.setAttribute('aria-label','Шаг '+step+' из '+TASKS.length);
+ lose.hidden=!state.lost;reward.hidden=!state.finished;
+ document.getElementById('restart').disabled=busy;
+ if(state.finished||state.lost){answers.replaceChildren();equation.textContent=state.finished?'✦':'!';status.textContent=state.finished?'Удильщик стал другом!':'Удильщик догнал лодку!';equip();return;}
+ const t=TASKS[step];equation.textContent=t[0]+' '+t[1]+' '+t[2]+' = ?';
+ answers.replaceChildren();opts(t,step).forEach(n=>{const b=document.createElement('button');b.type='button';b.id='angler-answer-'+n;b.className='answer';b.textContent=String(n);b.dataset.value=String(n);b.setAttribute('aria-label','Ответ '+n);answers.appendChild(b)});
+ status.textContent=step<5?'Спасай лодку!':step===5?'Лада превратилась!':'Уходи от удильщика!';
+ equip();
+}
+function endGame(){state.finished=true;save();redraw();try{window.TivvigRegistry?.unlockReward(REWARD)}catch{}try{localStorage.setItem(REWARD,'unlocked')}catch{} }
+function answer(n){
+ if(busy||state.finished||state.lost)return;
+ const t=TASKS[state.step];if(!t)return;
+ busy=true;
+ const yes=n===result(t),buttons=[...answers.querySelectorAll('button')];
+ buttons.forEach(b=>{b.disabled=true;if(Number(b.dataset.value)===n)b.classList.add(yes?'correct':'wrong')});
+ status.textContent=yes?'Верно! ✨':'Берегись!';
+ clearTimeout(moveTimer);
+ moveTimer=setTimeout(()=>{
+  state.step++;
+  state.boat++;state.fish+=yes?1:2;
+  const transformed=state.step===5;
+  if(transformed){scene.dataset.transform='1';clearTimeout(transformTimer);transformTimer=setTimeout(()=>{scene.dataset.transform='0'},1250)}
+  if(state.fish>=state.boat && state.step<10){state.lost=true}
+  if(state.step>=10&&!state.lost){endGame();busy=false;return}
+  save();redraw();
+  clearTimeout(moveTimer);
+  moveTimer=setTimeout(()=>{busy=false;redraw()},780);
+ },290);
+}
+function reset(){clearTimeout(moveTimer);clearTimeout(transformTimer);busy=false;scene.dataset.transform='0';state=init();save();redraw()}
+answers.addEventListener('click',e=>{const b=e.target.closest('[data-value]');if(b)answer(Number(b.dataset.value))});
+document.getElementById('restart').addEventListener('click',reset);
+document.getElementById('retry').addEventListener('click',reset);
+document.getElementById('again').addEventListener('click',reset);
+window.addEventListener('tivvig-outfit-changed',equip);
+window.addEventListener('tivvig-inventory-changed',equip);
+window.addEventListener('pageshow',equip);
+window.addEventListener('resize',redraw);
+window.TivvigAnglerDebug=Object.freeze({state:()=>JSON.parse(JSON.stringify(state)),tasks:TASKS.map(x=>x.slice()),answer,reset,skipToMiddle:()=>{state={step:5,boat:8,fish:5,finished:false,lost:false};save();redraw()},win:()=>endGame()});
+redraw();
+})();
+</script>
+<script src="game-runtime.js?v=5" defer></script>
+</body>
+</html>
