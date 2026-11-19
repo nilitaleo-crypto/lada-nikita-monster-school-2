@@ -68,6 +68,16 @@ header h1{margin:0;font-size:clamp(18px,2.4vw,29px);font-weight:normal;letter-sp
 @media(max-width:780px){.book-spread{border-width:4px}.book-leaf{padding:8px}.book-leaf h2{font-size:22px}.book-story{font-size:18px;line-height:1.24;margin:auto 4%}.book-caption{font-size:10px}.book-nav button{min-height:44px;min-width:48px}.book-hotspot{width:16%}}
 @media(prefers-reduced-motion:reduce){.book-scene,.book-hotspot::after{animation:none}}
 
+
+.book-gift{display:block;margin:4px auto 0;min-height:40px;padding:8px 13px;border-radius:12px;border:1px solid #8d776e;background:#302a45;color:#eaf5f7;font:bold clamp(13px,1.25vw,17px) Georgia,serif;box-shadow:0 2px 5px #0004}
+.book-gift:hover{background:#524568}
+.hecate-gift{position:absolute;z-index:45;inset:0;display:grid;place-items:center;padding:9px;background:#061622e8;backdrop-filter:blur(5px)}
+.hecate-gift-card{max-height:98%;max-width:min(550px,94%);display:flex;flex-direction:column;align-items:center;gap:8px;padding:11px;background:#16263b;border:2px solid #b4c2cb;border-radius:15px;box-shadow:0 12px 30px #000b}
+.hecate-gift-card h2{font:normal clamp(17px,2.4vw,25px)/1.15 Georgia,serif;margin:0;color:#d8f5ff}
+.hecate-gift-card img{width:auto;max-width:100%;max-height:calc(100% - 95px);min-height:0;object-fit:contain;border-radius:8px}
+.hecate-gift-card button,.hecate-gift-card a{min-height:43px;display:inline-grid;place-items:center;padding:7px 11px;border:1px solid #d0bd9e;border-radius:10px;color:#273746;background:#e3d3ad;font-weight:bold}
+.hecate-gift-actions{display:flex;flex-wrap:wrap;justify-content:center;gap:8px}
+[hidden]{display:none!important}
 @media(max-width:800px){main{padding:5px}.board{border-width:2px}.scene{min-width:730px}.nav{padding:5px 8px}.party{height:29%;left:3%}}
 @media(prefers-reduced-motion:reduce){.fog,.dust,.actor{animation:none}}
 </style>
@@ -104,13 +114,25 @@ header h1{margin:0;font-size:clamp(18px,2.4vw,29px);font-weight:normal;letter-sp
         <button type="button" id="hecatePrev" aria-label="Предыдущая страница" disabled>←</button>
         <button type="button" id="hecateNext" aria-label="Следующая страница">→</button>
       </div>
+      <button type="button" id="hecateClaim" class="book-gift" hidden>✦ Дар Гекаты</button>
     </div>
   </div>
+</div>
+<div class="hecate-gift" id="hecateGift" role="dialog" aria-modal="true" aria-label="Подарок Гекаты" hidden>
+ <div class="hecate-gift-card">
+  <h2>Наряд Гекаты и волшебная лира</h2>
+  <img src="images/hecate-lyre-reward.webp" alt="Лунная хранительница в плаще Гекаты с серебряной лирой" draggable="false">
+  <div class="hecate-gift-actions">
+   <button type="button" id="hecateWear">Надеть</button>
+   <a href="collection.html">Коллекция</a>
+   <button type="button" id="hecateGiftClose">Закрыть</button>
+  </div>
+ </div>
 </div>
 </section>
 </div>
 </main>
-<script src="wardrobe.js?v=4" defer></script>
+<script src="wardrobe.js?v=5" defer></script>
 <script>
 (()=>{'use strict';
  const scene=document.getElementById('hecateScene');
@@ -140,6 +162,8 @@ header h1{margin:0;font-size:clamp(18px,2.4vw,29px);font-weight:normal;letter-sp
  const caption=document.getElementById('hecateBookCaption');
  const counter=document.getElementById('hecateBookCounter');
  const prev=document.getElementById('hecatePrev'),next=document.getElementById('hecateNext');
+ const gift=document.getElementById('hecateGift'),giftButton=document.getElementById('hecateClaim');
+ const OUTFIT='tivvig_outfit_hecate_unlocked_v1',LYRE='tivvig_weapon_hecate_lyre_v1',REWARD='tivvig_reward_hecate_outfit_lyre_v1';
  let page=0,swipeStart=null;
  function displayPage(){
    const item=BOOK[page];
@@ -147,6 +171,7 @@ header h1{margin:0;font-size:clamp(18px,2.4vw,29px);font-weight:normal;letter-sp
    heading.textContent=item.title;content.textContent=item.text;caption.textContent=item.credit;
    counter.textContent=(page+1)+' / '+BOOK.length;
    prev.disabled=page===0;next.disabled=page===BOOK.length-1;
+   giftButton.hidden=page!==BOOK.length-1;
  }
  function openBook(){page=0;displayPage();book.hidden=false;next.focus({preventScroll:true})}
  function closeBook(){book.hidden=true;document.getElementById('hecateOpenBook').focus({preventScroll:true})}
@@ -154,6 +179,24 @@ header h1{margin:0;font-size:clamp(18px,2.4vw,29px);font-weight:normal;letter-sp
  document.getElementById('hecateOpenBook').addEventListener('click',openBook);
  document.getElementById('hecateCloseBook').addEventListener('click',closeBook);
  prev.addEventListener('click',()=>turn(-1));next.addEventListener('click',()=>turn(1));
+
+ function grantGift(){
+   for(const key of [OUTFIT,LYRE,REWARD]){
+     if(window.TivvigRegistry?.byReward?.[key])window.TivvigRegistry.unlockReward(key);
+     else{try{localStorage.setItem(key,'unlocked')}catch(e){}}
+   }
+   window.TivvigWardrobe?.select('hecate');
+   window.dispatchEvent(new Event('tivvig-inventory-changed'));
+   dress();
+   gift.hidden=false;
+   document.getElementById('hecateGiftClose').focus({preventScroll:true});
+ }
+ function hideGift(){gift.hidden=true;document.getElementById('hecateClaim').focus({preventScroll:true})}
+ giftButton.addEventListener('click',()=>{if(page===BOOK.length-1)grantGift()});
+ document.getElementById('hecateGiftClose').addEventListener('click',hideGift);
+ document.getElementById('hecateWear').addEventListener('click',()=>{
+   window.TivvigWardrobe?.select('hecate');dress();hideGift();closeBook();
+ });
  const coop=new URLSearchParams(location.search).get('coop')==='1';
  // Touch swipe is local in solo mode; in co-op large arrows are authoritative room clicks.
  if(!coop){
@@ -161,7 +204,7 @@ header h1{margin:0;font-size:clamp(18px,2.4vw,29px);font-weight:normal;letter-sp
    book.addEventListener('pointerup',e=>{if(!swipeStart||swipeStart.id!==e.pointerId)return;const x=e.clientX-swipeStart.x,y=e.clientY-swipeStart.y;swipeStart=null;if(Math.abs(x)>65&&Math.abs(x)>Math.abs(y)*1.4)turn(x<0?1:-1)});
  }
  document.addEventListener('keydown',e=>{if(book.hidden||coop)return;if(e.key==='Escape'){closeBook();e.preventDefault()}else if(e.key==='ArrowRight'){turn(1);e.preventDefault()}else if(e.key==='ArrowLeft'){turn(-1);e.preventDefault()}});
- window.TivvigHecateBookDebug=Object.freeze({state:()=>({open:!book.hidden,page:page+1,total:BOOK.length}),open:openBook,close:closeBook,next:()=>turn(1),prev:()=>turn(-1),pages:BOOK.map(x=>({img:x.img,title:x.title,text:x.text,credit:x.credit}))});
+ window.TivvigHecateBookDebug=Object.freeze({state:()=>({open:!book.hidden,page:page+1,total:BOOK.length,giftVisible:!gift.hidden}),open:openBook,close:closeBook,next:()=>turn(1),prev:()=>turn(-1),pages:BOOK.map(x=>({img:x.img,title:x.title,text:x.text,credit:x.credit}))});
 
  window.addEventListener('tivvig-outfit-changed',dress);
  window.addEventListener('tivvig-inventory-changed',dress);
