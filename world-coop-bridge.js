@@ -133,5 +133,12 @@ window.addEventListener("message",e=>{
   if(!processing)replayNext();
  }
 });
+// Convert a verified touchscreen drag into a room-authoritative click on both devices.
+window.addEventListener("tivvig:request-click",e=>{
+ if(current!=="hades-cerberus.html"||replaying)return;
+ const selector=e.detail?.selector;
+ if(typeof selector!=="string"||!/^#cerberus-route-[0-8]-(a|b)$/.test(selector))return;
+ send("click",{selector});
+});
 send("ready",{page:current,epoch:q.get("seed")});
 })();

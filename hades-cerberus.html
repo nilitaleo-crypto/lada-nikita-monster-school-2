@@ -36,14 +36,24 @@ button,a{font:inherit}button{cursor:pointer}button:focus-visible,a:focus-visible
 .flying::before{content:'';position:absolute;inset:4% 12%;z-index:-1;border:2px solid #b98d53;border-radius:35%;background:linear-gradient(#fff2cf,#d9ad74)}
 .flying::after{content:'✦ ✧ ✦';position:absolute;top:-38%;left:10%;color:#ffe59a;font-size:26px;text-shadow:0 0 12px #ffd170}
 @keyframes bone-fly{0%{transform:translate(0,0) rotate(0deg) scale(1)}48%{transform:translate(var(--mid-x),var(--mid-y)) rotate(16deg) scale(.84)}100%{transform:translate(var(--end-x),var(--end-y)) rotate(360deg) scale(.30);opacity:0}}
-.sleep{position:absolute;z-index:4;left:55%;top:17%;width:17%;height:9%;pointer-events:none;opacity:0;transition:opacity 1.3s}
-.sleep::before,.sleep::after{content:'';position:absolute;top:25%;width:30%;height:29%;border-radius:50% / 65%;background:linear-gradient(180deg,#40312d,#1c1719);border-top:4px solid #685044;box-shadow:0 3px 3px #120d10a9,0 4px 10px #0a0c11b8;transform:rotate(10deg)}
-.sleep::before{left:8%}.sleep::after{right:10%;transform:rotate(-8deg)}
-.scene[data-state="done"] .sleep{opacity:1}
-.zzz{position:absolute;z-index:8;left:61%;top:7%;color:#eff8ff;font:bold 44px Georgia,serif;text-shadow:0 0 13px #80ddff;pointer-events:none;opacity:0;transform:translateY(20px)}
-.scene[data-state="done"] .zzz{opacity:1;animation:zz-move 2.5s ease-in-out infinite alternate}
-@keyframes zz-move{to{transform:translate(4px,-13px);opacity:.45}}
-@keyframes wake{50%{opacity:.78;transform:translateY(-5px)}}
+/* The sleeping face is a painted frame, not artificial eye ovals. */
+.art-clever{z-index:1;opacity:0;transition:opacity 2s ease-in-out}
+.scene[data-state="clever"] .art-clever{opacity:1}
+.scene[data-state="clever"] .bone-pad{opacity:0}
+.scene[data-state="clever"] .bark{left:29%;top:1%;max-width:46%;border-color:#e0ca8d}
+.math-board{position:absolute;inset:0;pointer-events:none;z-index:6}
+.math-ground{position:absolute;left:35%;top:60%;width:63%;height:34%;border-radius:38%;background:radial-gradient(ellipse,#2e2229a1,#25202988 65%,transparent 80%)}
+.math-zone{position:absolute;z-index:8;top:56%;width:21%;height:13%;border:2px solid #e9c590;border-radius:16px;color:#fff3db;background:linear-gradient(165deg,#4c3047e8,#201c31ee);font:bold clamp(13px,1.45vw,20px)/1.2 Georgia,serif;box-shadow:0 0 13px #130c18;pointer-events:auto;touch-action:manipulation}
+.math-zone-a{left:45%}.math-zone-b{left:74%}
+.math-zone-count{display:block;font:700 clamp(12px,1.35vw,17px)/1.15 system-ui,sans-serif;color:#a7e8f3;margin-top:3px}
+.math-tokens{display:block;white-space:nowrap;overflow:hidden;font-size:clamp(12px,1.35vw,21px);line-height:1.2}
+.math-label{position:absolute;left:37%;top:70%;width:60%;text-align:center;color:#ffe8c5;text-shadow:0 2px 6px #17111a;font:bold clamp(12px,1.35vw,18px) Georgia,serif}
+.math-bone{position:absolute;z-index:9;width:11%;height:7.4%;min-height:45px;transform:translate(-50%,-50%);border:2px solid #a87a49;border-radius:48% 26% 36% 27%;background:linear-gradient(165deg,#fff1d3,#dfb680);box-shadow:0 4px 7px #1118,inset 0 2px 5px #fff8;touch-action:none;font-size:clamp(25px,2.6vw,40px);cursor:grab;user-select:none;display:flex;align-items:center;justify-content:center}
+.math-bone.selected{outline:4px solid #72f5ec;filter:drop-shadow(0 0 10px #7bf7ff);background:#ffdeb0}
+.math-bone:active{cursor:grabbing}
+.math-route{position:absolute;z-index:4;left:0;top:0;width:1px;height:1px;border:0;opacity:0;pointer-events:none}
+.math-question{font:bold 22px Georgia,serif;color:#d0f8f6;align-self:center}
+
 .bark{position:absolute;z-index:5;left:51%;top:4%;max-width:38%;border:2px solid #78cce4;border-radius:15px;background:#101e30d9;color:#f9eecc;padding:9px 13px;text-align:center;font-size:clamp(14px,1.55vw,24px);line-height:1.22;box-shadow:0 5px 15px #0008;pointer-events:none}
 .stage-notice{max-width:1200px;margin-inline:auto;display:flex;flex-direction:column;gap:9px;margin-top:11px;border:2px ridge #b7976a;border-radius:13px;background:linear-gradient(160deg,#2c2a34,#151c2d);padding:13px 15px;text-align:center}
 .stage-notice h2{color:#f1ce89;font-size:clamp(22px,2.6vw,34px);font-weight:normal;margin:0}.stage-notice p{font-size:clamp(16px,1.8vw,23px);margin:0;line-height:1.36}
@@ -53,17 +63,17 @@ button,a{font:inherit}button{cursor:pointer}button:focus-visible,a:focus-visible
 .action.secondary{background:#343b49;color:#f7e6c4}
 .action[disabled]{opacity:.55;cursor:wait}
 @media(max-width:900px){.scene{min-width:850px}.bone,.flying{font-size:26px}.bar{justify-content:center}.bar h1{order:-1;width:100%;text-align:center}.hint{width:100%;text-align:center}}
-@media(prefers-reduced-motion:reduce){.flying{animation-duration:.18s}.zzz{animation:none!important}.sleep{transition:none!important}}
+@media(prefers-reduced-motion:reduce){.flying{animation-duration:.18s}.art-clever{transition:none!important}}
 </style>
 </head>
 <body>
 <main class="world">
-<header class="bar"><a class="back" href="hades-gate.html">← К вратам Аида</a><h1>Цербер: голодная голова</h1><span class="hint">Читай слог — бросай косточку!</span></header>
+<header class="bar"><a class="back" href="hades-gate.html">← К вратам Аида</a><h1><span id="cerberusPageTitle">Цербер: голодная голова</span></h1><span class="hint">Корми · считай · разгадывай!</span></header>
 <div class="scroll" id="cerberusScroll" role="region" tabindex="0" aria-label="Игровое поле Цербера. На небольшом экране можно прокручивать вправо.">
 <section class="scene" id="cerberusScene" data-state="playing" aria-label="Трёхголовый Цербер у входа в царство Аида: две головы спят, третья голодна">
 <img class="art" src="images/hades-cerberus.avif?v=1" alt="Лада, кот, заяц и Умняшка перед Цербером у реки Стикс; две головы спят, одна бодрствует" fetchpriority="high" draggable="false">
-<div class="fallback-dog" aria-hidden="true">🐺</div><div class="bone-pad" aria-hidden="true"></div>
-<div class="sleep" aria-hidden="true"></div><span class="zzz" aria-hidden="true">Z z z</span>
+<img class="art art-clever" src="images/cerberus-clever.webp?v=1" alt="Хитрая голова Цербера просыпается с прищуром и круглыми очками; голодная и третья голова спят" draggable="false" loading="eager"><div class="fallback-dog" aria-hidden="true">🐺</div><div class="bone-pad" aria-hidden="true"></div>
+
 <div class="bark" id="cerberusSpeech">Р-р-р! Я голоден! Прочитай слог на косточке и бросай!</div>
 <div id="boneField" aria-label="Косточки со слогами"></div>
 </section></div>
@@ -72,7 +82,7 @@ button,a{font:inherit}button{cursor:pointer}button:focus-visible,a:focus-visible
 <p id="cerberusGuide">Прочитай слог вслух и нажми на косточку, чтобы бросить её Церберу.</p>
 <p class="count" id="cerberusProgress">Раунд 1 / 4 · Косточки 0 / 8</p>
 <div class="buttons" id="cerberusActions"><a href="hades-gate.html" class="action secondary">← Вернуться к вратам</a></div>
-<small id="cerberusTip">Все косточки нужно прочитать. Голодная голова получает их по одной; две другие не просыпаются.</small>
+<small id="cerberusTip">Все косточки нужно прочитать. Голодная голова получает их по одной; после 4 раундов проснётся хитрая голова.</small>
 </section>
 </main>
 <script>
@@ -86,6 +96,7 @@ const progress=document.getElementById('cerberusProgress');
 const actions=document.getElementById('cerberusActions');
 const speech=document.getElementById('cerberusSpeech');
 const tip=document.getElementById('cerberusTip');
+const pageTitle=document.getElementById('cerberusPageTitle');
 const isCoop=new URLSearchParams(location.search).get('coop')==='1';
 const SAVE='tivvig_cerberus_feeding_v1';
 const SETS=[
@@ -94,81 +105,199 @@ const SETS=[
  ['ВА','ВО','ВУ','ВИ','ВЕ','НА','НО','НУ'],
  ['ПА','ПО','ПУ','ПИ','ТА','ТО','ТУ','ТИ']
 ];
-const allUnique=new Set(SETS.flat());
-if(allUnique.size!==32)throw Error('Каждый слог должен быть уникальным');
-const initial=()=>({round:0,eaten:[],done:false});
-let state=initial(),busy=false,flightTimer=null;
+const PUZZLES=[
+ {total:7,a:2,b:1,whoA:'Аид',whoB:'Голодная',labelA:'Аид украл',labelB:'Голодная съела',question:'У меня было 7 костей. Две украл Аид, ещё одну съела Голодная. Сколько осталось?',answers:[3,4,5]},
+ {total:8,a:3,b:2,whoA:'Харон',whoB:'Летучие мыши',labelA:'Харон забрал',labelB:'Мыши унесли',question:'На берегу лежало 8 костей. Три забрал Харон, ещё две унесли летучие мыши. Сколько осталось?',answers:[2,4,3]},
+ {total:9,a:2,b:2,whoA:'Умняшка',whoB:'Ловкач',labelA:'Умняшка спрятала',labelB:'Ловкач утащил',question:'На камне лежало 9 костей. Две спрятала Умняшка, ещё две утащил Ловкач. Сколько осталось?',answers:[4,5,6]}
+];
+if(new Set(SETS.flat()).size!==32)throw Error('Повторяющиеся слоги');
+const initial=()=>({round:0,eaten:[],done:false,puzzle:0,placed:[],selected:-1,solved:false,finished:false});
+let state=initial(),busy=false,flightTimer=null,settlingTimer=null,changingHeads=false,activeDrag=null,suppressTapId=null;
 function validate(x){
  if(!x||!Number.isInteger(x.round)||x.round<0||x.round>4)return initial();
- const round=Math.min(x.round,3);
- const eaten=Array.isArray(x.eaten)?[...new Set(x.eaten.filter(n=>Number.isInteger(n)&&n>=0&&n<8))]:[];
- return {round,eaten:x.round===4?[]:eaten,done:x.round===4||!!x.done};
+ const done=x.round===4||!!x.done;
+ const puzzle=Number.isInteger(x.puzzle)?Math.max(0,Math.min(2,x.puzzle)):0;
+ const total=PUZZLES[puzzle].total;
+ const placed=Array.isArray(x.placed)?x.placed.filter(v=>v&&Number.isInteger(v.i)&&v.i>=0&&v.i<total&&(v.zone==='a'||v.zone==='b')).slice(0,total):[];
+ const unique=[];const seen=new Set();for(const v of placed)if(!seen.has(v.i)){seen.add(v.i);unique.push(v)}
+ const counts={a:unique.filter(v=>v.zone==='a').length,b:unique.filter(v=>v.zone==='b').length};
+ const correct=counts.a===PUZZLES[puzzle].a&&counts.b===PUZZLES[puzzle].b;
+ return {round:done?4:x.round,eaten:done?[]:Array.isArray(x.eaten)?[...new Set(x.eaten.filter(n=>Number.isInteger(n)&&n>=0&&n<8))]:[],done,puzzle,placed:unique,selected:-1,solved:!!x.solved&&correct,finished:!!x.finished&&done};
 }
 if(!isCoop)try{state=validate(JSON.parse(localStorage.getItem(SAVE)||'null'))}catch{state=initial()}
-function save(){if(isCoop)return;try{localStorage.setItem(SAVE,JSON.stringify(state))}catch{}}
+function save(){if(!isCoop)try{localStorage.setItem(SAVE,JSON.stringify(state))}catch{}}
+function setStatus(text){speech.textContent=text;}
 function print(){
- scene.dataset.state=state.done?'done':'playing';
+ const clever=state.done;
+ scene.dataset.state=clever?'clever':'playing';
  field.replaceChildren();
- if(state.done){
-  title.textContent='Все три головы теперь спят!';
-  guide.textContent='Лада прочитала все 32 слога и накормила голодную голову. Цербер уснул и больше не рычит.';
-  progress.textContent='4 / 4 раунда · 32 / 32 косточки';
-  speech.textContent='Хр-р-р… Z z z…';
-  tip.textContent='Первое испытание Цербера завершено. Следующие головы ждут следующей главы.';
-  actions.innerHTML='<button class="action" type="button" id="cerberusRestart">↻ Повторить игру</button><a class="action secondary" href="hades-gate.html">← К вратам</a>';
-  return;
- }
+ if(clever){renderClever();return;}
+ pageTitle.textContent='Цербер: голодная голова';
  const set=SETS[state.round];
- const eaten=state.eaten;
  for(let i=0;i<set.length;i++){
-  const btn=document.createElement('button');
-  btn.className='bone';btn.dataset.slot=String(i);btn.id='cerberus-bone-'+i;
-  btn.type='button';btn.textContent=set[i];
-  btn.setAttribute('aria-label','Прочитать '+set[i]+' и бросить косточку');
-  if(eaten.includes(i)){btn.disabled=true;btn.setAttribute('aria-label',set[i]+' уже съедено')}
+  const btn=document.createElement('button');btn.className='bone';btn.dataset.slot=String(i);btn.id='cerberus-bone-'+i;
+  btn.type='button';btn.textContent=set[i];btn.setAttribute('aria-label','Прочитать '+set[i]+' и бросить косточку');
+  if(state.eaten.includes(i)){btn.disabled=true;btn.setAttribute('aria-label',set[i]+' уже съедено')}
   field.appendChild(btn);
  }
  title.textContent='Голодная голова просит косточки';
- guide.textContent='Прочитай любой слог вслух и нажми на эту косточку. Цербер её поймает!';
- progress.textContent='Раунд '+(state.round+1)+' / 4 · Косточки '+eaten.length+' / '+set.length;
- speech.textContent='Р-р-р! Дай мне ещё косточку со слогом!';
- tip.textContent='У тебя большой выбор. В каждом раунде нужно скормить все восемь косточек.';
+ guide.textContent='Прочитай слог вслух и нажми на эту косточку. Цербер её поймает!';
+ progress.textContent='Раунд '+(state.round+1)+' / 4 · Косточки '+state.eaten.length+' / '+set.length;
+ setStatus('Р-р-р! Дай мне ещё косточку со слогом!');
+ tip.textContent='В каждом раунде прочитай и брось все восемь косточек.';
  actions.innerHTML='<a class="action secondary" href="hades-gate.html">← К вратам Аида</a>';
 }
 function throwBone(i){
  if(busy||state.done||state.eaten.includes(i)||i<0||i>=SETS[state.round].length)return;
- const chosen=document.getElementById('cerberus-bone-'+i);
- if(!chosen)return;
+ const chosen=document.getElementById('cerberus-bone-'+i);if(!chosen)return;
  busy=true;
  const r=chosen.getBoundingClientRect(),sr=scene.getBoundingClientRect();
  const bone=document.createElement('div');bone.className='flying';bone.textContent=SETS[state.round][i];
  const left=r.left-sr.left,top=r.top-sr.top;
  const dx=sr.width*.63-(left+r.width*.5),dy=sr.height*.29-(top+r.height*.5);
- bone.style.left=left+'px';bone.style.top=top+'px';
- bone.style.setProperty('--mid-x',dx*.48+'px');bone.style.setProperty('--mid-y',(dy*.48-sr.height*.13)+'px');
- bone.style.setProperty('--end-x',dx+'px');bone.style.setProperty('--end-y',dy+'px');
+ bone.style.left=left+'px';bone.style.top=top+'px';bone.style.setProperty('--mid-x',dx*.48+'px');bone.style.setProperty('--mid-y',(dy*.48-sr.height*.13)+'px');bone.style.setProperty('--end-x',dx+'px');bone.style.setProperty('--end-y',dy+'px');
  scene.appendChild(bone);chosen.classList.add('busy');chosen.disabled=true;
- speech.textContent='Ам! '+SETS[state.round][i]+'! Вкусно!';
+ setStatus('Ам! '+SETS[state.round][i]+'! Вкусно!');
  clearTimeout(flightTimer);
  flightTimer=setTimeout(()=>{
   bone.remove();state.eaten.push(i);busy=false;
   if(state.eaten.length===SETS[state.round].length){
-   if(state.round===3){state.done=true;state.round=4;state.eaten=[];}
-   else {state.round++;state.eaten=[];}
+   if(state.round===3){state.done=true;state.round=4;state.eaten=[];changingHeads=true}
+   else{state.round++;state.eaten=[]}
   }
   save();print();
+  if(changingHeads){clearTimeout(settlingTimer);settlingTimer=setTimeout(()=>{changingHeads=false;print()},2350)}
  },1000);
 }
+const count=zone=>state.placed.filter(p=>p.zone===zone).length;
+const current=()=>PUZZLES[state.puzzle];
+function renderClever(){
+ pageTitle.textContent='Цербер: хитрая голова';
+ if(changingHeads){
+  title.textContent='Голодная голова засыпает…';
+  guide.textContent='Сытый Цербер закрывает глаза. Соседняя голова прищуривается и надевает очки…';
+  progress.textContent='32 / 32 косточки · Переход к загадкам';
+  tip.textContent='Подожди, пока проснётся хитрая голова.';
+  setStatus('Хр-р… А кто это тут такой умный?');actions.replaceChildren();return;
+ }
+ if(state.finished){
+  title.textContent='Все три загадки разгаданы!';
+  guide.textContent='Хитрая голова признала, что Лада умеет считать. Она больше не препятствует путешествию!';
+  progress.textContent='Загадки 3 / 3 · Победа!';
+  tip.textContent='Следующее испытание будет у третьей головы Цербера.';
+  setStatus('Хм… Лада, ты оказалась хитрее меня!');
+  actions.innerHTML='<button class="action secondary" id="cerberusRestart" type="button">↻ Повторить все испытания</button><a class="action secondary" href="hades-gate.html">← К вратам</a>';
+  return;
+ }
+ const p=current(),a=count('a'),b=count('b'),placed=new Set(state.placed.map(x=>x.i));
+ const undo=state.placed.length&&!state.solved?'<button class="action secondary" type="button" id="cerberusUndo">↶ Вернуть косточку</button>':'';
+ title.textContent='Хитрая голова — загадка '+(state.puzzle+1)+' из 3';
+ guide.textContent=p.question;
+ progress.textContent='Костей осталось: '+(p.total-state.placed.length)+' из '+p.total+' · '+p.labelA+': '+a+'/'+p.a+' · '+p.labelB+': '+b+'/'+p.b;
+ tip.textContent='Перетащи косточки пальцем в нужные места. Можно также нажать на косточку, а затем на место.';
+ setStatus(state.solved?'Сдаюсь! Ты всё посчитала правильно.':state.placed.length===p.a+p.b?'Сколько осталось? Посчитай косточки на земле!':'Хм-м! Сумеешь убрать нужное число костей?');
+ const zoneHtml=(zone,label,max,num)=>'<button type="button" class="math-zone math-zone-'+zone+'" data-zone="'+zone+'" id="cerberus-zone-'+zone+'" aria-label="'+label+'">'+label+'<span class="math-zone-count">'+num+' / '+max+'</span><span class="math-tokens">'+'🦴'.repeat(num)+'</span></button>';
+ const board=document.createElement('div');board.className='math-board';board.id='cerberusMathBoard';
+ board.innerHTML='<div class="math-ground" aria-hidden="true"></div>'+zoneHtml('a',p.labelA,p.a,a)+zoneHtml('b',p.labelB,p.b,b)+'<div class="math-label" hidden>Передвинь нужные косточки</div>';
+ field.appendChild(board);
+ const positions=[[42,75],[55,75],[68,75],[81,75],[38,86],[51,86],[64,86],[77,86],[88,86]];
+ for(let i=0;i<p.total;i++){
+  if(!placed.has(i)){
+   const bone=document.createElement('button');bone.type='button';bone.id='cerberus-math-bone-'+i;
+   bone.className='math-bone'+(state.selected===i?' selected':'');bone.dataset.mathBone=String(i);
+   bone.textContent='🦴';bone.setAttribute('aria-label','Косточка '+(i+1)+', выбрать или перетащить');
+   bone.style.left=positions[i][0]+'%';bone.style.top=positions[i][1]+'%';
+   field.appendChild(bone);
+  }
+  for(const zone of ['a','b']){
+   const route=document.createElement('button');route.type='button';route.className='math-route';route.id='cerberus-route-'+i+'-'+zone;
+   route.dataset.routeBone=String(i);route.dataset.routeZone=zone;route.tabIndex=-1;route.setAttribute('aria-label','Переместить косточку '+(i+1));
+   field.appendChild(route);
+  }
+ }
+ if(state.solved){
+  actions.innerHTML='<button class="action" type="button" id="cerberusMathNext">'+(state.puzzle===2?'Завершить загадки ✓':'Следующая загадка →')+'</button>';
+ }else if(a===p.a&&b===p.b){
+  actions.innerHTML='<span class="math-question">Сколько осталось?</span>'+p.answers.map(n=>'<button class="action math-answer" type="button" id="cerberus-answer-'+n+'" data-answer="'+n+'">'+n+'</button>').join('')+undo;
+ }else{
+  actions.innerHTML='<button class="action secondary" type="button" data-zone="a" id="cerberus-place-a">'+p.labelA+'</button><button class="action secondary" type="button" data-zone="b" id="cerberus-place-b">'+p.labelB+'</button>'+undo;
+ }
+}
+function selectBone(i){
+ if(!state.done||changingHeads||state.finished||state.solved||i<0||i>=current().total||state.placed.some(x=>x.i===i))return;
+ state.selected=i;save();renderSelection();
+}
+function renderSelection(){
+ field.querySelectorAll('.math-bone').forEach(b=>b.classList.toggle('selected',Number(b.dataset.mathBone)===state.selected));
+}
+function placeBone(i,zone){
+ const p=current();if(!state.done||changingHeads||state.finished||state.solved||!(zone==='a'||zone==='b')||i<0||i>=p.total)return;
+ if(state.placed.some(x=>x.i===i)||count(zone)>=p[zone])return;
+ state.placed.push({i,zone});state.selected=-1;save();print();
+}
+function undoMath(){
+ if(!state.done||changingHeads||state.finished||state.solved||!state.placed.length)return;
+ state.placed.pop();state.selected=-1;save();print();
+}
+function advanceMath(){
+ if(!state.done||!state.solved||state.finished)return;
+ if(state.puzzle===2){state.finished=true;}else{state.puzzle++;state.placed=[];state.selected=-1;state.solved=false;}
+ save();print();
+}
+function answerMath(n){
+ const p=current();if(!state.done||changingHeads||state.finished||state.solved||count('a')!==p.a||count('b')!==p.b)return;
+ if(n===p.total-p.a-p.b){state.solved=true;save();print();}
+ else{setStatus('Попробуй ещё раз. Посчитай оставшиеся косточки!');}
+}
 field.addEventListener('click',e=>{
- const b=e.target.closest('button[data-slot]');
- if(!b)return;
- throwBone(Number(b.dataset.slot));
+ const b=e.target.closest('button');if(!b)return;
+ if(b.dataset.slot!==undefined){throwBone(Number(b.dataset.slot));return;}
+ if(b.dataset.routeBone!==undefined){placeBone(Number(b.dataset.routeBone),b.dataset.routeZone);return;}
+ if(b.dataset.mathBone!==undefined){selectBone(Number(b.dataset.mathBone));return;}
+ if(b.dataset.zone&&state.selected>=0){placeBone(state.selected,b.dataset.zone);return;}
 });
 actions.addEventListener('click',e=>{
- if(!e.target.closest('#cerberusRestart'))return;
- clearTimeout(flightTimer);busy=false;state=initial();save();print();
+ const b=e.target.closest('button');if(!b)return;
+ if(b.id==='cerberusRestart'){clearTimeout(flightTimer);clearTimeout(settlingTimer);busy=false;changingHeads=false;state=initial();save();print();return;}
+ if(b.id==='cerberusMathNext'){advanceMath();return;}
+ if(b.id==='cerberusUndo'){undoMath();return;}
+ if(b.dataset.answer!==undefined){answerMath(Number(b.dataset.answer));return;}
+ if(b.dataset.zone&&state.selected>=0){placeBone(state.selected,b.dataset.zone);return;}
 });
-window.TivvigCerberusDebug=Object.freeze({state:()=>({round:state.round,eaten:[...state.eaten],done:state.done,busy}),totalSyllables:SETS.flat(),reset:()=>{clearTimeout(flightTimer);busy=false;state=initial();save();print()},throwBone});
+// Pointer drag is local input; a co-op drag is converted to a deterministic remote click.
+// Tapping the bone and a destination remains available for keyboard and all touch devices.
+field.addEventListener('pointerdown',e=>{
+ const b=e.target.closest('.math-bone');if(!b||e.button!==0||!state.done||changingHeads||state.solved)return;
+ activeDrag={id:Number(b.dataset.mathBone),pointer:e.pointerId,x:e.clientX,y:e.clientY,moved:false,el:b};
+ try{b.setPointerCapture(e.pointerId)}catch{}
+});
+field.addEventListener('pointermove',e=>{
+ const d=activeDrag;if(!d||d.pointer!==e.pointerId)return;
+ const dx=e.clientX-d.x,dy=e.clientY-d.y;
+ if(Math.hypot(dx,dy)>9)d.moved=true;
+ if(d.moved){e.preventDefault();d.el.style.transform='translate('+dx+'px,'+dy+'px) scale(1.12)';d.el.style.zIndex='28'}
+});
+function finishDrag(e){
+ const d=activeDrag;if(!d||d.pointer!==e.pointerId)return;
+ activeDrag=null;d.el.style.transform='';d.el.style.zIndex='';
+ if(!d.moved)return;
+ suppressTapId=d.id;
+ const targets=[...field.querySelectorAll('.math-zone')];
+ const drop=targets.find(el=>{const r=el.getBoundingClientRect();return e.clientX>=r.left-15&&e.clientX<=r.right+15&&e.clientY>=r.top-15&&e.clientY<=r.bottom+15});
+ if(!drop)return;
+ const zone=drop.dataset.zone;
+ if(isCoop){
+  window.dispatchEvent(new CustomEvent('tivvig:request-click',{detail:{selector:'#cerberus-route-'+d.id+'-'+zone}}));
+ }else placeBone(d.id,zone);
+}
+field.addEventListener('pointerup',finishDrag);
+field.addEventListener('pointercancel',e=>{if(activeDrag&&activeDrag.pointer===e.pointerId){activeDrag.el.style.transform='';activeDrag=null;}});
+document.addEventListener('click',e=>{
+ if(suppressTapId===null)return;
+ const bone=e.target.closest('.math-bone');if(bone&&Number(bone.dataset.mathBone)===suppressTapId){e.preventDefault();e.stopImmediatePropagation();}
+ suppressTapId=null;
+},true);
+window.TivvigCerberusDebug=Object.freeze({state:()=>JSON.parse(JSON.stringify({...state,busy,changingHeads})),totalSyllables:SETS.flat(),reset:()=>{clearTimeout(flightTimer);clearTimeout(settlingTimer);busy=false;changingHeads=false;state=initial();save();print()},throwBone,placeBone,answerMath,advanceMath,skipToClever:()=>{clearTimeout(flightTimer);busy=false;changingHeads=false;state={...initial(),round:4,done:true};save();print();}});
 print();
 })();
 </script>
