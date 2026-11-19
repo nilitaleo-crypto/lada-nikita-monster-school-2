@@ -40,7 +40,7 @@ button,a{font:inherit}button{cursor:pointer}button:focus-visible,a:focus-visible
 .art-clever{z-index:1;opacity:0;transition:opacity 2s ease-in-out}
 .scene[data-state="clever"] .art-clever{opacity:1}
 .scene[data-state="clever"] .bone-pad{opacity:0}
-.scene[data-state="clever"] .bark{left:29%;top:1%;max-width:46%;border-color:#e0ca8d}
+.scene[data-state="clever"] .bark{left:2%;top:4%;max-width:40%;}
 .math-board{position:absolute;inset:0;pointer-events:none;z-index:6}
 .math-ground{position:absolute;left:35%;top:60%;width:63%;height:34%;border-radius:38%;background:radial-gradient(ellipse,#2e2229a1,#25202988 65%,transparent 80%)}
 .math-zone{position:absolute;z-index:8;top:56%;width:21%;height:13%;border:2px solid #e9c590;border-radius:16px;color:#fff3db;background:linear-gradient(165deg,#4c3047e8,#201c31ee);font:bold clamp(13px,1.45vw,20px)/1.2 Georgia,serif;box-shadow:0 0 13px #130c18;pointer-events:auto;touch-action:manipulation}
@@ -54,14 +54,15 @@ button,a{font:inherit}button{cursor:pointer}button:focus-visible,a:focus-visible
 .math-route{position:absolute;z-index:4;left:0;top:0;width:1px;height:1px;border:0;opacity:0;pointer-events:none}
 .math-question{font:bold 22px Georgia,serif;color:#d0f8f6;align-self:center}
 
-.bark{position:absolute;z-index:5;left:51%;top:4%;max-width:38%;border:2px solid #78cce4;border-radius:15px;background:#101e30d9;color:#f9eecc;padding:9px 13px;text-align:center;font-size:clamp(14px,1.55vw,24px);line-height:1.22;box-shadow:0 5px 15px #0008;pointer-events:none}
-.stage-notice{max-width:1200px;margin-inline:auto;display:flex;flex-direction:column;gap:9px;margin-top:11px;border:2px ridge #b7976a;border-radius:13px;background:linear-gradient(160deg,#2c2a34,#151c2d);padding:13px 15px;text-align:center}
-.stage-notice h2{color:#f1ce89;font-size:clamp(22px,2.6vw,34px);font-weight:normal;margin:0}.stage-notice p{font-size:clamp(16px,1.8vw,23px);margin:0;line-height:1.36}
-.stage-notice small{color:#bee2e0;font:14px/1.35 system-ui,sans-serif}
-.count{color:#aef0f5;font-weight:bold}.buttons{display:flex;gap:10px;justify-content:center;flex-wrap:wrap}
-.action{border:2px solid #c39a5b;border-radius:11px;padding:11px 18px;min-height:48px;min-width:190px;background:linear-gradient(#ffebbc,#d4ae6e);color:#31271e;font-size:clamp(17px,1.7vw,22px);font-weight:bold;text-decoration:none}
-.action.secondary{background:#343b49;color:#f7e6c4}
+/* In-scene, atmospheric whisper; no external gameplay panel. */
+.bark{position:absolute;z-index:11;left:2%;top:5%;width:max-content;max-width:40%;padding:10px 14px;color:#fff1d6;text-shadow:0 2px 5px #070a11;font-size:clamp(16px,1.65vw,22px);line-height:1.28;text-align:left;pointer-events:none;border-radius:15px 18px 15px 6px;border:1px solid #d9b88655;background:linear-gradient(138deg,#241b20cd,#282b36a8);box-shadow:0 5px 18px #0006, inset 0 0 14px #e6b87c12;backdrop-filter:blur(3px)}
+.scene-progress{display:block;margin-top:5px;color:#d4cab2;font:600 12px/1.3 system-ui,sans-serif;letter-spacing:.025em}
+.scene-actions{position:absolute;left:50%;bottom:1%;transform:translateX(-50%);z-index:20;display:flex;align-items:center;justify-content:center;flex-wrap:wrap;gap:6px;max-width:90%;padding:4px 7px;border-radius:20px;background:#16202ab8;box-shadow:0 3px 12px #0007}
+.scene-actions:empty{display:none}
+.action{display:inline-flex;align-items:center;justify-content:center;min-height:45px;min-width:0;padding:7px 13px;border:1px solid #c5a16e;border-radius:18px;background:linear-gradient(#f4e1af,#d1aa75);color:#29211b;font:bold 16px/1.15 Georgia,serif;text-decoration:none;white-space:normal}
+.action.secondary{background:#303544;color:#f8e8cb}
 .action[disabled]{opacity:.55;cursor:wait}
+.math-question{font:bold 16px Georgia,serif;color:#d0f8f6;align-self:center;padding:0 5px}
 @media(max-width:900px){.scene{min-width:850px}.bone,.flying{font-size:26px}.bar{justify-content:center}.bar h1{order:-1;width:100%;text-align:center}.hint{width:100%;text-align:center}}
 @media(prefers-reduced-motion:reduce){.flying{animation-duration:.18s}.art-clever{transition:none!important}}
 </style>
@@ -74,16 +75,11 @@ button,a{font:inherit}button{cursor:pointer}button:focus-visible,a:focus-visible
 <img class="art" src="images/hades-cerberus.avif?v=1" alt="Лада, кот, заяц и Умняшка перед Цербером у реки Стикс; две головы спят, одна бодрствует" fetchpriority="high" draggable="false">
 <img class="art art-clever" src="images/cerberus-clever.webp?v=1" alt="Хитрая голова Цербера просыпается с прищуром и круглыми очками; голодная и третья голова спят" draggable="false" loading="eager"><div class="fallback-dog" aria-hidden="true">🐺</div><div class="bone-pad" aria-hidden="true"></div>
 
-<div class="bark" id="cerberusSpeech">Р-р-р! Я голоден! Прочитай слог на косточке и бросай!</div>
+<div class="bark" aria-live="polite"><span id="cerberusSpeech">Прочитай и брось косточки!</span><small class="scene-progress" id="cerberusProgress">1/4 · 0/8</small></div>
 <div id="boneField" aria-label="Косточки со слогами"></div>
+<div class="scene-actions" id="cerberusActions" aria-label="Действия в игре"></div>
+<div hidden aria-hidden="true"><span id="cerberusTitle"></span><span id="cerberusGuide"></span><span id="cerberusTip"></span></div>
 </section></div>
-<section class="stage-notice" aria-live="polite">
-<h2 id="cerberusTitle">Накорми голодную голову</h2>
-<p id="cerberusGuide">Прочитай слог вслух и нажми на косточку, чтобы бросить её Церберу.</p>
-<p class="count" id="cerberusProgress">Раунд 1 / 4 · Косточки 0 / 8</p>
-<div class="buttons" id="cerberusActions"><a href="hades-gate.html" class="action secondary">← Вернуться к вратам</a></div>
-<small id="cerberusTip">Все косточки нужно прочитать. Голодная голова получает их по одной; после 4 раундов проснётся хитрая голова.</small>
-</section>
 </main>
 <script>
 (()=>{
@@ -126,6 +122,7 @@ function validate(x){
 }
 if(!isCoop)try{state=validate(JSON.parse(localStorage.getItem(SAVE)||'null'))}catch{state=initial()}
 function save(){if(!isCoop)try{localStorage.setItem(SAVE,JSON.stringify(state))}catch{}}
+let questionRestoreTimer=null;
 function setStatus(text){speech.textContent=text;}
 function print(){
  const clever=state.done;
@@ -142,10 +139,10 @@ function print(){
  }
  title.textContent='Голодная голова просит косточки';
  guide.textContent='Прочитай слог вслух и нажми на эту косточку. Цербер её поймает!';
- progress.textContent='Раунд '+(state.round+1)+' / 4 · Косточки '+state.eaten.length+' / '+set.length;
- setStatus('Р-р-р! Дай мне ещё косточку со слогом!');
+ progress.textContent=(state.round+1)+'/4 · '+state.eaten.length+'/8 косточек';
+ setStatus('Прочитай слог и брось косточку!');
  tip.textContent='В каждом раунде прочитай и брось все восемь косточек.';
- actions.innerHTML='<a class="action secondary" href="hades-gate.html">← К вратам Аида</a>';
+ actions.replaceChildren();
 }
 function throwBone(i){
  if(busy||state.done||state.eaten.includes(i)||i<0||i>=SETS[state.round].length)return;
@@ -175,27 +172,27 @@ function renderClever(){
  pageTitle.textContent='Цербер: хитрая голова';
  if(changingHeads){
   title.textContent='Голодная голова засыпает…';
-  guide.textContent='Сытый Цербер закрывает глаза. Соседняя голова прищуривается и надевает очки…';
-  progress.textContent='32 / 32 косточки · Переход к загадкам';
+  guide.textContent='Голодная засыпает. Просыпается Хитрая!';
+  progress.textContent='32/32 · Хр-р-р…';
   tip.textContent='Подожди, пока проснётся хитрая голова.';
-  setStatus('Хр-р… А кто это тут такой умный?');actions.replaceChildren();return;
+  setStatus('Хр-р… Просыпается Хитрая!');actions.replaceChildren();return;
  }
  if(state.finished){
   title.textContent='Все три загадки разгаданы!';
   guide.textContent='Хитрая голова признала, что Лада умеет считать. Она больше не препятствует путешествию!';
-  progress.textContent='Загадки 3 / 3 · Победа!';
+  progress.textContent='3/3 · Победа!';
   tip.textContent='Следующее испытание будет у третьей головы Цербера.';
   setStatus('Хм… Лада, ты оказалась хитрее меня!');
-  actions.innerHTML='<button class="action secondary" id="cerberusRestart" type="button">↻ Повторить все испытания</button><a class="action secondary" href="hades-gate.html">← К вратам</a>';
+  actions.innerHTML='<button class="action secondary" id="cerberusRestart" type="button">↻ Повторить</button>';
   return;
  }
  const p=current(),a=count('a'),b=count('b'),placed=new Set(state.placed.map(x=>x.i));
- const undo=state.placed.length&&!state.solved?'<button class="action secondary" type="button" id="cerberusUndo">↶ Вернуть косточку</button>':'';
+ const undo=state.placed.length&&!state.solved?'<button class="action secondary" type="button" id="cerberusUndo" aria-label="Вернуть последнюю косточку">↶ Вернуть</button>':'';
  title.textContent='Хитрая голова — загадка '+(state.puzzle+1)+' из 3';
  guide.textContent=p.question;
- progress.textContent='Костей осталось: '+(p.total-state.placed.length)+' из '+p.total+' · '+p.labelA+': '+a+'/'+p.a+' · '+p.labelB+': '+b+'/'+p.b;
+ progress.textContent='Загадка '+(state.puzzle+1)+'/3 · Осталось '+(p.total-state.placed.length)+' из '+p.total;
  tip.textContent='Перетащи косточки пальцем в нужные места. Можно также нажать на косточку, а затем на место.';
- setStatus(state.solved?'Сдаюсь! Ты всё посчитала правильно.':state.placed.length===p.a+p.b?'Сколько осталось? Посчитай косточки на земле!':'Хм-м! Сумеешь убрать нужное число костей?');
+ setStatus(state.solved?'Верно! Отличный счёт.':p.question);
  const zoneHtml=(zone,label,max,num)=>'<button type="button" class="math-zone math-zone-'+zone+'" data-zone="'+zone+'" id="cerberus-zone-'+zone+'" aria-label="'+label+'">'+label+'<span class="math-zone-count">'+num+' / '+max+'</span><span class="math-tokens">'+'🦴'.repeat(num)+'</span></button>';
  const board=document.createElement('div');board.className='math-board';board.id='cerberusMathBoard';
  board.innerHTML='<div class="math-ground" aria-hidden="true"></div>'+zoneHtml('a',p.labelA,p.a,a)+zoneHtml('b',p.labelB,p.b,b)+'<div class="math-label" hidden>Передвинь нужные косточки</div>';
@@ -216,9 +213,9 @@ function renderClever(){
   }
  }
  if(state.solved){
-  actions.innerHTML='<button class="action" type="button" id="cerberusMathNext">'+(state.puzzle===2?'Завершить загадки ✓':'Следующая загадка →')+'</button>';
+  actions.innerHTML='<button class="action" type="button" id="cerberusMathNext">'+(state.puzzle===2?'Готово ✓':'Дальше →')+'</button>';
  }else if(a===p.a&&b===p.b){
-  actions.innerHTML='<span class="math-question">Сколько осталось?</span>'+p.answers.map(n=>'<button class="action math-answer" type="button" id="cerberus-answer-'+n+'" data-answer="'+n+'">'+n+'</button>').join('')+undo;
+  actions.innerHTML='<span class="math-question">Осталось?</span>'+p.answers.map(n=>'<button class="action math-answer" type="button" id="cerberus-answer-'+n+'" data-answer="'+n+'">'+n+'</button>').join('')+undo;
  }else{
   actions.innerHTML='<button class="action secondary" type="button" data-zone="a" id="cerberus-place-a">'+p.labelA+'</button><button class="action secondary" type="button" data-zone="b" id="cerberus-place-b">'+p.labelB+'</button>'+undo;
  }
@@ -247,7 +244,12 @@ function advanceMath(){
 function answerMath(n){
  const p=current();if(!state.done||changingHeads||state.finished||state.solved||count('a')!==p.a||count('b')!==p.b)return;
  if(n===p.total-p.a-p.b){state.solved=true;save();print();}
- else{setStatus('Попробуй ещё раз. Посчитай оставшиеся косточки!');}
+ else{
+  setStatus('Попробуй ещё раз!');
+  clearTimeout(questionRestoreTimer);
+  const puzzleAtFailure=state.puzzle;
+  questionRestoreTimer=setTimeout(()=>{if(state.done&&!state.finished&&state.puzzle===puzzleAtFailure)speech.textContent=current().question},1250);
+ }
 }
 field.addEventListener('click',e=>{
  const b=e.target.closest('button');if(!b)return;
