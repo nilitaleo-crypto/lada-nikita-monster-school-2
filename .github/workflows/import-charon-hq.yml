@@ -27,6 +27,10 @@ jobs:
             (root+"/media-resize/1600/artworks/images-full/e4/df/e4dfa8ad7a4af9d3e90a886e2f031bcb.jpg.webp",root+"/"),
             ("https://www.meisterdrucke.de/kunstwerke/1260px/John%20Roddam%20Spencer%20Stanhope%20-%20Charon%20and%20Psyche%20%20-%20%28MeisterDrucke-82601%29.jpg","https://www.meisterdrucke.de/"),
           ]
+          # Probe source-native larger resolutions; never replace the page with a thumbnail.
+          master=sources[2][0]
+          for width in [2400,2000,1800]:
+            sources.insert(2,(master.replace("/1260px/","/"+str(width)+"px/"),"https://www.meisterdrucke.de/"))
           base=[v[0] for v in sources]
           for host in ["https://wsrv.nl/?url=","https://images.weserv.nl/?url="]:
             for url in base:
