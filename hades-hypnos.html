@@ -1,0 +1,164 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#101f45">
+<meta name="description" content="Лада придумывает сказку для Гипноса. Волшебные предметы помогают рассказывать историю в любом порядке.">
+<title>Сад снов Гипноса — Тиввиг</title>
+<style>
+:root{color-scheme:dark;--cream:#f8efff;--gold:#ead8a2}
+*{box-sizing:border-box}
+html,body{margin:0;min-height:100%;background:#09132e}
+body{font:16px Georgia,'Times New Roman',serif;color:var(--cream);background:radial-gradient(ellipse at 45% 20%,#233b6b,#0a1635 65%,#061126)}
+a,button{font:inherit;-webkit-tap-highlight-color:transparent;touch-action:manipulation}
+button{cursor:pointer}a{text-decoration:none;color:inherit}
+button:focus-visible,a:focus-visible{outline:3px solid #ffecb2;outline-offset:4px}
+main{max-width:1400px;margin:auto;min-height:100dvh;padding:8px 10px 12px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px}
+header{width:100%;max-width:1280px;display:flex;align-items:center;justify-content:space-between;gap:10px;min-height:43px}
+header h1{margin:0;font-weight:normal;font-size:clamp(17px,2.2vw,29px);letter-spacing:.025em;color:#e5e9fe;text-shadow:0 2px 12px #03051c}
+.nav{min-height:39px;min-width:45px;display:grid;place-items:center;padding:6px 12px;border:1px solid #6d86ab8a;background:#132b56b5;border-radius:12px;color:#e7eafa;font-size:15px}
+.board{width:100%;max-width:1280px;overflow-x:auto;overscroll-behavior-x:contain;-webkit-overflow-scrolling:touch;border-radius:18px;border:3px solid #496992;box-shadow:0 15px 45px #0009;background:#091d44}
+.scene{position:relative;isolation:isolate;aspect-ratio:16/9;min-width:730px;width:100%;overflow:hidden;touch-action:manipulation}
+.sky{position:absolute;inset:0;width:100%;height:100%;z-index:0;pointer-events:none}
+.hypnos{position:absolute;z-index:2;right:-1%;top:-5%;width:60%;height:102%;object-fit:cover;object-position:44% 38%;opacity:.9;pointer-events:none;user-select:none;filter:saturate(.87) contrast(1.07) drop-shadow(0 0 28px #7797e72b);mask-image:radial-gradient(ellipse 78% 84% at 61% 43%,#000 38%,#000d 58%,transparent 100%);-webkit-mask-image:radial-gradient(ellipse 78% 84% at 61% 43%,#000 38%,#000d 58%,transparent 100%);transition:filter 1.4s,opacity 1.4s}
+.scene[data-glow="2"] .hypnos{filter:saturate(.95) contrast(1.09) drop-shadow(0 0 34px #98b7f75e)}
+.scene[data-glow="3"] .hypnos{filter:saturate(1.05) contrast(1.09) drop-shadow(0 0 54px #a9d3ff8a);opacity:.98}
+.hypnos-haze{position:absolute;right:4%;top:5%;width:59%;height:85%;z-index:1;border-radius:50%;pointer-events:none;background:radial-gradient(ellipse,#6686d91f,transparent 68%);mix-blend-mode:screen;animation:breathe 8s ease-in-out infinite alternate}
+@keyframes breathe{to{opacity:.58;transform:scale(1.09)}}
+.scene::after{content:"";position:absolute;z-index:7;inset:0;pointer-events:none;box-shadow:inset 0 0 70px #030b22a0}
+.scene-title{position:absolute;z-index:8;left:3%;top:4.5%;max-width:28%;padding:9px 13px 10px;border:1px solid #abb5dc65;border-radius:18px 18px 18px 4px;background:#172c559e;backdrop-filter:blur(3px);color:#f6efff;font-size:clamp(17px,2.3vw,29px);line-height:1.18;text-shadow:0 2px 5px #030b23}
+.scene-title small{display:block;margin-top:5px;font:500 clamp(11px,1.2vw,15px)/1.3 system-ui,sans-serif;color:#d1d5e7;letter-spacing:.01em}
+.item{position:absolute;z-index:9;width:clamp(62px,8.5%,119px);aspect-ratio:1;border:0;border-radius:50%;padding:5px;background:radial-gradient(circle,#d5e9fa13 13%,#b2d4f610 50%,transparent 76%);filter:drop-shadow(0 9px 8px #030d239c);transition:transform .28s ease,filter .28s ease,background .35s;transform:translate(-50%,-50%);-webkit-tap-highlight-color:transparent;user-select:none}
+.item svg{width:100%;height:100%;overflow:visible;pointer-events:none;filter:drop-shadow(0 1px 5px #0008)}
+.item:hover{filter:drop-shadow(0 0 13px #b4cafaab);transform:translate(-50%,-54%) scale(1.07)}
+.item.chosen{background:radial-gradient(circle,#fff1ac70 2%,#afdffe43 42%,transparent 80%);filter:drop-shadow(0 0 16px #c7effb) drop-shadow(0 5px 8px #080b2b);transform:translate(-50%,-57%) scale(1.09)}
+.item.chosen::after{content:"✦";position:absolute;right:-5%;top:-7%;font-size:clamp(19px,2.5vw,30px);color:#fff6c3;text-shadow:0 0 12px #ffe3a4;animation:starwink 2.5s ease-in-out infinite alternate}
+@keyframes starwink{to{opacity:.43;transform:scale(.75) rotate(27deg)}}
+.item.mirror{left:10%;top:32%}.item.comb{left:29%;top:25%}.item.crown{left:45%;top:31%}.item.book{left:9%;top:56%}.item.key{left:32%;top:50%}.item.flower{left:57%;top:69%}.item.pillow{left:78%;top:78%}.item.lantern{left:52%;top:10%}
+/* Keep each original recurring hero as a separate art asset; costumes use the shared wardrobe. */
+.party{position:absolute;z-index:6;left:7%;bottom:4%;width:45%;height:31%;display:flex;justify-content:center;align-items:end;gap:0;pointer-events:auto}
+.hero{position:relative;flex:0 0 16%;height:82%;border:0;padding:0;background:none;cursor:pointer;filter:drop-shadow(0 5px 5px #000b);transition:transform .32s,filter .32s}
+.hero img{width:100%;height:100%;object-fit:contain;object-position:bottom center;pointer-events:none;user-select:none}
+.hero:hover,.hero.chosen{transform:translateY(-9px);filter:drop-shadow(0 0 11px #bce4ffbd) drop-shadow(0 5px 3px #0008)}
+.hero.lada{flex-basis:19%;height:112%;z-index:2}
+.hero.lada img{position:absolute;inset:0}
+.hero.lada [data-outfit-layer][hidden]{display:none!important}
+.hero.cat{z-index:3}.hero.rabbit{z-index:3;height:70%}.hero.monkey{z-index:2;height:82%}.hero.merchant{z-index:3;height:81%}.hero.bookseller{z-index:2;height:88%}
+.particles{position:absolute;inset:0;z-index:11;pointer-events:none;overflow:hidden}
+.spark{position:absolute;left:0;top:0;color:#fff3b7;font-family:Georgia,serif;text-shadow:0 0 10px #cde9ff,0 0 17px #86c6ff;animation:drift .9s ease-out forwards;pointer-events:none}
+@keyframes drift{from{transform:translate(-50%,-50%) scale(.3);opacity:0}25%{opacity:1}to{transform:translate(var(--dx),var(--dy)) scale(1.3);opacity:0}}
+.dust{position:absolute;z-index:1;width:3px;height:3px;border-radius:50%;background:#d5f4fc;box-shadow:0 0 8px #d9e6fa;opacity:.5;pointer-events:none;animation:twinkle var(--duration) ease-in-out infinite alternate}
+@keyframes twinkle{to{opacity:.09;transform:scale(.5)}}
+.reset{position:absolute;z-index:12;right:2%;bottom:2%;width:43px;height:43px;border:1px solid #8fa9c77a;border-radius:50%;background:#203f639e;color:#fff4cf;font-size:25px;opacity:.76;display:grid;place-items:center}
+.reset:hover{opacity:1}
+@media(max-width:840px){main{padding:5px}.scene-title{max-width:32%}.party{left:5%;width:48%}.item{width:8.5%;min-width:62px}.board{border-width:2px}.nav{padding:4px 8px}.scene{min-width:730px}}
+@media(prefers-reduced-motion:reduce){.hypnos-haze,.dust,.item.chosen::after{animation:none}.item,.hero,.hypnos{transition:none!important}.spark{animation-duration:.1s}}
+</style>
+</head>
+<body>
+<main>
+<header><a class="nav" href="hades-angler-chase.html" aria-label="Назад к переправе">← Переправа</a><h1>Сад снов Гипноса</h1><a class="nav" href="index.html" aria-label="Карта Тиввига">⌂</a></header>
+<div class="board" role="region" tabindex="0" aria-label="Волшебный голубой сад Гипноса">
+<section class="scene" id="hypnosScene" data-glow="1">
+<svg class="sky" viewBox="0 0 1280 720" preserveAspectRatio="none" aria-hidden="true">
+<defs>
+<linearGradient id="dreamBg" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#0a1a44"/><stop offset=".44" stop-color="#244a82"/><stop offset="1" stop-color="#101d54"/></linearGradient>
+<radialGradient id="moonHalo"><stop stop-color="#d0f1ff" stop-opacity=".8"/><stop offset=".25" stop-color="#8cc6f5" stop-opacity=".34"/><stop offset="1" stop-color="#3b69b6" stop-opacity="0"/></radialGradient>
+<linearGradient id="hill" x1="0" y1="0" x2="0" y2="1"><stop stop-color="#3c64a2"/><stop offset="1" stop-color="#0c244b"/></linearGradient>
+<pattern id="stars" width="105" height="90" patternUnits="userSpaceOnUse"><circle cx="14" cy="24" r="1.8" fill="#f4f5d5" opacity=".77"/><circle cx="79" cy="56" r="1" fill="#d5e9fe" opacity=".5"/><circle cx="47" cy="80" r="1" fill="#f1d8a6" opacity=".4"/></pattern>
+</defs>
+<path d="M0 0H1280V720H0Z" fill="url(#dreamBg)"/>
+<path d="M0 0H1280V720H0Z" fill="url(#stars)"/>
+<circle cx="960" cy="170" r="246" fill="url(#moonHalo)"/>
+<!-- sweeping impasto-style nocturnal spirals -->
+<g fill="none" stroke-linecap="round" stroke-linejoin="round">
+<path d="M-150 246 C170 35 465 86 392 273 C348 378 183 340 226 216 C258 135 407 163 340 268" stroke="#83b4dc" stroke-width="19" opacity=".32"/>
+<path d="M-143 279 C165 65 449 110 374 269 C328 369 207 305 251 211" stroke="#d6d6b3" stroke-width="5" opacity=".45"/>
+<path d="M-113 227 C172 5 482 69 417 250" stroke="#467cbf" stroke-width="35" opacity=".33"/>
+<path d="M393 3 C592 48 760 163 705 283 C657 386 512 323 567 246 C608 187 718 251 646 301" stroke="#79a8ce" stroke-width="24" opacity=".19"/>
+<path d="M400 20 C607 60 744 169 683 273 C639 350 541 313 591 249" stroke="#e7dbbc" stroke-width="5" opacity=".29"/>
+<path d="M764 -140 C1098 -25 1185 223 1032 290 C907 344 863 234 941 186 C1005 149 1072 233 997 262" stroke="#628cce" stroke-width="30" opacity=".26"/>
+<path d="M766 -95 C1068 -3 1175 226 1015 279 C929 305 887 233 954 196" stroke="#e6d8b8" stroke-width="6" opacity=".23"/>
+<path d="M-23 429 C125 358 257 414 365 388 S544 374 606 401 S743 452 863 383" stroke="#8ec5d3" stroke-width="15" opacity=".16"/>
+<path d="M-21 465 C147 395 277 456 380 421 S555 413 648 441" stroke="#c5d7dd" stroke-width="5" opacity=".25"/>
+</g>
+<path d="M0 520Q171 418 303 497T595 470 871 514 1280 420V720H0" fill="#162b5c" opacity=".67"/>
+<path d="M0 593Q193 459 390 536T724 503 989 547 1280 478V720H0" fill="url(#hill)"/>
+<path d="M0 639Q214 551 409 602T755 571 1035 608 1280 545V720H0" fill="#112650" opacity=".8"/>
+<path d="M0 667Q196 619 355 660T730 629 1017 661 1280 606" stroke="#7ca5d5" stroke-opacity=".28" stroke-width="9" fill="none"/>
+<path d="M0 700Q243 655 433 693T852 651 1280 668" stroke="#c6c4d4" stroke-opacity=".18" stroke-width="4" fill="none"/>
+<!-- silver cypress silhouettes -->
+<path d="M30 720 53 606 69 559 79 488 86 427 93 545 112 618 128 720Z" fill="#091d42" opacity=".75"/>
+<path d="M1160 720 1181 581 1195 512 1204 447 1212 574 1238 720Z" fill="#0d234a" opacity=".62"/>
+</svg>
+<div class="hypnos-haze"></div>
+<img class="hypnos" src="images/hypnos-portrait.webp" alt="Гипнос, голубой крылатый бог сна" draggable="false" fetchpriority="high">
+<div class="scene-title">Расскажи мне сон…<small>Сказка может быть любой</small></div>
+<div class="particles" id="dreamParticles" aria-hidden="true"></div>
+<!-- Each image is a story prompt; NONE has a required order or a correct answer. -->
+<button type="button" class="item mirror" id="hypnos-object-mirror" data-dream-item="mirror" aria-pressed="false" aria-label="Зеркало" title="Зеркало"><svg viewBox="0 0 120 120" aria-hidden="true"><defs><linearGradient id="silverGlass" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#f2ffff"/><stop offset=".38" stop-color="#a8cde1"/><stop offset="1" stop-color="#4e6f96"/></linearGradient></defs><path d="M59 81V111" stroke="#c9a467" stroke-width="12" stroke-linecap="round"/><path d="M59 81V108" stroke="#fbdf9e" stroke-width="3"/><ellipse cx="59" cy="48" rx="33" ry="40" fill="#b9874b" stroke="#ffe0a2" stroke-width="5"/><ellipse cx="59" cy="48" rx="26" ry="32" fill="url(#silverGlass)" stroke="#5b7598" stroke-width="3"/><path d="M39 38Q45 20 57 22" fill="none" stroke="#ffffff" opacity=".8" stroke-width="5" stroke-linecap="round"/><g fill="#fff4c7"><circle cx="27" cy="48" r="3"/><circle cx="92" cy="48" r="3"/><circle cx="59" cy="7" r="3"/></g></svg></button>
+<button type="button" class="item comb" id="hypnos-object-comb" data-dream-item="comb" aria-pressed="false" aria-label="Расчёска" title="Расчёска"><svg viewBox="0 0 120 120" aria-hidden="true"><g transform="translate(7 5) rotate(-15 55 58)"><path d="M18 43Q60 19 104 40L104 61Q62 43 18 61Z" fill="#d6a16d" stroke="#ffdbaf" stroke-width="4"/><g stroke="#ffd8a1" stroke-width="4" stroke-linecap="round"><path d="M21 57 18 94M30 55 29 99M40 53 40 103M51 51 51 104M62 51 63 104M73 52 75 102M84 54 86 99M95 55 97 92"/></g><path d="M23 45Q63 26 99 45" fill="none" stroke="#8d5e56" stroke-width="3"/><g fill="#c0f2fa"><circle cx="36" cy="42" r="3"/><circle cx="61" cy="37" r="3"/><circle cx="85" cy="41" r="3"/></g></g></svg></button>
+<button type="button" class="item crown" id="hypnos-object-crown" data-dream-item="crown" aria-pressed="false" aria-label="Корона" title="Корона"><svg viewBox="0 0 120 120" aria-hidden="true"><path d="M14 42 31 56 45 18 60 51 79 14 89 54 107 37 99 89 21 89Z" fill="#dcaa60" stroke="#f7d99b" stroke-width="5" stroke-linejoin="round"/><path d="M20 74Q62 83 100 75L98 92Q56 102 22 91Z" fill="#9668b5" stroke="#f3d58e" stroke-width="4"/><path d="M36 56 60 80 85 54" fill="none" stroke="#fff1b1" stroke-opacity=".6" stroke-width="3"/><g fill="#8ad4eb" stroke="#f6dba1" stroke-width="2"><path d="M60 59 69 73 60 82 51 73Z"/><circle cx="31" cy="82" r="5"/><circle cx="87" cy="82" r="5"/></g></svg></button>
+<button type="button" class="item book" id="hypnos-object-book" data-dream-item="book" aria-pressed="false" aria-label="Книга сказок" title="Книга сказок"><svg viewBox="0 0 120 120" aria-hidden="true"><path d="M60 96Q36 81 13 85V28Q36 22 60 38Q82 20 106 28V85Q79 81 60 96Z" fill="#aa8abf" stroke="#efd8a4" stroke-width="5" stroke-linejoin="round"/><path d="M60 38Q37 26 20 32V79Q44 77 60 89Z" fill="#f0e5d1" stroke="#d9bb96" stroke-width="2"/><path d="M60 38Q86 25 98 32V79Q74 76 60 89Z" fill="#d3e7f1" stroke="#d9bb96" stroke-width="2"/><path d="M60 38V90M28 44Q43 41 54 48M28 55Q43 52 54 59M67 48Q80 41 91 44M67 59Q80 52 91 55" fill="none" stroke="#789cb3" stroke-width="2.5"/><path d="M60 64 65 72 60 79 55 72Z" fill="#d7a76c"/></svg></button>
+<button type="button" class="item key" id="hypnos-object-key" data-dream-item="key" aria-pressed="false" aria-label="Волшебный ключ" title="Волшебный ключ"><svg viewBox="0 0 120 120" aria-hidden="true"><g transform="rotate(30 60 60)" fill="none" stroke="#efcf8d" stroke-width="9" stroke-linecap="round" stroke-linejoin="round"><circle cx="59" cy="29" r="17"/><path d="M59 46V101M59 84H79M59 95H76"/></g><circle cx="59" cy="29" r="9" fill="#7e8bc7" stroke="#f9e7b3" stroke-width="3"/><circle cx="59" cy="29" r="3" fill="#d5f0ff"/></svg></button>
+<button type="button" class="item flower" id="hypnos-object-flower" data-dream-item="flower" aria-pressed="false" aria-label="Лилия" title="Лилия"><svg viewBox="0 0 120 120" aria-hidden="true"><path d="M61 65Q66 91 52 111" fill="none" stroke="#80baad" stroke-width="6"/><path d="M61 87Q43 69 30 83Q44 96 58 97" fill="#6faea3" stroke="#3f7c80" stroke-width="3"/><g fill="#e3eefa" stroke="#8bb9d4" stroke-width="3"><path d="M62 64Q12 58 22 29Q52 23 62 64Z"/><path d="M62 64Q102 16 111 41Q111 66 62 64Z"/><path d="M62 63Q35 4 60 6Q82 15 62 63Z"/><path d="M62 63Q24 94 17 76Q11 60 62 63Z"/><path d="M62 64Q103 96 109 75Q109 60 62 64Z"/></g><circle cx="62" cy="62" r="10" fill="#f5d89a"/><g stroke="#b08970" stroke-width="2"><path d="M62 62 56 44M62 62 76 49M62 62 49 67"/></g></svg></button>
+<button type="button" class="item pillow" id="hypnos-object-pillow" data-dream-item="pillow" aria-pressed="false" aria-label="Лунная подушка" title="Лунная подушка"><svg viewBox="0 0 120 120" aria-hidden="true"><path d="M22 31Q59 21 94 31Q104 52 97 92Q57 106 21 90Q13 63 22 31Z" fill="#a6a2df" stroke="#e8d8fd" stroke-width="5"/><path d="M30 38Q59 30 89 39Q95 58 88 84Q57 95 28 82Q22 62 30 38Z" fill="#777ab6" stroke="#c9c4ef" stroke-width="3"/><path d="M64 44Q50 54 61 69Q68 75 80 68Q77 85 63 85Q43 77 44 59Q49 47 64 44Z" fill="#fff1be"/><g fill="#e4e7ff"><circle cx="34" cy="46" r="2.5"/><circle cx="85" cy="53" r="2"/><circle cx="43" cy="78" r="2"/></g></svg></button>
+<button type="button" class="item lantern" id="hypnos-object-lantern" data-dream-item="lantern" aria-pressed="false" aria-label="Звёздный фонарь" title="Звёздный фонарь"><svg viewBox="0 0 120 120" aria-hidden="true"><path d="M47 24Q60 8 73 24" fill="none" stroke="#f2d7a1" stroke-width="5"/><path d="M37 37 60 22 83 37 83 87 60 103 37 87Z" fill="#74a3ba66" stroke="#e9d0a3" stroke-width="5" stroke-linejoin="round"/><path d="M38 38 82 38M37 87 83 87M60 22V103" fill="none" stroke="#b8b5c4" stroke-width="3"/><path d="M60 41 66 54 79 57 68 67 70 82 60 75 50 82 52 67 41 57 54 54Z" fill="#ffedab" stroke="#ffffff" stroke-width="2"/><circle cx="60" cy="62" r="26" fill="#9bd9ff" opacity=".17"/></svg></button>
+<div class="party" aria-label="Лада и её друзья">
+<button type="button" class="hero cat" id="hypnos-friend-cat" aria-pressed="false" aria-label="Ловкач — кот"><img src="images/blue-cat.webp" draggable="false" alt=""></button>
+<button type="button" class="hero rabbit" id="hypnos-friend-rabbit" aria-pressed="false" aria-label="Сильный заяц"><img src="images/rabbit-cutout.webp" draggable="false" alt=""></button>
+<button type="button" class="hero lada" id="hypnos-friend-lada" aria-pressed="false" aria-label="Лада"><img src="images/lada-cutout.webp" draggable="false" alt=""><img data-outfit-layer hidden draggable="false" alt=""></button>
+<button type="button" class="hero monkey" id="hypnos-friend-monkey" aria-pressed="false" aria-label="Умняшка"><img src="images/monkey-cutout.webp" draggable="false" alt=""></button>
+<button type="button" class="hero merchant" id="hypnos-friend-merchant" aria-pressed="false" aria-label="Бумажный торговец"><img src="images/market-merchant.webp" draggable="false" alt=""></button>
+<button type="button" class="hero bookseller" id="hypnos-friend-bookseller" aria-pressed="false" aria-label="Бумажная продавщица книг"><img src="images/bookshop-merchant.webp" draggable="false" alt=""></button>
+</div>
+<button type="button" class="reset" id="hypnosReset" aria-label="Погасить сияние и начать новый сон" title="Новый сон">↻</button>
+</section>
+</div>
+</main>
+<script src="wardrobe.js?v=4" defer></script>
+<script>
+(()=>{
+ 'use strict';
+ const scene=document.getElementById('hypnosScene'),particles=document.getElementById('dreamParticles');
+ const actors=[...scene.querySelectorAll('button[data-dream-item],button.hero')];
+ const selected=new Set();
+ function dress(){window.TivvigWardrobe?.equip(document.getElementById('hypnos-friend-lada'))}
+ function update(){
+   // Glows are optional visual feedback. The story has no order, score, or finish gate.
+   scene.dataset.glow=String(selected.size>=5?3:selected.size>=2?2:1);
+   for(const b of actors){const active=selected.has(b.id);b.classList.toggle('chosen',active);b.setAttribute('aria-pressed',String(active));}
+ }
+ let count=0;
+ function sparkle(b){
+   const parent=scene.getBoundingClientRect(),rect=b.getBoundingClientRect();
+   const x=((rect.left+rect.width/2-parent.left)/parent.width)*100,y=((rect.top+rect.height/2-parent.top)/parent.height)*100;
+   for(let i=0;i<4;i++){
+     const f=document.createElement('span');f.className='spark';f.textContent=i%2?'✧':'✦';
+     f.style.left=x+'%';f.style.top=y+'%';f.style.fontSize=(14+i*3)+'px';
+     f.style.setProperty('--dx',(-31+i*18)+'px');f.style.setProperty('--dy',(-16-(i%2)*36)+'px');
+     f.addEventListener('animationend',()=>f.remove(),{once:true});particles.appendChild(f);
+     if(++count>96){particles.firstElementChild?.remove();count=0}
+   }
+ }
+ scene.addEventListener('click',e=>{
+   const b=e.target.closest('button[data-dream-item],button.hero');
+   if(!b)return;
+   if(selected.has(b.id))selected.delete(b.id);else{selected.add(b.id);sparkle(b)}
+   update();
+ });
+ document.getElementById('hypnosReset').addEventListener('click',()=>{selected.clear();particles.replaceChildren();update()});
+ window.addEventListener('tivvig-outfit-changed',dress);
+ window.addEventListener('tivvig-inventory-changed',dress);
+ window.addEventListener('pageshow',dress);
+ for(let i=0;i<23;i++){
+    const s=document.createElement('i');s.className='dust';s.style.left=((i*43+13)%97)+'%';s.style.top=((i*29+11)%83)+'%';s.style.setProperty('--duration',(2.5+(i%5)*.8)+'s');s.style.animationDelay=(-i*.35)+'s';scene.appendChild(s)
+ }
+ window.TivvigHypnosDebug=Object.freeze({selected:()=>[...selected],reset:()=>{document.getElementById('hypnosReset').click()},itemCount:actors.length});
+ update();dress();
+})();
+</script>
+<script src="game-runtime.js?v=5" defer></script>
+</body>
+</html>
