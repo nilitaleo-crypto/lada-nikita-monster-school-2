@@ -1,0 +1,84 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#111d2d">
+<meta name="description" content="Геката встречает Ладу и друзей в призрачном святилище. В руках богини — книга об Орфее и Эвридике.">
+<title>Святилище Гекаты · Тиввиг</title>
+<style>
+:root{color-scheme:dark;--silver:#cfdeea;--navy:#12273b}
+*{box-sizing:border-box}
+html,body{margin:0;min-height:100%;background:#0b1727}
+body{color:#eaf2f7;font:16px Georgia,'Times New Roman',serif;background:radial-gradient(ellipse at 45% 10%,#27445a,#0c1728 69%,#070f1c)}
+a,button{font:inherit;-webkit-tap-highlight-color:transparent;touch-action:manipulation}
+a{text-decoration:none;color:inherit}
+a:focus-visible{outline:3px solid #d3f9ff;outline-offset:3px}
+main{max-width:1440px;min-height:100dvh;margin:auto;padding:8px 10px 13px;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:7px}
+header{width:100%;max-width:1280px;min-height:44px;display:flex;justify-content:space-between;align-items:center;gap:10px}
+header h1{margin:0;font-size:clamp(18px,2.4vw,29px);font-weight:normal;letter-spacing:.035em;color:#dbe9f0;text-shadow:0 2px 8px #07131f}
+.nav{min-height:40px;display:inline-grid;place-items:center;padding:7px 12px;border:1px solid #8eaab58c;border-radius:12px;background:#162a40d4;color:#e3eff6;font-size:clamp(12px,1.4vw,15px)}
+.board{width:100%;max-width:1280px;overflow-x:auto;overscroll-behavior-x:contain;border:3px solid #597480;border-radius:16px;box-shadow:0 4px 0 #1b2c31,0 18px 42px #030911ba;background:#102b3d;-webkit-overflow-scrolling:touch}
+.scene{position:relative;isolation:isolate;width:100%;min-width:730px;aspect-ratio:1672/941;overflow:hidden;background:#12283c;touch-action:manipulation}
+.art{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center;z-index:0;user-select:none;pointer-events:none}
+/* Atmosphere lives over the art, but never obscures the goddess or her book. */
+.scene:after{position:absolute;inset:0;content:"";z-index:8;pointer-events:none;box-shadow:inset 0 0 45px #09162579}
+.fog{position:absolute;z-index:1;left:-14%;bottom:-7%;width:74%;height:31%;border-radius:50%;opacity:.45;pointer-events:none;background:radial-gradient(ellipse at 45% 50%,#9ab8c73b,transparent 66%);filter:blur(17px);animation:fog-drift 9s ease-in-out infinite alternate}
+@keyframes fog-drift{to{transform:translateX(7%) scale(1.06);opacity:.28}}
+/* Existing character assets and the same universal wardrobe as earlier games. */
+.party{position:absolute;z-index:9;left:3.8%;bottom:2.8%;width:45.5%;height:30%;display:flex;align-items:flex-end;justify-content:center;gap:0;pointer-events:none;filter:drop-shadow(0 6px 5px #020a15af)}
+.actor{position:relative;flex:0 0 16%;height:80%;min-width:0;transform-origin:center bottom;animation:arrive .8s ease-out both;animation-delay:var(--enter,0ms)}
+.actor img{width:100%;height:100%;object-fit:contain;object-position:bottom center;user-select:none;pointer-events:none}
+.actor.lada{height:100%;flex-basis:20%;z-index:3;align-self:flex-end}
+.actor.lada img{position:absolute;inset:0}
+.actor.lada [hidden]{display:none!important}
+.actor.cat{height:78%;z-index:3}
+.actor.rabbit{height:72%;z-index:4}
+.actor.monkey{height:77%;z-index:4}
+.actor.merchant{height:78%;z-index:3}
+.actor.bookseller{height:82%;z-index:4}
+@keyframes arrive{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
+.dust{position:absolute;z-index:2;width:4px;height:4px;border-radius:50%;background:#bedfe7;opacity:.38;box-shadow:0 0 9px #a5deee;pointer-events:none;animation:glimmer var(--time,3s) ease-in-out infinite alternate}
+@keyframes glimmer{from{opacity:.12;transform:scale(.6)}to{opacity:.54;transform:scale(1.2)}}
+@media(max-width:800px){main{padding:5px}.board{border-width:2px}.scene{min-width:730px}.nav{padding:5px 8px}.party{height:29%;left:3%}}
+@media(prefers-reduced-motion:reduce){.fog,.dust,.actor{animation:none}}
+</style>
+</head>
+<body>
+<main>
+<header><a class="nav" href="hades-hypnos.html" aria-label="Вернуться к Гипносу">← Гипнос</a><h1>Святилище Гекаты</h1><a class="nav" href="index.html" aria-label="На карту Тиввига">⌂ Карта</a></header>
+<div class="board" role="region" tabindex="0" aria-label="Призрачное святилище Гекаты, где Лада и друзья встречают трёхликую богиню с книгой сказаний">
+<section class="scene" id="hecateScene">
+<img class="art" src="images/hecate-ghostly-sanctuary.webp" alt="Трёхликая Геката с тремя лунами на короне и закрытой книгой, среди древних колонн, прозрачных призраков и голубого тумана" draggable="false" fetchpriority="high">
+<div class="fog" aria-hidden="true"></div>
+<div class="party" aria-label="Лада и её спутники прибыли к Гекате">
+<div class="actor cat" style="--enter:80ms"><img src="images/blue-cat.webp" alt="Ловкач" draggable="false"></div>
+<div class="actor rabbit" style="--enter:140ms"><img src="images/rabbit-cutout.webp" alt="Сильный заяц" draggable="false"></div>
+<div class="actor lada" id="hecateLada" style="--enter:220ms"><img src="images/lada-cutout.webp" alt="Лада" draggable="false"><img data-outfit-layer hidden alt="" draggable="false"></div>
+<div class="actor monkey" style="--enter:300ms"><img src="images/monkey-cutout.webp" alt="Умняшка" draggable="false"></div>
+<div class="actor merchant" style="--enter:370ms"><img src="images/market-merchant.webp" alt="Зелёный бумажный торговец" draggable="false"></div>
+<div class="actor bookseller" style="--enter:440ms"><img src="images/bookshop-merchant.webp" alt="Фиолетовая бумажная продавщица книг" draggable="false"></div>
+</div>
+</section>
+</div>
+</main>
+<script src="wardrobe.js?v=4" defer></script>
+<script>
+(()=>{'use strict';
+ const scene=document.getElementById('hecateScene');
+ const dress=()=>window.TivvigWardrobe?.equip(document.getElementById('hecateLada'));
+ for(let i=0;i<15;i++){
+   const dot=document.createElement('i');dot.className='dust';
+   dot.style.left=((17+i*31)%98)+'%';dot.style.top=((24+i*19)%88)+'%';
+   dot.style.setProperty('--time',(2.9+i%4*.66)+'s');dot.style.animationDelay=(-i*.3)+'s';
+   scene.appendChild(dot);
+ }
+ window.addEventListener('tivvig-outfit-changed',dress);
+ window.addEventListener('tivvig-inventory-changed',dress);
+ window.addEventListener('pageshow',dress);
+ dress();
+})();
+</script>
+<script src="game-runtime.js?v=5" defer></script>
+</body>
+</html>
