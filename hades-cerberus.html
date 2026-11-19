@@ -54,6 +54,32 @@ button,a{font:inherit}button{cursor:pointer}button:focus-visible,a:focus-visible
 .math-route{position:absolute;z-index:4;left:0;top:0;width:1px;height:1px;border:0;opacity:0;pointer-events:none}
 .math-question{font:bold 22px Georgia,serif;color:#d0f8f6;align-self:center}
 
+/* Suspicious right head: four keys, one correct. */
+.scene[data-state="suspicious"] .art-clever{opacity:1}
+.scene[data-state="suspicious"] .bark{left:2%;top:4%;max-width:43%;border-color:#e5c992}
+.scene[data-state="suspicious"] .bone-pad{opacity:0}
+.key-option{position:absolute;z-index:9;width:14%;height:9%;min-height:52px;border:0;background:transparent;cursor:pointer;filter:drop-shadow(0 4px 8px #110d12aa)}
+.key-option:hover,.key-option:focus-visible{transform:scale(1.05);filter:drop-shadow(0 0 10px #ffe18d)}
+.key-head,.key-shaft,.key-teeth,.key-star{position:absolute;display:block}
+.key-head{left:0;top:14%;width:32%;height:72%;border:4px solid #9b6e32;background:linear-gradient(#ffd58d,#dca45d)}
+.key-head.round{border-radius:50%}
+.key-head.square{border-radius:12%}
+.key-head.diamond{width:26%;height:56%;left:3%;top:22%;transform:rotate(45deg);border-radius:8%}
+.key-shaft{left:24%;top:40%;width:58%;height:18%;border-radius:10px;background:linear-gradient(#ffd58d,#dca45d);border:3px solid #9b6e32}
+.key-teeth{right:0;top:39%;width:20%;height:23%}
+.key-teeth::before,.key-teeth::after{content:'';position:absolute;right:0;background:#dca45d;border:3px solid #9b6e32;border-left:none;width:58%;height:92%}
+.key-teeth::before{top:-55%}.key-teeth::after{top:52%}
+.key-star{left:7%;top:-4%;font-size:22px;color:#ffef93;text-shadow:0 0 7px #fff0ab}
+.key-option[data-key='0']{left:39%;top:73%}.key-option[data-key='1']{left:54%;top:71%}.key-option[data-key='2']{left:69%;top:74%}.key-option[data-key='3']{left:84%;top:72%}
+.key-option.long .key-shaft{width:64%}.key-option.short .key-shaft{width:45%}.key-option.medium .key-shaft{width:55%}
+.scene[data-bite='1']{animation:cerb-bite .28s linear 0s 3}
+.scene[data-bite='1']::after{content:'ЩЁЛК!';position:absolute;left:58%;top:24%;z-index:20;color:#ffd7d7;background:#4b0d14d9;border:2px solid #ff9a7c;border-radius:14px;padding:8px 14px;font:bold clamp(22px,2.7vw,36px)/1 Georgia,serif;box-shadow:0 0 18px #000a}
+@keyframes cerb-bite{0%,100%{transform:translateX(0)}25%{transform:translateX(-10px)}75%{transform:translateX(10px)}}
+.bite-vortex{position:absolute;left:0;top:35%;width:39%;height:64%;z-index:20;display:flex;align-items:center;justify-content:center;background:radial-gradient(ellipse at 45% 75%,#0b111df5 14%,#171720f0 44%,#161e25cc 62%,transparent 78%);color:#ffe2b7;text-shadow:0 0 12px #000;font:bold clamp(26px,4vw,60px) Georgia,serif;opacity:0;pointer-events:none}
+.scene[data-bite='1'] .bite-vortex{animation:vortex-snap 1.3s ease-in-out forwards}
+@keyframes vortex-snap{0%,12%{opacity:0;transform:scale(.55)}27%,65%{opacity:1;transform:scale(1)}100%{opacity:0;transform:scale(1.2)}}
+@media(prefers-reduced-motion:reduce){.scene[data-bite='1'] .bite-vortex{animation:none;opacity:.75}}
+
 /* In-scene, atmospheric whisper; no external gameplay panel. */
 .bark{position:absolute;z-index:11;left:2%;top:5%;width:max-content;max-width:40%;padding:10px 14px;color:#fff1d6;text-shadow:0 2px 5px #070a11;font-size:clamp(16px,1.65vw,22px);line-height:1.28;text-align:left;pointer-events:none;border-radius:15px 18px 15px 6px;border:1px solid #d9b88655;background:linear-gradient(138deg,#241b20cd,#282b36a8);box-shadow:0 5px 18px #0006, inset 0 0 14px #e6b87c12;backdrop-filter:blur(3px)}
 .scene-progress{display:block;margin-top:5px;color:#d4cab2;font:600 12px/1.3 system-ui,sans-serif;letter-spacing:.025em}
@@ -77,6 +103,7 @@ button,a{font:inherit}button{cursor:pointer}button:focus-visible,a:focus-visible
 
 <div class="bark" aria-live="polite"><span id="cerberusSpeech">Прочитай и брось косточки!</span><small class="scene-progress" id="cerberusProgress">1/4 · 0/8</small></div>
 <div id="boneField" aria-label="Косточки со слогами"></div>
+<div class="bite-vortex" aria-hidden="true">АМ!</div>
 <div class="scene-actions" id="cerberusActions" aria-label="Действия в игре"></div>
 <div hidden aria-hidden="true"><span id="cerberusTitle"></span><span id="cerberusGuide"></span><span id="cerberusTip"></span></div>
 </section></div>
@@ -106,9 +133,10 @@ const PUZZLES=[
  {total:8,a:3,b:2,whoA:'Харон',whoB:'Летучие мыши',labelA:'Харон забрал',labelB:'Мыши унесли',question:'На берегу лежало 8 костей. Три забрал Харон, ещё две унесли летучие мыши. Сколько осталось?',answers:[2,4,3]},
  {total:9,a:2,b:2,whoA:'Умняшка',whoB:'Ловкач',labelA:'Умняшка спрятала',labelB:'Ловкач утащил',question:'На камне лежало 9 костей. Две спрятала Умняшка, ещё две утащил Ловкач. Сколько осталось?',answers:[4,5,6]}
 ];
+const KEYS=[{length:'long',head:'round',star:false},{length:'medium',head:'diamond',star:false,correct:true},{length:'short',head:'square',star:true},{length:'medium',head:'round',star:false}];
 if(new Set(SETS.flat()).size!==32)throw Error('Повторяющиеся слоги');
-const initial=()=>({round:0,eaten:[],done:false,puzzle:0,placed:[],selected:-1,solved:false,finished:false});
-let state=initial(),busy=false,flightTimer=null,settlingTimer=null,changingHeads=false,activeDrag=null,suppressTapId=null;
+const initial=()=>({round:0,eaten:[],done:false,puzzle:0,placed:[],selected:-1,solved:false,finished:false,suspicious:false,keySolved:false});
+let state=initial(),busy=false,flightTimer=null,settlingTimer=null,changingHeads=false,activeDrag=null,suppressTapId=null,biteTimer=null;
 function validate(x){
  if(!x||!Number.isInteger(x.round)||x.round<0||x.round>4)return initial();
  const done=x.round===4||!!x.done;
@@ -118,16 +146,18 @@ function validate(x){
  const unique=[];const seen=new Set();for(const v of placed)if(!seen.has(v.i)){seen.add(v.i);unique.push(v)}
  const counts={a:unique.filter(v=>v.zone==='a').length,b:unique.filter(v=>v.zone==='b').length};
  const correct=counts.a===PUZZLES[puzzle].a&&counts.b===PUZZLES[puzzle].b;
- return {round:done?4:x.round,eaten:done?[]:Array.isArray(x.eaten)?[...new Set(x.eaten.filter(n=>Number.isInteger(n)&&n>=0&&n<8))]:[],done,puzzle,placed:unique,selected:-1,solved:!!x.solved&&correct,finished:!!x.finished&&done};
+ return {round:done?4:x.round,eaten:done?[]:Array.isArray(x.eaten)?[...new Set(x.eaten.filter(n=>Number.isInteger(n)&&n>=0&&n<8))]:[],done,puzzle,placed:unique,selected:-1,solved:!!x.solved&&correct,finished:!!x.finished&&done,suspicious:!!x.suspicious&&done,keySolved:!!x.keySolved&&!!x.suspicious&&done};
 }
 if(!isCoop)try{state=validate(JSON.parse(localStorage.getItem(SAVE)||'null'))}catch{state=initial()}
 function save(){if(!isCoop)try{localStorage.setItem(SAVE,JSON.stringify(state))}catch{}}
 let questionRestoreTimer=null;
 function setStatus(text){speech.textContent=text;}
 function print(){
- const clever=state.done;
- scene.dataset.state=clever?'clever':'playing';
+ scene.dataset.bite='0';
+ const clever=state.done&&!state.suspicious;
+ scene.dataset.state=state.suspicious?'suspicious':clever?'clever':'playing';
  field.replaceChildren();
+ if(state.suspicious){renderSuspicious();return;}
  if(clever){renderClever();return;}
  pageTitle.textContent='Цербер: голодная голова';
  const set=SETS[state.round];
@@ -178,12 +208,12 @@ function renderClever(){
   setStatus('Хр-р… Просыпается Хитрая!');actions.replaceChildren();return;
  }
  if(state.finished){
-  title.textContent='Все три загадки разгаданы!';
-  guide.textContent='Хитрая голова признала, что Лада умеет считать. Она больше не препятствует путешествию!';
-  progress.textContent='3/3 · Победа!';
-  tip.textContent='Следующее испытание будет у третьей головы Цербера.';
-  setStatus('Хм… Лада, ты оказалась хитрее меня!');
-  actions.innerHTML='<button class="action secondary" id="cerberusRestart" type="button">↻ Повторить</button>';
+  title.textContent='Все загадки разгаданы!';
+  guide.textContent='Проснулась правая голова.';
+  progress.textContent='3/3 · Верно';
+  tip.textContent='Впереди четыре ключа.';
+  setStatus('Хм! А с ключами справишься?');
+  actions.innerHTML='<button class="action" type="button" id="cerberusToSuspicious">К ключам →</button>';
   return;
  }
  const p=current(),a=count('a'),b=count('b'),placed=new Set(state.placed.map(x=>x.i));
@@ -220,29 +250,54 @@ function renderClever(){
   actions.innerHTML='<button class="action secondary" type="button" data-zone="a" id="cerberus-place-a">'+p.labelA+'</button><button class="action secondary" type="button" data-zone="b" id="cerberus-place-b">'+p.labelB+'</button>'+undo;
  }
 }
+function renderSuspicious(){
+ pageTitle.textContent='Цербер: подозрительная голова';
+ title.textContent=state.keySolved?'Ключ найден!':'Подозрительная голова';
+ guide.textContent=state.keySolved?'Верно. Этот ключ подходит к воротам.':'Выбери правильный ключ.';
+ progress.textContent=state.keySolved?'1 / 1':'4 ключа';
+ tip.textContent=state.keySolved?'Подозрительная голова больше не мешает.':'Подсказки короткие: не самый длинный, не круглая головка, без звезды.';
+ setStatus(state.keySolved?'Правильно. Этот ключ откроет ворота!':'Не самый длинный. Головка не круглая. Без звезды.');
+ 
+ KEYS.forEach((k,i)=>{
+   const btn=document.createElement('button'); btn.type='button'; btn.className='key-option '+k.length; btn.dataset.key=String(i); btn.id='cerberus-key-'+i;
+   btn.setAttribute('aria-label','Ключ '+(i+1));
+   btn.innerHTML='<span class="key-head '+k.head+'"></span><span class="key-shaft"></span><span class="key-teeth"></span>'+(k.star?'<span class="key-star">★</span>':'');
+   if(state.keySolved) btn.disabled=true;
+   field.appendChild(btn);
+ });
+ actions.innerHTML=state.keySolved?'<button class="action secondary" id="cerberusRestart" type="button">↻ Сначала</button>':'';
+}
+function chooseKey(i){
+ if(!state.suspicious||state.keySolved||busy)return;
+ const key=KEYS[i]; if(!key)return;
+ if(key.correct){ state.keySolved=true; save(); print(); return; }
+ busy=true; scene.dataset.bite='1'; setStatus('ЩЁЛК! Цербер проглотил малышей!');
+ clearTimeout(biteTimer); biteTimer=setTimeout(()=>{ busy=false; scene.dataset.bite='0'; print(); }, 1300);
+}
+
 function selectBone(i){
- if(!state.done||changingHeads||state.finished||state.solved||i<0||i>=current().total||state.placed.some(x=>x.i===i))return;
+ if(!state.done||state.suspicious||changingHeads||state.finished||state.solved||i<0||i>=current().total||state.placed.some(x=>x.i===i))return;
  state.selected=i;save();renderSelection();
 }
 function renderSelection(){
  field.querySelectorAll('.math-bone').forEach(b=>b.classList.toggle('selected',Number(b.dataset.mathBone)===state.selected));
 }
 function placeBone(i,zone){
- const p=current();if(!state.done||changingHeads||state.finished||state.solved||!(zone==='a'||zone==='b')||i<0||i>=p.total)return;
+ const p=current();if(!state.done||state.suspicious||changingHeads||state.finished||state.solved||!(zone==='a'||zone==='b')||i<0||i>=p.total)return;
  if(state.placed.some(x=>x.i===i)||count(zone)>=p[zone])return;
  state.placed.push({i,zone});state.selected=-1;save();print();
 }
 function undoMath(){
- if(!state.done||changingHeads||state.finished||state.solved||!state.placed.length)return;
+ if(!state.done||state.suspicious||changingHeads||state.finished||state.solved||!state.placed.length)return;
  state.placed.pop();state.selected=-1;save();print();
 }
 function advanceMath(){
- if(!state.done||!state.solved||state.finished)return;
+ if(!state.done||state.suspicious||!state.solved||state.finished)return;
  if(state.puzzle===2){state.finished=true;}else{state.puzzle++;state.placed=[];state.selected=-1;state.solved=false;}
  save();print();
 }
 function answerMath(n){
- const p=current();if(!state.done||changingHeads||state.finished||state.solved||count('a')!==p.a||count('b')!==p.b)return;
+ const p=current();if(!state.done||state.suspicious||changingHeads||state.finished||state.solved||count('a')!==p.a||count('b')!==p.b)return;
  if(n===p.total-p.a-p.b){state.solved=true;save();print();}
  else{
   setStatus('Попробуй ещё раз!');
@@ -255,12 +310,14 @@ field.addEventListener('click',e=>{
  const b=e.target.closest('button');if(!b)return;
  if(b.dataset.slot!==undefined){throwBone(Number(b.dataset.slot));return;}
  if(b.dataset.routeBone!==undefined){placeBone(Number(b.dataset.routeBone),b.dataset.routeZone);return;}
+ if(b.dataset.key!==undefined){chooseKey(Number(b.dataset.key));return;}
  if(b.dataset.mathBone!==undefined){selectBone(Number(b.dataset.mathBone));return;}
  if(b.dataset.zone&&state.selected>=0){placeBone(state.selected,b.dataset.zone);return;}
 });
 actions.addEventListener('click',e=>{
  const b=e.target.closest('button');if(!b)return;
- if(b.id==='cerberusRestart'){clearTimeout(flightTimer);clearTimeout(settlingTimer);busy=false;changingHeads=false;state=initial();save();print();return;}
+ if(b.id==='cerberusRestart'){clearTimeout(flightTimer);clearTimeout(settlingTimer);clearTimeout(biteTimer);busy=false;changingHeads=false;state=initial();save();print();return;}
+ if(b.id==='cerberusToSuspicious'){state.suspicious=true;save();print();return;}
  if(b.id==='cerberusMathNext'){advanceMath();return;}
  if(b.id==='cerberusUndo'){undoMath();return;}
  if(b.dataset.answer!==undefined){answerMath(Number(b.dataset.answer));return;}
@@ -269,7 +326,7 @@ actions.addEventListener('click',e=>{
 // Pointer drag is local input; a co-op drag is converted to a deterministic remote click.
 // Tapping the bone and a destination remains available for keyboard and all touch devices.
 field.addEventListener('pointerdown',e=>{
- const b=e.target.closest('.math-bone');if(!b||e.button!==0||!state.done||changingHeads||state.solved)return;
+ const b=e.target.closest('.math-bone');if(!b||e.button!==0||!state.done||state.suspicious||changingHeads||state.solved)return;
  activeDrag={id:Number(b.dataset.mathBone),pointer:e.pointerId,x:e.clientX,y:e.clientY,moved:false,el:b};
  try{b.setPointerCapture(e.pointerId)}catch{}
 });
@@ -299,7 +356,7 @@ document.addEventListener('click',e=>{
  const bone=e.target.closest('.math-bone');if(bone&&Number(bone.dataset.mathBone)===suppressTapId){e.preventDefault();e.stopImmediatePropagation();}
  suppressTapId=null;
 },true);
-window.TivvigCerberusDebug=Object.freeze({state:()=>JSON.parse(JSON.stringify({...state,busy,changingHeads})),totalSyllables:SETS.flat(),reset:()=>{clearTimeout(flightTimer);clearTimeout(settlingTimer);busy=false;changingHeads=false;state=initial();save();print()},throwBone,placeBone,answerMath,advanceMath,skipToClever:()=>{clearTimeout(flightTimer);busy=false;changingHeads=false;state={...initial(),round:4,done:true};save();print();}});
+window.TivvigCerberusDebug=Object.freeze({state:()=>JSON.parse(JSON.stringify({...state,busy,changingHeads})),totalSyllables:SETS.flat(),reset:()=>{clearTimeout(flightTimer);clearTimeout(settlingTimer);clearTimeout(biteTimer);busy=false;changingHeads=false;scene.dataset.bite='0';state=initial();save();print()},throwBone,placeBone,answerMath,advanceMath,chooseKey,skipToClever:()=>{clearTimeout(flightTimer);busy=false;changingHeads=false;state={...initial(),round:4,done:true};save();print();},skipToKeys:()=>{state={...initial(),round:4,done:true,finished:true,suspicious:true};save();print();}});
 print();
 })();
 </script>
