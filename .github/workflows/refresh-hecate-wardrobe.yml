@@ -1,0 +1,40 @@
+name: Refresh shared wardrobe links
+on:
+  push:
+    paths: ['.github/workflows/refresh-hecate-wardrobe.yml']
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  wardrobe-refresh:
+    runs-on: ubuntu-latest
+    timeout-minutes: 4
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: true
+      - name: Refresh wardrobe cache on every game page
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          import re
+          n=0
+          for f in Path('.').rglob('*.html'):
+            if f.is_relative_to('.git'):continue
+            before=f.read_text('utf-8')
+            after=re.sub(r'wardrobe\.js\?v=\d+','wardrobe.js?v=5',before)
+            if before!=after:
+              f.write_text(after,'utf-8')
+              print('REFRESHED',f)
+              n+=1
+          print('UPDATED_PAGES',n)
+          PY
+      - name: Publish shared wardrobe cache refresh
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -- '*.html'
+          if ! git diff --cached --quiet; then
+            git commit -m "Refresh shared wardrobe in all adventure scenes for Hecate costume"
+            git push
+          fi
