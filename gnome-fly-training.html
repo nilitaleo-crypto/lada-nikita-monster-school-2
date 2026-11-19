@@ -14,7 +14,7 @@
 .scene-scroll{overflow-x:auto;overscroll-behavior-x:contain;scrollbar-color:#ca9c60 #365241;box-shadow:0 13px 36px #0c1c12a4;border:5px ridge #c69b61;border-radius:14px}
 .scene{position:relative;width:100%;min-width:920px;aspect-ratio:1672/941;isolation:isolate;overflow:hidden;background:#62814e}
 .scenery{display:block;width:100%;height:100%;object-fit:cover;user-select:none;-webkit-user-drag:none;pointer-events:none}
-.board{position:absolute;z-index:3;left:5.6%;top:12%;width:51.7%;height:62%;display:flex;flex-direction:column;gap:5px;color:var(--ink);overflow-y:auto;scrollbar-width:thin;overscroll-behavior:contain;padding:0 clamp(5px,1.1vw,14px) 3px;text-align:center}
+.board{position:absolute;z-index:3;left:5.6%;top:15.1%;width:51.7%;height:58.9%;display:flex;flex-direction:column;gap:5px;color:var(--ink);overflow-y:auto;scrollbar-width:thin;overscroll-behavior:contain;padding:0 clamp(5px,1.1vw,14px) 3px;text-align:center}
 .board-header{flex:0 0 auto;display:flex;align-items:center;justify-content:center;flex-wrap:wrap;gap:4px 12px;border-bottom:1px dotted #a37b4b;padding-bottom:4px}
 .board-title{font:normal clamp(17px,2vw,28px)/1.1 Georgia,serif;color:#573b24;margin:0}.progress{color:#866035;font-size:clamp(11px,1.1vw,16px);font-weight:bold;white-space:nowrap}
 .training{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:clamp(4px,.7vw,10px);flex:1 1 auto;min-height:0}
@@ -53,7 +53,7 @@
 .stage-marker{background:#294638;border:1px solid #c5a06b;border-radius:30px;padding:4px 10px;font-size:clamp(11px,1.08vw,16px);color:#ead8b5}.stage-marker.current{background:#ffe3a6;color:#573d28;font-weight:bold}.stage-marker.done{background:#547c54;color:#f6f0d5}
 .backbar{display:flex;justify-content:center;padding-top:7px}.backbar a{color:#e4d19f;text-decoration:none;font-size:14px}
 #gameConnection{font-size:13px;text-align:center;color:#ffe2ad}
-@media(max-width:850px){.scene{min-width:1060px}.board{left:5.3%;top:11.9%;height:62.2%;width:51.9%;padding:0 6px}.board-title{font-size:22px}.progress{font-size:12px}.prompt{font-size:17px}.small{font-size:13px}.poem{font-size:21px}.poem-small{font-size:17px}.example-title{font-size:21px}.example-instructions{font-size:16px}.btn{font-size:17px}.supplies .supply-name{font-size:11px}.supply{padding:2px}.supply .art{width:100%}}
+@media(max-width:850px){.scene{min-width:1060px}.board{left:5.3%;top:15.1%;height:58.8%;width:51.9%;padding:0 6px}.board-title{font-size:22px}.progress{font-size:12px}.prompt{font-size:17px}.small{font-size:13px}.poem{font-size:21px}.poem-small{font-size:17px}.example-title{font-size:21px}.example-instructions{font-size:16px}.btn{font-size:17px}.supplies .supply-name{font-size:11px}.supply{padding:2px}.supply .art{width:100%}}
 @media(max-height:620px){.head{margin-bottom:4px}.head h1{font-size:24px}.board{gap:2px}.board-buttons{padding:0}.btn{min-height:36px;padding:5px 11px}.poem{line-height:1.13}.training{gap:3px}.note{min-height:13px}}
 @media(prefers-reduced-motion:reduce){*{animation:none!important;scroll-behavior:auto!important}}
 </style></head>
@@ -177,12 +177,12 @@ function draw(){
  if(stage===4&&window.innerWidth<=850&&selected!==null){const v=$('viewport');v.scrollLeft=v.scrollWidth-v.clientWidth;}
 }
 function stepForward(){if(!ready||done||stage>=4)return;stage++;ready=false;setStatus('');pageBoard();draw();}
-function complete(){if(done)return;done=true;try{localStorage.setItem(store,JSON.stringify({completed:true,words:allies.map(a=>a.name),supplies:supplies.map(s=>s.name)}));localStorage.setItem(reward,'unlocked')}catch{}
+function complete(){if(done)return;done=true;if(window.innerWidth<=850)$('viewport').scrollLeft=0;try{localStorage.setItem(store,JSON.stringify({completed:true,words:allies.map(a=>a.name),supplies:supplies.map(s=>s.name)}));localStorage.setItem(reward,'unlocked')}catch{}
  const grant=()=>{try{if(window.TivvigRegistry?.byReward?.[reward])window.TivvigRegistry.unlockReward(reward)}catch(err){console.warn('Fly training reward',err)}};
  if(window.TivvigRegistry?.byReward?.[reward])grant();else window.addEventListener('tivvig:registry-ready',grant,{once:true});
  setStatus('Ура! Все пять тренировок выполнены.');draw();}
 function takeSupply(i){if(stage!==4||done||collected.has(i))return;selected=i;draw()}
-function dropSupply(i){if(stage!==4||done||collected.has(i))return;collected.add(i);selected=null;setStatus('Спрятали: '+supplies[i].name);if(collected.size===supplies.length){complete();return;}draw();}
+function dropSupply(i){if(stage!==4||done||collected.has(i))return;collected.add(i);selected=null;setStatus('Спрятали: '+supplies[i].name);if(collected.size===supplies.length){complete();return;}draw();if(window.innerWidth<=850)$('viewport').scrollLeft=0;}
 function wellDrop(){if(stage!==4||done||selected===null)return;dropSupply(selected)}
 function restart(){stage=0;repeats=0;poemDone=false;sound=0;handsStep=0;ally=0;selected=null;collected=new Set();ready=false;done=false;setStatus('');$('viewport').scrollLeft=0;draw();}
 function setupCards(){for(let i=0;i<supplies.length;i++){
