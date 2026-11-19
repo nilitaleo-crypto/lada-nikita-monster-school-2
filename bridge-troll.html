@@ -70,6 +70,7 @@ main{max-width:1480px;margin:auto;padding:0 clamp(7px,1.6vw,22px) 24px}
 #gameConnection{font-size:13px;text-align:center;color:#fbdca7;min-height:20px}
 @media(max-width:750px){.top{justify-content:center}.top h1{width:100%}.scene-scroll{border-width:4px}.scene{min-width:700px}.options{grid-template-columns:1fr}.options button{min-height:50px}.hero--lada{left:-1%}.hud{justify-content:center}.board{padding:12px}.speech{font-size:17px}}
 @media(prefers-reduced-motion:reduce){.scene.thump .scene-bg,.scene.thump .damage{animation:none}.scene.thump .club{animation:swing 1000ms step-end}.options button{transition:none}}
+.bridge-lada-doll img{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;pointer-events:none}.bridge-lada-doll [data-outfit-layer][hidden],.bridge-lada-doll [data-outfit-face][hidden]{display:none}
 </style>
 </head>
 <body>
@@ -78,7 +79,7 @@ main{max-width:1480px;margin:auto;padding:0 clamp(7px,1.6vw,22px) 24px}
 <div class="scene-scroll" role="region" tabindex="0" aria-label="Иллюстрация моста, на телефоне можно прокручивать вбок">
 <section class="scene" id="bridgeScene" data-hits="0" aria-label="Лада, ловкий синий кот и Умняшка возле моста тролля">
 <img class="scene-bg" src="images/troll-bridge-day.webp?v=1" width="1448" height="1086" alt="Деревянный мост с разноцветными бусинами, быстрая река, гномья деревня за холмами и сердитый тролль с дубиной" draggable="false" fetchpriority="high">
-<img class="hero hero--lada" src="images/lada-cutout.webp" alt="Лада" draggable="false">
+<div class="hero hero--lada bridge-lada-doll" id="bridgeLadaDoll"><img src="images/lada-cutout.webp" alt="Лада" draggable="false"><img data-outfit-layer alt="" draggable="false" hidden></div>
 <img class="hero hero--cat" src="images/blue-cat.webp" alt="Ловкач — синий кот" draggable="false">
 <img class="hero hero--monkey" src="images/monkey-cutout.webp" alt="Умняшка — обезьяна" draggable="false">
 <svg class="damage" viewBox="0 0 1448 1086" preserveAspectRatio="none" aria-hidden="true">
@@ -165,6 +166,16 @@ render();
 window.TivvigBridgeDebug=Object.freeze({state:()=>({index,hits,phase,busy}),riddles:riddles.map(r=>({q:r.q,answers:[...r.a],correct:r.correct})),restart});
 })();
 </script>
-<script src="game-runtime.js?v=1" defer></script>
+<script src="wardrobe.js?v=4" defer></script>
+<script>
+window.addEventListener('DOMContentLoaded',()=>{
+ const equip=()=>window.TivvigWardrobe?.equip(document.getElementById('bridgeLadaDoll'));
+ window.addEventListener('tivvig-inventory-changed',equip);
+ window.addEventListener('tivvig-outfit-changed',equip);
+ window.addEventListener('pageshow',equip);
+ equip();
+});
+</script>
+<script src="game-runtime.js?v=4" defer></script>
 </body>
 </html>
