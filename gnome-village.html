@@ -41,7 +41,7 @@ button:focus-visible,a:focus-visible{outline:3px solid #fff29b;outline-offset:3p
 @media(max-width:720px){.top{justify-content:center;text-align:center}.top h1{width:100%}.stage{min-width:730px}.info{grid-template-columns:1fr}.info .tag{justify-self:start}.hotspot span{font-size:26px}.info p{font-size:16px}.scroll-scene{border-width:4px}}
 @media(prefers-reduced-motion:reduce){.hotspot{transition:none}}
 </style>
-<link rel="stylesheet" href="night-defense.css?v=1">
+<link rel="stylesheet" href="night-defense.css?v=2">
 </head>
 <body>
 <header class="top">
@@ -76,15 +76,14 @@ button:focus-visible,a:focus-visible{outline:3px solid #fff29b;outline-offset:3p
 <p id="gameConnection" aria-live="polite"></p>
 </main>
 <section id="nightDefense" hidden aria-label="Ночная оборона деревни гномов">
- <header class="nd-top"><button id="nd-leave" class="nd-exit" type="button">← Деревня</button><h2 id="nd-stage-name">🌙 Ночная оборона</h2><div id="nd-progress" class="nd-progress" aria-label="Пять этапов"></div></header>
- <div class="nd-scroll" id="nd-scroll" role="region" tabindex="0" aria-label="Ночная битва: на небольшом экране можно прокручивать поле вправо">
+ <header class="nd-top"><button id="nd-leave" class="nd-exit" type="button">← Деревня</button><h2 id="nd-stage-name">🌙 Ночная оборона</h2><div id="nd-progress" class="nd-progress" aria-label="Четыре этапа"></div></header>
+ <div class="nd-scroll" id="nd-scroll" role="region" tabindex="0" aria-label="Ночная оборона: на небольшом экране можно прокручивать поле вправо">
   <div class="nd-scene" id="nd-scene" data-phase="0">
-   <div class="nd-background" role="img" aria-label="Ночная деревня гномов: луна, лес, ворота и колодец"></div>
+   <div class="nd-background" role="img" aria-label="Ночная деревня гномов: ворота, колодец и лес"></div>
    <div class="nd-vignette" aria-hidden="true"></div>
    <div class="nd-weather" aria-hidden="true"></div>
-   <div class="nd-party" aria-hidden="true"><img src="images/lada-cutout.webp" class="nd-lada" alt="" draggable="false"><div class="nd-gnomes"><span class="nd-gnome"><img src="images/gnome-bantik.webp" alt=""></span><span class="nd-gnome"><img src="images/gnome-kubik.webp" alt=""></span><span class="nd-gnome"><img src="images/gnome-dolka.webp" alt=""></span><span class="nd-gnome"><img src="images/gnome-luchik.webp" alt=""></span></div></div>
-   <div class="nd-alert" id="nd-alert">Тревога!</div><div class="nd-info" id="nd-info">Найди следы</div>
-   <div class="nd-targets" id="nd-targets"></div>
+   <div class="nd-party" aria-hidden="true"><img src="images/lada-cutout.webp" class="nd-lada" alt=""><div class="nd-gnomes"><span class="nd-gnome"><img src="images/gnome-bantik.webp" alt=""></span><span class="nd-gnome"><img src="images/gnome-kubik.webp" alt=""></span><span class="nd-gnome"><img src="images/gnome-dolka.webp" alt=""></span><span class="nd-gnome"><img src="images/gnome-luchik.webp" alt=""></span></div></div>
+   <div class="nd-hammer" aria-hidden="true"><svg viewBox="0 0 130 180"><defs><linearGradient id="hammerMetal" x1="0" x2="1"><stop stop-color="#8e969e"/><stop offset=".48" stop-color="#e6f0f0"/><stop offset="1" stop-color="#4b6475"/></linearGradient></defs><path d="M58 79h15v92H58z" fill="#6d4b32" stroke="#eed18e" stroke-width="4"/><path d="M23 13h84v65H23z" fill="url(#hammerMetal)" stroke="#d6b36e" stroke-width="7" rx="8"/><path d="M40 26h50M40 62h50M65 26v35" fill="none" stroke="#c69c52" stroke-width="5"/><path d="M44 102h41M44 126h41M44 150h41" stroke="#b89458" stroke-width="4"/></svg></div><div class="nd-alert" id="nd-alert">Снежный человек!</div><div class="nd-info" id="nd-info">Прочитай слово и выбери Р или Л</div>
    <div class="nd-board" id="nd-board" aria-label="Задание"></div>
   </div>
  </div>
@@ -117,7 +116,7 @@ try{
 window.TivvigGnomeVillageDebug=Object.freeze({places:Object.keys(places),art:"images/gnome-village-full.webp"});
 })();
 </script>
-<script src="night-defense.js?v=1" defer></script>
+<script src="night-defense.js?v=2" defer></script>
 <script src="game-runtime.js?v=1" defer></script>
 </body>
 </html>
