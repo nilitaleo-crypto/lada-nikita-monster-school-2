@@ -28,7 +28,18 @@ main{max-width:1510px;margin:auto;padding:10px clamp(10px,2.5vw,28px) 24px}
 .portal-core{transform-origin:73% 42%;animation:portal-pulse 4s ease-in-out infinite}
 .gate-eye{transform-origin:center;animation:eyes 5.5s ease-in-out infinite}
 .gate-mouth{transition:opacity 1s,filter 1s}
-.stage[data-step="inside"] .portal-core{animation:portal-pulse .85s ease-in-out infinite;filter:brightness(1.55)}
+.stage[data-step="opening"] .portal-core,.stage[data-step="inside"] .portal-core{animation:portal-pulse 1.05s ease-in-out infinite;filter:brightness(2.1) drop-shadow(0 0 28px #48faee)}
+.hades-door-left,.hades-door-right{transform-box:fill-box;transition:transform 2.45s cubic-bezier(.2,.72,.18,1);filter:drop-shadow(3px 3px 9px #000d);pointer-events:none}
+.hades-door-left{transform-origin:0% 50%}
+.hades-door-right{transform-origin:100% 50%}
+.stage[data-step="opening"] .hades-door-left,.stage[data-step="inside"] .hades-door-left{transform:translate(-240px,12px) rotate(-8deg)}
+.stage[data-step="opening"] .hades-door-right,.stage[data-step="inside"] .hades-door-right{transform:translate(240px,12px) rotate(8deg)}
+.stage[data-step="opening"] svg.landscape{animation:hades-camera 2.65s ease-in-out forwards}
+.stage[data-step="opening"] .hero,.stage[data-step="opening"] .lada-doll{transition:transform 2.4s ease-in;transform:translate(18px,-32px) scale(.92)}
+.stage[data-step="inside"] .hero,.stage[data-step="inside"] .lada-doll{transform:translate(18px,-32px) scale(.92)}
+.stage[data-step="opening"] .gate-eye{filter:drop-shadow(0 0 13px #bdf7ff)}
+.stage[data-step="opening"] .hades-seam,.stage[data-step="inside"] .hades-seam{opacity:0;transition:opacity .12s}
+@keyframes hades-camera{to{transform:scale(1.035);transform-origin:72% 42%}}
 .stage[data-step="inside"] .gate-mouth{filter:brightness(1.5)}
 .hero{position:absolute;z-index:4;object-fit:contain;filter:drop-shadow(3px 10px 5px #0009);pointer-events:none;user-select:none}
 .hero-cat{width:12%;height:21%;left:27%;bottom:15%}
@@ -41,11 +52,13 @@ main{max-width:1510px;margin:auto;padding:10px clamp(10px,2.5vw,28px) 24px}
 .gate-status span{display:inline-block;border-radius:12px;padding:8px 13px;background:#11243cab;border:1px solid #7bdce9a8}
 .mist{position:absolute;inset:0;z-index:2;pointer-events:none;background:radial-gradient(ellipse at 73% 42%,transparent 20%,#4ac6c318 45%,transparent 70%);animation:mist 5s alternate ease-in-out infinite}
 .entry-glow{position:absolute;z-index:6;inset:0;pointer-events:none;opacity:0;transition:opacity 900ms;background:radial-gradient(ellipse at 72% 42%,#61fffacc,#0d4264c9 24%,#050f20e9 71%)}
-.stage[data-step="inside"] .entry-glow{opacity:1}
+.stage[data-step="inside"] .entry-glow{animation:hades-enter-glow 1.3s ease-in-out forwards}
+@keyframes hades-enter-glow{0%{opacity:0}100%{opacity:1}}
 .inside-caption{position:absolute;z-index:7;inset:14% 10% 13%;display:none;flex-direction:column;align-items:center;justify-content:center;gap:12px;text-align:center;color:#e7f8ed;text-shadow:0 3px 12px #00161b}
 .inside-caption strong{font-size:clamp(25px,4vw,52px);font-weight:normal}
 .inside-caption small{font-size:clamp(14px,1.6vw,23px);color:#d2e8e5;max-width:700px}
-.stage[data-step="inside"] .inside-caption{display:flex}
+.stage[data-step="inside"] .inside-caption{display:flex;animation:hades-show-caption 1.4s ease forwards}
+@keyframes hades-show-caption{0%,25%{opacity:0;transform:scale(.96)}100%{opacity:1;transform:scale(1)}}
 .controls{position:relative;z-index:9;display:flex;flex-direction:column;gap:7px;align-items:center;margin:12px auto 0;padding:16px 14px;min-height:132px;max-width:1160px;text-align:center;border:2px solid #a48556;border-radius:14px;background:linear-gradient(155deg,#2b3545,#141d30 70%);box-shadow:0 6px 18px #05091466}
 .controls h2{margin:0;font-size:clamp(20px,2.4vw,31px);font-weight:normal;color:var(--gold)}
 .controls p{font-size:clamp(16px,1.8vw,22px);line-height:1.36;margin:0}
@@ -54,6 +67,8 @@ main{max-width:1510px;margin:auto;padding:10px clamp(10px,2.5vw,28px) 24px}
 .action{min-height:50px;min-width:190px;padding:10px 19px;border:2px solid #c29a63;border-radius:11px;color:#1b2636;background:linear-gradient(#f8e4ad,#dab874);font-size:clamp(17px,1.7vw,22px);font-weight:bold}
 .action.secondary{background:#263a53;color:#f5ebcf}
 .action:active{transform:translateY(2px)}
+.opening-message{display:inline-block;padding:11px 14px;color:#9bfcf5;font-size:clamp(18px,2vw,25px);text-shadow:0 0 11px #17adca;animation:hades-message-pulse .9s ease-in-out infinite alternate}
+@keyframes hades-message-pulse{to{opacity:.68}}
 .help{margin:8px auto 0;color:#bed5db;font:13px/1.4 system-ui,sans-serif;text-align:center;max-width:900px}
 [hidden]{display:none!important}
 @keyframes portal-pulse{50%{opacity:.86;transform:scale(1.02)}}
@@ -112,6 +127,24 @@ main{max-width:1510px;margin:auto;padding:10px clamp(10px,2.5vw,28px) 24px}
 <path class="flame" d="M-183 88Q-262 -35 -200 -103Q-134 -10 -106 -143Q-93 -69 -73 56Z" fill="url(#g-flame)"/>
 <path class="flame" d="M-51 62Q-89 -102 45 -190Q12 -58 96 -128Q151 -47 92 70Z" fill="url(#g-flame)"/>
 <path class="flame" d="M146 88Q200 -34 246 -75Q233 30 287 -13Q276 76 210 121Z" fill="url(#g-flame)"/>
+<!-- Two carved stone doors cover the mouth of the cave. They physically slide apart after the password. -->
+<g class="hades-door-left">
+<path d="M-259 310Q-180 285 -83 287L6 298L6 436Q-133 429 -254 449Q-270 399 -259 310Z" fill="#263e54" stroke="#0c2438" stroke-width="16"/>
+<path d="M-240 324Q-122 306 -6 314L-6 424Q-129 410 -239 433Z" fill="#344f68" stroke="#678da1" stroke-width="5"/>
+<path d="M-235 340Q-159 319 -60 332M-205 401Q-115 377 -39 392" fill="none" stroke="#658398" stroke-width="8" opacity=".55"/>
+<path d="M-138 306L-135 422" stroke="#132c43" stroke-width="12" opacity=".7"/>
+<circle cx="-190" cy="357" r="7" fill="#a9d1d1"/><circle cx="-191" cy="402" r="7" fill="#a9d1d1"/>
+<path d="M-29 315L-29 415" stroke="#7bcbcb" stroke-width="6" opacity=".7"/>
+</g>
+<g class="hades-door-right">
+<path d="M9 298Q116 282 215 303Q257 308 274 327L279 449Q144 426 9 436Z" fill="#263e54" stroke="#0c2438" stroke-width="16"/>
+<path d="M22 313Q156 307 250 337L264 429Q150 411 22 424Z" fill="#344f68" stroke="#678da1" stroke-width="5"/>
+<path d="M40 332Q120 317 228 353M41 393Q149 382 242 407" fill="none" stroke="#658398" stroke-width="8" opacity=".55"/>
+<path d="M137 306L145 424" stroke="#132c43" stroke-width="12" opacity=".7"/>
+<circle cx="207" cy="361" r="7" fill="#a9d1d1"/><circle cx="207" cy="405" r="7" fill="#a9d1d1"/>
+<path d="M36 314L36 415" stroke="#7bcbcb" stroke-width="6" opacity=".7"/>
+</g>
+<path d="M6 302L6 437" fill="none" stroke="#83d5dc" stroke-width="3" opacity=".65" class="hades-seam"/>
 </g>
 <g fill="#9ca4a7" stroke="#3d4a55" stroke-width="9">
 <path d="M557 357H599V659H557Z"/><path d="M531 353H628V378H531Z"/><path d="M531 650H633V676H531Z"/>
@@ -164,11 +197,18 @@ const prompt=document.getElementById("passwordPrompt");
 const actions=document.getElementById("gateActions");
 const hint=document.getElementById("gateHint");
 // Each fresh visit starts at the speaking gate. Co-op mirrors actions through the shared room.
-let entered=false;
+let phase="gate";
+let openingTimer=null;
 function outfit(){window.TivvigWardrobe?.equip(document.getElementById("hadesLada"))}
 function draw(){
- stage.dataset.step=entered?"inside":"gate";
- if(entered){
+ stage.dataset.step=phase;
+ if(phase==="opening"){
+   title.textContent="Каменные врата открываются!";
+   words.textContent="«Верно, Лада! Вход в мои владения открыт!»";
+   prompt.hidden=true;
+   hint.textContent="Смотри, как расходятся створки…";
+   actions.innerHTML='<span class="opening-message" role="status">✦ Врата раздвигаются… ✦</span>';
+ }else if(phase==="inside"){
    title.textContent="Врата открылись!";
    words.textContent="«Ты назвала пароль верно. Проходи, Лада, и не бойся темноты!»";
    prompt.hidden=true;
@@ -185,9 +225,18 @@ function draw(){
 }
 
 function onAction(id){
- if(id==="hadesSay"){entered=true;draw();}
- if(id==="hadesRepeat"){entered=false;draw();}
- if(id==="hadesHear"&&"speechSynthesis" in window){
+ if(id==="hadesSay"&&phase==="gate"){
+   phase="opening";
+   draw();
+   clearTimeout(openingTimer);
+   openingTimer=setTimeout(()=>{if(phase==="opening"){phase="inside";draw()}},2850);
+ }
+ if(id==="hadesRepeat"){
+   clearTimeout(openingTimer);
+   phase="gate";
+   draw();
+ }
+ if(id==="hadesHear"&&phase==="gate"&&"speechSynthesis" in window){
    try{window.speechSynthesis.cancel();const speech=new SpeechSynthesisUtterance("Стой, Лада! Назови волшебный пароль, чтобы войти в Царство Аида!");speech.lang="ru-RU";speech.rate=.83;window.speechSynthesis.speak(speech)}catch{}
  }
 }
@@ -195,7 +244,7 @@ actions.addEventListener("click",e=>{const b=e.target.closest("button");if(b)onA
 window.addEventListener("tivvig-inventory-changed",outfit);
 window.addEventListener("tivvig-outfit-changed",outfit);
 window.addEventListener("pageshow",outfit);
-window.TivvigHadesGateDebug=Object.freeze({state:()=>({entered}),open:()=>onAction("hadesSay"),reset:()=>onAction("hadesRepeat")});
+window.TivvigHadesGateDebug=Object.freeze({state:()=>({phase,entered:phase==="inside",opening:phase==="opening"}),open:()=>onAction("hadesSay"),reset:()=>onAction("hadesRepeat")});
 draw();
 })();
 </script>
