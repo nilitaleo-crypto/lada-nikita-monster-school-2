@@ -1,0 +1,206 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#0d1727">
+<meta name="description" content="Врата Царства Аида: Лада и её друзья произносят пароль говорящей пещере.">
+<title>Говорящие врата Царства Аида — Тиввиг</title>
+<style>
+:root{color-scheme:dark;--gold:#e4c186;--cyan:#74e7f0;--ink:#07121c}
+*{box-sizing:border-box}
+html,body{margin:0;min-height:100%;background:#0c1223}
+body{color:#f6ead7;font-family:Georgia,"Times New Roman",serif;background:radial-gradient(ellipse at 50% 0,#24445a,#0b1423 62%,#030915)}
+button,a{font:inherit}button{cursor:pointer}
+button:focus-visible,a:focus-visible{outline:3px solid #ebd584;outline-offset:4px}
+main{max-width:1510px;margin:auto;padding:10px clamp(10px,2.5vw,28px) 24px}
+.top{display:flex;gap:12px;align-items:center;justify-content:space-between;flex-wrap:wrap;padding:4px 0 10px}
+.top h1{margin:0;color:#f3d49a;font-size:clamp(19px,2.6vw,32px);font-weight:normal}
+.back{display:inline-flex;align-items:center;padding:10px 15px;border:1px solid #b69062;border-radius:9px;color:#f8e5b8;background:#263044;text-decoration:none;min-height:44px}
+.legend{font-size:clamp(11px,1vw,14px);color:#c4d6dd}
+.frame-scroll{overflow-x:auto;overflow-y:hidden;border:5px solid #77634d;border-radius:12px;background:#0d2530;overscroll-behavior-x:contain;box-shadow:0 16px 35px #030915b8}
+.stage{position:relative;min-width:775px;width:100%;aspect-ratio:1448/1086;overflow:hidden;isolation:isolate;background:#132635}
+.stage::after{content:"";position:absolute;inset:0;z-index:3;pointer-events:none;background:linear-gradient(to bottom,#0b14224d,transparent 40%,transparent 65%,#000e1488)}
+.stage svg.landscape{position:absolute;inset:0;width:100%;height:100%;display:block;z-index:0}
+.river{filter:drop-shadow(0 0 15px #84ded967)}
+.flame{transform-origin:center;animation:flicker 2.4s ease-in-out infinite}
+.flame:nth-child(2n){animation-delay:-1.1s}
+.portal-core{transform-origin:73% 42%;animation:portal-pulse 4s ease-in-out infinite}
+.gate-eye{transform-origin:center;animation:eyes 5.5s ease-in-out infinite}
+.gate-mouth{transition:opacity 1s,filter 1s}
+.stage[data-step="inside"] .portal-core{animation:portal-pulse .85s ease-in-out infinite;filter:brightness(1.55)}
+.stage[data-step="inside"] .gate-mouth{filter:brightness(1.5)}
+.hero{position:absolute;z-index:4;object-fit:contain;filter:drop-shadow(3px 10px 5px #0009);pointer-events:none;user-select:none}
+.hero-cat{width:12%;height:21%;left:27%;bottom:15%}
+.hero-rabbit{width:11%;height:21%;left:48%;bottom:13%}
+.hero-monkey{width:11%;height:22%;left:59%;bottom:13%}
+.lada-doll{position:absolute;z-index:5;left:37%;bottom:14%;width:15%;height:32%;filter:drop-shadow(4px 11px 5px #000a);pointer-events:none}
+.lada-doll img{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;pointer-events:none}
+.lada-doll [data-outfit-layer][hidden],.lada-doll [data-outfit-face][hidden]{display:none}
+.gate-status{position:absolute;z-index:5;right:4%;top:11%;width:36%;text-align:center;color:#fff4e0;text-shadow:0 2px 8px #010811;letter-spacing:.07em;font-size:clamp(11px,1.4vw,20px);pointer-events:none}
+.gate-status span{display:inline-block;border-radius:12px;padding:8px 13px;background:#11243cab;border:1px solid #7bdce9a8}
+.mist{position:absolute;inset:0;z-index:2;pointer-events:none;background:radial-gradient(ellipse at 73% 42%,transparent 20%,#4ac6c318 45%,transparent 70%);animation:mist 5s alternate ease-in-out infinite}
+.entry-glow{position:absolute;z-index:6;inset:0;pointer-events:none;opacity:0;transition:opacity 900ms;background:radial-gradient(ellipse at 72% 42%,#61fffacc,#0d4264c9 24%,#050f20e9 71%)}
+.stage[data-step="inside"] .entry-glow{opacity:1}
+.inside-caption{position:absolute;z-index:7;inset:14% 10% 13%;display:none;flex-direction:column;align-items:center;justify-content:center;gap:12px;text-align:center;color:#e7f8ed;text-shadow:0 3px 12px #00161b}
+.inside-caption strong{font-size:clamp(25px,4vw,52px);font-weight:normal}
+.inside-caption small{font-size:clamp(14px,1.6vw,23px);color:#d2e8e5;max-width:700px}
+.stage[data-step="inside"] .inside-caption{display:flex}
+.controls{position:relative;z-index:9;display:flex;flex-direction:column;gap:7px;align-items:center;margin:12px auto 0;padding:16px 14px;min-height:132px;max-width:1160px;text-align:center;border:2px solid #a48556;border-radius:14px;background:linear-gradient(155deg,#2b3545,#141d30 70%);box-shadow:0 6px 18px #05091466}
+.controls h2{margin:0;font-size:clamp(20px,2.4vw,31px);font-weight:normal;color:var(--gold)}
+.controls p{font-size:clamp(16px,1.8vw,22px);line-height:1.36;margin:0}
+.password{color:#b5fbfa;font-weight:bold;letter-spacing:.04em}
+.action-row{display:flex;flex-wrap:wrap;gap:10px;justify-content:center;margin:8px auto 0}
+.action{min-height:50px;min-width:190px;padding:10px 19px;border:2px solid #c29a63;border-radius:11px;color:#1b2636;background:linear-gradient(#f8e4ad,#dab874);font-size:clamp(17px,1.7vw,22px);font-weight:bold}
+.action.secondary{background:#263a53;color:#f5ebcf}
+.action:active{transform:translateY(2px)}
+.help{margin:8px auto 0;color:#bed5db;font:13px/1.4 system-ui,sans-serif;text-align:center;max-width:900px}
+[hidden]{display:none!important}
+@keyframes portal-pulse{50%{opacity:.86;transform:scale(1.02)}}
+@keyframes flicker{50%{opacity:.64;transform:scaleY(.91) rotate(2deg)}}
+@keyframes eyes{50%{filter:drop-shadow(0 0 11px #7bebff)}}
+@keyframes mist{50%{opacity:.5;transform:translateX(-1%)}}
+@media(max-width:800px){main{padding:8px 8px 25px}.top{justify-content:center}.top h1{order:-1;width:100%;text-align:center}.stage{min-width:775px}.controls{padding:13px}.action{width:100%}.help{padding:0 6px}}
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important}}
+</style>
+</head>
+<body>
+<main>
+<header class="top"><a class="back" href="index.html">← Атлас Тиввига</a><h1>Врата Царства Аида</h1><span class="legend">✦ Последняя экспедиция недели ✦</span></header>
+<div class="frame-scroll" id="hadesViewport" tabindex="0" role="region" aria-label="Предместье Царства Аида. На маленьком экране поле можно прокручивать в сторону.">
+<section class="stage" id="hadesStage" data-step="gate" aria-label="Говорящая пещера среди чёрных скал у реки Стикс">
+<svg class="landscape" viewBox="0 0 1448 1086" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+<defs>
+<linearGradient id="g-sky" x2=".64" y2="1"><stop stop-color="#140d18"/><stop offset=".31" stop-color="#85321d"/><stop offset=".6" stop-color="#183b43"/><stop offset="1" stop-color="#041524"/></linearGradient>
+<radialGradient id="g-fire"><stop stop-color="#ffe087"/><stop offset=".3" stop-color="#fa6622"/><stop offset=".75" stop-color="#79231c"/><stop offset="1" stop-color="#40171c00"/></radialGradient>
+<radialGradient id="g-cave"><stop stop-color="#64f8df"/><stop offset=".2" stop-color="#149ca9"/><stop offset=".5" stop-color="#074664"/><stop offset=".8" stop-color="#062637"/><stop offset="1" stop-color="#010b16"/></radialGradient>
+<radialGradient id="g-eye"><stop stop-color="#ffef8c"/><stop offset=".6" stop-color="#dcb950"/><stop offset="1" stop-color="#947136"/></radialGradient>
+<linearGradient id="g-water" y2="1"><stop stop-color="#366d6a"/><stop offset="1" stop-color="#092331"/></linearGradient>
+<linearGradient id="g-path" x2=".8" y2="1"><stop stop-color="#6a6062"/><stop offset=".5" stop-color="#47515f"/><stop offset="1" stop-color="#242b38"/></linearGradient>
+<linearGradient id="g-flame" x2="1" y2="0"><stop stop-color="#48dfff"/><stop offset=".5" stop-color="#147af6"/><stop offset="1" stop-color="#0012b7"/></linearGradient>
+</defs>
+<rect width="1448" height="1086" fill="url(#g-sky)"/>
+<ellipse cx="150" cy="189" rx="455" ry="286" fill="url(#g-fire)" opacity=".95"/>
+<path d="M0 395L75 223L102 307L155 120L200 291L254 225L310 337L358 252L410 398L510 208L561 347L650 232L740 414L852 178L999 500L1448 430V1086H0Z" fill="#101824"/>
+<path d="M0 436L130 308L190 436L294 287L333 449L420 321L489 488L608 343L724 477L820 361L1060 560L1448 466V1086H0Z" fill="#273339"/>
+<path d="M0 495Q174 442 333 487T652 539Q483 623 334 698T0 895Z" fill="url(#g-water)" class="river"/>
+<path d="M0 573Q203 531 390 600M0 658Q132 614 285 647M36 723Q139 680 196 694M8 784Q88 750 146 756" fill="none" stroke="#6ad6cf" stroke-opacity=".43" stroke-width="5"/>
+<path d="M0 442L123 406L122 314L156 314L160 436L231 419L231 331L262 330L267 455L307 461L308 369L345 368L344 491L430 497" stroke="#141a24" stroke-width="25" fill="none"/>
+<path d="M33 314Q196 200 356 337" stroke="#141a24" stroke-width="24" fill="none"/>
+<g fill="#172130" stroke="#38434a" stroke-width="5">
+<path d="M203 836L341 623L500 604L608 610L744 496L970 476L1307 494L1448 733V1086H275Z"/>
+<path d="M0 881L176 783L282 868L212 1086H0Z"/>
+</g>
+<path d="M410 1086L502 830L686 735L680 680L1134 675L1255 831L1448 1086Z" fill="url(#g-path)" stroke="#77828b" stroke-width="12"/>
+<path d="M690 668H1152L1171 700H670ZM660 709H1191L1212 747H630ZM613 756H1227L1266 793H584ZM550 804H1280L1325 858H518Z" fill="#616676" stroke="#283142" stroke-width="11"/>
+<path d="M530 857L1330 857L1410 957H462Z" fill="#4e5361" stroke="#293044" stroke-width="8"/>
+<path d="M460 954L1405 955L1448 1086H316Z" fill="#55515c" stroke="#252b3a" stroke-width="7"/>
+<g stroke="#121f2a" stroke-width="6" opacity=".6">
+<path d="M503 984l154 -16 67 18 127 -23 140 20 110 -11 165 15"/><path d="M537 1024l-115 36m258 -30 160 41m156 -44 78 54m100 -75 180 74"/>
+</g>
+<g transform="translate(1010 140)">
+<path d="M-320 500Q-350 250 -245 95Q-176 -31 -30 -55Q167 -87 263 62Q358 197 337 515Z" fill="#111928" stroke="#080e1b" stroke-width="29"/>
+<path d="M-280 440Q-330 216 -232 98Q-178 15 -25 3Q165 -25 232 104Q311 213 299 440Z" fill="#2e4260" stroke="#1a2f49" stroke-width="18"/>
+<path d="M-270 414Q-265 258 -177 176Q-95 111 21 131Q181 134 257 277L270 462Q136 402 16 421Q-144 412 -270 414Z" fill="url(#g-cave)" stroke="#061525" stroke-width="34" class="gate-mouth"/>
+<ellipse class="portal-core" cx="20" cy="335" rx="170" ry="119" fill="url(#g-cave)" opacity=".87"/>
+<path d="M-225 140Q-171 49 -82 55Q8 56 41 102Q112 20 211 70Q254 94 260 144Q114 109 44 156Q-56 116 -119 154Q-177 128 -225 140Z" fill="#4b6b92" stroke="#182943" stroke-width="20"/>
+<path d="M-232 161Q-144 140 -76 171Q-128 224 -218 205Z" fill="url(#g-eye)" stroke="#17283b" stroke-width="18" class="gate-eye"/>
+<path d="M83 173Q172 137 255 164Q236 209 146 218Z" fill="url(#g-eye)" stroke="#17283b" stroke-width="18" class="gate-eye"/>
+<path d="M-145 160l-16 45M171 166l-10 45" stroke="#071622" stroke-width="11"/>
+<path d="M-27 160L-70 264Q16 299 104 262L35 154Z" fill="#3b597f" stroke="#132b47" stroke-width="21"/>
+<path d="M-267 301Q-140 266 -28 300Q117 283 276 328" stroke="#29496d" stroke-width="23" fill="none"/>
+<path class="flame" d="M-183 88Q-262 -35 -200 -103Q-134 -10 -106 -143Q-93 -69 -73 56Z" fill="url(#g-flame)"/>
+<path class="flame" d="M-51 62Q-89 -102 45 -190Q12 -58 96 -128Q151 -47 92 70Z" fill="url(#g-flame)"/>
+<path class="flame" d="M146 88Q200 -34 246 -75Q233 30 287 -13Q276 76 210 121Z" fill="url(#g-flame)"/>
+</g>
+<g fill="#9ca4a7" stroke="#3d4a55" stroke-width="9">
+<path d="M557 357H599V659H557Z"/><path d="M531 353H628V378H531Z"/><path d="M531 650H633V676H531Z"/>
+<path d="M1294 243H1340V659H1294Z"/><path d="M1269 230H1362V256H1269Z"/><path d="M1269 648H1370V682H1269Z"/>
+</g>
+<path d="M581 377L624 402L615 547L571 531Z" fill="#7a252c" stroke="#b97d3b" stroke-width="4"/>
+<path d="M1307 250L1349 269L1342 470L1303 455Z" fill="#8c2831" stroke="#ba853d" stroke-width="4"/>
+<g>
+<path d="M741 613L774 534L816 613Z" fill="#415a69"/>
+<path class="flame" d="M777 536Q727 499 760 449Q764 483 802 430Q822 482 803 503Q823 475 825 507Q837 540 777 536Z" fill="url(#g-flame)"/>
+<path d="M1229 613L1260 534L1301 613Z" fill="#415a69"/>
+<path class="flame" d="M1262 534Q1211 490 1246 447Q1264 491 1279 425Q1324 481 1298 505Q1332 495 1300 530Z" fill="url(#g-flame)"/>
+</g>
+<g fill="#19222a" stroke="#b2a17f" stroke-width="5">
+<path d="M173 710L174 756Q256 790 361 746L354 702Q272 745 173 710Z"/>
+<path d="M173 710Q218 657 264 700Q304 652 354 702" fill="#3e302d"/>
+<path d="M170 704Q146 641 166 623Q182 656 200 664" fill="#8e6b45"/>
+</g>
+<path d="M1275 746L1395 764L1340 854L1220 830Z" fill="#485a66" stroke="#99a19e" stroke-width="10"/>
+<path d="M1291 772Q1308 754 1325 776Q1334 791 1314 811Q1284 826 1267 806Q1253 790 1291 772Z" fill="none" stroke="#72ecf2" stroke-width="7"/>
+<path d="M0 1086L75 972L140 1002L217 935L274 1086ZM1303 1086L1380 979L1448 1015V1086Z" fill="#111a28"/>
+</svg>
+<div class="mist" aria-hidden="true"></div>
+<div class="gate-status"><span id="gateHint">Врата смотрят на Ладу…</span></div>
+<img class="hero hero-cat" src="images/blue-cat.webp" alt="Ловкач, синий кот" draggable="false">
+<div class="lada-doll" id="hadesLada"><img src="images/lada-cutout.webp" alt="Лада" draggable="false"><img data-outfit-layer hidden alt="" draggable="false"></div>
+<img class="hero hero-rabbit" src="images/rabbit-cutout.webp" alt="Сильный заяц" draggable="false">
+<img class="hero hero-monkey" src="images/monkey-cutout.webp" alt="Умняшка" draggable="false">
+<div class="entry-glow" aria-hidden="true"></div>
+<div class="inside-caption" aria-live="polite"><strong>Ты вошла в Царство Аида!</strong><small>Врата остались позади. Впереди — тёмные залы, Стикс и тайны подземного мира.</small></div>
+</section>
+</div>
+<section class="controls" id="gateControls" aria-live="polite">
+<h2 id="gateTitle">Говорящая пещера</h2>
+<p id="gateWords">«Стой, Лада! В мои владения никто не войдёт без волшебного пароля. Назови его громко!»</p>
+<p id="passwordPrompt">Пароль: <span class="password">СМЕЛОСТЬ</span></p>
+<div class="action-row" id="gateActions"><button class="action" type="button" id="hadesSay">Я произнесла пароль!</button><button class="action secondary" type="button" id="hadesHear">🔊 Услышать врата</button></div>
+</section>
+<p class="help">Сначала Лада произносит пароль вслух, затем нажимает кнопку. Микрофон не нужен — сцена работает на планшете и в совместной игре.</p>
+</main>
+<script src="wardrobe.js?v=4" defer></script>
+<script>
+(()=>{
+"use strict";
+const stage=document.getElementById("hadesStage");
+const controls=document.getElementById("gateControls");
+const title=document.getElementById("gateTitle");
+const words=document.getElementById("gateWords");
+const prompt=document.getElementById("passwordPrompt");
+const actions=document.getElementById("gateActions");
+const hint=document.getElementById("gateHint");
+const isCoop=new URLSearchParams(location.search).get("coop")==="1";
+const KEY="tivvig_hades_gate_open_v1";
+let entered=false;
+try{if(!isCoop&&localStorage.getItem(KEY)==="yes")entered=true}catch{}
+function outfit(){window.TivvigWardrobe?.equip(document.getElementById("hadesLada"))}
+function draw(){
+ stage.dataset.step=entered?"inside":"gate";
+ if(entered){
+   title.textContent="Врата открылись!";
+   words.textContent="«Ты назвала пароль верно. Проходи, Лада, и не бойся темноты!»";
+   prompt.hidden=true;
+   hint.textContent="Добро пожаловать в Царство Аида";
+   actions.innerHTML='<button class="action secondary" type="button" id="hadesRepeat">↻ К вратам</button><a class="action" href="index.html" style="text-decoration:none;display:inline-flex;align-items:center;justify-content:center">← Атлас Тиввига</a>';
+ }else{
+   title.textContent="Говорящая пещера";
+   words.textContent="«Стой, Лада! В мои владения никто не войдёт без волшебного пароля. Назови его громко!»";
+   prompt.hidden=false;
+   hint.textContent="Врата смотрят на Ладу…";
+   actions.innerHTML='<button class="action" type="button" id="hadesSay">Я произнесла пароль!</button><button class="action secondary" type="button" id="hadesHear">🔊 Услышать врата</button>';
+ }
+ outfit();
+}
+function save(){if(isCoop)return;try{localStorage.setItem(KEY,entered?"yes":"no")}catch{}}
+function onAction(id){
+ if(id==="hadesSay"){entered=true;save();draw();}
+ if(id==="hadesRepeat"){entered=false;save();draw();}
+ if(id==="hadesHear"&&"speechSynthesis" in window){
+   try{window.speechSynthesis.cancel();const speech=new SpeechSynthesisUtterance("Стой, Лада! Назови волшебный пароль, чтобы войти в Царство Аида!");speech.lang="ru-RU";speech.rate=.83;window.speechSynthesis.speak(speech)}catch{}
+ }
+}
+actions.addEventListener("click",e=>{const b=e.target.closest("button");if(b)onAction(b.id)});
+window.addEventListener("tivvig-inventory-changed",outfit);
+window.addEventListener("tivvig-outfit-changed",outfit);
+window.addEventListener("pageshow",outfit);
+window.TivvigHadesGateDebug=Object.freeze({state:()=>({entered}),open:()=>onAction("hadesSay"),reset:()=>onAction("hadesRepeat")});
+draw();
+})();
+</script>
+<script src="game-runtime.js?v=4" defer></script>
+</body>
+</html>

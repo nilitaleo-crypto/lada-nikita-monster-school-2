@@ -94,6 +94,11 @@ button:focus-visible,a:focus-visible{outline:3px solid #f5cb77;outline-offset:3p
  .status{font-size:12px}
 }
 
+.map-hit.hades{left:60.8%;top:66%;width:14%;height:15%;z-index:8;border:2px solid #82d1d1;border-radius:50%;background:radial-gradient(circle at 50% 76%,#2dcbdd,#143958 45%,#160f24 79%);box-shadow:0 0 0 2px #252032,0 0 11px 4px #13b5ec77;display:flex;align-items:center;justify-content:center;overflow:visible;animation:hades-mark-pulse 3s ease-in-out infinite}
+.map-hit.hades .hades-glyph{font-size:clamp(21px,2.65vw,40px);line-height:1;filter:drop-shadow(0 0 7px #79efff)}
+.map-hit.hades .hades-label{position:absolute;top:100%;left:50%;transform:translate(-50%,5px);white-space:nowrap;color:#d5faff;background:#192438f2;border:1px solid #84dbe9;border-radius:7px;padding:3px 7px;font:bold clamp(9px,.9vw,12px) Georgia,serif}
+@keyframes hades-mark-pulse{50%{box-shadow:0 0 0 2px #25354d,0 0 21px 9px #19c8e4a0}}
+@media(prefers-reduced-motion:reduce){.map-hit.hades{animation:none}}
 @media(prefers-reduced-motion:reduce){.map-hit.vulcano::after{animation:none}}
 </style>
 </head>
@@ -119,6 +124,7 @@ button:focus-visible,a:focus-visible{outline:3px solid #f5cb77;outline-offset:3p
           <button class="map-hit ladaburg" type="button" data-place="ladaburg" aria-label="Исследовать Ладабург"></button>
           <a class="map-hit vulcano" href="vulkan-labirint.html" aria-label="Начать экспедицию на вулкан Эмпедокла"></a>
 
+          <a class="map-hit hades" href="hades-gate.html" aria-label="К говорящим вратам Царства Аида"><span class="hades-glyph" aria-hidden="true">♜</span><span class="hades-label">Царство Аида</span></a>
           <a class="map-hit forest" href="michael-jackson-jungle.html" aria-label="Открыть джунгли Майкла Джексона и найти подруг"></a>
         </div>
       </section>
@@ -129,10 +135,10 @@ button:focus-visible,a:focus-visible{outline:3px solid #f5cb77;outline-offset:3p
         <div class="meduza lada home-lada" id="homeLada"><img src="images/lada-cutout.webp" alt="Лада — проводница по Тиввигу"><img data-outfit-layer alt="" hidden></div>
         <div class="divider" aria-hidden="true">❦</div>
         <div class="quest">
-          <div class="quest-label">Продолжить приключение</div>
-          <h2>Ладабург</h2>
-          <p>🏰 Исследуй город, встречай друзей и выполняй задания в мире Тиввиг.</p>
-          <a class="go" href="ladaburg.html">В Ладабург →</a>
+          <div class="quest-label">Финальная арка недели</div>
+          <h2>Врата Царства Аида</h2>
+          <p>Лада и её друзья добрались до говорящей пещеры. Назови пароль, чтобы пройти внутрь!</p>
+          <a class="go" href="hades-gate.html">К вратам Аида →</a>
           <a class="go" href="coop.html" style="margin-top:9px;background:linear-gradient(180deg,#665169,#3e2c4d)">✦ Играть вместе</a>
         </div>
         <p class="status" id="mapStatus" aria-live="polite">Выбери землю на карте…</p>
