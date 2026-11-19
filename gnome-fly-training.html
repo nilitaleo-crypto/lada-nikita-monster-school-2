@@ -1,0 +1,220 @@
+<!doctype html>
+<html lang="ru"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#304b37"><meta name="description" content="Муха-тренер готовит Ладу к защите деревни гномов: речь, язык, руки, союзники и колодец с припасами.">
+<title>Муха-тренер — подготовка к обороне Тиввига</title>
+<style>
+:root{--green:#2c5745;--ink:#543d29;--paper:#fff0cb;--gold:#cb9d5c}
+*{box-sizing:border-box}html{background:#203a2f}body{margin:0;min-height:100dvh;background:radial-gradient(ellipse at 50% 2%,#678159,#1e3027 85%);font:16px/1.34 Georgia,'Times New Roman',serif;color:#fff0d0}
+[hidden]{display:none!important}button,a{font:inherit;touch-action:manipulation;-webkit-tap-highlight-color:transparent}button{cursor:pointer}button:focus-visible,a:focus-visible{outline:3px solid #ffe48b;outline-offset:2px}
+.shell{width:min(100%,1550px);margin:auto;padding:clamp(6px,1.4vw,19px)}
+.head{display:flex;align-items:center;justify-content:space-between;gap:9px 13px;flex-wrap:wrap;margin:0 0 10px}
+.head h1{margin:0;font:normal clamp(24px,2.8vw,38px)/1.1 Georgia,serif}.head small{color:#e4d3af;font-size:clamp(12px,1.2vw,17px)}
+.back{display:inline-grid;place-items:center;min-height:45px;text-decoration:none;color:#f9e7b7;background:#305646;border:2px solid #d5b278;border-radius:11px;padding:9px 13px;font-weight:bold}
+.scene-scroll{overflow-x:auto;overscroll-behavior-x:contain;scrollbar-color:#ca9c60 #365241;box-shadow:0 13px 36px #0c1c12a4;border:5px ridge #c69b61;border-radius:14px}
+.scene{position:relative;width:100%;min-width:920px;aspect-ratio:1672/941;isolation:isolate;overflow:hidden;background:#62814e}
+.scenery{display:block;width:100%;height:100%;object-fit:cover;user-select:none;-webkit-user-drag:none;pointer-events:none}
+.board{position:absolute;z-index:3;left:5.6%;top:12%;width:51.7%;height:62%;display:flex;flex-direction:column;gap:5px;color:var(--ink);overflow-y:auto;scrollbar-width:thin;overscroll-behavior:contain;padding:0 clamp(5px,1.1vw,14px) 3px;text-align:center}
+.board-header{flex:0 0 auto;display:flex;align-items:center;justify-content:center;flex-wrap:wrap;gap:4px 12px;border-bottom:1px dotted #a37b4b;padding-bottom:4px}
+.board-title{font:normal clamp(17px,2vw,28px)/1.1 Georgia,serif;color:#573b24;margin:0}.progress{color:#866035;font-size:clamp(11px,1.1vw,16px);font-weight:bold;white-space:nowrap}
+.training{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:clamp(4px,.7vw,10px);flex:1 1 auto;min-height:0}
+.prompt{font-size:clamp(15px,1.4vw,21px);line-height:1.22;margin:0;max-width:96%}.small{font-size:clamp(12px,1.06vw,16px);line-height:1.19;margin:0;color:#725233}
+.poem-set{display:grid;grid-template-columns:26% 1fr;gap:9px;width:100%;align-items:center}
+.poem{font-size:clamp(15px,1.9vw,28px);line-height:1.28;margin:0;white-space:normal;text-align:left}.poem.bold{font-weight:bold;color:#573420}
+.poem-small{font-size:clamp(13px,1.5vw,21px);line-height:1.17}
+.art{display:block;background-image:url('images/gnome-speech-materials.webp?v=1');background-repeat:no-repeat;background-size:400% 900%;background-position:var(--cx,0%) var(--cy,0%);aspect-ratio:220 / 164;border:2px solid #bd9c69;border-radius:9px;box-shadow:0 2px 4px #4b36233f;background-color:#fff3d6;flex:0 0 auto}
+.art.wide{width:100%}.poem-set .art{width:100%}
+.example{display:grid;grid-template-columns:34% 1fr;align-items:center;gap:12px;width:100%;min-height:0}
+.example .art{width:100%;max-height:min(18vw,185px);object-fit:contain}
+.example-desc{text-align:left}.example-title{font:bold clamp(18px,1.9vw,27px)/1.2 Georgia,serif;color:#644126;margin:0 0 5px}.example-instructions{font-size:clamp(13px,1.27vw,19px);line-height:1.3;margin:0}
+.exercise-hint{font-style:italic;color:#765a3f;font-size:clamp(12px,1.1vw,16px);margin:0}
+.btn{min-height:44px;padding:7px 14px;border:2px solid #b18b59;border-radius:10px;color:#fff1ce;background:linear-gradient(#49725a,#2b5744);font:bold clamp(14px,1.37vw,20px)/1.15 Georgia,serif;box-shadow:0 2px 0 #8b6b4479;touch-action:manipulation}
+.btn:hover{background:#527961}.btn:disabled{opacity:.43;cursor:default}.btn.light{color:#5b442e;background:linear-gradient(#fff4d8,#efdbb5)}
+.board-buttons{display:flex;justify-content:center;align-items:center;flex-wrap:wrap;gap:7px;margin-top:auto;padding:2px 0}
+.next-step{margin-top:5px;background:linear-gradient(#6c6f3b,#48562d);min-width:220px}
+.note{min-height:17px;margin:2px 0;color:#4e6a36;font-size:clamp(12px,1.09vw,16px);line-height:1.2;font-weight:bold}
+.counters{font:bold clamp(15px,1.4vw,20px)/1.15 Georgia,serif;color:#754a2e}
+.sequence{display:grid;grid-template-columns:minmax(120px,35%) 1fr;gap:12px;align-items:center;width:100%;min-height:0}
+.sequence .art{width:100%;max-width:190px;justify-self:center}
+.sequence-right{text-align:left;display:flex;flex-direction:column;gap:9px}
+.sequence-right .prompt{font-size:clamp(17px,2vw,28px)}
+.sequence-track{display:flex;gap:4px;flex-wrap:wrap;justify-content:center;max-width:100%;margin:2px 0}.sequence-dot{width:15px;height:15px;border:1px solid #af8556;border-radius:50%;background:#f2e3bf}.sequence-dot.done{background:#557558}
+.supplies-intro{display:flex;align-items:center;justify-content:space-between;gap:4px;margin:0;font-size:clamp(12px,1.23vw,18px)}
+.supplies{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));align-content:center;gap:clamp(3px,.45vw,8px);width:100%;min-height:0;flex:1}
+.supply{min-width:0;min-height:0;position:relative;border:1px solid #ae8757;border-radius:7px;background:#fff3d8;display:flex;flex-direction:column;align-items:center;justify-content:flex-start;padding:2px;gap:2px;color:#5b3f29;touch-action:none;user-select:none;cursor:grab;box-shadow:0 2px 4px #51331f45}
+.supply .art{width:100%;border:0;box-shadow:none;pointer-events:none}.supply-name{font:bold clamp(9px,.92vw,13px)/1.1 Georgia,serif;pointer-events:none;overflow-wrap:anywhere}
+.supply.selected{outline:4px solid #f49a2e;background:#fff0b7;z-index:12}.supply.dragging{opacity:.82;z-index:30;cursor:grabbing}.supply.collected{visibility:hidden;pointer-events:none}.well-target{position:absolute;z-index:6;left:73%;top:29%;width:22%;height:43%;border:4px dashed transparent;border-radius:40%;background:transparent;display:grid;place-items:center;pointer-events:none;color:#fff8df;text-shadow:0 2px 3px #3e2919;font-size:clamp(12px,1.1vw,18px)}
+.well-target.active{pointer-events:auto;cursor:pointer}.well-target.selected,.well-target.hover{border-color:#ffe497;background:#ffd97138;box-shadow:inset 0 0 20px #ffe37a85,0 0 18px #fff1a686}
+.well-target span{margin-top:auto;margin-bottom:8px;background:#2c5441d9;border:2px solid #e0bd86;border-radius:14px;padding:4px 9px}
+.scene-status{position:absolute;z-index:7;left:72%;top:71%;width:25%;text-align:center;font-size:clamp(13px,1.4vw,21px);font-weight:bold;color:#fdf1c9;text-shadow:0 2px 4px #213324;pointer-events:none}
+.restart{font-size:12px;padding:5px 9px;min-height:34px;background:transparent;color:#866644;border-color:#b69c79;box-shadow:none}
+.done-scene{font-size:clamp(16px,2.3vw,31px);line-height:1.32;color:#45613c}.done-scene a{display:inline-grid;place-items:center;margin-top:12px;text-decoration:none}
+.stages{display:flex;gap:7px;align-items:center;justify-content:center;padding:12px 0 4px;flex-wrap:wrap}
+.stage-marker{background:#294638;border:1px solid #c5a06b;border-radius:30px;padding:4px 10px;font-size:clamp(11px,1.08vw,16px);color:#ead8b5}.stage-marker.current{background:#ffe3a6;color:#573d28;font-weight:bold}.stage-marker.done{background:#547c54;color:#f6f0d5}
+.backbar{display:flex;justify-content:center;padding-top:7px}.backbar a{color:#e4d19f;text-decoration:none;font-size:14px}
+#gameConnection{font-size:13px;text-align:center;color:#ffe2ad}
+@media(max-width:850px){.scene{min-width:1060px}.board{left:5.3%;top:11.9%;height:62.2%;width:51.9%;padding:0 6px}.board-title{font-size:22px}.progress{font-size:12px}.prompt{font-size:17px}.small{font-size:13px}.poem{font-size:21px}.poem-small{font-size:17px}.example-title{font-size:21px}.example-instructions{font-size:16px}.btn{font-size:17px}.supplies .supply-name{font-size:11px}.supply{padding:2px}.supply .art{width:100%}}
+@media(max-height:620px){.head{margin-bottom:4px}.head h1{font-size:24px}.board{gap:2px}.board-buttons{padding:0}.btn{min-height:36px;padding:5px 11px}.poem{line-height:1.13}.training{gap:3px}.note{min-height:13px}}
+@media(prefers-reduced-motion:reduce){*{animation:none!important;scroll-behavior:auto!important}}
+</style></head>
+<body><main class="shell">
+<header class="head"><a class="back" href="gnome-village.html">← Деревня гномов</a><h1>Тренировочная поляна Мухи</h1><small>Подготовка к ночной обороне</small></header>
+<div id="viewport" class="scene-scroll" tabindex="0" role="region" aria-label="Тренировочная поляна: на маленьком экране можно прокрутить вправо к колодцу">
+ <div class="scene" id="scene">
+  <img class="scenery" src="images/gnome-fly-yard.webp?v=1" width="1672" height="941" alt="На зелёной поляне деревни гномов муха-тренер стоит возле большой доски с пергаментом и каменного колодца" draggable="false" fetchpriority="high">
+  <div class="board" id="board" aria-label="Доска с пятью тренировками">
+   <div class="board-header"><h2 class="board-title" id="boardTitle">1. Заклинание мухи</h2><span id="stepProgress" class="progress">1 / 5</span></div>
+   <section class="training" id="task0" aria-label="Речевое заклинание мухи">
+    <div class="poem-set"><span class="art" id="flyMarketArt" role="img" aria-label="Муха на сказочном базаре"></span><p class="poem bold">Пошла муха на базар<br>И купила...</p></div>
+    <div class="poem-set"><span class="art" id="fireTruckArt" role="img" aria-label="Пожарная машина спешит на пожар"></span><p class="poem poem-small">Машина пожарная<br>Мчит на пожар.<br>Над городом жаркий,<br>Огненный шар.</p></div>
+    <div class="board-buttons"><button type="button" id="repeatFly" class="btn">Повторили фразу ✓</button><button type="button" id="recitedFire" class="btn light" hidden>Рассказали стих ✓</button></div>
+    <p id="repeatCount" class="counters">0 из 5 повторений</p>
+   </section>
+   <section class="training" id="task1" aria-label="Артикуляционные упражнения" hidden>
+    <div class="example"><span id="soundArt" class="art" role="img"></span><div class="example-desc"><h3 class="example-title" id="soundTitle"></h3><p class="example-instructions" id="soundText"></p></div></div>
+    <p class="exercise-hint" id="soundHint"></p><div class="board-buttons"><button type="button" class="btn" id="soundComplete">Сделали ✓</button></div>
+    <p class="counters" id="soundCount">1 / 3</p>
+   </section>
+   <section class="training" id="task2" aria-label="Разминка пальцев и кистей" hidden>
+    <div class="example"><span id="handsArt" class="art" role="img"></span><div class="example-desc"><h3 class="example-title" id="handsTitle"></h3><p class="example-instructions" id="handsText"></p></div></div>
+    <p class="exercise-hint">Делаем движения вместе с мухой. Без спешки.</p><div class="board-buttons"><button type="button" class="btn" id="handsComplete">Размялись ✓</button></div>
+    <p class="counters" id="handsCount">1 / 3</p>
+   </section>
+   <section class="training" id="task3" aria-label="Цепочка союзников" hidden>
+    <div class="sequence"><span id="allyArt" class="art" role="img"></span><div class="sequence-right"><p class="prompt">Кто на картинке?</p><p class="small">Назови вслух и нажми «Назвала».</p><p class="counters" id="allyCount">1 / 12</p></div></div>
+    <div id="allyTrail" class="sequence-track" aria-label="Прогресс называния картинок"></div>
+    <div class="board-buttons"><button type="button" class="btn" id="allyNamed">Назвала ✓</button></div>
+   </section>
+   <section class="training" id="task4" aria-label="Карточки у колодца" hidden>
+    <p class="supplies-intro"><span>Назови карточку и отправь в колодец.</span><strong id="supplyCount" class="counters">0 / 13</strong></p>
+    <div class="supplies" id="supplies" aria-label="Перетаскиваемые карточки с картинками"></div>
+    <p class="small" id="supplyHint">Перетащи карточку или нажми на неё, затем на колодец.</p>
+   </section>
+   <section class="training" id="taskDone" aria-label="Тренировка завершена" hidden>
+    <p class="done-scene">✦ Лада готова!<br>Звуки, руки и союзники помогли подготовиться к бою.</p>
+    <a class="btn" href="gnome-village.html">Вернуться к гномам →</a>
+   </section>
+   <p class="note" id="feedback" aria-live="polite"></p>
+   <div class="board-buttons"><button type="button" class="btn next-step" id="nextStep" hidden>Следующий этап →</button><button type="button" class="btn restart" id="startAgain">↺ Сначала</button></div>
+  </div>
+  <button class="well-target" id="well" type="button" aria-label="Колодец: положить выбранную карточку" disabled><span id="wellLabel">Колодец</span></button>
+  <span id="sceneCount" class="scene-status" aria-live="polite"></span>
+ </div>
+</div>
+<nav class="stages" id="stageNav" aria-label="Пять этапов подготовки"><span class="stage-marker current">1. Стих</span><span class="stage-marker">2. Язык</span><span class="stage-marker">3. Руки</span><span class="stage-marker">4. Союзники</span><span class="stage-marker">5. Колодец</span></nav>
+<div class="backbar"><a href="gnome-village.html">← Вернуться в деревню</a></div>
+<p id="gameConnection" role="status" aria-live="polite"></p>
+</main>
+<script>
+(()=>{'use strict';
+const $=id=>document.getElementById(id);
+const assetNames=['fly','firetruck','swallow','tongue-home','steps','hands1','hands2','hands3','tiger','beaver','traffic','cook','mosquito','fence','sugar','tan','steam','lemur','thief','cheese','shark','soap','tent','sting','salad','spinner','saw','pin','koala','lard','cliff','coat','bee'];
+const sounds=[
+ {title:'Глоток воды',image:2,text:'Немного воды с ложечки. Язык подними к нёбу и сделай глоток, не закрывая рот.',hint:'10 глотков. Только под присмотром взрослого и по рекомендации логопеда.'},
+ {title:'Язычок в домике',image:3,text:'Кончик языка держим за верхними зубами, чуть дальше бугорков.',hint:'Удержать до минуты. Логопед рекомендует повторять 3–5 раз в день.'},
+ {title:'Ступеньки',image:4,text:'Открой рот: язык на верхнюю губу → за верхние зубы. Рот не закрываем.',hint:'Каждое положение до 10 секунд. Повторить 8–10 раз.'}
+];
+const hands=[
+ {title:'Кулачки',image:5,text:'Катаем карандаш между ладонями. Сжимаем и разжимаем кулачки 10 раз.'},
+ {title:'Потягушки',image:6,text:'Потянули руки вверх, вперёд, назад. Подвигаем кистями 10 раз.'},
+ {title:'Ловкие пальцы',image:7,text:'Прокрути маленький предмет. Помассируй каждый палец 4 раза; раскрой ладонь 8 раз; сожми кулак 10 раз.'}
+];
+const allies=[
+ {name:'БОБЁР',image:9},{name:'СВЕТОФОР',image:10},{name:'ПОВАР',image:11},
+ {name:'КОМАР',image:12},{name:'ЗАБОР',image:13},{name:'САХАР',image:14},
+ {name:'ЗАГАР',image:15},{name:'ПАР',image:16},{name:'ЛЕМУР',image:17},
+ {name:'ВОР',image:18},{name:'СЫР',image:19},{name:'ТИГР',image:8}
+];
+const supplies=[
+ {name:'АКУЛА',image:20},{name:'МЫЛО',image:21},{name:'ПАЛАТКА',image:22},
+ {name:'ЖАЛО',image:23},{name:'САЛАТ',image:24},{name:'ЮЛА',image:25},
+ {name:'ПИЛА',image:26},{name:'БУЛАВКА',image:27},{name:'КОАЛА',image:28},
+ {name:'САЛО',image:29},{name:'СКАЛА',image:30},{name:'ХАЛАТ',image:31},
+ {name:'ПЧЕЛА',image:32}
+];
+const reward='tivvig_reward_gnome_sound_training_v1';
+const store='tivvig_gnome_sound_training_v1';
+let stage=0, repeats=0,poemDone=false,sound=0,handsStep=0,ally=0,selected=null,collected=new Set(),done=false,ready=false;
+const taskIds=['task0','task1','task2','task3','task4'];
+const cardButtons=[];
+const pointerMap=new Map();
+function picture(node,n){node.style.setProperty('--cx',(n%4/3*100)+'%');node.style.setProperty('--cy',(Math.floor(n/4)/8*100)+'%');node.setAttribute('aria-label','Рисунок из материалов логопеда: '+assetNames[n]);}
+function setStatus(text){$('feedback').textContent=text;}
+function pageBoard(){const v=$('viewport');if(window.innerWidth<=850 && stage!==4)v.scrollLeft=0;}
+function setReady(value,text){ready=value;if(text)setStatus(text);$('nextStep').hidden=!ready||stage===4;}
+function draw(){
+ const headings=['1. Заклинание мухи','2. Звуковое оружие','3. Разминаем руки','4. Собираем союзников','5. Прячем припасы'];
+ $('boardTitle').textContent=done?'Подготовка завершена':headings[stage];
+ $('stepProgress').textContent=done?'5 из 5 ✓':(stage+1)+' / 5';
+ for(let i=0;i<taskIds.length;i++)$(taskIds[i]).hidden=done||stage!==i;
+ $('taskDone').hidden=!done;
+ const markers=[...$('stageNav').children];markers.forEach((m,i)=>{m.className='stage-marker'+(done||stage>i?' done':stage===i?' current':'')});
+ $('repeatCount').textContent=repeats+' из 5 повторений (можно 7)';
+ $('repeatFly').hidden=repeats>=7 || poemDone;
+ $('recitedFire').hidden=repeats<5||poemDone;
+ $('soundTitle').textContent=sounds[sound]?.title||'';
+ $('soundText').textContent=sounds[sound]?.text||'';
+ $('soundHint').textContent=sounds[sound]?.hint||'';
+ picture($('soundArt'),sounds[sound]?.image??2);
+ $('soundCount').textContent=(sound+1)+' / '+sounds.length;
+ $('handsTitle').textContent=hands[handsStep]?.title||'';
+ $('handsText').textContent=hands[handsStep]?.text||'';
+ picture($('handsArt'),hands[handsStep]?.image??5);
+ $('handsCount').textContent=(handsStep+1)+' / '+hands.length;
+ picture($('allyArt'),allies[ally]?.image??8);
+ $('allyCount').textContent=(ally+1)+' / '+allies.length;
+ const track=$('allyTrail');track.replaceChildren();for(let i=0;i<allies.length;i++){const d=document.createElement('span');d.className='sequence-dot'+(i<ally?' done':'');d.setAttribute('aria-hidden','true');track.append(d)}
+ for(let i=0;i<supplies.length;i++){const button=cardButtons[i];button.classList.toggle('collected',collected.has(i));button.classList.toggle('selected',selected===i);button.disabled=collected.has(i)||done;}
+ $('supplyCount').textContent=collected.size+' / '+supplies.length;
+ $('supplyHint').textContent=collected.size===supplies.length?'Все карточки спрятаны!':selected===null?'Перетащи карточку или выбери и нажми на колодец.':'Выбрана '+supplies[selected].name+'. Нажми на колодец.';
+ $('well').disabled=stage!==4||done;
+ $('well').classList.toggle('active',stage===4&&!done);
+ $('well').classList.toggle('selected',stage===4&&selected!==null);
+ $('wellLabel').textContent=stage===4?'Спрятать сюда ↧':'Колодец';
+ $('sceneCount').textContent=stage===4&&!done?collected.size+' / '+supplies.length+' карточек':'';
+ $('nextStep').hidden=!ready||done||stage===4;
+ $('startAgain').hidden=done;
+ if(stage===4&&window.innerWidth<=850&&selected!==null){const v=$('viewport');v.scrollLeft=v.scrollWidth-v.clientWidth;}
+}
+function stepForward(){if(!ready||done||stage>=4)return;stage++;ready=false;setStatus('');pageBoard();draw();}
+function complete(){if(done)return;done=true;try{localStorage.setItem(store,JSON.stringify({completed:true,words:allies.map(a=>a.name),supplies:supplies.map(s=>s.name)}));localStorage.setItem(reward,'unlocked')}catch{}
+ const grant=()=>{try{if(window.TivvigRegistry?.byReward?.[reward])window.TivvigRegistry.unlockReward(reward)}catch(err){console.warn('Fly training reward',err)}};
+ if(window.TivvigRegistry?.byReward?.[reward])grant();else window.addEventListener('tivvig:registry-ready',grant,{once:true});
+ setStatus('Ура! Все пять тренировок выполнены.');draw();}
+function takeSupply(i){if(stage!==4||done||collected.has(i))return;selected=i;draw()}
+function dropSupply(i){if(stage!==4||done||collected.has(i))return;collected.add(i);selected=null;setStatus('Спрятали: '+supplies[i].name);if(collected.size===supplies.length){complete();return;}draw();}
+function wellDrop(){if(stage!==4||done||selected===null)return;dropSupply(selected)}
+function restart(){stage=0;repeats=0;poemDone=false;sound=0;handsStep=0;ally=0;selected=null;collected=new Set();ready=false;done=false;setStatus('');$('viewport').scrollLeft=0;draw();}
+function setupCards(){for(let i=0;i<supplies.length;i++){
+ const b=document.createElement('button');b.id='supply'+i;b.type='button';b.className='supply';b.setAttribute('aria-label',supplies[i].name+'. Перетащи в колодец или выбери карточку');
+ const pic=document.createElement('span');pic.className='art';picture(pic,supplies[i].image);pic.setAttribute('aria-hidden','true');
+ const label=document.createElement('span');label.className='supply-name';label.textContent=supplies[i].name;b.append(pic,label);
+ b.addEventListener('click',()=>{if(pointerMap.get('ignore')===i){pointerMap.delete('ignore');return;}takeSupply(i)});
+ b.addEventListener('pointerdown',e=>{if(stage!==4||collected.has(i))return;if(e.button!==undefined&&e.button!==0)return;
+  pointerMap.set(e.pointerId,{i,x:e.clientX,y:e.clientY,dragged:false});
+  if(b.setPointerCapture)try{b.setPointerCapture(e.pointerId)}catch{};
+ });
+ b.addEventListener('pointermove',e=>{const p=pointerMap.get(e.pointerId);if(!p||p.i!==i)return;const dx=e.clientX-p.x,dy=e.clientY-p.y;if(Math.hypot(dx,dy)>8)p.dragged=true;
+  if(p.dragged){b.classList.add('dragging');b.style.transform='translate('+dx+'px,'+dy+'px)';const r=$('well').getBoundingClientRect();$('well').classList.toggle('hover',e.clientX>=r.left&&e.clientX<=r.right&&e.clientY>=r.top&&e.clientY<=r.bottom)}
+ });
+ function endDrag(e){const p=pointerMap.get(e.pointerId);if(!p||p.i!==i)return;pointerMap.delete(e.pointerId);
+  b.classList.remove('dragging');b.style.transform='';$('well').classList.remove('hover');
+  if(p.dragged){pointerMap.set('ignore',i);const r=$('well').getBoundingClientRect();if(e.type==='pointerup'&&e.clientX>=r.left&&e.clientX<=r.right&&e.clientY>=r.top&&e.clientY<=r.bottom)dropSupply(i)}
+ }
+ b.addEventListener('pointerup',endDrag);b.addEventListener('pointercancel',endDrag);
+ $('supplies').append(b);cardButtons.push(b);
+}}
+$('repeatFly').addEventListener('click',()=>{if(stage!==0||done||repeats>=7)return;repeats++;if(repeats>=5)setStatus('Отлично! Теперь расскажи стих о пожарной машине.');draw()});
+$('recitedFire').addEventListener('click',()=>{if(stage!==0||repeats<5)return;poemDone=true;setReady(true,'Звуковое заклинание выучено!');draw()});
+$('soundComplete').addEventListener('click',()=>{if(stage!==1||done||ready)return;if(sound<sounds.length-1){sound++;setStatus('Следующее упражнение.');}else setReady(true,'Звуковое оружие готово!');draw()});
+$('handsComplete').addEventListener('click',()=>{if(stage!==2||done||ready)return;if(handsStep<hands.length-1){handsStep++;setStatus('Следующая разминка.');}else setReady(true,'Руки готовы к бою!');draw()});
+$('allyNamed').addEventListener('click',()=>{if(stage!==3||done||ready)return;setStatus('Назвали: '+allies[ally].name);if(ally<allies.length-1)ally++;else setReady(true,'Все картинки названы по цепочке!');draw()});
+$('nextStep').addEventListener('click',stepForward);
+$('startAgain').addEventListener('click',restart);
+$('well').addEventListener('click',wellDrop);
+picture($('flyMarketArt'),0);picture($('fireTruckArt'),1);setupCards();draw();
+window.TivvigFlyTrainingDebug=Object.freeze({getState:()=>({stage,repeats,poemDone,sound,handsStep,ally,selected,collected:[...collected],ready,done}),allies:allies.map(a=>a.name),supplies:supplies.map(a=>a.name),reward});
+})();
+</script>
+<script src="game-runtime.js?v=1" defer></script>
+</body></html>
