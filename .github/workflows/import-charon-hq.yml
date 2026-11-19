@@ -60,13 +60,23 @@ jobs:
           dest="images/charon-river-hq.webp"
           photo.save(dest,"WEBP",quality=92,method=6)
           print("FINAL_IMAGE",photo.size,os.path.getsize(dest),"SOURCE",url)
+          for _,_,source,option in candidates:
+            if "meisterdrucke.de" not in source or "wsrv" in source or "weserv" in source:continue
+            alternative=option.convert("RGB")
+            alternativeSmall=alternative.resize((256,176),Image.Resampling.BICUBIC)
+            if delta(ImageOps.mirror(alternativeSmall))<delta(alternativeSmall):
+              alternative=ImageOps.mirror(alternative)
+            other="images/charon-river-hq-meister.webp"
+            alternative.save(other,"WEBP",quality=94,method=6)
+            print("ALTERNATIVE_IMAGE",alternative.size,os.path.getsize(other),"SOURCE",source)
+            break
           PY
       - name: Commit original-resolution image
         shell: bash
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add images/charon-river-hq.webp
+          git add images/charon-river-hq.webp images/charon-river-hq-meister.webp
           if ! git diff --cached --quiet; then
             git commit -m "Add true higher-resolution Charon and Psyche painting"
             git push
