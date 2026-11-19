@@ -41,6 +41,7 @@ button:focus-visible,a:focus-visible{outline:3px solid #fff29b;outline-offset:3p
 @media(max-width:720px){.top{justify-content:center;text-align:center}.top h1{width:100%}.stage{min-width:730px}.info{grid-template-columns:1fr}.info .tag{justify-self:start}.hotspot span{font-size:26px}.info p{font-size:16px}.scroll-scene{border-width:4px}}
 @media(prefers-reduced-motion:reduce){.hotspot{transition:none}}
 </style>
+<link rel="stylesheet" href="night-defense.css?v=1">
 </head>
 <body>
 <header class="top">
@@ -61,6 +62,7 @@ button:focus-visible,a:focus-visible{outline:3px solid #fff29b;outline-offset:3p
   <a class="hotspot" id="village-fly-training" href="gnome-fly-training.html" style="--x:57%;--y:71%" aria-label="Тренировочная поляна Натальи: пять речевых заданий перед обороной деревни"><span aria-hidden="true">🗣️</span></a>
   <button class="hotspot" id="village-garden" type="button" style="--x:87%;--y:79%" data-id="garden" aria-label="Посмотреть на огороды" aria-pressed="false"><span aria-hidden="true">🥕</span></button>
   <button class="hotspot" id="village-gate" type="button" style="--x:65%;--y:26%" data-id="gate" aria-label="Посмотреть на дорогу к горам Аида" aria-pressed="false"><span aria-hidden="true">🗺️</span></button>
+  <button class="hotspot" id="startNight" type="button" style="--x:80%;--y:20%;background:#514064" aria-label="Начать ночную оборону деревни"><span aria-hidden="true">🌙</span></button>
   <button class="hotspot" id="village-forest" type="button" style="--x:92%;--y:18%" data-id="forest" aria-label="Посмотреть на тревожный тёмный лес" aria-pressed="false"><span aria-hidden="true">🌲</span></button>
  </section>
 </div>
@@ -69,10 +71,25 @@ button:focus-visible,a:focus-visible{outline:3px solid #fff29b;outline-offset:3p
  <p id="placeStory">Лада и её друзья впервые попали в долину гномов. Здесь живут семь маленьких жителей, на рынке пахнет свежим хлебом, а за зелёными холмами начинается дорога к горам Аида. Выбирай места на рисунке и знакомься с деревней.</p></div>
  <div class="tag" id="placeTag">☀️ Мирный день</div>
 </section>
-<div class="introduction"><p>На центральном рынке начинаются четыре приключения: заказы, весы, необычные покупки и расследование. Нажми на корзинку на иллюстрации, чтобы начать. После расследования Ладу ждут Дубобород, гном Чудовед и тренировочная поляна Натальи. Там нужно подготовить речь, руки, союзников и припасы для обороны деревни.</p></div>
+<div class="introduction"><p>На центральном рынке начинаются четыре приключения: заказы, весы, необычные покупки и расследование. Нажми на корзинку на иллюстрации, чтобы начать. После расследования Ладу ждут Дубобород, гном Чудовед и тренировочная поляна Натальи. Там нужно подготовить речь, руки, союзников и припасы для обороны деревни. Когда будешь готова — нажми на луну 🌙 у леса, чтобы начать ночной квест.</p></div>
 <div class="bottom"><a href="gnome-elder.html">📖 Дом старейшины</a><a href="gnome-monster-expert.html">🔬 Дом Чудоведа — чтение чудовищ</a><a href="gnome-fly-training.html">🗣️ Тренировка Натальи — звуки и припасы</a><a href="gnome-market-orders.html">🧺 На гномий рынок — первая игра</a><a href="bridge-troll.html">🌉 Вернуться к мосту тролля</a><a href="index.html">← Вернуться в атлас</a><a href="ladaburg.html">🏰 Ладабург</a></div>
 <p id="gameConnection" aria-live="polite"></p>
 </main>
+<section id="nightDefense" hidden aria-label="Ночная оборона деревни гномов">
+ <header class="nd-top"><button id="nd-leave" class="nd-exit" type="button">← Деревня</button><h2 id="nd-stage-name">🌙 Ночная оборона</h2><div id="nd-progress" class="nd-progress" aria-label="Пять этапов"></div></header>
+ <div class="nd-scroll" id="nd-scroll" role="region" tabindex="0" aria-label="Ночная битва: на небольшом экране можно прокручивать поле вправо">
+  <div class="nd-scene" id="nd-scene" data-phase="0">
+   <div class="nd-background" role="img" aria-label="Ночная деревня гномов: луна, лес, ворота и колодец"></div>
+   <div class="nd-vignette" aria-hidden="true"></div>
+   <div class="nd-weather" aria-hidden="true"></div>
+   <div class="nd-party" aria-hidden="true"><img src="images/lada-cutout.webp" class="nd-lada" alt="" draggable="false"><div class="nd-gnomes"><span class="nd-gnome"><img src="images/gnome-bantik.webp" alt=""></span><span class="nd-gnome"><img src="images/gnome-kubik.webp" alt=""></span><span class="nd-gnome"><img src="images/gnome-dolka.webp" alt=""></span><span class="nd-gnome"><img src="images/gnome-luchik.webp" alt=""></span></div></div>
+   <div class="nd-alert" id="nd-alert">Тревога!</div><div class="nd-info" id="nd-info">Найди следы</div>
+   <div class="nd-targets" id="nd-targets"></div>
+   <div class="nd-board" id="nd-board" aria-label="Задание"></div>
+  </div>
+ </div>
+ <div class="nd-foot"><span id="nd-flames" aria-label="Защитные огни деревни">🔥🔥🔥</span><p id="nd-feedback" class="nd-feedback" aria-live="polite"></p><button id="nd-reset" class="nd-restart" type="button">↻ Сначала</button></div>
+</section>
 <script>
 (()=>{
 "use strict";
@@ -100,6 +117,7 @@ try{
 window.TivvigGnomeVillageDebug=Object.freeze({places:Object.keys(places),art:"images/gnome-village-full.webp"});
 })();
 </script>
+<script src="night-defense.js?v=1" defer></script>
 <script src="game-runtime.js?v=1" defer></script>
 </body>
 </html>
