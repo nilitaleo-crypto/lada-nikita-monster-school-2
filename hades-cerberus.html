@@ -98,6 +98,42 @@ button,a{font:inherit}button{cursor:pointer}button:focus-visible,a:focus-visible
 .action.secondary{background:#303544;color:#f8e8cb}
 .action[disabled]{opacity:.55;cursor:wait}
 .math-question{font:bold 16px Georgia,serif;color:#d0f8f6;align-self:center;padding:0 5px}
+
+/* Single-scene cast and captive friends. All six models are original site assets. */
+.art-suspicious{z-index:1;opacity:0;transition:opacity 1.15s}
+.scene[data-state="suspicious"] .art-clever{opacity:0}
+.scene[data-state="suspicious"] .art-suspicious{opacity:1}
+.rock-shade{position:absolute;left:0;bottom:0;width:40%;height:57%;z-index:2;pointer-events:none;background:radial-gradient(ellipse at 40% 75%,#282335e8,#27212cba 60%,transparent 83%)}
+.party{position:absolute;inset:0;z-index:5;pointer-events:none}
+.party img{position:absolute;object-fit:contain;object-position:center bottom;filter:drop-shadow(2px 6px 4px #000b);user-select:none}
+.party .ladamodel{position:absolute;left:3%;bottom:6%;width:17%;height:44%}
+.party .ladamodel img{inset:0;width:100%;height:100%;object-fit:contain}
+.ladamodel [data-outfit-layer][hidden],.ladamodel [data-outfit-face][hidden]{display:none}
+.party .cat{left:16%;bottom:8%;width:11%;height:27%}.party .rabbit{left:25%;bottom:8%;width:9.5%;height:22%}.party .monkey{left:33%;bottom:8%;width:9%;height:23%}
+.cage{position:absolute;z-index:14;left:5%;top:1%;width:27%;height:41%;pointer-events:none;filter:drop-shadow(0 9px 12px #000c);animation:cage-swing 4s ease-in-out infinite alternate;transform-origin:50% 0}
+@keyframes cage-swing{to{transform:rotate(1.2deg)}}
+.cage-people{position:absolute;left:19%;top:33%;width:62%;height:55%;display:flex;align-items:end;justify-content:center;overflow:hidden}
+.cage-people img{width:50%;height:100%;object-fit:contain;object-position:50% 100%}
+.cage-bars{position:absolute;inset:0;width:100%;height:100%}
+.cage-door{transform-box:fill-box;transform-origin:left center;transition:transform 1.25s ease}
+.scene[data-freed="yes"] .cage-door{transform:perspective(450px) rotateY(-112deg)}
+.scene[data-freed="yes"] .cage-people{animation:rescued 1.2s ease forwards}
+@keyframes rescued{to{transform:translateY(-13px)}}
+.scene .bark{display:none}
+.scene[data-state="clever"] .bark{display:block;left:43%;top:2%;bottom:auto;max-width:53%;padding:6px 13px;font-size:clamp(17px,1.65vw,23px);background:#1f2029ad}
+.scene[data-state="suspicious"] .bark{display:block;left:37%;top:auto;bottom:1%;width:60%;max-width:60%;padding:8px 12px;border-radius:12px;text-align:center;background:#302328ef;border:1px solid #d3b47a;font-size:clamp(15px,1.5vw,21px)}
+.scene[data-state="suspicious"] .scene-progress{display:none}
+.scene[data-state="clever"] .scene-progress{font-size:11px}
+.key-option,.key-option.long,.key-option.short,.key-option.medium{z-index:17;top:62%;width:15%;height:26%;min-height:110px;display:flex;align-items:center;justify-content:center;border:0;background:#231b2338;border-radius:14px;padding:3px;filter:drop-shadow(0 5px 6px #000b)}
+.key-option svg{width:100%;height:100%;overflow:visible;pointer-events:none}
+.key-option[data-key='0']{left:35%;top:60%}.key-option[data-key='1']{left:51%;top:62%}.key-option[data-key='2']{left:67%;top:62%}.key-option[data-key='3']{left:83%;top:62%}
+.scene[data-state="suspicious"] .scene-actions{bottom:11%}
+.cerberus-win{position:absolute;inset:0;z-index:50;background:#131729ed;display:flex;align-items:center;justify-content:center;animation:win-enter .7s ease}
+.cerberus-win[hidden]{display:none!important}
+.cerberus-win img{width:100%;height:100%;object-fit:contain;pointer-events:none}
+.cerberus-win button{position:absolute;z-index:51;top:2%;right:2%;width:46px;height:46px;border:1px solid #ffdfa8;border-radius:50%;background:#33233ed9;color:#fff0d4;font:26px system-ui}
+@keyframes win-enter{from{opacity:0}to{opacity:1}}
+@media(prefers-reduced-motion:reduce){.cage{animation:none}.cerberus-win{animation:none}}
 @media(max-width:900px){.scene{min-width:850px}.bone,.flying{font-size:26px}.bar{justify-content:center}.bar h1{order:-1;width:100%;text-align:center}.hint{width:100%;text-align:center}}
 @media(prefers-reduced-motion:reduce){.flying{animation-duration:.18s}.art-clever{transition:none!important}}
 </style>
@@ -108,15 +144,32 @@ button,a{font:inherit}button{cursor:pointer}button:focus-visible,a:focus-visible
 <div class="scroll" id="cerberusScroll" role="region" tabindex="0" aria-label="Игровое поле Цербера. На небольшом экране можно прокручивать вправо.">
 <section class="scene" id="cerberusScene" data-state="playing" aria-label="Трёхголовый Цербер у входа в царство Аида: две головы спят, третья голодна">
 <img class="art" src="images/hades-cerberus.avif?v=1" alt="Лада, кот, заяц и Умняшка перед Цербером у реки Стикс; две головы спят, одна бодрствует" fetchpriority="high" draggable="false">
-<img class="art art-clever" src="images/cerberus-clever.webp?v=1" alt="Хитрая голова Цербера просыпается с прищуром и круглыми очками; голодная и третья голова спят" draggable="false" loading="eager"><div class="fallback-dog" aria-hidden="true">🐺</div><div class="bone-pad" aria-hidden="true"></div>
+<img class="art art-clever" src="images/cerberus-clever.webp?v=1" alt="Хитрая голова" draggable="false" loading="eager">
+<img class="art art-suspicious" src="images/hades-cerberus-suspicious.svg" alt="Правая голова сердится; остальные спят" draggable="false">
+<div class="fallback-dog" aria-hidden="true">🐺</div><div class="bone-pad" aria-hidden="true"></div>
+<div class="rock-shade" aria-hidden="true"></div>
+<div class="party" aria-label="Лада с Ловкачом, сильным зайцем и Умняшкой">
+ <div class="ladamodel" id="cerberusLada"><img src="images/lada-cutout.webp" alt="Лада"><img data-outfit-layer hidden alt=""></div>
+ <img class="cat" src="images/blue-cat.webp" alt="Ловкач">
+ <img class="rabbit" src="images/rabbit-cutout.webp" alt="Сильный заяц">
+ <img class="monkey" src="images/monkey-cutout.webp" alt="Умняшка">
+</div>
+<div class="cage" id="cerberusCage" aria-label="Бумажные торговец и продавщица книг в запертой клетке">
+ <div class="cage-people"><img src="images/market-merchant.webp" alt="Зелёный торговец фруктами"><img src="images/bookshop-merchant.webp" alt="Бумажная продавщица книг"></div>
+ <svg class="cage-bars" viewBox="0 0 300 440" aria-hidden="true" focusable="false"><defs><linearGradient id="cg" x1="0" x2="1"><stop stop-color="#846039"/><stop offset=".4" stop-color="#f8d995"/><stop offset="1" stop-color="#947043"/></linearGradient></defs>
+ <path d="M150 -20V40M32 154Q30 45 150 35Q270 45 268 154M30 155V404H270V155" fill="none" stroke="url(#cg)" stroke-width="10"/>
+ <g class="cage-door" fill="none" stroke="url(#cg)" stroke-width="7"><path d="M30 154Q30 46 150 35Q270 46 270 154M30 155V404M75 104V404M114 65V404M151 39V404M191 65V404M230 104V404M270 155V404M30 155H270M30 404H270"/></g></svg>
+</div>
 
 <div class="bark" aria-live="polite"><span id="cerberusSpeech">Прочитай и брось косточки!</span><small class="scene-progress" id="cerberusProgress">1/4 · 0/8</small></div>
 <div id="boneField" aria-label="Косточки со слогами"></div>
 <div class="bite-vortex" aria-hidden="true"><strong>АМ!</strong></div>
+<div class="cerberus-win" id="cerberusWin" hidden><img src="images/hades-cerberus-group-hug.svg" alt="Лада, звери и освобождённые бумажные друзья обнимаются"><button type="button" id="cerberusWinClose" aria-label="Закрыть награду">×</button></div>
 <div class="scene-actions" id="cerberusActions" aria-label="Действия в игре"></div>
 <div hidden aria-hidden="true"><span id="cerberusTitle"></span><span id="cerberusGuide"></span><span id="cerberusTip"></span></div>
 </section></div>
 </main>
+<script src="wardrobe.js?v=4" defer></script>
 <script>
 (()=>{
 'use strict';
@@ -129,6 +182,12 @@ const actions=document.getElementById('cerberusActions');
 const speech=document.getElementById('cerberusSpeech');
 const tip=document.getElementById('cerberusTip');
 const pageTitle=document.getElementById('cerberusPageTitle');
+const award=document.getElementById('cerberusWin');
+const outfit=()=>window.TivvigWardrobe?.equip(document.getElementById('cerberusLada'));
+window.addEventListener('pageshow',outfit);
+window.addEventListener('tivvig-outfit-changed',outfit);
+window.addEventListener('DOMContentLoaded',outfit);
+let rewardTimer=null,showReward=false;
 const isCoop=new URLSearchParams(location.search).get('coop')==='1';
 const SAVE='tivvig_cerberus_feeding_v1';
 const SETS=[
@@ -158,11 +217,15 @@ function validate(x){
  return {round:done?4:x.round,eaten:done?[]:Array.isArray(x.eaten)?[...new Set(x.eaten.filter(n=>Number.isInteger(n)&&n>=0&&n<8))]:[],done,puzzle,placed:unique,selected:-1,solved:!!x.solved&&correct,finished:!!x.finished&&done,suspicious:!!x.suspicious&&done,keySolved:!!x.keySolved&&!!x.suspicious&&done};
 }
 if(!isCoop)try{state=validate(JSON.parse(localStorage.getItem(SAVE)||'null'))}catch{state=initial()}
+showReward=!!state.keySolved;
 function save(){if(!isCoop)try{localStorage.setItem(SAVE,JSON.stringify(state))}catch{}}
 let questionRestoreTimer=null;
 function setStatus(text){speech.textContent=text;}
 function print(){
  scene.dataset.bite='0';
+ scene.dataset.freed=state.keySolved?'yes':'no';
+ award.hidden=!showReward;
+ outfit();
  const clever=state.done&&!state.suspicious;
  scene.dataset.state=state.suspicious?'suspicious':clever?'clever':'playing';
  field.replaceChildren();
@@ -179,7 +242,7 @@ function print(){
  title.textContent='Голодная голова просит косточки';
  guide.textContent='Прочитай слог вслух и нажми на эту косточку. Цербер её поймает!';
  progress.textContent=(state.round+1)+'/4 · '+state.eaten.length+'/8 косточек';
- setStatus('Прочитай слог и брось косточку!');
+ setStatus('');
  tip.textContent='В каждом раунде прочитай и брось все восемь косточек.';
  actions.replaceChildren();
 }
@@ -231,7 +294,7 @@ function renderClever(){
  guide.textContent=p.question;
  progress.textContent='Загадка '+(state.puzzle+1)+'/3 · Осталось '+(p.total-state.placed.length)+' из '+p.total;
  tip.textContent='Перетащи косточки пальцем в нужные места. Можно также нажать на косточку, а затем на место.';
- setStatus(state.solved?'Верно! Отличный счёт.':p.question);
+ setStatus(state.solved?'✓ Верно!':p.total+' − '+p.a+' − '+p.b+' = ?');
  const zoneHtml=(zone,label,max,num)=>'<button type="button" class="math-zone math-zone-'+zone+'" data-zone="'+zone+'" id="cerberus-zone-'+zone+'" aria-label="'+label+'">'+label+'<span class="math-zone-count">'+num+' / '+max+'</span><span class="math-tokens">'+'🦴'.repeat(num)+'</span></button>';
  const board=document.createElement('div');board.className='math-board';board.id='cerberusMathBoard';
  board.innerHTML='<div class="math-ground" aria-hidden="true"></div>'+zoneHtml('a',p.labelA,p.a,a)+zoneHtml('b',p.labelB,p.b,b)+'<div class="math-label" hidden>Передвинь нужные косточки</div>';
@@ -259,18 +322,23 @@ function renderClever(){
   actions.innerHTML='<button class="action secondary" type="button" data-zone="a" id="cerberus-place-a">'+p.labelA+'</button><button class="action secondary" type="button" data-zone="b" id="cerberus-place-b">'+p.labelB+'</button>'+undo;
  }
 }
+function makeKeySvg(k){
+const len=k.length==='long'?286:k.length==='short'?206:243;
+const head=k.head==='round'?'<circle cx="55" cy="52" r="34"/><circle cx="55" cy="52" r="23" stroke-width="3"/>':k.head==='diamond'?'<path d="M55 12L95 56L55 97L15 56Z"/><path d="M55 27L79 56L55 82L31 56Z" stroke-width="3"/>':'<rect x="19" y="17" width="73" height="78" rx="9"/><rect x="32" y="30" width="47" height="52" rx="4" stroke-width="3"/>';
+return '<svg viewBox="0 0 112 310" aria-hidden="true" focusable="false"><defs><linearGradient id="golden-'+k.head+k.length+'" x2=".8" y2="1"><stop stop-color="#fff0a7"/><stop offset=".45" stop-color="#c89448"/><stop offset=".73" stop-color="#805124"/><stop offset="1" stop-color="#eab96c"/></linearGradient></defs><g fill="url(#golden-'+k.head+k.length+')" stroke="#633f25" stroke-width="6" stroke-linejoin="round">'+head+'<rect x="44" y="88" width="23" height="'+(len-88)+'" rx="8"/><path d="M44 '+(len-41)+'H86V'+(len-26)+'H65V'+(len-12)+'H86V'+len+'H44Z"/><circle cx="55" cy="128" r="6" fill="#ffe9a1" stroke-width="2"/></g>'+(k.star?'<text x="35" y="63" fill="#7c4027" font-size="44">★</text>':'')+'</svg>';
+}
 function renderSuspicious(){
  pageTitle.textContent='Цербер: подозрительная голова';
  title.textContent=state.keySolved?'Ключ найден!':'Подозрительная голова';
  guide.textContent=state.keySolved?'Верно. Этот ключ подходит к воротам.':'Выбери правильный ключ.';
  progress.textContent=state.keySolved?'1 / 1':'4 ключа';
  tip.textContent=state.keySolved?'Подозрительная голова больше не мешает.':'Подсказки короткие: не самый длинный, не круглая головка, без звезды.';
- setStatus(state.keySolved?'Правильно. Этот ключ откроет ворота!':'Не самый длинный. Головка не круглая. Без звезды.');
+ setStatus(state.keySolved?'Клетка открыта!':'Не самый длинный · не круглая головка · без звезды');
  
  KEYS.forEach((k,i)=>{
    const btn=document.createElement('button'); btn.type='button'; btn.className='key-option '+k.length; btn.dataset.key=String(i); btn.id='cerberus-key-'+i;
    btn.setAttribute('aria-label','Ключ '+(i+1));
-   btn.innerHTML='<span class="key-head '+k.head+'"></span><span class="key-shaft"></span><span class="key-teeth"></span>'+(k.star?'<span class="key-star">★</span>':'');
+   btn.innerHTML=makeKeySvg(k);
    if(state.keySolved) btn.disabled=true;
    field.appendChild(btn);
  });
@@ -279,7 +347,12 @@ function renderSuspicious(){
 function chooseKey(i){
  if(!state.suspicious||state.keySolved||busy)return;
  const key=KEYS[i]; if(!key)return;
- if(key.correct){ state.keySolved=true; save(); print(); return; }
+ if(key.correct){
+  state.keySolved=true;save();print();
+  clearTimeout(rewardTimer);
+  rewardTimer=setTimeout(()=>{showReward=true;award.hidden=false;try{window.TivvigRegistry?.unlockReward('tivvig_reward_cerberus_paper_rescue_v1')}catch{}},1600);
+  return;
+ }
  busy=true; scene.dataset.bite='1'; setStatus('ЩЁЛК! Цербер проглотил малышей!');
  clearTimeout(biteTimer); biteTimer=setTimeout(()=>{ busy=false; scene.dataset.bite='0'; print(); }, 1300);
 }
@@ -325,7 +398,7 @@ field.addEventListener('click',e=>{
 });
 actions.addEventListener('click',e=>{
  const b=e.target.closest('button');if(!b)return;
- if(b.id==='cerberusRestart'){clearTimeout(flightTimer);clearTimeout(settlingTimer);clearTimeout(biteTimer);busy=false;changingHeads=false;state=initial();save();print();return;}
+ if(b.id==='cerberusRestart'){clearTimeout(flightTimer);clearTimeout(settlingTimer);clearTimeout(biteTimer);clearTimeout(rewardTimer);showReward=false;busy=false;changingHeads=false;state=initial();save();print();return;}
  if(b.id==='cerberusToSuspicious'){state.suspicious=true;save();print();return;}
  if(b.id==='cerberusMathNext'){advanceMath();return;}
  if(b.id==='cerberusUndo'){undoMath();return;}
@@ -334,6 +407,7 @@ actions.addEventListener('click',e=>{
 });
 // Pointer drag is local input; a co-op drag is converted to a deterministic remote click.
 // Tapping the bone and a destination remains available for keyboard and all touch devices.
+document.getElementById('cerberusWinClose').addEventListener('click',()=>{showReward=false;award.hidden=true});
 field.addEventListener('pointerdown',e=>{
  const b=e.target.closest('.math-bone');if(!b||e.button!==0||!state.done||state.suspicious||changingHeads||state.solved)return;
  activeDrag={id:Number(b.dataset.mathBone),pointer:e.pointerId,x:e.clientX,y:e.clientY,moved:false,el:b};
