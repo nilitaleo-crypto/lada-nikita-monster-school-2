@@ -163,10 +163,8 @@ const words=document.getElementById("gateWords");
 const prompt=document.getElementById("passwordPrompt");
 const actions=document.getElementById("gateActions");
 const hint=document.getElementById("gateHint");
-const isCoop=new URLSearchParams(location.search).get("coop")==="1";
-const KEY="tivvig_hades_gate_open_v1";
+// Each fresh visit starts at the speaking gate. Co-op mirrors actions through the shared room.
 let entered=false;
-try{if(!isCoop&&localStorage.getItem(KEY)==="yes")entered=true}catch{}
 function outfit(){window.TivvigWardrobe?.equip(document.getElementById("hadesLada"))}
 function draw(){
  stage.dataset.step=entered?"inside":"gate";
@@ -185,10 +183,10 @@ function draw(){
  }
  outfit();
 }
-function save(){if(isCoop)return;try{localStorage.setItem(KEY,entered?"yes":"no")}catch{}}
+
 function onAction(id){
- if(id==="hadesSay"){entered=true;save();draw();}
- if(id==="hadesRepeat"){entered=false;save();draw();}
+ if(id==="hadesSay"){entered=true;draw();}
+ if(id==="hadesRepeat"){entered=false;draw();}
  if(id==="hadesHear"&&"speechSynthesis" in window){
    try{window.speechSynthesis.cancel();const speech=new SpeechSynthesisUtterance("Стой, Лада! Назови волшебный пароль, чтобы войти в Царство Аида!");speech.lang="ru-RU";speech.rate=.83;window.speechSynthesis.speak(speech)}catch{}
  }
