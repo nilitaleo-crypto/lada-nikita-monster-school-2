@@ -135,10 +135,11 @@ window.addEventListener("message",e=>{
 });
 // Convert a verified touchscreen drag into a room-authoritative click on both devices.
 window.addEventListener("tivvig:request-click",e=>{
- if(current!=="hades-cerberus.html"||replaying)return;
+ if(replaying)return;
  const selector=e.detail?.selector;
- if(typeof selector!=="string"||!/^#cerberus-route-[0-8]-(a|b)$/.test(selector))return;
- send("click",{selector});
+ if(typeof selector!=="string")return;
+ if(current==="hades-cerberus.html"&&/^#cerberus-route-[0-8]-(a|b)$/.test(selector)){send("click",{selector});return;}
+ if(current==="hades-charon.html"&&/^#charon-route-[0-7]-[0-5]$/.test(selector)){send("click",{selector});return;}
 });
 send("ready",{page:current,epoch:q.get("seed")});
 })();

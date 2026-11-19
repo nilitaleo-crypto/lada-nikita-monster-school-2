@@ -1,0 +1,184 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#171616">
+<title>Переправа Харона — память Стикса | Тиввиг</title>
+<meta name="description" content="Лада запоминает украшения на берегу Стикса и возвращает их на места, чтобы Харон перевёз друзей.">
+<style>
+:root{color-scheme:dark;--gold:#f0cb8b;--ivory:#f6ebda}
+*{box-sizing:border-box}html,body{margin:0;min-height:100%;background:#110f12}body{font:16px Georgia,'Times New Roman',serif;color:var(--ivory)}
+a,button{font:inherit}button{cursor:pointer}button:focus-visible,a:focus-visible{outline:3px solid #f3d79c;outline-offset:3px}button:disabled{cursor:default}
+main{margin:auto;max-width:1380px;padding:8px 10px 20px}
+header{display:flex;align-items:center;gap:14px;justify-content:space-between;flex-wrap:wrap;padding:3px 2px 11px}
+header h1{margin:0;font:normal clamp(19px,2.5vw,31px)/1.15 Georgia,serif;color:#f0d2a0}
+.back{display:inline-flex;align-items:center;min-height:44px;padding:8px 12px;border:1px solid #9b8167;border-radius:10px;color:#ead7b7;background:#252129;text-decoration:none}
+.counter{font:600 14px system-ui,sans-serif;color:#cab899}
+.viewport{overflow-x:auto;overscroll-behavior-x:contain;border:4px solid #826a56;border-radius:12px;background:#14181a;box-shadow:0 10px 28px #0008;-webkit-overflow-scrolling:touch}
+.scene{position:relative;width:100%;min-width:760px;aspect-ratio:450/311;isolation:isolate;overflow:hidden;background:#1e2120}
+.painting{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:0;user-select:none;pointer-events:none}
+/* Only the location of the old woman is subdued; the painting itself stays bright. */
+.bank-shadow{position:absolute;right:0;top:15%;height:85%;width:37%;z-index:1;pointer-events:none;background:linear-gradient(90deg,transparent 0%,#1a181433 18%,#19191388 45%,#1c1813b3 100%);mask-image:linear-gradient(90deg,transparent,#000 33%)}
+.party{position:absolute;right:0;top:21%;width:38%;height:70%;z-index:3;pointer-events:none;transition:transform 2.8s cubic-bezier(.33,.5,.3,1),opacity 2.2s}
+.hero{position:absolute;object-fit:contain;object-position:bottom center;max-width:none;max-height:none;filter:drop-shadow(2px 5px 5px #000b);pointer-events:none}
+.lada{left:-1%;bottom:8%;width:45%;height:88%}.cat{left:34%;bottom:4%;width:31%;height:46%}.rabbit{left:50%;bottom:5%;width:31%;height:46%}.monkey{right:0%;bottom:5%;width:29%;height:47%}
+.lada-doll{position:absolute;left:-1%;bottom:8%;width:45%;height:88%;pointer-events:none;filter:drop-shadow(2px 5px 5px #000b)}.lada-doll img{position:absolute;inset:0;width:100%;height:100%;object-fit:contain}.lada-doll [hidden]{display:none!important}
+.scene[data-phase="boarding"] .party{transform:translate(-128%,4%) scale(.75);opacity:.3}
+.bubble{position:absolute;left:3.5%;top:4%;max-width:32%;min-width:150px;z-index:17;pointer-events:none;padding:8px 12px;border:1px solid #d9bb8677;border-radius:15px 16px 14px 4px;background:#1d1c20c9;backdrop-filter:blur(3px);box-shadow:0 4px 11px #0006;text-shadow:0 2px 4px #000;color:#f8eed6;font:normal clamp(16px,2.2vw,26px)/1.28 Georgia,serif}
+.bubble small{display:block;margin-top:5px;font:600 12px system-ui,sans-serif;color:#d9be8e}
+.slot{position:absolute;width:11%;height:12%;z-index:9;border:2px dashed #e5cb8970;border-radius:45%;background:radial-gradient(ellipse,#c5a87222,#e2c99a06 78%,transparent);display:flex;align-items:center;justify-content:center;touch-action:manipulation;padding:0;transition:filter .2s}
+.slot[data-pos="0"]{left:28%;top:54%}.slot[data-pos="1"]{left:41%;top:54%}.slot[data-pos="2"]{left:54%;top:54%}.slot[data-pos="3"]{left:28%;top:69%}.slot[data-pos="4"]{left:41%;top:69%}.slot[data-pos="5"]{left:54%;top:69%}
+.slot:focus-visible{z-index:17}.slot.matched{border-color:#bee6d255;background:#38765735}.slot.matched::after{content:'✓';position:absolute;right:4%;bottom:0;font:bold 22px system-ui,sans-serif;color:#e1f4c5;text-shadow:0 1px 6px #14171b}
+.jewel{display:block;width:100%;height:100%;background-image:url('images/charon-jewels.webp?v=1');background-repeat:no-repeat;background-size:800% 100%;background-position:var(--offset) center;filter:drop-shadow(0 2px 3px #0009);pointer-events:none}
+.slot .jewel{width:95%;height:95%}.slot.ghost .jewel{filter:grayscale(1) brightness(.2) opacity(.48);transition:filter .23s}.slot.matched .jewel{animation:placed .28s ease-out}
+@keyframes placed{0%{transform:scale(.7)}85%{transform:scale(1.13)}100%{transform:scale(1)}}
+.scene[data-phase="watch"] .slot{border-color:#eed4a629;background:transparent;pointer-events:none}
+.scene[data-phase="watch"] .slot .jewel{filter:drop-shadow(0 3px 5px #000a)}
+.mist{position:absolute;z-index:11;left:22%;top:49%;width:47%;height:39%;border-radius:50%;background:radial-gradient(ellipse,#e4e0d4c2 0%,#babfc595 28%,#dbe3d22e 67%,transparent 84%);pointer-events:none;opacity:0;filter:blur(22px)}
+.mist.active{animation:styx-mist 1.75s ease-in-out forwards}
+@keyframes styx-mist{0%{opacity:0;transform:translateX(-14%)}38%,64%{opacity:.94;transform:translateX(4%)}100%{opacity:0;transform:translateX(20%)}}
+.tray{position:absolute;z-index:19;left:19%;bottom:1.1%;width:61%;height:14%;min-height:73px;display:flex;justify-content:center;align-items:center;gap:clamp(4px,1.2vw,13px);padding:3px 7px;border-top:2px solid #d5b78294;border-radius:30% 30% 12px 12px;background:linear-gradient(#2c282464,#1a1a1d9c);box-shadow:0 8px 15px #0008}
+.tray:empty{display:none}.tray-item{display:flex;align-items:center;justify-content:center;flex:0 1 16%;min-width:59px;max-width:115px;height:95%;background:radial-gradient(ellipse,#ebd1a12b,transparent 75%);border:1px solid #e5d2a458;border-radius:12px;touch-action:none;user-select:none;padding:3px;filter:drop-shadow(0 1px 4px #000a)}
+.tray-item.selected{border-color:#c9f0d7;box-shadow:0 0 0 2px #c9f0d7aa;background:#304a45af}.tray-item.wrong{animation:wrong .3s ease}
+@keyframes wrong{0%,100%{transform:translateX(0)}25%{transform:translateX(-6px)}65%{transform:translateX(6px)}}
+.drag-copy{position:fixed;z-index:2147483000;width:90px;height:90px;border-radius:14px;pointer-events:none;filter:drop-shadow(0 6px 8px #000a);transform:translate(-50%,-50%);background:radial-gradient(circle,#473727bb,transparent)}
+.routes{position:absolute;width:1px;height:1px;opacity:0;left:-15px;top:-15px;pointer-events:none}
+.scene-actions{position:absolute;right:4%;bottom:2%;z-index:21;display:flex;gap:6px}
+.action{min-height:45px;min-width:118px;padding:8px 13px;border:1px solid #d5b87b;border-radius:14px;background:linear-gradient(#e8d3a8,#cda86d);color:#302315;font:bold 18px Georgia,serif;box-shadow:0 3px 7px #0007}
+.scene-actions:empty{display:none}
+.scene[data-phase="boarding"] .bubble{background:#22343ab3}
+@media(max-width:840px){.viewport{border-width:3px}.scene{min-width:760px}.bubble{font-size:18px}.counter{display:none}.tray-item{min-width:59px}.scene-actions{bottom:1.4%}}
+@media(prefers-reduced-motion:reduce){.mist.active{animation-duration:.12s}.slot.matched .jewel{animation:none}.tray-item.wrong{animation:none}.scene[data-phase="boarding"] .party{transition:none}}
+</style>
+</head>
+<body>
+<main>
+<header><a class="back" href="hades-cerberus.html">← Цербер</a><h1>Переправа Харона</h1><span class="counter" id="roundCounter">Память Стикса · 1/3</span></header>
+<div class="viewport" id="viewport" role="region" tabindex="0" aria-label="Берег реки Стикс. Лодка Харона и украшения. На маленьком экране можно прокрутить поле вправо.">
+<section class="scene" id="charonScene" data-phase="watch" aria-label="Харон ждёт в лодке; Лада и друзья на берегу Стикса">
+<img class="painting" src="images/charon-river.webp?v=1" alt="Живописная переправа через реку Стикс: Харон в лодке среди тёмного леса" draggable="false" fetchpriority="high">
+<div class="bank-shadow" aria-hidden="true"></div>
+<div class="party" id="charonParty" aria-hidden="true">
+<div class="lada-doll" id="charonLada"><img src="images/lada-cutout.webp" alt="" draggable="false"><img data-outfit-layer hidden alt="" draggable="false"></div>
+<img class="hero cat" src="images/blue-cat.webp" alt="" draggable="false"><img class="hero rabbit" src="images/rabbit-cutout.webp" alt="" draggable="false"><img class="hero monkey" src="images/monkey-cutout.webp" alt="" draggable="false">
+</div>
+<div class="bubble" aria-live="polite"><span id="message">Запомни украшения!</span><small id="bubbleProgress">1/3 · 4 предмета</small></div>
+<div id="slotLayer"></div><div class="mist" id="mist" aria-hidden="true"></div>
+<div class="tray" id="tray" aria-label="Украшения для возвращения на места"></div>
+<div class="scene-actions" id="actions"></div>
+<div class="routes" id="routes" aria-hidden="true"></div>
+</section></div>
+</main>
+<script src="wardrobe.js?v=4" defer></script>
+<script>
+(()=>{
+'use strict';
+const rounds=[[2,0,3,4],[6,1,5,0,7],[7,2,6,3,4,1]];
+const names=['розовые серьги','часы','синее кольцо','чёрные серьги','коричневый браслет','синее ожерелье','цветочные серьги','чёрная подвеска'];
+const SAVE='tivvig_charon_memory_v1';
+const coop=new URLSearchParams(location.search).get('coop')==='1';
+const scene=document.getElementById('charonScene'), slots=document.getElementById('slotLayer'),tray=document.getElementById('tray'),actions=document.getElementById('actions'),msg=document.getElementById('message'),progress=document.getElementById('bubbleProgress'),mist=document.getElementById('mist'),routes=document.getElementById('routes');
+const init=()=>({round:0,phase:'watch',placed:[],selected:null});
+let state=init(),watchTimer=null,mistTimer=null,noticeTimer=null,drag=null,suppressNextClick=false;
+function valid(x){
+ if(!x||!Number.isInteger(x.round)||x.round<0||x.round>2)return init();
+ const set=rounds[x.round];const phase=['watch','recall','solved','boarding'].includes(x.phase)?x.phase:'watch';
+ const placed=Array.isArray(x.placed)?set.map((item,i)=>x.placed[i]===item?item:null):[];
+ return {round:x.round,phase,placed,selected:null};
+}
+if(!coop)try{state=valid(JSON.parse(localStorage.getItem(SAVE)||'null'))}catch{}
+function save(){if(!coop)try{localStorage.setItem(SAVE,JSON.stringify(state))}catch{}}
+function offset(i){return (i*100/7)+'%'}
+function itemMarkup(i){const span=document.createElement('span');span.className='jewel';span.style.setProperty('--offset',offset(i));return span;}
+function isFilled(i){return state.placed[i]===rounds[state.round][i]}
+function setMessage(t){msg.textContent=t}
+function getOrder(set){const a=[...set].reverse();a.push(a.shift());return a}
+function repaint(){
+ scene.dataset.phase=state.phase;
+ const set=rounds[state.round];const showing=state.phase==='watch';const filled=state.placed.filter(x=>x!==null&&x!==undefined).length;
+ document.getElementById('roundCounter').textContent='Память Стикса · '+(state.round+1)+'/3';
+ slots.replaceChildren();tray.replaceChildren();actions.replaceChildren();routes.replaceChildren();
+ for(let pos=0;pos<set.length;pos++){
+  const slot=document.createElement('button');slot.type='button';slot.className='slot';slot.dataset.pos=String(pos);slot.id='charon-slot-'+pos;
+  slot.setAttribute('aria-label','Место '+(pos+1)+(isFilled(pos)?', украшение возвращено':''));
+  if(showing||isFilled(pos)){slot.classList.add(isFilled(pos)?'matched':'memory');slot.appendChild(itemMarkup(set[pos]));}
+  else{slot.classList.add('ghost');slot.appendChild(itemMarkup(set[pos]));}
+  if(showing||isFilled(pos)||state.phase==='solved'||state.phase==='boarding')slot.disabled=true;
+  slots.appendChild(slot);
+ }
+ if(state.phase==='recall'){
+  const remaining=getOrder(set).filter(id=>!state.placed.includes(id));
+  for(const id of remaining){const btn=document.createElement('button');btn.type='button';btn.className='tray-item'+(state.selected===id?' selected':'');btn.id='charon-tray-'+id;btn.dataset.item=String(id);btn.setAttribute('aria-label',names[id]+', выбрать или перетащить');btn.appendChild(itemMarkup(id));tray.appendChild(btn);}
+  // Hidden deterministic action destinations for cooperative touchscreen drags.
+  for(const item of set)for(let pos=0;pos<set.length;pos++){
+   const r=document.createElement('button');r.type='button';r.id='charon-route-'+item+'-'+pos;r.dataset.routeItem=String(item);r.dataset.routePos=String(pos);r.tabIndex=-1;r.setAttribute('aria-label','Переместить украшение');routes.appendChild(r);
+  }
+ }
+ if(showing){setMessage('Запомни украшения!');progress.textContent=(state.round+1)+'/3 · '+set.length+' предмета';}
+ if(state.phase==='recall'){setMessage('Верни украшения!');progress.textContent=(state.round+1)+'/3 · '+filled+'/'+set.length;}
+ if(state.phase==='solved'){
+  setMessage(state.round===2?'Память крепка!':'Верно!');progress.textContent=(state.round+1)+'/3 · '+set.length+'/'+set.length;
+  const next=document.createElement('button');next.type='button';next.id='charonNext';next.className='action';next.textContent=state.round===2?'В лодку →':'Дальше →';actions.appendChild(next);
+ }
+ if(state.phase==='boarding') {setMessage('Харон: «Садитесь!»');progress.textContent='Переправа начинается';}
+ window.TivvigWardrobe?.equip(document.getElementById('charonLada'));
+}
+function startWatch(){clearTimeout(watchTimer);clearTimeout(mistTimer);mist.classList.remove('active');state.phase='watch';state.placed=[];state.selected=null;save();repaint();watchTimer=setTimeout(()=>{
+  if(state.phase!=='watch')return;
+  mist.classList.remove('active');void mist.offsetWidth;mist.classList.add('active');
+  mistTimer=setTimeout(()=>{if(state.phase!=='watch')return;state.phase='recall';save();repaint();},800);
+},state.round===0?5400:state.round===1?6500:7600);
+}
+function select(id){if(state.phase!=='recall'||!rounds[state.round].includes(id)||state.placed.includes(id))return;state.selected=id;repaint();}
+function place(id,pos){
+ if(state.phase!=='recall'||!Number.isInteger(id)||!Number.isInteger(pos))return;
+ const set=rounds[state.round];if(!set.includes(id)||pos<0||pos>=set.length||isFilled(pos)||state.placed.includes(id))return;
+ if(set[pos]!==id){
+  setMessage('Не это!');const element=document.getElementById('charon-tray-'+id);element?.classList.add('wrong');
+  clearTimeout(noticeTimer);noticeTimer=setTimeout(()=>{if(state.phase==='recall')setMessage('Верни украшения!')},850);return;
+ }
+ state.placed[pos]=id;state.selected=null;
+ if(set.every((x,i)=>state.placed[i]===x))state.phase='solved';
+ save();repaint();
+}
+function next(){if(state.phase!=='solved')return;
+ if(state.round===2){state.phase='boarding';save();repaint();return;}
+ state.round++;startWatch();}
+function reset(){clearTimeout(watchTimer);clearTimeout(mistTimer);clearTimeout(noticeTimer);state=init();startWatch();}
+tray.addEventListener('click',e=>{const el=e.target.closest('[data-item]');if(el)select(Number(el.dataset.item));});
+slots.addEventListener('click',e=>{const el=e.target.closest('[data-pos]');if(el&&state.selected!==null)place(state.selected,Number(el.dataset.pos));});
+routes.addEventListener('click',e=>{const el=e.target.closest('[data-route-item]');if(el)place(Number(el.dataset.routeItem),Number(el.dataset.routePos));});
+actions.addEventListener('click',e=>{if(e.target.closest('#charonNext'))next();});
+// Hybrid drag-and-drop: pointer on touchscreen, click-select fallback for keyboard and mouse.
+tray.addEventListener('pointerdown',e=>{
+ const b=e.target.closest('[data-item]');if(!b||state.phase!=='recall'||(e.pointerType==='mouse'&&e.button!==0))return;
+ drag={id:Number(b.dataset.item),pointer:e.pointerId,startX:e.clientX,startY:e.clientY,moved:false,copy:null};
+ try{b.setPointerCapture(e.pointerId)}catch{}
+});
+tray.addEventListener('pointermove',e=>{
+ if(!drag||drag.pointer!==e.pointerId)return;
+ const dx=e.clientX-drag.startX,dy=e.clientY-drag.startY;if(Math.hypot(dx,dy)>9)drag.moved=true;
+ if(!drag.moved)return;e.preventDefault();
+ if(!drag.copy){const copy=document.createElement('div');copy.className='drag-copy';copy.appendChild(itemMarkup(drag.id));document.body.appendChild(copy);drag.copy=copy;}
+ drag.copy.style.left=e.clientX+'px';drag.copy.style.top=e.clientY+'px';
+});
+function endDrag(e){
+ if(!drag||drag.pointer!==e.pointerId)return;const d=drag;drag=null;d.copy?.remove();if(!d.moved)return;
+ suppressNextClick=true;
+ const target=[...slots.querySelectorAll('.slot:not(:disabled)')].find(el=>{const r=el.getBoundingClientRect();return e.clientX>=r.left-15&&e.clientX<=r.right+15&&e.clientY>=r.top-15&&e.clientY<=r.bottom+15;});
+ if(!target)return;const pos=Number(target.dataset.pos);
+ if(coop)window.dispatchEvent(new CustomEvent('tivvig:request-click',{detail:{selector:'#charon-route-'+d.id+'-'+pos}}));
+ else place(d.id,pos);
+}
+tray.addEventListener('pointerup',endDrag);
+tray.addEventListener('pointercancel',e=>{if(drag?.pointer===e.pointerId){drag.copy?.remove();drag=null;}});
+document.addEventListener('click',e=>{if(!suppressNextClick)return;if(e.target.closest('.tray-item')){e.preventDefault();e.stopImmediatePropagation();}suppressNextClick=false;},true);
+window.addEventListener('tivvig-outfit-changed',()=>window.TivvigWardrobe?.equip(document.getElementById('charonLada')));
+window.addEventListener('tivvig-inventory-changed',()=>window.TivvigWardrobe?.equip(document.getElementById('charonLada')));
+window.TivvigCharonDebug=Object.freeze({state:()=>JSON.parse(JSON.stringify(state)),startWatch,forceRecall:()=>{clearTimeout(watchTimer);clearTimeout(mistTimer);state.phase='recall';save();repaint()},select,place,next,reset});
+if(state.phase==='watch')startWatch();else repaint();
+})();
+</script>
+<script src="game-runtime.js?v=5" defer></script>
+</body></html>

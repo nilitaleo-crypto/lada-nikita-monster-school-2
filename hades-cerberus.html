@@ -136,6 +136,7 @@ button,a{font:inherit}button{cursor:pointer}button:focus-visible,a:focus-visible
 @media(prefers-reduced-motion:reduce){.cage{animation:none}.cerberus-win{animation:none}}
 @media(max-width:900px){.scene{min-width:850px}.bone,.flying{font-size:26px}.bar{justify-content:center}.bar h1{order:-1;width:100%;text-align:center}.hint{width:100%;text-align:center}}
 @media(prefers-reduced-motion:reduce){.flying{animation-duration:.18s}.art-clever{transition:none!important}}
+.cerberus-charon-next{position:absolute;left:50%;bottom:3%;transform:translateX(-50%);z-index:26;display:flex;align-items:center;justify-content:center;min-height:46px;min-width:165px;padding:8px 17px;border:2px solid #f0d4a0;border-radius:15px;background:#2a2b37e8;color:#f8e3b5;font:700 19px Georgia,serif;text-decoration:none;box-shadow:0 6px 14px #0009}
 </style>
 </head>
 <body>
@@ -164,7 +165,7 @@ button,a{font:inherit}button{cursor:pointer}button:focus-visible,a:focus-visible
 <div class="bark" aria-live="polite"><span id="cerberusSpeech">Прочитай и брось косточки!</span><small class="scene-progress" id="cerberusProgress">1/4 · 0/8</small></div>
 <div id="boneField" aria-label="Косточки со слогами"></div>
 <div class="bite-vortex" aria-hidden="true"><strong>АМ!</strong></div>
-<div class="cerberus-win" id="cerberusWin" hidden><img src="images/hades-cerberus-group-hug.svg" alt="Лада, звери и освобождённые бумажные друзья обнимаются"><button type="button" id="cerberusWinClose" aria-label="Закрыть награду">×</button></div>
+<div class="cerberus-win" id="cerberusWin" hidden><img src="images/hades-cerberus-group-hug.svg" alt="Лада, звери и освобождённые бумажные друзья обнимаются"><a class="cerberus-charon-next" href="hades-charon.html">⛵ К Харону →</a><button type="button" id="cerberusWinClose" aria-label="Закрыть награду">×</button></div>
 <div class="scene-actions" id="cerberusActions" aria-label="Действия в игре"></div>
 <div hidden aria-hidden="true"><span id="cerberusTitle"></span><span id="cerberusGuide"></span><span id="cerberusTip"></span></div>
 </section></div>
@@ -342,7 +343,7 @@ function renderSuspicious(){
    if(state.keySolved) btn.disabled=true;
    field.appendChild(btn);
  });
- actions.innerHTML=state.keySolved?'<button class="action secondary" id="cerberusRestart" type="button">↻ Сначала</button>':'';
+ actions.innerHTML=state.keySolved?'<a class="action" href="hades-charon.html">⛵ К Харону →</a><button class="action secondary" id="cerberusRestart" type="button">↻ Сначала</button>':'';
 }
 function chooseKey(i){
  if(!state.suspicious||state.keySolved||busy)return;
