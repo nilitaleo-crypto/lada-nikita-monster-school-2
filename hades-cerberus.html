@@ -77,6 +77,15 @@ button,a{font:inherit}button{cursor:pointer}button:focus-visible,a:focus-visible
 @keyframes cerb-bite{0%,100%{transform:translateX(0)}25%{transform:translateX(-10px)}75%{transform:translateX(10px)}}
 .bite-vortex{position:absolute;left:0;top:35%;width:39%;height:64%;z-index:20;display:flex;align-items:center;justify-content:center;background:radial-gradient(ellipse at 45% 75%,#0b111df5 14%,#171720f0 44%,#161e25cc 62%,transparent 78%);color:#ffe2b7;text-shadow:0 0 12px #000;font:bold clamp(26px,4vw,60px) Georgia,serif;opacity:0;pointer-events:none}
 .scene[data-bite='1'] .bite-vortex{animation:vortex-snap 1.3s ease-in-out forwards}
+.bite-vortex strong{position:relative;z-index:4;font:inherit}
+.bite-vortex::before,.bite-vortex::after{content:'';position:absolute;left:5%;right:5%;height:40%;z-index:3;background:linear-gradient(160deg,#312227,#11131e 65%);filter:drop-shadow(0 2px 9px #000c);border:3px solid #664637}
+.bite-vortex::before{top:-37%;clip-path:polygon(0 0,100% 0,100% 62%,94% 100%,88% 62%,82% 100%,76% 62%,70% 100%,64% 62%,58% 100%,52% 62%,46% 100%,40% 62%,34% 100%,28% 62%,22% 100%,16% 62%,10% 100%,4% 62%,0 65%)}
+.bite-vortex::after{bottom:-37%;clip-path:polygon(0 100%,100% 100%,100% 38%,94% 0,88% 38%,82% 0,76% 38%,70% 0,64% 38%,58% 0,52% 38%,46% 0,40% 38%,34% 0,28% 38%,22% 0,16% 38%,10% 0,4% 38%,0 35%)}
+.scene[data-bite='1'] .bite-vortex::before{animation:cerb-upper 1.3s ease-in-out both}
+.scene[data-bite='1'] .bite-vortex::after{animation:cerb-lower 1.3s ease-in-out both}
+@keyframes cerb-upper{0%,100%{transform:translateY(0)}26%,62%{transform:translateY(175%)}}
+@keyframes cerb-lower{0%,100%{transform:translateY(0)}26%,62%{transform:translateY(-175%)}}
+
 @keyframes vortex-snap{0%,12%{opacity:0;transform:scale(.55)}27%,65%{opacity:1;transform:scale(1)}100%{opacity:0;transform:scale(1.2)}}
 @media(prefers-reduced-motion:reduce){.scene[data-bite='1'] .bite-vortex{animation:none;opacity:.75}}
 
@@ -103,7 +112,7 @@ button,a{font:inherit}button{cursor:pointer}button:focus-visible,a:focus-visible
 
 <div class="bark" aria-live="polite"><span id="cerberusSpeech">Прочитай и брось косточки!</span><small class="scene-progress" id="cerberusProgress">1/4 · 0/8</small></div>
 <div id="boneField" aria-label="Косточки со слогами"></div>
-<div class="bite-vortex" aria-hidden="true">АМ!</div>
+<div class="bite-vortex" aria-hidden="true"><strong>АМ!</strong></div>
 <div class="scene-actions" id="cerberusActions" aria-label="Действия в игре"></div>
 <div hidden aria-hidden="true"><span id="cerberusTitle"></span><span id="cerberusGuide"></span><span id="cerberusTip"></span></div>
 </section></div>
