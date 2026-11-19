@@ -76,7 +76,7 @@ header h1{font-weight:normal;font-size:clamp(18px,2.2vw,27px);margin:0;color:#f8
 </div>
 <img class="form-lada" src="images/lada-demogorgon-cutout.webp" alt="Лада в её костюме демогоргона" draggable="false">
 <div class="friends" aria-hidden="true"><img src="images/blue-cat.webp" alt=""><img src="images/rabbit-cutout.webp" alt=""><img src="images/monkey-cutout.webp" alt=""></div>
-<img class="fish" id="angler" src="images/angler-terrifying.webp" alt="Страшный удильщик преследует лодку" draggable="false">
+<img class="fish" id="angler" src="images/angler-terrifying.webp?v=2" alt="Страшный удильщик преследует лодку" draggable="false">
 <div class="sparkles" aria-hidden="true"></div>
 <div class="problem"><div class="equation" id="equation" aria-live="polite">4 + 3 = ?</div><div class="answers" id="answers" aria-label="Выбери ответ"></div></div>
 <div class="progress" id="progress" aria-label="Продвижение по переправе"></div>
@@ -112,7 +112,7 @@ function redraw(){
  scene.style.setProperty('--fish-x',(-Math.min(42,state.fish*2.7)*width/100)+'px');
  scene.style.setProperty('--fish-y',Math.sin(step*.9)*5+'px');
  scene.style.setProperty('--fish-scale',step>=5?'1.11':'1');
- angler.src=step>=5?'images/angler-jewelled.webp':'images/angler-terrifying.webp';
+ angler.src=step>=5?'images/angler-jewelled.webp':'images/angler-terrifying.webp?v=2';
  angler.alt=step>=5?'Удильщик превратился в металлического с красными глазами':'Страшный удильщик преследует Харона';
  angler.classList.toggle('jeweled',step>=5);
  progress.innerHTML=Array.from({length:TASKS.length},(_,i)=>'<i class="'+(i<step?'done':'')+'"></i>').join('');
