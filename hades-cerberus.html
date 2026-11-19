@@ -1,0 +1,176 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#181322">
+<meta name="description" content="Лада кормит голодную голову Цербера косточками со слогами. Четыре раунда чтения и бросков.">
+<title>Царство Аида — голодная голова Цербера | Тиввиг</title>
+<style>
+:root{color-scheme:dark;--cream:#fff1d2;--gold:#e5bb79;--azure:#75e8ff}
+*{box-sizing:border-box}html,body{margin:0;min-height:100%;background:#10121f}
+body{font-family:Georgia,'Times New Roman',serif;color:var(--cream);background:radial-gradient(ellipse at top,#393149,#111523 65%)}
+button,a{font:inherit}button{cursor:pointer}button:focus-visible,a:focus-visible{outline:4px solid #fce5a3;outline-offset:3px}
+[hidden]{display:none!important}
+.world{max-width:1500px;margin:0 auto;padding:9px clamp(8px,2vw,22px) 20px}
+.bar{display:flex;align-items:center;gap:12px;flex-wrap:wrap;justify-content:space-between;margin-bottom:9px}
+.bar h1{font-size:clamp(21px,2.6vw,34px);font-weight:normal;color:var(--gold);margin:0}
+.back{min-height:44px;border-radius:10px;background:#302b35;border:1px solid #a58866;padding:10px 13px;color:#fff0d1;text-decoration:none}
+.hint{font:14px system-ui,sans-serif;color:#f9dba7}
+.scroll{width:min(100%,clamp(850px,calc((100dvh - 265px)*1.3333),1200px));margin-inline:auto;overflow-x:auto;border-radius:12px;border:5px ridge #967a58;background:#18212c;box-shadow:0 10px 24px #0009;overscroll-behavior-x:contain;-webkit-overflow-scrolling:touch}
+.scene{width:100%;min-width:850px;aspect-ratio:1448/1086;position:relative;overflow:hidden;isolation:isolate;background:radial-gradient(circle at 70% 31%,#644039,#212530 52%,#101823)}
+.art{display:block;position:absolute;inset:0;width:100%;height:100%;object-fit:fill;pointer-events:none;user-select:none;-webkit-user-drag:none}
+.fallback-dog{display:none;position:absolute;right:8%;top:15%;font-size:180px;opacity:.45;z-index:0;pointer-events:none}
+.scene::before{content:'';position:absolute;inset:0;background:linear-gradient(to top,#170f197a,transparent 43%,#060e1b20);z-index:1;pointer-events:none}
+/* The printed bones in the illustration are decorative; these eight real, independently readable bones are the game pieces. */
+.bone-pad{position:absolute;left:34%;top:49%;width:64%;height:40%;border-radius:42% 23% 12% 17%;background:radial-gradient(ellipse at 50% 55%,#312a25a8 0%,#32282384 53%,transparent 76%);z-index:2;pointer-events:none}
+.bone{position:absolute;z-index:6;width:11%;height:6.2%;min-height:42px;border:0;background:transparent;color:#412a21;display:flex;align-items:center;justify-content:center;font:900 clamp(18px,2.25vw,33px)/1 system-ui,sans-serif;letter-spacing:.035em;text-shadow:0 1px #ffe6ba;filter:drop-shadow(0 5px 3px #100d10b5);touch-action:manipulation;transition:filter .18s,scale .18s;isolation:isolate}
+.bone::before{content:'';position:absolute;inset:4% 14%;z-index:-1;background:linear-gradient(160deg,#fff1cf 3%,#e8c998 55%,#c18d5f 100%);border:2px solid #a77043;border-radius:32% / 46%;box-shadow:inset 0 2px 3px #fff9e5a8}
+.bone::after{content:'';position:absolute;inset:-5% -4%;z-index:-2;background:radial-gradient(circle at 12% 20%,#f0dbb2 0 16%,transparent 17%),radial-gradient(circle at 12% 80%,#ead0a4 0 16%,transparent 17%),radial-gradient(circle at 88% 20%,#efdab4 0 16%,transparent 17%),radial-gradient(circle at 88% 80%,#dfbd8f 0 16%,transparent 17%)}
+.bone:hover,.bone:focus-visible{scale:1.1;filter:drop-shadow(0 0 12px #ffe18d)}
+.bone[disabled]{opacity:.28;filter:grayscale(.65);scale:.88;pointer-events:none}
+.bone.busy{visibility:hidden}
+.bone[data-slot="0"]{left:40%;top:52%;rotate:-5deg}.bone[data-slot="1"]{left:55%;top:51%;rotate:4deg}.bone[data-slot="2"]{left:70%;top:52%;rotate:-4deg}.bone[data-slot="3"]{left:85%;top:54%;rotate:4deg}
+.bone[data-slot="4"]{left:43%;top:65%;rotate:5deg}.bone[data-slot="5"]{left:58%;top:66%;rotate:-6deg}.bone[data-slot="6"]{left:74%;top:66%;rotate:6deg}.bone[data-slot="7"]{left:88%;top:70%;rotate:-5deg}
+.flying{position:absolute;z-index:12;width:11%;height:6.2%;min-height:42px;display:flex;align-items:center;justify-content:center;color:#4e2b13;font:900 clamp(18px,2.25vw,33px)/1 system-ui,sans-serif;pointer-events:none;filter:drop-shadow(0 0 9px #ffca59);isolation:isolate;animation:bone-fly .95s cubic-bezier(.28,.22,.3,1) forwards}
+.flying::before{content:'';position:absolute;inset:4% 12%;z-index:-1;border:2px solid #b98d53;border-radius:35%;background:linear-gradient(#fff2cf,#d9ad74)}
+.flying::after{content:'✦ ✧ ✦';position:absolute;top:-38%;left:10%;color:#ffe59a;font-size:26px;text-shadow:0 0 12px #ffd170}
+@keyframes bone-fly{0%{transform:translate(0,0) rotate(0deg) scale(1)}48%{transform:translate(var(--mid-x),var(--mid-y)) rotate(16deg) scale(.84)}100%{transform:translate(var(--end-x),var(--end-y)) rotate(360deg) scale(.30);opacity:0}}
+.sleep{position:absolute;z-index:4;left:55%;top:17%;width:17%;height:9%;pointer-events:none;opacity:0;transition:opacity 1.3s}
+.sleep::before,.sleep::after{content:'';position:absolute;top:25%;width:30%;height:29%;border-radius:50% / 65%;background:linear-gradient(180deg,#40312d,#1c1719);border-top:4px solid #685044;box-shadow:0 3px 3px #120d10a9,0 4px 10px #0a0c11b8;transform:rotate(10deg)}
+.sleep::before{left:8%}.sleep::after{right:10%;transform:rotate(-8deg)}
+.scene[data-state="done"] .sleep{opacity:1}
+.zzz{position:absolute;z-index:8;left:61%;top:7%;color:#eff8ff;font:bold 44px Georgia,serif;text-shadow:0 0 13px #80ddff;pointer-events:none;opacity:0;transform:translateY(20px)}
+.scene[data-state="done"] .zzz{opacity:1;animation:zz-move 2.5s ease-in-out infinite alternate}
+@keyframes zz-move{to{transform:translate(4px,-13px);opacity:.45}}
+@keyframes wake{50%{opacity:.78;transform:translateY(-5px)}}
+.bark{position:absolute;z-index:5;left:51%;top:4%;max-width:38%;border:2px solid #78cce4;border-radius:15px;background:#101e30d9;color:#f9eecc;padding:9px 13px;text-align:center;font-size:clamp(14px,1.55vw,24px);line-height:1.22;box-shadow:0 5px 15px #0008;pointer-events:none}
+.stage-notice{max-width:1200px;margin-inline:auto;display:flex;flex-direction:column;gap:9px;margin-top:11px;border:2px ridge #b7976a;border-radius:13px;background:linear-gradient(160deg,#2c2a34,#151c2d);padding:13px 15px;text-align:center}
+.stage-notice h2{color:#f1ce89;font-size:clamp(22px,2.6vw,34px);font-weight:normal;margin:0}.stage-notice p{font-size:clamp(16px,1.8vw,23px);margin:0;line-height:1.36}
+.stage-notice small{color:#bee2e0;font:14px/1.35 system-ui,sans-serif}
+.count{color:#aef0f5;font-weight:bold}.buttons{display:flex;gap:10px;justify-content:center;flex-wrap:wrap}
+.action{border:2px solid #c39a5b;border-radius:11px;padding:11px 18px;min-height:48px;min-width:190px;background:linear-gradient(#ffebbc,#d4ae6e);color:#31271e;font-size:clamp(17px,1.7vw,22px);font-weight:bold;text-decoration:none}
+.action.secondary{background:#343b49;color:#f7e6c4}
+.action[disabled]{opacity:.55;cursor:wait}
+@media(max-width:900px){.scene{min-width:850px}.bone,.flying{font-size:26px}.bar{justify-content:center}.bar h1{order:-1;width:100%;text-align:center}.hint{width:100%;text-align:center}}
+@media(prefers-reduced-motion:reduce){.flying{animation-duration:.18s}.zzz{animation:none!important}.sleep{transition:none!important}}
+</style>
+</head>
+<body>
+<main class="world">
+<header class="bar"><a class="back" href="hades-gate.html">← К вратам Аида</a><h1>Цербер: голодная голова</h1><span class="hint">Читай слог — бросай косточку!</span></header>
+<div class="scroll" id="cerberusScroll" role="region" tabindex="0" aria-label="Игровое поле Цербера. На небольшом экране можно прокручивать вправо.">
+<section class="scene" id="cerberusScene" data-state="playing" aria-label="Трёхголовый Цербер у входа в царство Аида: две головы спят, третья голодна">
+<img class="art" src="images/hades-cerberus.avif?v=1" alt="Лада, кот, заяц и Умняшка перед Цербером у реки Стикс; две головы спят, одна бодрствует" fetchpriority="high" draggable="false">
+<div class="fallback-dog" aria-hidden="true">🐺</div><div class="bone-pad" aria-hidden="true"></div>
+<div class="sleep" aria-hidden="true"></div><span class="zzz" aria-hidden="true">Z z z</span>
+<div class="bark" id="cerberusSpeech">Р-р-р! Я голоден! Прочитай слог на косточке и бросай!</div>
+<div id="boneField" aria-label="Косточки со слогами"></div>
+</section></div>
+<section class="stage-notice" aria-live="polite">
+<h2 id="cerberusTitle">Накорми голодную голову</h2>
+<p id="cerberusGuide">Прочитай слог вслух и нажми на косточку, чтобы бросить её Церберу.</p>
+<p class="count" id="cerberusProgress">Раунд 1 / 4 · Косточки 0 / 8</p>
+<div class="buttons" id="cerberusActions"><a href="hades-gate.html" class="action secondary">← Вернуться к вратам</a></div>
+<small id="cerberusTip">Все косточки нужно прочитать. Голодная голова получает их по одной; две другие не просыпаются.</small>
+</section>
+</main>
+<script>
+(()=>{
+'use strict';
+const field=document.getElementById('boneField');
+const scene=document.getElementById('cerberusScene');
+const title=document.getElementById('cerberusTitle');
+const guide=document.getElementById('cerberusGuide');
+const progress=document.getElementById('cerberusProgress');
+const actions=document.getElementById('cerberusActions');
+const speech=document.getElementById('cerberusSpeech');
+const tip=document.getElementById('cerberusTip');
+const isCoop=new URLSearchParams(location.search).get('coop')==='1';
+const SAVE='tivvig_cerberus_feeding_v1';
+const SETS=[
+ ['МА','МО','МУ','МИ','МЕ','СА','СО','СУ'],
+ ['ЛА','ЛО','ЛУ','ЛИ','ЛЕ','РА','РО','РУ'],
+ ['ВА','ВО','ВУ','ВИ','ВЕ','НА','НО','НУ'],
+ ['ПА','ПО','ПУ','ПИ','ТА','ТО','ТУ','ТИ']
+];
+const allUnique=new Set(SETS.flat());
+if(allUnique.size!==32)throw Error('Каждый слог должен быть уникальным');
+const initial=()=>({round:0,eaten:[],done:false});
+let state=initial(),busy=false,flightTimer=null;
+function validate(x){
+ if(!x||!Number.isInteger(x.round)||x.round<0||x.round>4)return initial();
+ const round=Math.min(x.round,3);
+ const eaten=Array.isArray(x.eaten)?[...new Set(x.eaten.filter(n=>Number.isInteger(n)&&n>=0&&n<8))]:[];
+ return {round,eaten:x.round===4?[]:eaten,done:x.round===4||!!x.done};
+}
+if(!isCoop)try{state=validate(JSON.parse(localStorage.getItem(SAVE)||'null'))}catch{state=initial()}
+function save(){if(isCoop)return;try{localStorage.setItem(SAVE,JSON.stringify(state))}catch{}}
+function print(){
+ scene.dataset.state=state.done?'done':'playing';
+ field.replaceChildren();
+ if(state.done){
+  title.textContent='Все три головы теперь спят!';
+  guide.textContent='Лада прочитала все 32 слога и накормила голодную голову. Цербер уснул и больше не рычит.';
+  progress.textContent='4 / 4 раунда · 32 / 32 косточки';
+  speech.textContent='Хр-р-р… Z z z…';
+  tip.textContent='Первое испытание Цербера завершено. Следующие головы ждут следующей главы.';
+  actions.innerHTML='<button class="action" type="button" id="cerberusRestart">↻ Повторить игру</button><a class="action secondary" href="hades-gate.html">← К вратам</a>';
+  return;
+ }
+ const set=SETS[state.round];
+ const eaten=state.eaten;
+ for(let i=0;i<set.length;i++){
+  const btn=document.createElement('button');
+  btn.className='bone';btn.dataset.slot=String(i);btn.id='cerberus-bone-'+i;
+  btn.type='button';btn.textContent=set[i];
+  btn.setAttribute('aria-label','Прочитать '+set[i]+' и бросить косточку');
+  if(eaten.includes(i)){btn.disabled=true;btn.setAttribute('aria-label',set[i]+' уже съедено')}
+  field.appendChild(btn);
+ }
+ title.textContent='Голодная голова просит косточки';
+ guide.textContent='Прочитай любой слог вслух и нажми на эту косточку. Цербер её поймает!';
+ progress.textContent='Раунд '+(state.round+1)+' / 4 · Косточки '+eaten.length+' / '+set.length;
+ speech.textContent='Р-р-р! Дай мне ещё косточку со слогом!';
+ tip.textContent='У тебя большой выбор. В каждом раунде нужно скормить все восемь косточек.';
+ actions.innerHTML='<a class="action secondary" href="hades-gate.html">← К вратам Аида</a>';
+}
+function throwBone(i){
+ if(busy||state.done||state.eaten.includes(i)||i<0||i>=SETS[state.round].length)return;
+ const chosen=document.getElementById('cerberus-bone-'+i);
+ if(!chosen)return;
+ busy=true;
+ const r=chosen.getBoundingClientRect(),sr=scene.getBoundingClientRect();
+ const bone=document.createElement('div');bone.className='flying';bone.textContent=SETS[state.round][i];
+ const left=r.left-sr.left,top=r.top-sr.top;
+ const dx=sr.width*.63-(left+r.width*.5),dy=sr.height*.29-(top+r.height*.5);
+ bone.style.left=left+'px';bone.style.top=top+'px';
+ bone.style.setProperty('--mid-x',dx*.48+'px');bone.style.setProperty('--mid-y',(dy*.48-sr.height*.13)+'px');
+ bone.style.setProperty('--end-x',dx+'px');bone.style.setProperty('--end-y',dy+'px');
+ scene.appendChild(bone);chosen.classList.add('busy');chosen.disabled=true;
+ speech.textContent='Ам! '+SETS[state.round][i]+'! Вкусно!';
+ clearTimeout(flightTimer);
+ flightTimer=setTimeout(()=>{
+  bone.remove();state.eaten.push(i);busy=false;
+  if(state.eaten.length===SETS[state.round].length){
+   if(state.round===3){state.done=true;state.round=4;state.eaten=[];}
+   else {state.round++;state.eaten=[];}
+  }
+  save();print();
+ },1000);
+}
+field.addEventListener('click',e=>{
+ const b=e.target.closest('button[data-slot]');
+ if(!b)return;
+ throwBone(Number(b.dataset.slot));
+});
+actions.addEventListener('click',e=>{
+ if(!e.target.closest('#cerberusRestart'))return;
+ clearTimeout(flightTimer);busy=false;state=initial();save();print();
+});
+window.TivvigCerberusDebug=Object.freeze({state:()=>({round:state.round,eaten:[...state.eaten],done:state.done,busy}),totalSyllables:SETS.flat(),reset:()=>{clearTimeout(flightTimer);busy=false;state=initial();save();print()},throwBone});
+print();
+})();
+</script>
+<script src="game-runtime.js?v=5" defer></script>
+</body></html>
