@@ -28,10 +28,10 @@ jobs:
           ("orpheus-03-lament.webp","Ary Scheffer - Orpheus Mourning the Death of Eurydice, 1814.jpg","https://en.muzeo.com/sites/default/files/styles/image_moyenne_def/public/oeuvres/paintings/classical/orpheee_et_eurydice81877.jpg"),
           ("orpheus-04-descent.webp","Jan bruegel il vecchio, orfeo agli inferi, su rame, 1594, 01.jpg","https://www.meisterdrucke.pt/kunstwerke/1260px/Jan_the_Elder_Brueghel_-_Orpheus_with_a_Harp_Playing_to_Pluto_and_Persephone_in_the_Underworld_-_%28MeisterDrucke-87824%29.jpg"),
           ("orpheus-05-permission.webp","Orpheus and Eurydice by Peter Paul Rubens.jpg","https://www.greeklegendsandmyths.com/uploads/5/3/1/3/53133595/orpheus-rubens_orig.jpg"),
-          ("orpheus-06-path.webp","Jean-Baptiste-Camille Corot - Orpheus Leading Eurydice from the Underworld - 87.190 - Museum of Fine Arts.jpg","https://abcbooks.net/images/artwork/oil/184/01.jpg"),
-          ("orpheus-07-doubt.webp","Frederic Leighton-Orfeo ed Euridice-1864.jpg","https://upload.wikimedia.org/wikipedia/commons/7/7a/Frederic_Leighton-Orfeo_ed_Euridice-1864.jpg"),
+          ("orpheus-06-path.webp","Jean-Baptiste-Camille Corot - Orpheus Leading Eurydice from the Underworld - 87.190 - Museum of Fine Arts.jpg","https://www.aurlaea.com/agallery/images/orpheusleadingeurydicefromtheunderworld1861.jpg"),
+          ("orpheus-07-doubt.webp","Frederic Leighton-Orfeo ed Euridice-1864.jpg","https://live.staticflickr.com/5555/14598379969_4f93dd2a04_o.jpg"),
           ("orpheus-08-loss.webp","Orpheus And Eurydice by George Frederick Watts - George Frederick Watts - ABDAG003030.jpg","https://www.meisterdrucke.uk/kunstwerke/1260px/George_Frederick_Watts_-_Orpheus_and_Eurydice_1870-72_%28mezzotint_on_indian_paper%29_-_%28MeisterDrucke-601974%29.jpg"),
-          ("orpheus-09-elysium.webp","Maurice Denis - Orpheus and Eurydice - 68.1 - Minneapolis Institute of Arts.jpg",""),
+          ("orpheus-09-elysium.webp","Maurice Denis - Orpheus and Eurydice - 68.1 - Minneapolis Institute of Arts.jpg","https://d2w8kbdekdi1gv.cloudfront.net/eyJidWNrZXQiOiAiYXJ0ZXJhLWltYWdlcy1idWNrZXQiLCAia2V5IjogImFydHdvcmtzL2JkNWE2MDBlLTI1NWEtNDA4OC04Y2U3LWJkYjI0YmZkNGM4My9iZDVhNjAwZS0yNTVhLTQwODgtOGNlNy1iZGIyNGJmZDRjODNfZnVsbC5qcGciLCAiZWRpdHMiOiB7InJlc2l6ZSI6IHsid2lkdGgiOiAxOTIwLCAiaGVpZ2h0IjogMTkyMCwgImZpdCI6ICJpbnNpZGUifX19"),
           ]
           outdir=Path("images");outdir.mkdir(exist_ok=True)
           for out,name,backup in artworks:
@@ -39,7 +39,10 @@ jobs:
             m=hashlib.md5(safe.encode('utf-8')).hexdigest()
             media=f"https://upload.wikimedia.org/wikipedia/commons/{m[0]}/{m[:2]}/{urllib.parse.quote(safe,safe='')}"
             special=f"https://commons.wikimedia.org/wiki/Special:Redirect/file/{urllib.parse.quote(safe,safe='')}"
-            attempts=[media,special]+([backup] if backup else [])
+            attempts=[backup] if out.startswith("orpheus-06-") or out.startswith("orpheus-07-") or out.startswith("orpheus-09-") else []
+            attempts += [media,special]
+            if backup and backup not in attempts: attempts.append(backup)
+            attempts += ["https://wsrv.nl/?url="+urllib.parse.quote(media,safe="")+"&output=jpg"]
             completed=False
             for url in attempts:
               try:
