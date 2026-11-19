@@ -51,6 +51,35 @@ button:focus-visible,a:focus-visible{outline:3px solid #ffe69b;outline-offset:3p
 .counter{min-width:70px;text-align:center;font-size:clamp(15px,1.9vw,23px);font-weight:bold;color:#64452e;font-variant-numeric:tabular-nums}
 @media(max-width:650px){.top{justify-content:center}.top h1{width:100%}.shell{padding:7px}.scene{border-width:3px}.book-hotspot span{font-size:10px;padding:4px 6px}.reader{padding:3px}.reader-head{min-height:53px;padding:5px 53px 5px 8px}.reader-title{font-size:clamp(16px,4vw,22px)}.close{right:4px;top:4px;min-width:42px;min-height:42px}.book-body{padding:6px}.textleaf{padding:18px 14px;gap:14px}.textleaf h2{font-size:clamp(24px,5vw,34px)}.textleaf p{font-size:clamp(20px,4vw,28px)}.reader-controls{min-height:65px;gap:6px}.nav-btn{flex:1;min-width:0;padding:8px 5px;font-size:14px}.counter{min-width:55px}.illustration img{max-height:calc(100% - 48px)}}
 @media(max-height:450px){.reader-head{min-height:38px}.reader-controls{min-height:44px}.nav-btn{min-height:36px}.book-body{padding:4px}.textleaf{padding:10px 18px;gap:8px}.textleaf h2{font-size:21px}.textleaf p{font-size:18px;line-height:1.24}}
+
+/* Six true open-book spreads: illustration and the story visible at the same time. */
+.book-body{padding:clamp(5px,.75vw,12px);display:flex;align-items:stretch;justify-content:stretch;overflow:hidden}
+.open-pages{width:100%;height:100%;min-height:0;display:grid;grid-template-columns:1fr 1fr;position:relative;box-shadow:0 6px 22px #3d291943;border:2px solid #ab875b;border-radius:7px 16px 16px 7px;overflow:hidden;background:#fff0ce}
+.open-pages::after{content:"";z-index:2;pointer-events:none;position:absolute;left:50%;top:0;bottom:0;width:14px;transform:translateX(-50%);background:linear-gradient(90deg,#5a3d2470,#e4cba38c 40%,#6b4c3375 55%,#ead5ad5c);box-shadow:0 0 12px #4b301c2d}
+.book-left-page,.book-right-page{min-width:0;min-height:0}
+.book-left-page{display:flex;align-items:center;justify-content:center;padding:clamp(7px,1.6vw,28px);background:linear-gradient(90deg,#f3dfb9,#ffefc9 85%,#e4ca9e);overflow:hidden}
+.book-left-page .illustration{width:100%;height:100%;min-height:0;min-width:0;margin:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:7px}
+.book-left-page .illustration img{width:auto;height:auto;max-width:100%;max-height:calc(100% - 28px);object-fit:contain;flex:0 1 auto;min-height:0;box-shadow:0 5px 15px #452b1c55;background:#e9dab9;border:clamp(2px,.23vw,4px) solid #b08c60}
+.book-left-page figcaption{font-size:clamp(11px,1.14vw,15px);line-height:1.17;text-align:center;max-width:100%}
+.book-right-page{display:flex;flex-direction:column;justify-content:center;gap:clamp(12px,2.5vh,28px);padding:clamp(12px,3.1vw,62px);background:repeating-linear-gradient(0deg,transparent 0 38px,#8e74420c 39px),linear-gradient(90deg,#e4cca2,#fff2cf 8%,#ffefc7 96%);color:#503625;overflow-y:auto}
+.book-right-page .page-ornament{font-size:clamp(18px,2.5vw,29px);text-align:center;color:#a4804a}
+.book-right-page h2{font-size:clamp(24px,3.2vw,49px);font-weight:normal;line-height:1.11;margin:0;color:#6a472b}
+.book-right-page p{font-size:clamp(19px,2.23vw,35px);line-height:1.37;margin:0;color:#4b3225}
+.book-right-page .book-page-number{margin-top:auto;color:#94764c;text-align:right;font-size:clamp(11px,1vw,14px)}
+@media(max-width:680px){
+ .book-body{padding:3px}
+ .book-left-page{padding:4px}
+ .book-right-page{padding:10px 7px 7px 11px;gap:7px;justify-content:flex-start}
+ .book-right-page h2{font-size:clamp(17px,4.4vw,26px)}
+ .book-right-page p{font-size:clamp(14px,3.6vw,20px);line-height:1.31}
+ .book-right-page .page-ornament{font-size:17px}
+ .book-left-page figcaption{font-size:10px}
+ .book-left-page .illustration img{max-height:calc(100% - 27px)}
+ .open-pages::after{width:8px}
+ .book-right-page .book-page-number{font-size:10px}
+}
+@media(max-height:470px){.book-right-page{justify-content:flex-start;gap:5px;padding:8px 12px}.book-right-page h2{font-size:clamp(17px,2.4vw,26px)}.book-right-page p{font-size:clamp(13px,1.8vw,21px)}.book-right-page .page-ornament{display:none}}
+
 @media(prefers-reduced-motion:reduce){*{scroll-behavior:auto!important}}
 </style>
 </head>
@@ -68,7 +97,7 @@ button:focus-visible,a:focus-visible{outline:3px solid #ffe69b;outline-offset:3p
 <div class="book-body" id="elderBody" aria-live="polite"></div>
 <nav class="reader-controls" aria-label="Перелистывание">
 <button type="button" class="nav-btn" id="elderPrev">← Назад</button>
-<span class="counter" id="elderCounter" aria-label="Страница 1 из 12">1 / 12</span>
+<span class="counter" id="elderCounter" aria-label="Разворот 1 из 6">1 / 6</span>
 <button type="button" class="nav-btn" id="elderNext">Дальше →</button>
 </nav>
 </div>
@@ -87,19 +116,13 @@ const pictures=[
  {title:"Последний дар кузнецов",src:"images/thor-book-05.webp",original:U+"4/4c/The_third_gift_%E2%80%94_an_enormous_hammer_by_Elmer_Boyd_Smith.jpg",file:"The_third_gift_—_an_enormous_hammer_by_Elmer_Boyd_Smith.jpg",credit:"Элмер Бойд Смит, 1902",alt:"Подземные кузнецы выковывают могучий молот Мьёльнир"},
  {title:"Молот для Тора",src:"images/thor-book-06.webp",original:U+"5/50/Journeys_through_Bookland_-_a_new_and_original_plan_for_reading_applied_to_the_world%27s_best_literature_for_children_%281922%29_%2814596644918%29.jpg",file:"Journeys_through_Bookland_-_a_new_and_original_plan_for_reading_applied_to_the_world's_best_literature_for_children_(1922)_(14596644918).jpg",credit:"Донн П. Крейн, 1922",alt:"Брокк показывает богам сокровища, в том числе молот для Тора"}
 ];
-const pages=[
- {type:"cover",title:"Как гномы выковали молот Тора"},
- {type:"art",picture:0},
- {type:"text",title:"Проделка Локи",text:"Однажды хитрый Локи отрезал золотые волосы Сив, жены Тора. Тор страшно рассердился и велел ему всё исправить."},
- {type:"art",picture:1},
- {type:"text",title:"Золотые волосы",text:"Локи отправился к подземным мастерам. Они сделали новые волосы из тончайших золотых нитей. Ещё они создали чудесный корабль и волшебное копьё."},
- {type:"art",picture:2},
- {type:"text",title:"Спор с кузнецами",text:"Локи решил похвастаться сокровищами. Он поспорил с гномом Брокком: смогут ли Брокк и его брат Синдри сделать подарки ещё удивительнее?"},
- {type:"art",picture:3},
- {type:"text",title:"Муха в кузнице",text:"Синдри работал у огня, а Брокк раздувал мехи. Локи превратился в муху и стал кусать Брокка. Из-за мухи кузнец на миг остановился."},
- {type:"art",picture:4},
- {type:"text",title:"Молот с короткой ручкой",text:"Братья выковали сияющего вепря, волшебное кольцо и молот Мьёльнир. Из-за проделки Локи ручка молота вышла короткой. Но его сила была огромной!"},
- {type:"art",picture:5}
+const spreads=[
+ {picture:0,title:"Проделка Локи",text:"Однажды хитрый Локи отрезал золотые волосы Сив, жены Тора. Тор страшно рассердился и велел ему всё исправить."},
+ {picture:1,title:"Золотые волосы",text:"Локи отправился к подземным мастерам. Они сделали новые волосы из тончайших золотых нитей. Ещё они создали чудесный корабль и волшебное копьё."},
+ {picture:2,title:"Спор с кузнецами",text:"Локи решил похвастаться сокровищами. Он поспорил с гномом Брокком: смогут ли Брокк и его брат Синдри сделать подарки ещё удивительнее?"},
+ {picture:3,title:"Муха в кузнице",text:"Синдри работал у огня, а Брокк раздувал мехи. Локи превратился в муху и стал кусать Брокка. Из-за мухи кузнец на миг остановился."},
+ {picture:4,title:"Молот с короткой ручкой",text:"Братья выковали сияющего вепря, волшебное кольцо и молот Мьёльнир. Из-за проделки Локи рукоять молота вышла короткой. Но его сила была огромной!"},
+ {picture:5,title:"Дар для Тора",text:"Брокк принёс сокровища богам. Самым ценным подарком они признали молот Тора. Мьёльнир возвращался в руку хозяина и защищал Асгард от великанов."}
 ];
 const ids=id=>document.getElementById(id);
 const reader=ids("reader"),body=ids("elderBody"),head=ids("readerTitle"),count=ids("elderCounter"),previous=ids("elderPrev"),next=ids("elderNext"),trigger=ids("elderSceneBook");
@@ -113,39 +136,34 @@ function award(){
  else window.addEventListener("tivvig:registry-ready",give,{once:true});
 }
 function render(){
- const p=pages[pos];body.replaceChildren();head.textContent=p.title;
- count.textContent=(pos+1)+" / "+pages.length;
- count.setAttribute("aria-label","Страница "+(pos+1)+" из "+pages.length);
- previous.disabled=pos===0;next.disabled=pos===pages.length-1;
- next.textContent=pos===pages.length-1?"Конец легенды":"Дальше →";
- if(p.type==="cover"){
-  const cover=document.createElement("div");cover.className="cover";
-  const rune=document.createElement("div");rune.className="rune";rune.textContent="ᚦ ✦ ᛗ";
-  const title=document.createElement("h2");title.textContent=p.title;
-  const desc=document.createElement("p");desc.textContent="Северная легенда из книги Дубоборода";
-  const hint=document.createElement("p");hint.textContent="По «Младшей Эдде»";
-  cover.append(rune,title,desc,hint);body.append(cover);
- }else if(p.type==="text"){
-  const leaf=document.createElement("article");leaf.className="textleaf";
-  const title=document.createElement("h2");title.textContent=p.title;
-  const text=document.createElement("p");text.textContent=p.text;
-  leaf.append(title,text);body.append(leaf);
- }else{
-  const a=pictures[p.picture],fig=document.createElement("figure");fig.className="illustration";
-  const im=document.createElement("img");im.src=a.src;im.alt=a.alt;im.draggable=false;im.referrerPolicy="no-referrer";im.loading="eager";
-  const caption=document.createElement("figcaption");const attribution=document.createElement("a");
-  attribution.href=W+encodeURIComponent(a.file);attribution.target="_blank";attribution.rel="noopener noreferrer";
-  attribution.textContent=a.credit;caption.append(attribution);
-  im.addEventListener("error",()=>{
-   if(a.original&&!im.dataset.fallback){im.dataset.fallback="1";im.src=a.original;return;}
-   im.hidden=true;
-   const note=document.createElement("p");note.className="image-error";
-   note.textContent="Не удалось загрузить историческую иллюстрацию. Открой оригинал по ссылке ниже.";
-   fig.prepend(note);
-  });
-  fig.append(im,caption);body.append(fig);
- }
- if(pos===pages.length-1)award();
+ const p=spreads[pos],a=pictures[p.picture];
+ body.replaceChildren();head.textContent=p.title;
+ count.textContent=(pos+1)+" / "+spreads.length;
+ count.setAttribute("aria-label","Разворот "+(pos+1)+" из "+spreads.length);
+ previous.disabled=pos===0;next.disabled=pos===spreads.length-1;
+ next.textContent=pos===spreads.length-1?"Конец легенды":"Дальше →";
+ const book=document.createElement("div");book.className="open-pages";
+ const left=document.createElement("section");left.className="book-left-page";left.setAttribute("aria-label","Левая страница — иллюстрация");
+ const fig=document.createElement("figure");fig.className="illustration";
+ const im=document.createElement("img");im.src=a.src;im.alt=a.alt;im.draggable=false;im.referrerPolicy="no-referrer";im.loading="eager";
+ const caption=document.createElement("figcaption"),attribution=document.createElement("a");
+ attribution.href=W+encodeURIComponent(a.file);attribution.target="_blank";attribution.rel="noopener noreferrer";
+ attribution.textContent=a.credit;caption.append(attribution);
+ im.addEventListener("error",()=>{
+  if(a.original&&!im.dataset.fallback){im.dataset.fallback="1";im.src=a.original;return;}
+  im.hidden=true;
+  const note=document.createElement("p");note.className="image-error";note.textContent="Не удалось загрузить историческую иллюстрацию. Оригинал — по ссылке ниже.";
+  fig.prepend(note);
+ });
+ fig.append(im,caption);left.append(fig);
+ const right=document.createElement("article");right.className="book-right-page";right.setAttribute("aria-label","Правая страница — история");
+ const ornament=document.createElement("div");ornament.className="page-ornament";ornament.setAttribute("aria-hidden","true");ornament.textContent="✦";
+ const title=document.createElement("h2");title.textContent=p.title;
+ const text=document.createElement("p");text.textContent=p.text;
+ const number=document.createElement("small");number.className="book-page-number";number.textContent="Разворот "+(pos+1)+" из "+spreads.length;
+ right.append(ornament,title,text,number);
+ book.append(left,right);body.append(book);
+ if(pos===spreads.length-1)award();
 }
 function open(){
  if(opened)return;
@@ -158,7 +176,7 @@ function close(){
 }
 function move(delta){
  if(!opened)return;
- const nextPos=Math.max(0,Math.min(pages.length-1,pos+delta));
+ const nextPos=Math.max(0,Math.min(spreads.length-1,pos+delta));
  if(pos===nextPos)return;
  pos=nextPos;render();
 }
@@ -173,7 +191,7 @@ document.addEventListener("keydown",event=>{
  else if(event.key==="ArrowLeft"){event.preventDefault();move(-1)}
 });
 render();
-window.TivvigElderDebug=Object.freeze({state:()=>({opened,position:pos,total:pages.length,finished}),open,close,next:()=>move(1),previous:()=>move(-1),images:pictures.map(p=>p.src)});
+window.TivvigElderDebug=Object.freeze({state:()=>({opened,position:pos,total:spreads.length,finished}),open,close,next:()=>move(1),previous:()=>move(-1),images:pictures.map(p=>p.src)});
 })();
 </script>
 <script src="game-runtime.js?v=1" defer></script>
