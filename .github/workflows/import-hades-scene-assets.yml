@@ -21,7 +21,6 @@ jobs:
           tar -xzf .assets/hades-scene-assets.tar.gz
           python - <<'PY'
           from pathlib import Path
-          from PIL import Image
           paths=sorted(Path('images').glob('hades-*.webp'))
           assert len(paths)>=8, f'Asset transfer incomplete: {len(paths)}'
           for p in paths:print('ASSET',p,p.stat().st_size)
