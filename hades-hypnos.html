@@ -52,6 +52,17 @@ header h1{margin:0;font-weight:normal;font-size:clamp(17px,2.2vw,29px);letter-sp
 @keyframes twinkle{to{opacity:.09;transform:scale(.5)}}
 .reset{position:absolute;z-index:12;right:2%;bottom:2%;width:43px;height:43px;border:1px solid #8fa9c77a;border-radius:50%;background:#203f639e;color:#fff4cf;font-size:25px;opacity:.76;display:grid;place-items:center}
 .reset:hover{opacity:1}
+
+.story-finish{position:absolute;z-index:12;left:50%;bottom:2%;transform:translateX(-50%);min-height:45px;max-width:33%;padding:8px 15px;border:1px solid #c7dfef9c;border-radius:20px;background:linear-gradient(120deg,#496da5d9,#263d82df);color:#fff5df;text-shadow:0 2px 6px #17234b;box-shadow:0 5px 16px #0008;font:600 clamp(14px,1.5vw,20px)/1.1 Georgia,serif;white-space:nowrap}
+.story-finish:hover{background:linear-gradient(120deg,#628fbbeb,#324e92ec)}
+.reward-overlay{position:fixed;inset:0;z-index:100;display:flex;justify-content:center;align-items:center;padding:10px;background:#071226ee;backdrop-filter:blur(7px)}
+.reward-card{display:flex;flex-direction:column;align-items:center;gap:8px;max-height:98dvh;max-width:min(550px,96vw);padding:10px;border:2px solid #a9c9ec;border-radius:17px;background:#142d58;box-shadow:0 20px 50px #000d;text-align:center}
+.reward-card h2{margin:0;color:#fff3dc;font:normal clamp(18px,2.5vw,27px)/1.12 Georgia,serif}
+.reward-card img{display:block;max-width:100%;width:auto;max-height:min(78dvh,790px);object-fit:contain;border-radius:9px;box-shadow:0 8px 22px #0007}
+.reward-actions{display:flex;justify-content:center;gap:7px;flex-wrap:wrap}
+.reward-actions button,.reward-actions a{display:inline-grid;place-items:center;min-height:44px;padding:8px 13px;border:1px solid #d4c7a4;border-radius:10px;background:#e6d6ae;color:#332747;font:600 16px Georgia,serif;text-decoration:none}
+[hidden]{display:none!important}
+@media(max-width:760px){.story-finish{padding:7px 11px}.reward-card img{max-height:72dvh}}
 @media(max-width:840px){main{padding:5px}.scene-title{max-width:32%}.party{left:5%;width:48%}.item{width:8.5%;min-width:62px}.board{border-width:2px}.nav{padding:4px 8px}.scene{min-width:730px}}
 @media(prefers-reduced-motion:reduce){.hypnos-haze,.dust,.item.chosen::after{animation:none}.item,.hero,.hypnos{transition:none!important}.spark{animation-duration:.1s}}
 </style>
@@ -113,8 +124,20 @@ header h1{margin:0;font-weight:normal;font-size:clamp(17px,2.2vw,29px);letter-sp
 <button type="button" class="hero merchant" id="hypnos-friend-merchant" aria-pressed="false" aria-label="Бумажный торговец"><img src="images/market-merchant.webp" draggable="false" alt=""></button>
 <button type="button" class="hero bookseller" id="hypnos-friend-bookseller" aria-pressed="false" aria-label="Бумажная продавщица книг"><img src="images/bookshop-merchant.webp" draggable="false" alt=""></button>
 </div>
+<button type="button" class="story-finish" id="hypnosFinish">✦ Сказка готова</button>
 <button type="button" class="reset" id="hypnosReset" aria-label="Погасить сияние и начать новый сон" title="Новый сон">↻</button>
 </section>
+</div>
+<div class="reward-overlay" id="hypnosReward" role="dialog" aria-modal="true" aria-label="Награда Гипноса" hidden>
+ <div class="reward-card">
+  <h2>Гипнос снова видит сны ✨</h2>
+  <img src="images/hypnos-story-reward.webp" alt="Лада из фотографии сидит в волшебном синем саду под сияющей луной рядом с довольным крылатым Гипносом" draggable="false">
+  <div class="reward-actions">
+   <a href="collection.html">🏅 В коллекцию</a>
+   <button id="hypnosAgain" type="button">↻ Ещё сказка</button>
+   <button id="hypnosClose" type="button">Закрыть</button>
+  </div>
+ </div>
 </div>
 </main>
 <script src="wardrobe.js?v=4" defer></script>
@@ -124,6 +147,8 @@ header h1{margin:0;font-weight:normal;font-size:clamp(17px,2.2vw,29px);letter-sp
  const scene=document.getElementById('hypnosScene'),particles=document.getElementById('dreamParticles');
  const actors=[...scene.querySelectorAll('button[data-dream-item],button.hero')];
  const selected=new Set();
+ const REWARD='tivvig_reward_hypnos_story_v1';
+ const reward=document.getElementById('hypnosReward');
  function dress(){window.TivvigWardrobe?.equip(document.getElementById('hypnos-friend-lada'))}
  function update(){
    // Glows are optional visual feedback. The story has no order, score, or finish gate.
@@ -148,14 +173,33 @@ header h1{margin:0;font-weight:normal;font-size:clamp(17px,2.2vw,29px);letter-sp
    if(selected.has(b.id))selected.delete(b.id);else{selected.add(b.id);sparkle(b)}
    update();
  });
- document.getElementById('hypnosReset').addEventListener('click',()=>{selected.clear();particles.replaceChildren();update()});
+ function clearDream(){selected.clear();particles.replaceChildren();update()}
+ function showReward(){
+   try{
+     if(window.TivvigRegistry?.byReward?.[REWARD]){
+       window.TivvigRegistry.unlockReward(REWARD);
+     }else{
+       localStorage.setItem(REWARD,'unlocked');
+       window.dispatchEvent(new CustomEvent('tivvig:reward-unlocked',{detail:{key:REWARD}}));
+       window.dispatchEvent(new Event('tivvig-inventory-changed'));
+     }
+   }catch(e){console.warn('Reward persistence unavailable',e)}
+   reward.hidden=false;
+   document.getElementById('hypnosClose').focus({preventScroll:true});
+ }
+ function closeReward(){reward.hidden=true;document.getElementById('hypnosFinish').focus({preventScroll:true})}
+ document.getElementById('hypnosFinish').addEventListener('click',showReward);
+ document.getElementById('hypnosClose').addEventListener('click',closeReward);
+ document.getElementById('hypnosAgain').addEventListener('click',()=>{closeReward();clearDream()});
+ document.getElementById('hypnosReset').addEventListener('click',clearDream);
+ document.addEventListener('keydown',e=>{if(e.key==='Escape'&&!reward.hidden)closeReward()});
  window.addEventListener('tivvig-outfit-changed',dress);
  window.addEventListener('tivvig-inventory-changed',dress);
  window.addEventListener('pageshow',dress);
  for(let i=0;i<23;i++){
     const s=document.createElement('i');s.className='dust';s.style.left=((i*43+13)%97)+'%';s.style.top=((i*29+11)%83)+'%';s.style.setProperty('--duration',(2.5+(i%5)*.8)+'s');s.style.animationDelay=(-i*.35)+'s';scene.appendChild(s)
  }
- window.TivvigHypnosDebug=Object.freeze({selected:()=>[...selected],reset:()=>{document.getElementById('hypnosReset').click()},itemCount:actors.length});
+ window.TivvigHypnosDebug=Object.freeze({selected:()=>[...selected],reset:()=>{document.getElementById('hypnosReset').click()},finish:showReward,close:closeReward,itemCount:actors.length});
  update();dress();
 })();
 </script>
