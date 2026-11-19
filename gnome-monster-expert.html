@@ -1,0 +1,203 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#283b30">
+<meta name="description" content="В доме гнома Чудоведа Лада читает восемь названий чудовищ и собирает предметы для защиты деревни.">
+<title>Дом гнома Чудоведа — Тиввиг</title>
+<style>
+:root{--ink:#523721;--gold:#e1b876;--parchment:#ffedc1;--pine:#2b5043}
+*{box-sizing:border-box} html{background:#1d3028} body{margin:0;min-height:100dvh;background:radial-gradient(ellipse at 50% 4%,#536843,#1e312a 76%);font-family:Georgia,'Times New Roman',serif;color:#f7e6c7}
+button,a{font:inherit;touch-action:manipulation;-webkit-tap-highlight-color:transparent} button{cursor:pointer} button:focus-visible,a:focus-visible{outline:3px solid #ffe094;outline-offset:3px} [hidden]{display:none!important}
+.shell{width:min(100%,1510px);margin:0 auto;padding:clamp(7px,1.5vw,18px)}
+.head{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:9px;margin:0 auto 10px}
+.head h1{font-size:clamp(24px,2.85vw,39px);font-weight:normal;margin:0;line-height:1.12}.head small{font-size:clamp(13px,1.2vw,17px);color:#e8d19a}
+.back{display:inline-flex;align-items:center;justify-content:center;padding:9px 14px;min-height:45px;color:#ffedc8;background:#294b3d;border:2px solid #c4a06a;border-radius:11px;text-decoration:none;font-weight:bold}
+.scene{position:relative;width:100%;aspect-ratio:1672/941;border:5px ridge #c7a066;border-radius:13px 13px 4px 4px;overflow:hidden;background:#664b32;isolation:isolate;box-shadow:0 12px 38px #111b1499}
+.scene-art{display:block;width:100%;height:100%;object-fit:cover;user-select:none;-webkit-user-drag:none}
+.scene::after{content:'';position:absolute;inset:0;box-shadow:inset 0 0 24px #130f0b70;pointer-events:none;z-index:5}
+.scene-caption{position:absolute;z-index:3;left:64.5%;top:17%;width:30%;height:56%;padding:1%;display:flex;flex-direction:column;justify-content:center;align-items:center;gap:clamp(4px,1vw,12px);color:#65442b;text-align:center;pointer-events:none}
+.scene-caption strong{font-weight:normal;font-size:clamp(16px,2.55vw,37px);line-height:1.1}
+.scene-caption .beast{font-size:clamp(23px,5vw,64px);line-height:1.2;filter:drop-shadow(1px 2px 3px #82694b55)}
+.scene-caption .word{font:bold clamp(16px,2.75vw,42px)/1.1 Georgia,serif;letter-spacing:.045em;overflow-wrap:anywhere;max-width:100%}
+.gear-spot{position:absolute;z-index:7;left:var(--x);top:var(--y);width:clamp(44px,6vw,82px);height:clamp(44px,6vw,82px);transform:translate(-50%,-50%);background:#fbe2a930;border:3px dashed #ffe8a3;border-radius:50%;box-shadow:0 0 0 6px #fbdc7770,0 0 22px 8px #ffd077b8;opacity:1;display:grid;place-items:center}
+.gear-spot:disabled{display:none}.gear-spot:after{content:'+';font:bold 28px/1 Georgia,serif;color:#fff3c1;text-shadow:0 2px 3px #372017}
+.gear-spot:hover{background:#f7e09079}
+.lesson{background:linear-gradient(105deg,#fbe8bd,#ffefd0 52%,#e6c998);border:4px ridge #b18b57;border-top:0;border-radius:0 0 16px 16px;box-shadow:0 9px 17px #15231966;color:var(--ink);padding:clamp(11px,1.8vw,24px)}
+.intro{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;border-bottom:1px dashed #b39162;padding-bottom:11px}
+.intro strong{font-size:clamp(19px,2.3vw,30px);color:#604020;font-weight:normal}
+.intro .count{font:bold clamp(13px,1.5vw,18px)/1.2 Georgia,serif;background:#315645;color:#fdf0ca;border:2px solid #ac874e;padding:7px 12px;border-radius:40px}
+.lesson-main{display:grid;grid-template-columns:minmax(0,1fr) minmax(220px,31%);align-items:center;gap:clamp(9px,2vw,24px);padding-top:10px}
+.phrase{font-size:clamp(16px,1.7vw,23px);line-height:1.4;margin:0 0 7px;max-width:970px}
+.feedback{min-height:29px;font-size:clamp(14px,1.35vw,19px);color:#475a36;font-weight:bold;margin:8px 0}
+.feedback.warn{color:#9a4f37}
+.word-track{min-height:66px;background:#fff6dfe8;border:2px solid #c5a776;border-radius:13px;padding:10px 15px;display:flex;gap:8px;align-items:center;justify-content:center;flex-wrap:wrap;font:bold clamp(24px,3.1vw,43px)/1 Georgia,serif;letter-spacing:.03em;color:#4e3726}
+.word-track .empty{display:inline-block;min-width:clamp(42px,6vw,100px);height:34px;border-bottom:3px solid #bc9b6b;opacity:.7}
+.word-track .part{background:#ebddae;border:1px solid #c09e67;border-radius:6px;padding:4px 9px}
+.tiles{display:flex;gap:clamp(8px,1.1vw,16px);flex-wrap:wrap;justify-content:center;align-items:center;margin:12px 0 3px;min-height:70px}
+.tile{min-width:clamp(77px,11vw,145px);min-height:60px;border-radius:13px;border:3px solid #9b7648;background:linear-gradient(#fffaf0,#f2daa5);color:#4c3021;box-shadow:0 4px 0 #8b6b4790;font:bold clamp(23px,2.6vw,36px)/1 Georgia,serif;padding:8px 14px}
+.tile:hover{background:#fff2cb}.tile:disabled{display:none}
+.controls{display:flex;flex-direction:column;gap:8px;justify-content:center;align-items:stretch}
+.action{min-height:49px;padding:10px 13px;border:2px solid #a37e4f;border-radius:11px;background:#315b4e;color:#fdf0c7;font-weight:bold;font-size:clamp(16px,1.55vw,22px)}
+.action:hover{background:#477666}.action:disabled{opacity:.38;cursor:default}
+.action.secondary{background:#f8eacb;color:#64482d}.action.secondary:hover{background:#ffe2a8}
+.loot{display:flex;gap:8px;align-items:center;flex-wrap:wrap;padding:11px 0 0;border-top:1px dashed #bd9d75;margin-top:13px;font-size:clamp(14px,1.4vw,19px)}
+.loot strong{margin-right:5px}.loot .item{padding:6px 10px;border:1px solid #ba965e;border-radius:9px;background:#fff8e6;color:#523720;white-space:nowrap}
+.end{display:flex;gap:12px;align-items:center;flex-wrap:wrap;margin:10px 0;padding:14px;background:#426f55;border:2px solid #bc965e;border-radius:10px;color:#f9edcb;font-size:clamp(16px,1.5vw,21px)}
+.end a{display:inline-flex;align-items:center;justify-content:center;min-height:44px;padding:10px 14px;border:2px solid #c6a56e;border-radius:9px;background:#fff0c5;color:#523621;text-decoration:none;font-weight:bold}
+.footer-note{color:#e9d7b0;text-align:center;font-size:clamp(12px,1.2vw,16px);margin:12px}
+#gameConnection{font-size:13px;color:#ffe4af;text-align:center}
+@media(max-width:780px){.head{justify-content:center}.head h1{width:100%;text-align:center}.scene{border-width:3px}.scene-caption strong{font-size:clamp(12px,2.5vw,19px)}.scene-caption .word{font-size:clamp(12px,2.5vw,22px)}.scene-caption .beast{font-size:clamp(19px,4.5vw,34px)}.lesson-main{grid-template-columns:1fr}.controls{flex-direction:row;flex-wrap:wrap}.controls .action{flex:1 1 155px}.tile{min-height:52px}.word-track{min-height:55px}}
+@media(max-width:470px){.scene-caption{display:none}.head small{display:none}.tile{min-width:84px;font-size:24px}.lesson{padding:10px}.loot .item{font-size:13px}}
+@media(prefers-reduced-motion:reduce){*{scroll-behavior:auto!important}}
+</style>
+</head>
+<body>
+<main class="shell">
+<header class="head"><a href="gnome-village.html" class="back">← Деревня гномов</a><h1>Дом гнома Чудоведа</h1><small>Подготовка к ночной обороне</small></header>
+<section class="scene" aria-label="Уютная хижина гнома-знатока чудовищ с предметами защиты">
+ <img class="scene-art" src="images/gnome-monster-expert.webp?v=1" alt="Гном в зелёной шапке с книгой о чудовищах. В его комнате есть щит, зеркало, колокол, сеть, старые книги и таинственные предметы" width="1672" height="941" draggable="false" fetchpriority="high">
+ <div class="scene-caption"><strong id="sceneCaption">Бестиарий Чудоведа</strong><span class="beast" id="sceneBeast" aria-hidden="true">📖</span><span class="word" id="sceneWord">Чудовища и их тайны</span></div>
+ <button type="button" id="gearShield" class="gear-spot" style="--x:36%;--y:43%" aria-label="Взять щит" disabled></button>
+ <button type="button" id="gearMirror" class="gear-spot" style="--x:44.5%;--y:44%" aria-label="Взять зеркало" disabled></button>
+ <button type="button" id="gearBell" class="gear-spot" style="--x:51%;--y:50%" aria-label="Взять колокол" disabled></button>
+ <button type="button" id="gearNet" class="gear-spot" style="--x:54%;--y:69%" aria-label="Взять сеть" disabled></button>
+</section>
+<section class="lesson" aria-label="Читаем названия чудовищ по слогам">
+ <div class="intro"><strong id="lessonTitle">Чудовед: «Перед ночью изучим чудовищ!»</strong><span id="lessonCounter" class="count" aria-live="polite">Слово 1 из 8</span></div>
+ <div class="lesson-main">
+  <div><p class="phrase" id="lessonSpeech" aria-live="polite">Читай слоги слева направо. Собери название чудовища и произнеси его вслух.</p>
+   <div id="wordTrack" class="word-track" aria-label="Составленное слово" aria-live="polite"></div>
+   <div class="tiles" id="syllableTiles" aria-label="Выбери слоги по порядку">
+    <button type="button" class="tile" id="syllable0">—</button><button type="button" class="tile" id="syllable1">—</button><button type="button" class="tile" id="syllable2">—</button><button type="button" class="tile" id="syllable3">—</button>
+   </div>
+   <p class="feedback" id="lessonFeedback" role="status" aria-live="polite"></p>
+  </div>
+  <div class="controls">
+   <button type="button" class="action" id="readConfirm" hidden>📣 Прочитала вслух!</button>
+   <button type="button" class="action" id="nextMonster" hidden>Следующее чудовище →</button>
+   <button type="button" class="action secondary" id="undoSyllable">↶ Убрать слог</button>
+   <button type="button" class="action secondary" id="restartLesson">↻ Начать заново</button>
+  </div>
+ </div>
+ <div class="loot" id="loot" aria-label="Снаряжение для обороны" aria-live="polite"><strong>🎒 Снаряжение:</strong><span>Рюкзак пока пуст</span></div>
+ <div class="end" id="lessonDone" hidden><strong>✦ Лада готова к ночи!</strong><span>Восемь чудовищ изучены, четыре защитных предмета собраны.</span><a href="gnome-village.html">Вернуться к гномам →</a></div>
+</section>
+<p class="footer-note">Ты читаешь вслух, а взрослый слушает. Нажатия по слогам работают мышью и пальцем на планшете.</p>
+<p id="gameConnection" role="status" aria-live="polite"></p>
+</main>
+<script>
+(()=>{
+'use strict';
+const $=id=>document.getElementById(id);
+const monsters=[
+ {word:'ЗОМБИ',parts:['ЗОМ','БИ'],order:[1,0],icon:'🧟',note:'Зомби ходит медленно и ищет дорогу. Теперь ты знаешь его имя.'},
+ {word:'ГИДРА',parts:['ГИ','ДРА'],order:[1,0],icon:'🐉',note:'У гидры много голов. Она уже знакома Ладе по приключениям на вулкане.'},
+ {word:'МУМИЯ',parts:['МУ','МИ','Я'],order:[2,0,1],icon:'🧻',note:'Мумия закутана в длинные полосы ткани.'},
+ {word:'ВАМПИР',parts:['ВАМ','ПИР'],order:[1,0],icon:'🦇',note:'Вампир любит темноту. Фонари помогут гномам освещать деревню.'},
+ {word:'ГОЛЕМ',parts:['ГО','ЛЕМ'],order:[1,0],icon:'🪨',note:'Голем — существо из камня или глины в старинных легендах.'},
+ {word:'ЛЕШИЙ',parts:['ЛЕ','ШИЙ'],order:[1,0],icon:'🌲',note:'Леший живёт в лесу. Его легко спутать с деревом.'},
+ {word:'ТРОЛЛЬ',parts:['ТРОЛЛЬ'],order:[0],icon:'👹',note:'Тролля Лада уже встретила на мосту. В этом слове только один слог.'},
+ {word:'ДЕМОГОРГОН',parts:['ДЕ','МО','ГОР','ГОН'],order:[2,0,3,1],icon:'🌺',note:'Демогоргоны опасны для деревни. Гномы готовят защиту до наступления ночи.'}
+];
+const equipment=[
+ {id:'Shield',name:'Щит',icon:'🛡️',description:'Щит укроет гномов от ударов.'},
+ {id:'Mirror',name:'Зеркало',icon:'🪞',description:'Зеркалом можно отражать свет и подавать сигналы.'},
+ {id:'Bell',name:'Колокол',icon:'🔔',description:'Колокол поможет вовремя предупредить жителей.'},
+ {id:'Net',name:'Сеть',icon:'🕸️',description:'Сеть пригодится, чтобы задержать небольшое чудовище.'}
+];
+const reward='tivvig_reward_gnome_bestiary_v1';
+const gearStorage='tivvig_gnome_defense_supplies_v1';
+let index=0,phase='assemble',selected=[],gears=[],finished=false;
+const buttons=[$('syllable0'),$('syllable1'),$('syllable2'),$('syllable3')];
+const el=(name,cls,text)=>{const node=document.createElement(name);if(cls)node.className=cls;if(text!==undefined)node.textContent=text;return node};
+function say(text,warning=false){const feedback=$('lessonFeedback');feedback.textContent=text;feedback.classList.toggle('warn',warning)}
+function update(){
+ const m=monsters[index];
+ $('lessonCounter').textContent=(finished?'8 / 8 ✓':'Слово '+(index+1)+' из '+monsters.length);
+ const caption=$('sceneCaption'),beast=$('sceneBeast'),word=$('sceneWord');
+ caption.textContent=finished?'Секреты чудовищ изучены':'Чудовище № '+(index+1);
+ beast.textContent=m.icon;
+ word.textContent=phase==='assemble'?'Прочитай моё имя':m.word;
+ $('lessonTitle').textContent=finished?'Чудовед: «Молодец, Лада!»':'Чудовед: «Изучим новое чудовище!»';
+ const target=$('wordTrack');target.replaceChildren();
+ if(phase==='assemble'){
+  for(const indexPart of selected)target.append(el('span','part',m.parts[m.order[indexPart]]));
+  for(let i=selected.length;i<m.parts.length;i++)target.append(el('span','empty',''));
+ }else target.append(el('span','part',m.parts.join('')));
+ for(let k=0;k<buttons.length;k++){
+  const b=buttons[k],has=k<m.order.length;
+  b.hidden=!has||phase!=='assemble'||selected.includes(k);
+  b.disabled=b.hidden;
+  b.textContent=has?m.parts[m.order[k]]:'';
+  b.setAttribute('aria-label',has?'Выбрать слог '+m.parts[m.order[k]]:'Слог отсутствует');
+ }
+ $('undoSyllable').disabled=phase!=='assemble'||selected.length===0;
+ $('readConfirm').hidden=phase!=='read';
+ $('nextMonster').hidden=phase!=='ready'||finished;
+ $('nextMonster').textContent=index===monsters.length-1?'Завершить подготовку':'Следующее чудовище →';
+ for(const item of equipment){const btn=$('gear'+item.id);btn.disabled=phase!=='gear'||equipment[Math.floor(index/2)]?.id!==item.id;}
+ if(finished){$('lessonSpeech').textContent='Все восемь имён прочитаны! Четыре предмета готовы к обороне. Вернись на площадь и расскажи об этом гномам.';}
+ else if(phase==='assemble')$('lessonSpeech').textContent='Собери слоги по порядку, затем прочитай название вслух. '+(m.parts.length>1?'Сколько слогов в слове?':'Это короткое, но непростое слово.');
+ else if(phase==='read')$('lessonSpeech').textContent=m.note+' Прочитай слово крупными буквами и нажми «Прочитала вслух!»';
+ else if(phase==='gear'){$('lessonSpeech').textContent='Время собирать снаряжение! Найди '+equipment[Math.floor(index/2)].name.toLowerCase()+' в комнате Чудоведа и нажми прямо на него на картине.';}
+ else $('lessonSpeech').textContent='Отлично! Теперь продолжим изучать чудовищ.';
+ const loot=$('loot');loot.replaceChildren(el('strong','', '🎒 Снаряжение:'));
+ if(!gears.length)loot.append(el('span','', 'Рюкзак пока пуст'));
+ for(const g of gears)loot.append(el('span','item',g.icon+' '+g.name));
+ $('lessonDone').hidden=!finished;
+}
+function takeSyllable(k){
+ if(phase!=='assemble'||selected.includes(k))return;
+ const m=monsters[index];if(k>=m.parts.length)return;
+ if(m.order[k]!==selected.length){say('Этот слог пока не подходит. Вспомни, с какого звука начинается слово.',true);return;}
+ selected.push(k);
+ if(selected.length===m.parts.length){phase='read';say('Слово собрано! Теперь произнеси его вслух.');}
+ else say('Хорошо! Читай следующий слог.');
+ update();
+}
+function undo(){if(phase!=='assemble'||!selected.length)return;selected.pop();say('Убрали последний слог.');update()}
+function confirmReading(){
+ if(phase!=='read')return;
+ if(index%2===1){phase='gear';say('Прочитано два имени! Находи новый защитный предмет на картине.');}
+ else {phase='ready';say('Название прочитано! Можно продолжать.');}
+ update();
+}
+function collectGear(id){
+ if(phase!=='gear')return;
+ const need=equipment[Math.floor(index/2)];if(need.id!==id)return;
+ gears.push(need);phase='ready';say(need.icon+' '+need.name+' в рюкзаке! '+need.description);
+ if(index===monsters.length-1)complete();
+ update();
+}
+function complete(){
+ if(finished)return;finished=true;
+ try{localStorage.setItem(gearStorage,JSON.stringify({items:gears.map(x=>x.id.toLowerCase()),count:gears.length}));localStorage.setItem(reward,'unlocked')}catch{}
+ const grant=()=>{try{if(window.TivvigRegistry?.byReward?.[reward])window.TivvigRegistry.unlockReward(reward)}catch(err){console.warn('Gnome monster expert reward',err)}};
+ if(window.TivvigRegistry?.byReward?.[reward])grant();
+ else window.addEventListener('tivvig:registry-ready',grant,{once:true});
+ say('Все чудовища изучены. Снаряжение собрано, гномы смогут подготовиться к ночи!');
+}
+function advance(){
+ if(phase!=='ready'||finished)return;
+ if(index===monsters.length-1){complete();update();return;}
+ index++;selected=[];phase='assemble';say('Новое имя в книге чудовищ.');update();
+}
+function restart(){index=0;phase='assemble';selected=[];gears=[];finished=false;say('Книга открыта с самого начала.');update()}
+buttons.forEach((b,i)=>b.addEventListener('click',()=>takeSyllable(i)));
+$('undoSyllable').addEventListener('click',undo);
+$('readConfirm').addEventListener('click',confirmReading);
+$('nextMonster').addEventListener('click',advance);
+$('restartLesson').addEventListener('click',restart);
+for(const item of equipment)$('gear'+item.id).addEventListener('click',()=>collectGear(item.id));
+update();
+window.TivvigMonsterExpertDebug=Object.freeze({
+ getState:()=>({index,phase,selected:[...selected],gears:gears.map(x=>x.id),finished}),
+ words:monsters.map(x=>({word:x.word,parts:[...x.parts],order:[...x.order]})),reward
+});
+})();
+</script>
+<script src="game-runtime.js?v=1" defer></script>
+</body>
+</html>
