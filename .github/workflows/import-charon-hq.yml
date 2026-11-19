@@ -1,0 +1,73 @@
+name: Import original high-resolution Charon and Psyche painting
+on:
+  push:
+    paths:
+      - '.github/workflows/import-charon-hq.yml'
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  import-charon-hq:
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: true
+      - name: Fetch real larger reproduction, preserve scene orientation, encode WebP
+        shell: bash
+        run: |
+          python -m pip install --quiet pillow
+          python - <<'PY'
+          import io, os, urllib.parse, urllib.request, time
+          from PIL import Image, ImageOps, ImageChops, ImageStat
+          root="https://most-famous-paintings.com"
+          sources=[
+            (root+"/artworks/images-full/e4/df/e4dfa8ad7a4af9d3e90a886e2f031bcb.jpg",root+"/"),
+            (root+"/media-resize/1600/artworks/images-full/e4/df/e4dfa8ad7a4af9d3e90a886e2f031bcb.jpg.webp",root+"/"),
+            ("https://www.meisterdrucke.de/kunstwerke/1260px/John%20Roddam%20Spencer%20Stanhope%20-%20Charon%20and%20Psyche%20%20-%20%28MeisterDrucke-82601%29.jpg","https://www.meisterdrucke.de/"),
+          ]
+          base=[v[0] for v in sources]
+          for host in ["https://wsrv.nl/?url=","https://images.weserv.nl/?url="]:
+            for url in base:
+              sources.append((host+urllib.parse.quote(url,safe="")+"&output=jpg",root+"/"))
+          candidates=[]
+          for source,referer in sources:
+            try:
+              request=urllib.request.Request(source,headers={"User-Agent":"Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 Chrome/125.0.0.0 Safari/537.36","Accept":"image/webp,image/avif,image/jpeg,image/png,image/*","Referer":referer})
+              with urllib.request.urlopen(request,timeout=26) as response:
+                data=response.read(14_000_001)
+              if not 30_000<=len(data)<=14_000_000: raise ValueError("Unexpected download length")
+              image=Image.open(io.BytesIO(data))
+              image.load()
+              if image.width<1200 or image.height<750: raise ValueError(f"Too small: {image.size}")
+              print("CANDIDATE",image.size,len(data),source[:130])
+              candidates.append((image.width*image.height,len(data),source,image))
+              if image.width>=1850:break
+            except Exception as e:
+              print("SKIP",source[:140],repr(e))
+          if not candidates:raise RuntimeError("NO REAL HIGH-RES ORIGINAL: keeping existing game unchanged")
+          candidates.sort(key=lambda c:(c[0],c[1]),reverse=True)
+          _,_,url,photo=candidates[0]
+          photo=photo.convert("RGB")
+          old=Image.open("images/charon-river.webp").convert("RGB").resize((256,176),Image.Resampling.BICUBIC)
+          new=photo.resize((256,176),Image.Resampling.BICUBIC)
+          def delta(x):
+            return sum(ImageStat.Stat(ImageChops.difference(old,x)).mean)
+          if delta(ImageOps.mirror(new))<delta(new):
+            photo=ImageOps.mirror(photo)
+            print("FLIPPED to match existing Charon-left framing")
+          dest="images/charon-river-hq.webp"
+          photo.save(dest,"WEBP",quality=92,method=6)
+          print("FINAL_IMAGE",photo.size,os.path.getsize(dest),"SOURCE",url)
+          PY
+      - name: Commit original-resolution image
+        shell: bash
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add images/charon-river-hq.webp
+          if ! git diff --cached --quiet; then
+            git commit -m "Add true higher-resolution Charon and Psyche painting"
+            git push
+          fi
