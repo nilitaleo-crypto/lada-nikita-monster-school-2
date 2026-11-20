@@ -6,7 +6,7 @@
  'use strict';
  if(window.TivvigHadesSounds)return;
  const file=location.pathname.split('/').pop()||'';
- if(!/^hades-(gate|cerberus|charon|angler-chase|hypnos|hecate|final)\.html$/.test(file))return;
+ if(!/^(?:hades-(gate|cerberus|charon|angler-chase|hypnos|hecate|final)|egypt-apophis)\.html$/.test(file))return;
  const coop=new URLSearchParams(location.search).get('coop')==='1';
  const reduce=!!window.matchMedia?.('(prefers-reduced-motion:reduce)').matches;
  const T=window.AudioContext||window.webkitAudioContext;
@@ -123,7 +123,7 @@
  }
  function isGameClick(target){
   const button=target.closest?.('button,[role="button"]');
-  if(!button||button.disabled||button.closest('[hidden]')||button.dataset.tivvigLocalAudio)return null;
+  if(!button||button.disabled||button.closest('[hidden]')||button.dataset.tivvigLocalAudio||button.dataset.tivvigSound==='manual')return null;
   if(button.closest('.finale'))return null;
   if(file==='hades-final.html'){
     const stage=document.getElementById('stage')?.dataset.stage;

@@ -4,9 +4,12 @@ on:
     paths:
       - 'hades-*.html'
       - 'hades-*.js'
+      - 'egypt-*.html'
+      - 'egypt-*.js'
       - 'world-coop-bridge.js'
       - 'wardrobe.js'
       - 'tests/hades-stability.mjs'
+      - 'tests/egypt-apophis.spec.mjs'
       - '.github/workflows/hades-stability.yml'
   workflow_dispatch:
 permissions:
@@ -30,7 +33,7 @@ jobs:
           root=pathlib.Path('.')
           pages=sorted(root.glob('hades-*.html'))
           assert len(pages)==7, f'Expected 7 Hades locations, got {len(pages)}'
-          for file in [*root.glob('hades-*.js'),root/'world-coop-bridge.js',root/'wardrobe.js']:
+          for file in [*root.glob('hades-*.js'),*root.glob('egypt-*.js'),root/'world-coop-bridge.js',root/'wardrobe.js']:
               subprocess.run(['node','--check',str(file)],check=True)
           for page in pages:
               source=page.read_text('utf-8')
@@ -49,6 +52,8 @@ jobs:
         run: npx playwright install --with-deps chromium webkit
       - name: Smoke test all scenes on desktop, tablet and phone in both engines
         run: node tests/hades-stability.mjs
+      - name: Apophis prologue and co-op browser smoke tests
+        run: node tests/egypt-apophis.spec.mjs
       - name: Archive results (even on failure)
         if: always()
         uses: actions/upload-artifact@v4

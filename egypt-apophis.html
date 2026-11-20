@@ -1,0 +1,132 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#26170f">
+<meta name="description" content="Лада и Персефона пытаются удержать солнце, которое похищает Апоп. Пролог путешествия в Древний Египет.">
+<title>Апоп похитил солнце · Тиввиг</title>
+<style>
+:root{color-scheme:dark;--ivory:#fff0d4;--sun:#ffcb5b}
+*{box-sizing:border-box}[hidden]{display:none!important}
+html,body{min-height:100%;margin:0;background:#120d10}
+body{font:16px Georgia,'Times New Roman',serif;color:var(--ivory);background:radial-gradient(ellipse at center,#563020,#100c11 81%)}
+button,a{font:inherit;-webkit-tap-highlight-color:transparent;touch-action:manipulation}
+button{cursor:pointer}a{color:inherit;text-decoration:none}
+button:focus-visible,a:focus-visible{outline:3px solid #d8fcff;outline-offset:4px}
+main{margin:0 auto;padding:8px 10px 16px;max-width:1430px;min-height:100dvh;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:8px}
+header{width:min(100%,1280px);display:flex;align-items:center;justify-content:space-between;gap:10px;min-height:44px}
+header h1{font:normal clamp(19px,2.7vw,30px) Georgia,serif;margin:0;color:#f3ddbc;text-shadow:0 2px 8px #140901}
+.nav{font:500 clamp(12px,1.35vw,15px) Georgia,serif;display:inline-grid;place-items:center;border:1px solid #ba936f88;border-radius:10px;background:#472b24b8;min-height:42px;padding:9px 12px;white-space:nowrap}
+.scene{width:min(100%,1280px,calc((100dvh - 100px)*1.777));aspect-ratio:1672/941;position:relative;isolation:isolate;overflow:hidden;border:3px solid #8f6b52;border-radius:15px;box-shadow:0 7px 0 #281914,0 18px 37px #070607a9;background:#271010;--night:0;touch-action:manipulation}
+.world{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center;z-index:0;pointer-events:none;user-select:none}
+.scene::after{content:'';position:absolute;inset:0;pointer-events:none;z-index:19;box-shadow:inset 0 0 42px #090608a9}
+.night-veil{position:absolute;inset:0;z-index:3;pointer-events:none;background:#03060c;opacity:0;transition:opacity .25s}
+.sun-shadow{position:absolute;left:50%;top:43%;transform:translate(-50%,-50%);width:18%;aspect-ratio:1;border-radius:50%;z-index:4;background:radial-gradient(circle,#03060b 20%,#09060be6 45%,#09060a83 60%,transparent 73%);opacity:0;pointer-events:none;transition:opacity .3s}
+.ember{position:absolute;inset:0;z-index:2;pointer-events:none;background:radial-gradient(ellipse at 50% 44%,#ffdf703c,transparent 40%);animation:ember-pulse 6s ease-in-out infinite alternate}
+@keyframes ember-pulse{to{opacity:.42}}
+.sun-rays{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;z-index:8;overflow:visible}
+.ray-group{opacity:1;transition:opacity .15s linear}
+.ray-glow{fill:none;stroke:#ffb62e;stroke-width:16;stroke-linecap:round;filter:url(#rayGlow);opacity:.72}
+.ray-light{fill:none;stroke:#fff4b5;stroke-width:5;stroke-linecap:round;opacity:.98}
+.anchor{position:absolute;transform:translate(-50%,-50%);width:clamp(58px,7.5vw,94px);height:clamp(58px,7.5vw,94px);border:0;background:none;padding:0;z-index:13;display:grid;place-items:center;filter:drop-shadow(0 0 calc(13px * var(--energy,1)) #ffc153);color:#fff8df;transition:opacity .18s;touch-action:manipulation}
+.anchor::before{content:'';position:absolute;inset:11%;border-radius:50%;border:3px solid #fff5bf;background:radial-gradient(circle at 40% 36%,#fff6d9,#ffd75b 30%,#d66e1f 68%,#8b3819 95%);box-shadow:inset 0 0 11px #fff5cd,0 0 14px 5px #fca72c90;opacity:calc(.34 + var(--energy,1)*.66);transition:opacity .2s}
+.anchor::after{content:'✦';z-index:1;position:relative;font:bold clamp(23px,3vw,37px) Georgia,serif;text-shadow:0 1px 8px #8e2f0b;opacity:calc(.26 + var(--energy,1)*.74)}
+.anchor.weak::before{border-color:#f2cba1;background:radial-gradient(circle,#9a6936,#6b3525 68%,#352320);box-shadow:0 0 7px #f67a2460}
+.anchor.weak{animation:ask-for-light 1.12s ease-in-out infinite alternate}
+.anchor.reinforced::before{animation:flare .37s ease-out}
+.anchor:disabled{opacity:.3;cursor:default}
+@keyframes flare{50%{box-shadow:0 0 30px 14px #ffdf9b;transform:scale(1.12)}}
+@keyframes ask-for-light{to{transform:translate(-50%,-50%) scale(1.10)}}
+.anchor-0{left:24.5%;top:63%}.anchor-1{left:50%;top:68%}.anchor-2{left:75.5%;top:63%}
+.light-spark{position:absolute;z-index:16;width:6px;height:6px;background:#fff3c6;border-radius:100%;box-shadow:0 0 10px #ffcd51;pointer-events:none;animation:spark-fly .68s ease-out both}
+@keyframes spark-fly{0%{transform:translate(-50%,-50%) scale(1.2);opacity:1}100%{transform:translate(calc(-50% + var(--dx,0px)),calc(-50% + var(--dy,0px))) scale(.2);opacity:0}}
+.party{position:absolute;z-index:10;left:6%;right:7%;bottom:.5%;height:27%;display:flex;justify-content:center;align-items:flex-end;gap:1.5%;pointer-events:none;filter:drop-shadow(1px 5px 5px #0c090cc7)}
+.actor{position:relative;flex:0 0 10%;height:80%;min-width:0;align-self:flex-end}
+.actor img{width:100%;height:100%;object-fit:contain;object-position:bottom center;user-select:none;pointer-events:none}
+.actor.lada{height:100%;flex-basis:14%;z-index:3}
+.actor.lada img{position:absolute;inset:0;width:100%;height:100%;object-fit:contain}
+.actor.lada .costume{z-index:2;clip-path:polygon(0 29%,100% 29%,100% 100%,0 100%);-webkit-clip-path:polygon(0 29%,100% 29%,100% 100%,0 100%)}
+.actor.lada .original-head{z-index:3;clip-path:ellipse(24% 15% at 49.6% 14.5%);-webkit-clip-path:ellipse(24% 15% at 49.6% 14.5%)}
+.actor.cat{height:86%;flex-basis:11%}.actor.rabbit{height:76%;flex-basis:11%}.actor.monkey{height:82%;flex-basis:11%}
+.actor.merchant{height:76%;flex-basis:10%}.actor.bookseller{height:78%;flex-basis:10%}
+.actor.persephone{height:92%;flex-basis:16%;overflow:hidden;mask-image:radial-gradient(ellipse at 50% 42%,#000 33%,#000c 53%,transparent 76%);-webkit-mask-image:radial-gradient(ellipse at 50% 42%,#000 33%,#000c 53%,transparent 76%)}
+.actor.persephone img{object-fit:cover;object-position:44% 12%;height:100%;width:100%;filter:saturate(.82) brightness(1.15)}
+.dialog{position:absolute;z-index:17;top:5%;left:3.5%;max-width:35%;text-shadow:0 3px 8px #190d0be8,0 0 11px #140a08df;color:#fff4d9;font:normal clamp(16px,2vw,27px)/1.15 Georgia,serif}
+.dialog small{display:block;color:#edbc85;font:600 clamp(10px,1vw,14px) system-ui,sans-serif;letter-spacing:.11em;margin-bottom:5px}
+.status{position:absolute;z-index:17;right:2%;top:3%;max-width:31%;min-height:24px;text-align:right;font:500 clamp(12px,1.2vw,18px) Georgia,serif;text-shadow:0 2px 7px #090309;color:#ffe5a6}
+.start{position:absolute;z-index:18;left:50%;top:65%;transform:translate(-50%,-50%);min-height:54px;min-width:200px;padding:12px 21px;background:linear-gradient(#fff0c4,#e8ac56);border:2px solid #fff4d1;border-radius:18px;box-shadow:0 6px 18px #180907ba,0 0 24px #edb456a9;color:#492111;font:bold clamp(18px,2.3vw,25px) Georgia,serif;white-space:nowrap}
+.scene[data-phase="playing"] .dialog{opacity:.66}
+.scene[data-phase="collapse"] .world{filter:brightness(.63) saturate(.65);transition:filter 1.7s}
+.scene[data-phase="lost"] .world{filter:brightness(.38) saturate(.43)}
+.scene[data-phase="lost"] .dialog,.scene[data-phase="collapse"] .dialog{opacity:0}
+.scene[data-phase="lost"] .party{opacity:.6;transition:opacity 1s}
+.ending-actions{position:absolute;z-index:18;inset:0;pointer-events:none}
+.ending-title{position:absolute;left:5%;top:19%;max-width:65%;font:normal clamp(24px,4.5vw,56px)/1.08 Georgia,serif;color:#fff0c9;text-shadow:0 4px 11px #07060ef0;margin:0}
+.ending-sub{position:absolute;left:5%;top:40%;max-width:51%;font:normal clamp(15px,1.6vw,22px)/1.3 Georgia,serif;color:#efdcbd;text-shadow:0 2px 8px #07060ff5;margin:0}
+.ending-links{position:absolute;right:3%;bottom:5%;display:flex;gap:9px;pointer-events:auto;align-items:center}
+.ending-links a,.ending-links button{display:grid;place-items:center;min-height:46px;padding:9px 14px;background:#ebd6ac;color:#392623;border:1px solid #fff1d4;border-radius:11px;font:bold clamp(13px,1.3vw,17px) Georgia,serif;text-decoration:none;box-shadow:0 4px 14px #0d0813c9}
+.ending-links button{background:#4e403be8;color:#ffedd2}
+@media(max-width:800px){
+ main{padding:7px 5px 12px}header{gap:6px}header h1{font-size:clamp(15px,4vw,24px)}.nav{font-size:12px;padding:6px 8px}
+ .scene{width:100%;aspect-ratio:4/3;min-height:clamp(360px,70dvh,490px)}
+ .world{object-position:center}.party{left:0%;right:0%;height:23%;bottom:1%;gap:1%}
+ .actor{flex-basis:10%}.actor.lada{flex-basis:18%}.actor.persephone{flex-basis:18%;height:94%}
+ .actor.cat{flex-basis:11%}.actor.rabbit{flex-basis:11%}.actor.monkey{flex-basis:11%}
+ .dialog{top:4%;left:3%;max-width:52%;font-size:clamp(15px,3.4vw,22px)}.status{max-width:42%;font-size:clamp(11px,2.9vw,15px)}
+ .anchor{width:clamp(59px,13vw,77px);height:clamp(59px,13vw,77px)}
+ .anchor-0{left:24.5%;top:63%}.anchor-1{left:50%;top:68%}.anchor-2{left:75.5%;top:63%}
+ .start{top:63%;min-width:0;font-size:19px}
+ .ending-title{top:18%;max-width:84%;font-size:clamp(28px,6vw,40px)}
+ .ending-sub{top:38%;max-width:82%;font-size:clamp(15px,3.5vw,18px)}
+ .ending-links{bottom:3%;right:2%;gap:6px}.ending-links a,.ending-links button{font-size:12px;padding:7px 9px;min-height:44px}
+}
+@media(prefers-reduced-motion:reduce){.ember,.anchor.weak,.light-spark,.anchor.reinforced::before{animation:none}.scene[data-phase] .world,.scene[data-phase] .party{transition:none}}
+</style>
+</head>
+<body>
+<main>
+<header><a class="nav" href="hades-final.html">← Персефона</a><h1>Апоп похитил солнце</h1><a class="nav" href="index.html">⌂ Карта</a></header>
+<section class="scene" id="egyptScene" data-phase="intro" aria-label="Апоп пытается проглотить солнце, Лада и её друзья защищают солнечные лучи">
+ <img class="world" src="images/egypt-apophis-scene.webp" alt="Гигантский Апоп над солнечным диском среди египетских руин и огненного неба" fetchpriority="high" draggable="false">
+ <div class="ember" aria-hidden="true"></div>
+ <div class="night-veil" id="nightVeil" aria-hidden="true"></div>
+ <div class="sun-shadow" id="sunShadow" aria-hidden="true"></div>
+ <svg class="sun-rays" id="sunRays" viewBox="0 0 1000 563" preserveAspectRatio="none" aria-hidden="true" hidden>
+  <defs><filter id="rayGlow" x="-40%" y="-80%" width="180%" height="260%"><feGaussianBlur stdDeviation="7"/></filter></defs>
+  <g id="ray0" class="ray-group"><path class="ray-glow" d="M500 245 Q360 285 245 354"/><path class="ray-light" d="M500 245 Q360 285 245 354"/></g>
+  <g id="ray1" class="ray-group"><path class="ray-glow" d="M500 245 Q494 320 500 382"/><path class="ray-light" d="M500 245 Q494 320 500 382"/></g>
+  <g id="ray2" class="ray-group"><path class="ray-glow" d="M500 245 Q640 285 755 354"/><path class="ray-light" d="M500 245 Q640 285 755 354"/></g>
+ </svg>
+ <button class="anchor anchor-0" type="button" id="rayButton0" aria-label="Усилить левый солнечный луч" data-tivvig-sound="manual" hidden></button>
+ <button class="anchor anchor-1" type="button" id="rayButton1" aria-label="Усилить средний солнечный луч" data-tivvig-sound="manual" hidden></button>
+ <button class="anchor anchor-2" type="button" id="rayButton2" aria-label="Усилить правый солнечный луч" data-tivvig-sound="manual" hidden></button>
+ <div class="party" aria-label="Персефона и друзья помогают Ладе спасти солнце">
+  <div class="actor cat"><img src="images/blue-cat.webp" alt="Ловкач" draggable="false"></div>
+  <div class="actor rabbit"><img src="images/rabbit-cutout.webp" alt="Силач" draggable="false"></div>
+  <div class="actor monkey"><img src="images/monkey-cutout.webp" alt="Умняшка" draggable="false"></div>
+  <div class="actor lada" id="egyptLada" role="img" aria-label="Настоящая Лада в костюме Гекаты">
+   <img src="images/lada-cutout.webp" alt="" draggable="false">
+   <img class="costume" src="images/hecate-lyre-costume-layer.webp" alt="" draggable="false">
+   <img class="original-head" src="images/lada-cutout.webp" alt="" draggable="false">
+  </div>
+  <div class="actor merchant"><img src="images/market-merchant.webp" alt="Зелёный торговец" draggable="false"></div>
+  <div class="actor bookseller"><img src="images/bookshop-merchant.webp" alt="Продавщица книг" draggable="false"></div>
+  <div class="actor persephone"><img src="images/hades-persephone-portrait.webp" alt="Персефона с гранатом" draggable="false"></div>
+ </div>
+ <div class="dialog" id="introPrompt"><small>НОВАЯ ГЛАВА · ЕГИПЕТ</small>Апоп хочет проглотить солнце!</div>
+ <div class="status" id="message" role="status" aria-live="polite">Персефона спасена — но небо темнеет…</div>
+ <button class="start" id="startRescue" type="button" data-tivvig-sound="manual">Удержать солнце!</button>
+ <div class="ending-actions" id="endingActions" hidden>
+  <h2 class="ending-title">Апоп проглотил солнце!</h2>
+  <p class="ending-sub">Лада удерживала свет, сколько могла. Теперь нужно отправиться в Египет и вернуть солнце.</p>
+  <div class="ending-links"><button type="button" id="replayEgypt" data-tivvig-sound="manual">↻ Ещё попытка</button><a href="index.html">⌂ На карту</a></div>
+ </div>
+</section>
+</main>
+<script src="game-registry.js?v=3" defer></script>
+<script src="egypt-apophis.js?v=1" defer></script>
+<script src="hades-sounds.js?v=2" defer></script>
+<script src="game-runtime.js?v=5" defer></script>
+</body>
+</html>
