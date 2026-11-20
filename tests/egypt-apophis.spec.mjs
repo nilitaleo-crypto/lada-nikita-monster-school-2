@@ -58,7 +58,7 @@ async function run(engine,name,profile){
   await page.waitForFunction(()=>window.TivvigEgyptDebug.state().phase==='lost',null,{timeout:5000});
   assert.equal(await page.evaluate(()=>localStorage.getItem('tivvig_egypt_apophis_prologue_v1')),'unlocked');
   assert.equal(await page.locator('.ending-title').isVisible(),true);
-  assert.equal(await page.locator('.ending-links a[href="index.html"]').count(),1);
+  assert.equal(await page.locator('.ending-links a[href="egypt-pomegranate.html"]').count(),1,'Apophis must lead to Persephone garden');
   const broken=await page.evaluate(()=>[...document.images].filter(x=>x.complete&&x.naturalWidth===0).map(x=>x.src));
   assert.deepEqual(broken,[],'All art loads');
   assert.deepEqual(errors,[],'JS errors');assert.deepEqual(misses,[],'HTTP 404');
