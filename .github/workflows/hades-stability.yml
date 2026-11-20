@@ -35,7 +35,7 @@ jobs:
           for page in pages:
               source=page.read_text('utf-8')
               assert 'hades-sounds.js?v=1' in source, f'Local audio script missing: {page}'
-              for part in re.findall(r'<script(?:\\s[^>]*)?>(.*?)</script>',source,re.S|re.I):
+              for part in re.findall(r'<script[^>]*>(.*?)</script>',source,re.S|re.I):
                   if part.strip():
                       subprocess.run(['node','--check','--input-type=commonjs'],
                                      input=part,text=True,check=True)
