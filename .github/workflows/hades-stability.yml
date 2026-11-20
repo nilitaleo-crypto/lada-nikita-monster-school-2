@@ -1,0 +1,58 @@
+name: Hades stability gate
+on:
+  push:
+    paths:
+      - 'hades-*.html'
+      - 'hades-*.js'
+      - 'world-coop-bridge.js'
+      - 'wardrobe.js'
+      - 'tests/hades-stability.mjs'
+      - '.github/workflows/hades-stability.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  mobile-browser-tests:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - name: Checkout full Tivvig adventure
+        uses: actions/checkout@v4
+      - name: Set up Node 22
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Static JavaScript syntax, Hades links and asset paths
+        shell: bash
+        run: |
+          python3 - <<'PY'
+          import pathlib,re,subprocess
+          root=pathlib.Path('.')
+          pages=sorted(root.glob('hades-*.html'))
+          assert len(pages)==7, f'Expected 7 Hades locations, got {len(pages)}'
+          for file in [*root.glob('hades-*.js'),root/'world-coop-bridge.js',root/'wardrobe.js']:
+              subprocess.run(['node','--check',str(file)],check=True)
+          for page in pages:
+              source=page.read_text('utf-8')
+              assert 'hades-sounds.js?v=1' in source, f'Local audio script missing: {page}'
+              for part in re.findall(r'<script(?:\\s[^>]*)?>(.*?)</script>',source,re.S|re.I):
+                  if part.strip():
+                      subprocess.run(['node','--check','--input-type=commonjs'],
+                                     input=part,text=True,check=True)
+              for path in re.findall(r'(?:src|href)="(images/[^"]+)"',source):
+                  assert (root/path).is_file(), f'{page}: missing {path}'
+          print('STATIC PASS: seven scenes, JavaScript syntax, asset references')
+          PY
+      - name: Install browser test runner
+        run: npm install --no-save --package-lock=false playwright@1.57.0
+      - name: Install Chromium and WebKit with dependencies
+        run: npx playwright install --with-deps chromium webkit
+      - name: Smoke test all scenes on desktop, tablet and phone in both engines
+        run: node tests/hades-stability.mjs
+      - name: Archive results (even on failure)
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: hades-stability-results
+          path: hades-test-results.json
+          if-no-files-found: ignore
