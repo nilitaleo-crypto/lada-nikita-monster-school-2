@@ -173,19 +173,74 @@ header h1{margin:0;font-size:clamp(18px,2.5vw,28px);font-weight:normal;letter-sp
  .message{right:1%;bottom:1%;max-width:26%;font-size:12px}
 }
 @media(prefers-reduced-motion:reduce){.party,.hades,.underworld-motion,.underworld-motion:before,.underworld-motion:after{animation:none}}
+
+/* Definitive scene artwork, integrated control islands and five-stage finale. */
+.scene[data-stage="0"] .hades,.scene[data-stage="0"] .persephone,
+.scene[data-stage="4"] .hades,.scene[data-stage="4"] .persephone,
+.scene[data-stage="0"] .chains,.scene[data-stage="4"] .chains{display:none}
+.scene[data-stage="0"] .panel{padding-top:24%;z-index:14}
+.scene[data-stage="0"] .seal-area{width:48%;max-width:48%;padding-top:0;gap:7px}
+.scene[data-stage="0"] .seals{gap:clamp(5px,1vw,14px)}
+.scene[data-stage="0"] .seal{width:28%;max-width:142px}
+.scene[data-stage="0"] .chapter{max-width:24%}
+.scene[data-stage="1"] .sound-area{width:35%;max-width:35%;padding-top:4%;gap:5px}
+.scene[data-stage="1"] .music-slab{padding:6px 8px;gap:2px}
+.scene[data-stage="1"] .music-slab svg{width:clamp(49px,6vw,79px);height:clamp(49px,6vw,79px)}
+.scene[data-stage="1"] .beats i{min-width:clamp(18px,2vw,27px);height:clamp(19px,2vw,27px)}
+.scene[data-stage="1"] .music-controls button{min-width:clamp(51px,5.4vw,72px);min-height:clamp(51px,5.4vw,72px)}
+.scene[data-stage="1"] .music-controls .listen{min-width:clamp(65px,6.2vw,85px)}
+/* The photographic fire-clock is a freestanding mechanism; only the inner gears rotate. */
+.scene[data-stage="3"] .clock-area{max-width:43%;width:43%;padding-top:1%;gap:6px}
+.scene[data-stage="3"] .clock{width:clamp(218px,27vw,337px);border:0;border-radius:50%;overflow:visible;background:transparent url("images/hades-fire-clock.webp") center / contain no-repeat;box-shadow:none;filter:drop-shadow(0 0 14px #f274349d)}
+.scene[data-stage="3"] .clock::before{inset:26%;border:4px solid #e99e5d;box-shadow:inset 0 0 5px #fa8c31,0 0 9px #ff951b;border-radius:50%;background:repeating-conic-gradient(from 0deg,#cfa375 0deg 3deg,transparent 3deg 30deg);mask:radial-gradient(circle,transparent 0 84%,black 85%);-webkit-mask:radial-gradient(circle,transparent 0 84%,black 85%);transform:rotate(var(--gear,0deg));transition:transform .7s cubic-bezier(.2,.75,.25,1)}
+.scene[data-stage="3"] .clock::after{inset:33%;border:3px double #e2b278;background:transparent;box-shadow:0 0 15px #f4a1438c;transform:rotate(calc(var(--gear,0deg) * -1));transition:transform .8s cubic-bezier(.2,.75,.25,1)}
+.scene[data-stage="3"] .clock-question{font-size:clamp(24px,3vw,41px);padding:8px 10px;border-radius:45%;background:#200c16b9;box-shadow:0 0 20px #140c1aba;z-index:3}
+.clock-fire{position:absolute;z-index:17;width:clamp(10px,2vw,23px);height:clamp(27px,5vw,57px);border-radius:70% 0 70% 70%;background:linear-gradient(90deg,#ff451b,#ffd265 50%,#fff5c2);box-shadow:0 0 18px #ff8c21;pointer-events:none;transform:translate(-50%,-50%) rotate(var(--r,0deg));animation:fire-erupt .8s cubic-bezier(.22,.7,.3,1) forwards}
+@keyframes fire-erupt{0%{opacity:0;scale:.2}35%{opacity:1;scale:1}100%{opacity:0;scale:.5;translate:var(--dx,0px) var(--dy,-80px)}}
+.word-spirit{position:absolute;z-index:16;width:clamp(33px,5vw,64px);height:clamp(50px,8vw,101px);pointer-events:none;filter:drop-shadow(0 0 11px #b3e5ff);animation:spirit-rise 1.35s ease-out forwards}
+.word-spirit svg{width:100%;height:100%}
+@keyframes spirit-rise{0%{opacity:0;transform:translate(-50%,-30%) scale(.3)}20%{opacity:1}75%{opacity:.8}100%{opacity:0;transform:translate(calc(-50% + var(--drift,30px)),-220%) scale(1.2)}}
+.cry-tear{position:absolute;z-index:11;width:7px;height:21px;border-radius:70% 20% 70% 70%;background:linear-gradient(#d9faff,#4bcaeb);box-shadow:0 0 8px #9fe4ff;pointer-events:none;opacity:0}
+.scene.is-free .cry-tear{animation:weep 1.25s ease-in infinite;animation-delay:var(--delay,0s)}
+@keyframes weep{0%{opacity:0;transform:translateY(0) scale(.4)}22%{opacity:1}95%{opacity:.6}100%{opacity:0;transform:translateY(90px) scale(.85)}}
+.scene[data-stage="4"] .finale{align-items:end;background:linear-gradient(to top,#020b19d9 0%,#09203359 29%,transparent 68%);backdrop-filter:none}
+.scene[data-stage="4"] .finale>div{gap:8px;padding-bottom:2%;filter:drop-shadow(0 4px 8px #000)}
+.scene[data-stage="4"] .finale h2{font-size:clamp(24px,3vw,42px)}
+.scene[data-stage="4"] .panel{padding-top:14%}
+.scene[data-stage="4"] .sound-area{width:36%;max-width:36%}
+.scene[data-stage="4"] .party{left:1%;width:30%;height:17%}
+@media(max-width:760px){
+ .scene[data-stage="0"] .panel{padding-top:23%}
+ .scene[data-stage="0"] .seal-area{width:53%;max-width:53%}
+ .scene[data-stage="0"] .seal{width:30%;max-width:none}
+ .scene[data-stage="1"] .sound-area{width:51%;max-width:51%;padding-top:7%}
+ .scene[data-stage="1"] .music-controls button{min-width:48px;min-height:48px}
+ .scene[data-stage="3"] .clock-area{width:54%;max-width:54%;padding-top:10%}
+ .scene[data-stage="3"] .clock{width:clamp(166px,24vw,240px)}
+ .scene[data-stage="4"] .sound-area{width:52%;max-width:52%;padding-top:5%}
+ .scene[data-stage="4"] .panel{padding-top:9%}
+}
+@media(prefers-reduced-motion:reduce){.clock-fire,.word-spirit,.scene.is-free .cry-tear{animation-duration:.1s}}
+
 </style>
 </head>
 <body>
 <main>
 <header><a href="hades-hecate.html" class="back">← Геката</a><h1>Дворец Аида</h1><a href="index.html" class="back">⌂ Карта</a></header>
 <section class="scene" id="stage" data-stage="0" aria-label="Последовательное приключение в подземном царстве">
-<img id="backdrop" class="backdrop" src="images/hades-palace-blue.webp" alt="Тёмный подземный дворец, огромные маски в скале, река и огни" fetchpriority="high" draggable="false">
+<img id="backdrop" class="backdrop" src="images/hades-throne-grand.webp" alt="Аид и Персефона возвышаются на отдельных тронах среди чудовищ, теней и голубых факелов" fetchpriority="high" draggable="false">
 <div class="mist" aria-hidden="true"></div><div class="underworld-motion" aria-hidden="true"></div><div class="ambience" id="ambience" aria-hidden="true"></div>
 <div class="chapter" id="chapter"><small id="chapterNo">ИСПЫТАНИЕ I</small><span id="chapterName">Печати Аида</span></div>
 <div class="progress" id="progress" aria-label="Пять испытаний"></div>
 <img class="hades" id="hadesFigure" src="images/hades-original-character.webp" alt="Аид с голубым пламенем вместо волос" draggable="false">
 <img class="persephone" id="persephone" src="images/hades-persephone-portrait.webp" alt="Персефона держит гранат" draggable="false">
-<div class="chains" aria-hidden="true"></div>
+<div class="chains" aria-hidden="true"></div><div id="underworldTears" aria-hidden="true">
+  <i class="cry-tear" style="left:76.6%;top:33.7%;--delay:.1s"></i>
+  <i class="cry-tear" style="left:79%;top:34.4%;--delay:.4s"></i>
+  <i class="cry-tear" style="left:91.6%;top:46%;--delay:.6s"></i>
+  <i class="cry-tear" style="left:62.9%;top:25.7%;--delay:.3s"></i>
+  <i class="cry-tear" style="left:58%;top:66%;--delay:.8s"></i>
+</div>
 <div class="party" id="party" aria-label="Лада, Ловкач, Силач, Умняшка, зелёный торговец и фиолетовая продавщица книг идут вместе">
  <div class="actor cat"><img src="images/blue-cat.webp" alt="Ловкач" draggable="false"></div>
  <div class="actor rabbit"><img src="images/rabbit-cutout.webp" alt="Силач" draggable="false"></div>
@@ -203,7 +258,7 @@ header h1{margin:0;font-size:clamp(18px,2.5vw,28px);font-weight:normal;letter-sp
 </main>
 <script src="wardrobe.js?v=5" defer></script>
 <script src="game-registry.js?v=3" defer></script>
-<script src="hades-final.js?v=2" defer></script>
+<script src="hades-final.js?v=3" defer></script>
 <script src="game-runtime.js?v=5" defer></script>
 </body>
 </html>

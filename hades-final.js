@@ -7,11 +7,11 @@
 const $=id=>document.getElementById(id);
 const scene=$('stage'),control=$('sceneControls'),party=$('party'),message=$('message');
 const STAGES=[
- {name:'Печати Аида',bg:'images/hades-palace-blue.webp',msg:'Найди печать'},
+ {name:'Печати Аида',bg:'images/hades-throne-grand.webp',msg:'Найди печать'},
  {name:'Забытые голоса',bg:'images/hades-echoes-dynamic.webp',msg:'Повтори ритм'},
  {name:'Мост из слов',bg:'images/hades-word-ghost-bridge.webp',msg:'Построй мост'},
  {name:'Огненные часы',bg:'images/hades-palace-fire.webp',msg:'Запусти часы'},
- {name:'Последняя песня',bg:'images/hades-palace-fire.webp',msg:'Сыграй песню'}
+ {name:'Последняя песня',bg:'images/hades-throne-tears.webp',msg:'Сыграй песню'}
 ];
 const BEATS=[['B','S','B'],['B','B','S','B'],['S','B','B','S']];
 const LAST_SONG=['S','B','B','S','B','S'];
@@ -190,6 +190,7 @@ function renderWords(){
  const track=$('bridgeTrack');track.replaceChildren();for(let i=0;i<9;i++){const s=el('i',i<bridgeCount?'complete':'');track.appendChild(s)}
 }
 async function pickWord(i){if(stage!==2||busy)return;
+ flySpirit($('hades-word-'+i),i);
  const w=WORDS[wordRound].choices[i],correct=WORDS[wordRound].sentence[wordStep];
  if(w!==correct){$('hades-word-'+i).classList.add('wrong');setMessage('Другой камень');setTimeout(()=>$('hades-word-'+i)?.classList.remove('wrong'),350);return}
  wordStep++;bridgeCount++;setMessage('Камень на месте');
@@ -199,6 +200,30 @@ async function pickWord(i){if(stage!==2||busy)return;
  if(wordRound===WORDS.length){await forward();return}
  renderWords();
 }
+
+function flySpirit(button,i){
+ if(!button)return;
+ const rect=button.getBoundingClientRect(),root=scene.getBoundingClientRect();
+ const ghost=document.createElement('i');ghost.className='word-spirit';
+ ghost.style.left=(rect.left-root.left+rect.width/2)+'px';
+ ghost.style.top=(rect.top-root.top+rect.height/4)+'px';
+ ghost.style.setProperty('--drift',((i%2?1:-1)*(30+(wordRound%3)*19))+'px');
+ ghost.innerHTML='<svg viewBox="0 0 80 120" aria-hidden="true"><defs><linearGradient id="ghostfill" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#e2ffff" stop-opacity=".94"/><stop offset="1" stop-color="#67bfe7" stop-opacity=".18"/></linearGradient></defs><path d="M40 7Q12 10 15 42L7 79Q16 74 17 95Q25 85 33 101L41 89Q53 109 60 91L74 100 68 60Q75 12 40 7Z" fill="url(#ghostfill)" stroke="#c4f4ff" stroke-opacity=".6" stroke-width="2"/><ellipse cx="30" cy="43" rx="5" ry="11" fill="#0a3f5e"/><ellipse cx="51" cy="43" rx="5" ry="11" fill="#0a3f5e"/><path d="M32 69Q42 60 52 69" fill="none" stroke="#0d5369" stroke-width="3"/></svg>';
+ scene.appendChild(ghost);setTimeout(()=>ghost.remove(),reduce?150:1450);
+}
+function eruptFire(){
+ const clock=control.querySelector('.clock');if(!clock)return;
+ const b=clock.getBoundingClientRect(),a=scene.getBoundingClientRect();
+ for(let k=0;k<8;k++){const phi=(Math.PI*2*k/8)-Math.PI/2;const flame=document.createElement('i');flame.className='clock-fire';
+ flame.style.left=(b.left-a.left+b.width/2+Math.cos(phi)*b.width*.38)+'px';
+ flame.style.top=(b.top-a.top+b.height/2+Math.sin(phi)*b.height*.38)+'px';
+ flame.style.setProperty('--r',(phi*180/Math.PI+45)+'deg');
+ flame.style.setProperty('--dx',Math.round(Math.cos(phi)*40)+'px');
+ flame.style.setProperty('--dy',Math.round(Math.sin(phi)*64-45)+'px');
+ scene.appendChild(flame);setTimeout(()=>flame.remove(),900);}
+ clock.style.setProperty('--gear',((clockRound+1)*144)+'deg');
+}
+
 function renderClock(){
  const box=wrap('clock-area'),clock=el('div','clock'),target=el('span','clock-question');target.id='hadesClockQuestion';
  target.textContent=CLOCK[clockRound].a+' '+CLOCK[clockRound].op+' '+CLOCK[clockRound].b+' = ?';
@@ -208,7 +233,7 @@ function renderClock(){
 }
 async function pickAnswer(i){if(stage!==3||busy)return;
  if(CLOCK[clockRound].choices[i]!==CLOCK[clockRound].correct){setMessage('Проверь счёт');$('hades-answer-'+i).classList.add('incorrect');setTimeout(()=>$('hades-answer-'+i)?.classList.remove('incorrect'),320);return}
- busy=true;setMessage('Часы идут');clockRound++;const id=++epoch;
+ busy=true;setMessage('Часы идут');eruptFire();clockRound++;const id=++epoch;
  await delay(500);if(id!==epoch)return;
  if(clockRound===CLOCK.length){await forward();return}
  busy=false;renderClock();
@@ -217,7 +242,9 @@ function finish(){
  if(finalDone)return;finalDone=true;busy=true;songReady=false;
  write(FINAL,'unlocked');write(KEY,'4');
  if(window.TivvigRegistry?.byReward?.[FINAL])window.TivvigRegistry.unlockReward(FINAL);
- scene.classList.add('is-free');$('finale').hidden=false;setMessage('Персефона свободна');
+ scene.classList.add('is-free');setMessage('Персефона свободна');
+ const doneEpoch=epoch;
+ setTimeout(()=>{if(doneEpoch===epoch&&finalDone)$('finale').hidden=false},reduce?200:1750);
 }
 function startOver(){epoch++;stage=0;finalDone=false;write(KEY,'0');$('finale').hidden=true;renderScene()}
 function setup(){for(let i=0;i<19;i++){const dot=el('i','');dot.style.left=((i*29+7)%95)+'%';dot.style.top=((i*43+11)%83)+'%';dot.style.animationDelay=(-i*.19)+'s';$('ambience').appendChild(dot)}
