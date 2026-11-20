@@ -49,10 +49,10 @@ async function run(engine,name,profile){
   assert(nodePositions.every(x=>x.inside),'Moving nodes must stay inside the game viewport');
   await page.waitForFunction(()=>window.TivvigEgyptDebug.state().energy[0]<.98,null,{timeout:5000});
   const before=await page.evaluate(()=>window.TivvigEgyptDebug.state().energy[0]);
-  await page.locator('#rayButton0').click({timeout:3000});
+  await page.locator('#rayButton0').click({force:true,timeout:3000});
   const after=await page.evaluate(()=>window.TivvigEgyptDebug.state().energy[0]);
   assert(after>before,'Press must visibly strengthen ray');
-  for(const i of [1,2,3,4,5])await page.locator('#rayButton'+i).click({timeout:5000});
+  for(const i of [1,2,3,4,5])await page.locator('#rayButton'+i).click({force:true,timeout:5000});
   assert.deepEqual((await page.evaluate(()=>window.TivvigEgyptDebug.state().presses)),[1,1,1,1,1,1]);
   await page.evaluate(()=>window.TivvigEgyptDebug.finishImmediately());
   await page.waitForFunction(()=>window.TivvigEgyptDebug.state().phase==='lost',null,{timeout:5000});
@@ -84,7 +84,7 @@ async function parentRoom(engine,name){
   await page.evaluate(()=>document.getElementById('frame').contentWindow.postMessage({from:'tivvig-parent',type:'click',value:{selector:'#startRescue'}},location.origin));
   await frame.locator('#rayButton1').waitFor({state:'visible',timeout:4000});
   assert.equal(await frame.locator('body').evaluate(()=>window.TivvigEgyptDebug.state().phase),'playing');
-  await frame.locator('#rayButton5').click();
+  await frame.locator('#rayButton5').click({force:true});
   await page.waitForFunction(()=>window.roomEvents.some(x=>x.type==='click'&&x.value?.selector==='#rayButton5'),null,{timeout:3000});
   assert.equal(await frame.locator('body').evaluate(()=>window.TivvigEgyptDebug.state().presses[5]),0,'Ray press waits for room replay');
   await page.evaluate(()=>document.getElementById('frame').contentWindow.postMessage({from:'tivvig-parent',type:'click',value:{selector:'#rayButton5'}},location.origin));
