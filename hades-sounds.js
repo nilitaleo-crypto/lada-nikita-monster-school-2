@@ -78,7 +78,7 @@
  }
  function play(kind='tap',test=false){
   if(document.hidden&&!test)return;
-  if(!Object.hasOwn(notes,kind))kind='tap';
+  if(!Object.prototype.hasOwnProperty.call(notes,kind))kind='tap';
   const player=getClips()[kind];
   if(!player){fallback(kind);return Promise.resolve(false)}
   try{
