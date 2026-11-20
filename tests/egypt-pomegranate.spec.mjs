@@ -24,7 +24,10 @@ async function checkGame(browser,engine,profile){
   assert.equal(await page.locator('.real-lada img[src="images/hecate-lyre-costume-layer.webp"]').count(),1);
   assert.equal(await page.locator('.zmeya .snake-shape').count(),3,'Three golden snakes');
   assert.equal(await page.locator('#memoryBoard').isHidden(),true,'Memory board initially hidden');
-  assert.equal(await page.evaluate(()=>getComputedStyle(document.querySelector('.portal-view')).opacity),'0','Portal initially closed');
+  assert.equal(await page.evaluate(()=>getComputedStyle(document.querySelector('.portal-open-art')).opacity),'0','Portal initially closed');
+  assert.equal(await page.locator('.portal-closed-art').count(),1,'Closed gate artwork installed');
+  assert.equal(await page.locator('.portal-open-art').count(),1,'Open Nile artwork installed');
+  assert.equal(await page.locator('.portal-seal,.portal-view,.portal-glow').count(),0,'No schematic portal overlays');
   assert.equal(await page.evaluate(()=>window.TivvigPomegranateDebug.state().phase),'intro');
   await page.locator('#hadesLocalSound').click({timeout:5000});
   const audio=await page.evaluate(()=>window.TivvigHadesSounds.state());
@@ -59,10 +62,13 @@ async function checkGame(browser,engine,profile){
   assert.equal(await page.locator('.memory-card.matched').count(),16);
   assert.equal(await page.evaluate(()=>localStorage.getItem('tivvig_egypt_pomegranate_portal_v1')),'unlocked','Reward saved');
   assert.equal(await page.locator('#memoryFinish').isVisible(),true);
-  assert.equal(await page.evaluate(()=>getComputedStyle(document.querySelector('.portal-view')).opacity),'1','Portal opens only after success');
+  assert.equal(await page.evaluate(()=>getComputedStyle(document.querySelector('.portal-open-art')).opacity),'1','Nile illustration appears only after all pairs');
+  assert.equal(await page.locator('.portal-closed-art').evaluate(x=>x.naturalWidth>500),true,'Closed artwork loaded');
+  assert.equal(await page.locator('.portal-open-art').evaluate(x=>x.naturalWidth>500),true,'Open artwork loaded');
   await page.locator('#memoryReplay').click();
   assert.equal(await page.evaluate(()=>window.TivvigPomegranateDebug.state().phase),'intro');
   assert.equal(await page.locator('#memoryBoard').isHidden(),true);
+  assert.equal(await page.evaluate(()=>getComputedStyle(document.querySelector('.portal-open-art')).opacity),'0','Replay closes the illustrated portal');
   assert.deepEqual(faults,[],'No JavaScript exceptions');assert.deepEqual(missing,[],'No missing assets');
   passed++;console.log('PASS',engine,profile.name,'16 true-art cards, 8 pairs, snakes, iOS sound, portal, reward, replay');
  }finally{await context.close()}
