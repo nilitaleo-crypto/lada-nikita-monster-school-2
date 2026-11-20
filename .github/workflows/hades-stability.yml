@@ -40,7 +40,7 @@ jobs:
                       subprocess.run(['node','--check','--input-type=commonjs'],
                                      input=part,text=True,check=True)
               for path in re.findall(r'(?:src|href)="(images/[^"]+)"',source):
-                  assert (root/path).is_file(), f'{page}: missing {path}'
+                  assert (root/path.split('?',1)[0].split('#',1)[0]).is_file(), f'{page}: missing {path}'
           print('STATIC PASS: seven scenes, JavaScript syntax, asset references')
           PY
       - name: Install browser test runner
