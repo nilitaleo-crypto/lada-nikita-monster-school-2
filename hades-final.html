@@ -222,6 +222,85 @@ header h1{margin:0;font-size:clamp(18px,2.5vw,28px);font-weight:normal;letter-sp
 }
 @media(prefers-reduced-motion:reduce){.clock-fire,.word-spirit,.scene.is-free .cry-tear{animation-duration:.1s}}
 
+/* Final reward: original photographic Lada + existing Hecate costume.
+   Do not synthesize her face, hair or head; keep the original PNG/WebP pixels. */
+.scene[data-stage="4"] .finale.finale-reward{
+ position:absolute;inset:0;z-index:19;display:block;overflow:hidden;
+ background:#2a2e27;padding:0;isolation:isolate;text-align:left
+}
+.finale-reward .victory-landscape{
+ position:absolute;inset:0;z-index:0;width:100%;height:100%;
+ object-fit:cover;object-position:center;pointer-events:none;user-select:none
+}
+.finale-reward::after{
+ content:"";position:absolute;inset:0;z-index:1;pointer-events:none;
+ background:linear-gradient(90deg,#10131d51 0%,transparent 34%),
+ linear-gradient(0deg,#15192083,transparent 21%)
+}
+.scene[data-stage="4"] .finale.finale-reward .victory-lada{
+ position:absolute;left:26%;bottom:1.7%;width:23.5%;height:auto;
+ aspect-ratio:1056/1448;z-index:2;display:block;padding:0;
+ filter:drop-shadow(4px 9px 6px #1715108a);pointer-events:none;
+ animation:reward-lada-arrive 1s ease-out both
+}
+.finale-reward .victory-lada img{
+ position:absolute;inset:0;width:100%;height:100%;object-fit:contain;
+ user-select:none;pointer-events:none
+}
+.finale-reward .victory-lada-original{z-index:0}
+.finale-reward .victory-lada-outfit{
+ z-index:1;
+ /* Cut away the entire costume's artificial head/hair; the real photo stays. */
+ -webkit-clip-path:polygon(0 28%,35% 28%,41% 29%,59% 29%,66% 28%,100% 28%,100% 100%,0 100%);
+ clip-path:polygon(0 28%,35% 28%,41% 29%,59% 29%,66% 28%,100% 28%,100% 100%,0 100%)
+}
+.finale-reward .victory-lada-preserved-head{
+ z-index:2;
+ /* The original whole head, not an AI substitute. */
+ -webkit-clip-path:ellipse(25% 15.5% at 49.5% 14.8%);
+ clip-path:ellipse(25% 15.5% at 49.5% 14.8%)
+}
+.scene[data-stage="4"] .finale.finale-reward .victory-heading{
+ position:absolute;z-index:3;top:4%;left:3%;margin:0;
+ font:normal clamp(19px,3vw,37px)/1.1 Georgia,serif;color:#fff0cf;
+ text-shadow:0 2px 8px #07111ae8,0 1px 18px #111c1dcc;
+ max-width:48%
+}
+.scene[data-stage="4"] .finale.finale-reward .victory-actions{
+ position:absolute;z-index:3;right:2.5%;bottom:3%;padding:0;
+ display:flex;flex-direction:row;gap:9px;filter:none;align-items:center
+}
+.finale.finale-reward .victory-actions a,
+.finale.finale-reward .victory-actions button{
+ display:inline-grid;place-items:center;min-height:44px;padding:8px 12px;
+ border-radius:11px;border:1px solid #e5d7bd;
+ color:#2c3032;background:#f1e8d5e8;
+ font:bold clamp(12px,1.4vw,15px) Georgia,serif;
+ box-shadow:0 3px 10px #10151352;text-shadow:none;white-space:nowrap
+}
+@keyframes reward-lada-arrive{
+ from{opacity:0;transform:translateX(-3%) translateY(3%)}
+ to{opacity:1;transform:translateX(0) translateY(0)}
+}
+@media(max-width:760px){
+ .scene[data-stage="4"] .finale.finale-reward .victory-lada{
+  left:16%;bottom:4%;width:32%
+ }
+ .scene[data-stage="4"] .finale.finale-reward .victory-heading{
+  left:4%;top:4%;max-width:68%;font-size:clamp(17px,4.8vw,27px)
+ }
+ .scene[data-stage="4"] .finale.finale-reward .victory-actions{
+  bottom:2%;right:2%;gap:5px
+ }
+ .finale.finale-reward .victory-actions a,
+ .finale.finale-reward .victory-actions button{
+  min-height:43px;padding:7px 9px;font-size:12px
+ }
+}
+@media(prefers-reduced-motion:reduce){
+ .scene[data-stage="4"] .finale.finale-reward .victory-lada{animation:none}
+}
+
 </style>
 </head>
 <body>
@@ -253,7 +332,16 @@ header h1{margin:0;font-size:clamp(18px,2.5vw,28px);font-weight:normal;letter-sp
 <div class="bridge-track" id="bridgeTrack" aria-hidden="true" hidden></div>
 <div class="message" id="message" role="status" aria-live="polite">Освободи Персефону</div>
 <div class="sound-hint" id="soundHint" hidden><button type="button" id="soundToggle" title="Проверить звук" aria-label="Проверить звук">🔈</button></div>
-<div class="finale" id="finale" hidden role="dialog" aria-modal="true" aria-label="Персефона свободна"><div><h2>Персефона свободна!</h2><a href="index.html">⌂ На карту</a><button id="replayAll" type="button">↻ С начала</button></div></div>
+<div class="finale finale-reward" id="finale" hidden role="dialog" aria-modal="true" aria-label="Награда: Лада вывела Персефону на белый свет">
+ <img class="victory-landscape" src="images/hades-persephone-freedom.webp" alt="Персефона выходит из тёмного подземного царства на освещённый солнцем цветущий луг" draggable="false">
+ <div class="victory-lada" role="img" aria-label="Настоящая Лада в наряде Гекаты ведёт Персефону к солнечному свету">
+  <img class="victory-lada-original" src="images/lada-cutout.webp" alt="" draggable="false">
+  <img class="victory-lada-outfit" src="images/hecate-lyre-costume-layer.webp" alt="" draggable="false">
+  <img class="victory-lada-preserved-head" src="images/lada-cutout.webp" alt="" draggable="false">
+ </div>
+ <h2 class="victory-heading">Персефона свободна!</h2>
+ <div class="victory-actions"><a href="index.html">⌂ На карту</a><button id="replayAll" type="button">↻ С начала</button></div>
+ </div>
 </section>
 </main>
 <script src="wardrobe.js?v=5" defer></script>
