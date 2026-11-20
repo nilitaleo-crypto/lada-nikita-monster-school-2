@@ -35,19 +35,25 @@ async function run(engine,name,profile){
   assert.equal(audio.unlocked,true);assert.equal(audio.sampleCount,4);
   await page.locator('#startRescue').click({timeout:3000});
   assert.equal(await page.evaluate(()=>window.TivvigEgyptDebug.state().phase),'playing');
-  assert.equal(await page.locator('.anchor:visible').count(),3);
-  try{
-   await page.waitForFunction(()=>window.TivvigEgyptDebug.state().energy[0]<.98,null,{timeout:5000});
-  }catch(e){
-   const info=await page.evaluate(()=>window.TivvigEgyptDebug.state());
-   throw Error('Rays did not fade after Start: '+JSON.stringify(info));
-  }
+  assert.equal(await page.locator('.anchor:visible').count(),6,'All six nodes must activate');
+  const first=await page.evaluate(()=>({point:window.TivvigEgyptDebug.state().points[0],path:document.querySelector('#ray0 .ray-light').getAttribute('d')}));
+  await page.waitForFunction(old=>{
+   const now=window.TivvigEgyptDebug.state().points[0];
+   return Math.abs(now.x-old.x)>2 || Math.abs(now.y-old.y)>2;
+  },first.point,{timeout:3500});
+  assert.notEqual(await page.locator('#ray0 .ray-light').getAttribute('d'),first.path,'Ray must follow moving node');
+  const nodePositions=await page.evaluate(()=>[...document.querySelectorAll('button.anchor')].map(b=>{
+   const r=b.getBoundingClientRect(),stage=document.querySelector('#egyptScene').getBoundingClientRect();
+   return {x:r.x,y:r.y,inside:r.left>=stage.left-4 && r.right<=stage.right+4 && r.top>=stage.top-4 && r.bottom<=stage.bottom+4};
+  }));
+  assert(nodePositions.every(x=>x.inside),'Moving nodes must stay inside the game viewport');
+  await page.waitForFunction(()=>window.TivvigEgyptDebug.state().energy[0]<.98,null,{timeout:5000});
   const before=await page.evaluate(()=>window.TivvigEgyptDebug.state().energy[0]);
   await page.locator('#rayButton0').click({timeout:3000});
   const after=await page.evaluate(()=>window.TivvigEgyptDebug.state().energy[0]);
   assert(after>before,'Press must visibly strengthen ray');
-  for(const i of [1,2])await page.locator('#rayButton'+i).click({timeout:3000});
-  assert.deepEqual((await page.evaluate(()=>window.TivvigEgyptDebug.state().presses)),[1,1,1]);
+  for(const i of [1,2,3,4,5])await page.locator('#rayButton'+i).click({timeout:5000});
+  assert.deepEqual((await page.evaluate(()=>window.TivvigEgyptDebug.state().presses)),[1,1,1,1,1,1]);
   await page.evaluate(()=>window.TivvigEgyptDebug.finishImmediately());
   await page.waitForFunction(()=>window.TivvigEgyptDebug.state().phase==='lost',null,{timeout:5000});
   assert.equal(await page.evaluate(()=>localStorage.getItem('tivvig_egypt_apophis_prologue_v1')),'unlocked');
@@ -78,7 +84,12 @@ async function parentRoom(engine,name){
   await page.evaluate(()=>document.getElementById('frame').contentWindow.postMessage({from:'tivvig-parent',type:'click',value:{selector:'#startRescue'}},location.origin));
   await frame.locator('#rayButton1').waitFor({state:'visible',timeout:4000});
   assert.equal(await frame.locator('body').evaluate(()=>window.TivvigEgyptDebug.state().phase),'playing');
-  console.log('PASS',name,'co-op audio is local, game click is replicated');
+  await frame.locator('#rayButton5').click();
+  await page.waitForFunction(()=>window.roomEvents.some(x=>x.type==='click'&&x.value?.selector==='#rayButton5'),null,{timeout:3000});
+  assert.equal(await frame.locator('body').evaluate(()=>window.TivvigEgyptDebug.state().presses[5]),0,'Ray press waits for room replay');
+  await page.evaluate(()=>document.getElementById('frame').contentWindow.postMessage({from:'tivvig-parent',type:'click',value:{selector:'#rayButton5'}},location.origin));
+  await page.waitForFunction(()=>document.getElementById('frame').contentWindow.TivvigEgyptDebug.state().presses[5]===1,null,{timeout:3000});
+  console.log('PASS',name,'co-op audio is local, six-node game clicks are replicated');
  }finally{await context.close()}
 }
 try{
