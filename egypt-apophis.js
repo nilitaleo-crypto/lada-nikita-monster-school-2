@@ -13,7 +13,7 @@
  const stored='tivvig_egypt_apophis_prologue_v1';
  const prefersReduced=window.matchMedia?.('(prefers-reduced-motion: reduce)').matches||false;
  const isCoop=new URLSearchParams(location.search).get('coop')==='1';
- let phase='intro',strength=[1,1,1],presses=[0,0,0],elapsed=0,raf=0,lastTime=0;
+ let phase='intro',strength=[1,1,1],presses=[0,0,0],elapsed=0,tickTimer=0,lastTime=0;
  let darkness=0,cinematic=null,serial=0;
  const clamp=(v,min,max)=>Math.max(min,Math.min(max,v));
  function save(){
@@ -37,10 +37,11 @@
   sunShadow.style.opacity=String(clamp((1-low)*.40,0,.40));
  }
  function sound(kind){try{void window.TivvigHadesSounds?.play(kind)}catch(e){}}
- function stopLoop(){if(raf){cancelAnimationFrame(raf);raf=0}}
- function loop(now){
+ function stopLoop(){if(tickTimer){clearInterval(tickTimer);tickTimer=0}}
+ function loop(){
   if(phase!=='playing')return;
-  const dt=lastTime?clamp((now-lastTime)/1000,0,.080):0;
+  const now=performance.now();
+  const dt=lastTime?clamp((now-lastTime)/1000,0,.12):0;
   lastTime=now;
   if(!document.hidden){
    elapsed+=dt;
@@ -49,7 +50,6 @@
    const pressed=presses.reduce((a,b)=>a+b,0);
    if((pressed>=10 && elapsed>=12)||elapsed>=36){beginCollapse();return}
   }
-  raf=requestAnimationFrame(loop);
  }
  function burst(button){
   const origin=button.getBoundingClientRect(),frame=stage.getBoundingClientRect();
@@ -87,7 +87,7 @@
   setMessage('Поддержи три луча!');
   try{window.TivvigHadesSounds?.prime()}catch(e){}
   updateVisual();lastTime=performance.now();
-  stopLoop();raf=requestAnimationFrame(loop);
+  stopLoop();tickTimer=setInterval(loop,75);
   sound('tap');
  }
  function beginCollapse(){
@@ -123,12 +123,12 @@
  $('startRescue').addEventListener('click',begin);
  anchors.forEach((b,i)=>b.addEventListener('click',()=>tapRay(i)));
  $('replayEgypt').addEventListener('click',reset);
- window.addEventListener('pageshow',()=>{dress();if(phase==='playing'&&!raf){lastTime=performance.now();raf=requestAnimationFrame(loop)}});
+ window.addEventListener('pageshow',()=>{dress();if(phase==='playing'&&!tickTimer){lastTime=performance.now();tickTimer=setInterval(loop,75)}});
  window.addEventListener('tivvig-inventory-changed',dress);
  document.addEventListener('visibilitychange',()=>{lastTime=performance.now()});
  window.addEventListener('pagehide',stopLoop);
  window.TivvigEgyptDebug=Object.freeze({
-  state:()=>({phase,energy:[...strength],presses:[...presses],elapsed,darkness,stored:!!localStorage.getItem(stored),isCoop}),
+  state:()=>({phase,energy:[...strength],presses:[...presses],elapsed,darkness,documentHidden:document.hidden,ticking:!!tickTimer,stored:!!localStorage.getItem(stored),isCoop}),
   begin,tap:tapRay,collapse:beginCollapse,reset,
   finishImmediately:()=>{if(phase==='intro')begin();elapsed=36;beginCollapse()}
  });
