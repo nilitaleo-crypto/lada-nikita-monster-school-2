@@ -10,6 +10,7 @@ on:
       - 'wardrobe.js'
       - 'tests/hades-stability.mjs'
       - 'tests/egypt-apophis.spec.mjs'
+      - 'tests/egypt-pomegranate.spec.mjs'
       - '.github/workflows/hades-stability.yml'
   workflow_dispatch:
 permissions:
@@ -54,6 +55,8 @@ jobs:
         run: node tests/hades-stability.mjs
       - name: Apophis prologue and co-op browser smoke tests
         run: node tests/egypt-apophis.spec.mjs
+      - name: Pomegranate road, iPad sounds and Firebase co-op game tests
+        run: node tests/egypt-pomegranate.spec.mjs
       - name: Archive results (even on failure)
         if: always()
         uses: actions/upload-artifact@v4

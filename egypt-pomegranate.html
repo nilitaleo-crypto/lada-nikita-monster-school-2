@@ -1,0 +1,150 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#27172b">
+<meta name="description" content="Лада помогает Персефоне посадить гранатовые зёрна, пробудить корни и открыть портал к Нилу.">
+<title>Гранатовая тропа · Египет · Тиввиг</title>
+<style>
+:root{color-scheme:dark;--cream:#fff1d5;--gold:#ffe49d;--ruby:#df2459}
+*{box-sizing:border-box}[hidden]{display:none!important}
+html,body{margin:0;min-height:100%;background:#130d1e}
+body{font:16px Georgia,'Times New Roman',serif;color:var(--cream);background:radial-gradient(ellipse at 50% 40%,#4d294f,#140e1e 75%)}
+button,a{font:inherit;touch-action:manipulation;-webkit-tap-highlight-color:transparent}a{color:inherit;text-decoration:none}button{cursor:pointer}button:focus-visible,a:focus-visible{outline:3px solid #c6f4ff;outline-offset:3px}
+main{margin:0 auto;max-width:1490px;min-height:100dvh;padding:7px 9px 12px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:7px}
+header{width:min(100%,1320px);min-height:44px;display:flex;align-items:center;justify-content:space-between;gap:7px}
+header h1{font:normal clamp(18px,2.4vw,29px) Georgia,serif;margin:0;color:#ffdfb5;text-shadow:0 1px 5px #0c0712;text-align:center}
+.nav{font:500 clamp(12px,1.3vw,15px) Georgia,serif;white-space:nowrap;border:1px solid #d2a99f8a;border-radius:11px;background:#3f2448e8;min-height:42px;display:grid;place-items:center;padding:8px 11px}
+.scene{width:min(100%,1320px,calc((100dvh - 85px)*1.3333));aspect-ratio:4/3;position:relative;isolation:isolate;overflow:hidden;border:3px solid #9a677d;border-radius:16px;background:#2b1a35;box-shadow:0 8px 0 #291629,0 16px 30px #070610af;touch-action:manipulation}
+.backdrop{position:absolute;inset:0;width:100%;height:100%;object-fit:fill;z-index:0;user-select:none;pointer-events:none}
+.scene::after{content:'';position:absolute;inset:0;box-shadow:inset 0 0 30px 8px #14091855;pointer-events:none;z-index:30}
+.scene[data-phase="sow"]::before{content:'';position:absolute;left:3%;top:47%;width:33%;height:28%;z-index:1;pointer-events:none;background:radial-gradient(ellipse at 45% 60%,#1e0627d4,#21092358 56%,transparent 73%)}
+.scene-title{position:absolute;z-index:13;left:2%;top:1.7%;margin:0;max-width:50%;color:#fff4d6;font:normal clamp(17px,2.05vw,28px)/1.12 Georgia,serif;text-shadow:0 2px 8px #100819,0 0 12px #1a1025;pointer-events:none}
+.scene-title span{display:block;color:#ffd188;font:600 clamp(10px,1.08vw,14px) system-ui,sans-serif;letter-spacing:.09em;margin-bottom:5px}
+.message{position:absolute;z-index:15;left:50%;top:7.4%;transform:translateX(-50%);width:max-content;max-width:80%;text-align:center;font:500 clamp(13px,1.55vw,22px)/1.22 Georgia,serif;text-shadow:0 1px 7px #130914,0 0 11px #200e20;color:#fff3d7;pointer-events:none}
+.stage-action{position:absolute;z-index:20;left:50%;bottom:5%;transform:translateX(-50%);padding:10px 20px;min-height:48px;border:2px solid #ffe9aa;border-radius:15px;color:#4b2035;font:bold clamp(15px,1.7vw,23px) Georgia,serif;white-space:nowrap;background:linear-gradient(#fff0cd,#f4b66b);box-shadow:0 3px 13px #140c20c2,0 0 18px #fbb75a99}
+/* Three beds follow the actual one-, two- and three-leaf pedestals in the painting. */
+.bed{position:absolute;z-index:10;top:54.4%;width:11%;height:13%;border:0;border-radius:40%;transform:translate(-50%,-50%);background:radial-gradient(ellipse at center,#ffe19452,#ffaa1512 50%,transparent 78%);filter:drop-shadow(0 0 7px #ffde88);display:grid;place-items:end center;padding:0 0 2px;transition:filter .17s;touch-action:manipulation}
+.bed:before{content:'';position:absolute;inset:12%;border:2px dashed #ffe5aa00;border-radius:45%;transition:border .18s,background .18s;pointer-events:none}
+.bed.ready:before{border-color:#fff1bfdd;background:#ffb42d18;animation:bed-pulse 1.5s ease-in-out infinite alternate}
+.bed.filled:before{border-color:#ffe6a400;background:#f0ba1a09}
+.bed-count{display:block;margin-bottom:4%;color:#fff3db;background:#2a1838c9;border:1px solid #ffd897b6;border-radius:99px;padding:3px 6px;min-width:42px;text-align:center;font:600 clamp(13px,1.55vw,20px) system-ui,sans-serif;text-shadow:0 1px 3px #090713;box-shadow:0 2px 6px #0b081ca8}
+.bed.filled .bed-count{color:#f4ffd9;border-color:#abe599}
+.bed0{left:38.5%}.bed1{left:52.5%}.bed2{left:66.8%}
+@keyframes bed-pulse{to{box-shadow:0 0 13px 2px #fff1bb88;transform:scale(1.05)}}
+.seed-tray{position:absolute;z-index:12;left:8%;top:52.2%;width:24%;height:14%;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));grid-template-rows:repeat(2,minmax(0,1fr));gap:2px 7px;align-items:center;justify-items:center}
+.seed{position:relative;width:67%;height:88%;min-width:44px;min-height:44px;max-width:69px;max-height:68px;border:0;background:transparent;padding:0;display:grid;place-items:center;filter:drop-shadow(1px 3px 4px #2c0514);touch-action:manipulation}
+.seed:before{content:'';position:absolute;inset:8% 16%;transform:rotate(-23deg);border:2px solid #ffe2bb;border-radius:45% 55% 45% 54%;background:radial-gradient(circle at 32% 23%,#ffe1dc 0%,#ff6189 16%,#e50947 44%,#830028 83%);box-shadow:0 0 11px #ff6588aa,inset -4px -4px 9px #640522;transition:transform .13s,filter .13s}
+.seed:after{content:'';position:absolute;top:21%;left:33%;width:17%;height:14%;border-radius:90%;transform:rotate(-24deg);background:#fff8d5;filter:blur(1px);pointer-events:none}
+.seed.selected:before{transform:rotate(-23deg) scale(1.18);box-shadow:0 0 17px 7px #ffeb90}
+.seed.used{visibility:hidden;pointer-events:none}
+.seed.used:before{display:none}
+.seed.selected{animation:seed-pulse 1s ease-in-out infinite alternate}
+@keyframes seed-pulse{to{filter:drop-shadow(0 0 8px #fff7bf)}}
+/* Translucent accent orbs appear in the soil as seeds are planted. */
+.planted-seeds{position:absolute;z-index:12;top:62%;width:13%;height:4.5%;display:flex;gap:5px;justify-content:center;align-items:center;transform:translateX(-50%);pointer-events:none}
+.planted-seeds[data-bed="0"]{left:38.5%}.planted-seeds[data-bed="1"]{left:52.5%}.planted-seeds[data-bed="2"]{left:66.8%}
+.planted-seeds i{width:clamp(7px,1vw,14px);height:clamp(9px,1.25vw,17px);border-radius:50% 45% 55% 45%;transform:rotate(-15deg);background:radial-gradient(circle at 28% 22%,#ffddcd,#f31355 40%,#700b39);box-shadow:0 0 12px 3px #f5a44c}
+.crumb{position:absolute;z-index:17;pointer-events:none;width:6px;height:6px;background:#ffdfbd;border-radius:50%;box-shadow:0 0 12px #fff0bd;animation:crumb-pop .5s ease-out both}
+@keyframes crumb-pop{to{transform:translate(var(--dx),var(--dy)) scale(.1);opacity:0}}
+.shake{animation:shake .25s linear}
+@keyframes shake{25%,75%{transform:translate(-50%,-50%) translateX(-5px)}50%{transform:translate(-50%,-50%) translateX(5px)}}
+/* Root matching lives directly on top of the underground paths, no gameplay panel. */
+.root-network{position:absolute;inset:0;width:100%;height:100%;z-index:8;pointer-events:none}
+.root-path{fill:none;stroke:#fff0b8;stroke-linecap:round;stroke-width:7;filter:drop-shadow(0 0 7px #ffab59);stroke-dasharray:1;stroke-dashoffset:1;opacity:.9;transition:stroke-dashoffset 1.15s ease-out}
+.root-path.complete{stroke-dashoffset:0}
+.root-tip,.root-target{position:absolute;z-index:16;width:clamp(46px,6.1vw,74px);height:clamp(46px,6.1vw,74px);border-radius:50%;border:2px solid #fff4c9;background:radial-gradient(circle,#513862e8,#281b46e8);color:#ffe39c;display:grid;place-items:center;box-shadow:0 0 12px #ffbb6da9,inset 0 0 10px #ffda7462;transform:translate(-50%,-50%);touch-action:manipulation}
+.root-tip .icon,.root-target .icon{width:60%;height:60%;display:block;fill:none;stroke:currentColor;stroke-width:4;stroke-linecap:round;stroke-linejoin:round}
+.root-tip.selected{background:#d78136;border-color:#fff8d7;box-shadow:0 0 20px 7px #ffe1a9;animation:source-pulse .95s ease-in-out infinite alternate}
+.root-tip.done,.root-target.done{opacity:.45;filter:saturate(.65);pointer-events:none}
+.root-tip0{left:38.5%;top:64.5%}.root-tip1{left:52.5%;top:64.5%}.root-tip2{left:66.8%;top:64.5%}
+.root-target0{left:28.5%;top:83.4%}.root-target1{left:46.4%;top:83.4%}.root-target2{left:64.2%;top:83.4%}
+@keyframes source-pulse{to{transform:translate(-50%,-50%) scale(1.08)}}
+.portal-flare{position:absolute;z-index:7;left:83%;top:37%;width:30%;height:48%;border-radius:50%;transform:translate(-50%,-50%);background:radial-gradient(ellipse at center,#fff7cccb,#effaff81 30%,#f3b34e42 45%,transparent 68%);pointer-events:none;opacity:0;transition:opacity 1.4s ease-in-out;mix-blend-mode:screen}
+.scene[data-phase="portal"] .portal-flare{opacity:.8;animation:portal-glow 3s ease-in-out infinite alternate}
+@keyframes portal-glow{to{opacity:1;transform:translate(-50%,-50%) scale(1.05)}}
+.scene[data-phase="portal"] .backdrop{filter:brightness(1.1) saturate(1.13)}
+/* Real, shared Lada avatar. Costume is a separate layer; head uses original photograph. */
+.real-lada{position:absolute;z-index:5;left:70.7%;top:29%;height:25%;width:12%;pointer-events:none;filter:drop-shadow(2px 5px 6px #200e2dbb)}
+.real-lada img{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;pointer-events:none;user-select:none}
+.real-lada .costume{z-index:2;clip-path:polygon(0 29%,100% 29%,100% 100%,0 100%);-webkit-clip-path:polygon(0 29%,100% 29%,100% 100%,0 100%)}
+.real-lada .head{z-index:3;clip-path:ellipse(24% 15% at 49.6% 14.5%);-webkit-clip-path:ellipse(24% 15% at 49.6% 14.5%)}
+.finish{position:absolute;z-index:22;left:50%;bottom:4%;transform:translateX(-50%);display:flex;align-items:center;justify-content:center;gap:10px;flex-wrap:wrap;padding:13px 16px;border-radius:14px;border:1px solid #f2d59e;background:#211633e3;box-shadow:0 4px 22px #10051add;max-width:92%}
+.finish p{margin:0;color:#fff2d8;white-space:nowrap;font-size:clamp(14px,1.7vw,20px)}.finish a,.finish button{background:#f5ddb0;color:#432143;border:1px solid #fff2dc;border-radius:10px;min-height:44px;padding:8px 13px;white-space:nowrap;font:bold clamp(13px,1.25vw,17px) Georgia,serif}
+.finish button{background:#58335d;color:#fff3d8}
+@media(max-width:710px){
+ main{padding:5px 4px 8px;justify-content:flex-start;min-height:100dvh}header{gap:5px}header h1{font-size:clamp(14px,3.65vw,21px)}.nav{font-size:11px;padding:7px 6px;min-height:42px}
+ .scene{width:100%;min-height:325px;aspect-ratio:4/3;border-width:2px}
+ .scene-title{max-width:54%;font-size:clamp(14px,3.25vw,20px)}.scene-title span{font-size:9px;margin-bottom:2px}
+ .message{top:9%;max-width:90%;white-space:normal;font-size:clamp(11px,2.8vw,15px)}
+ .bed{width:13%;height:12%;top:56%}.bed-count{font-size:13px;min-width:38px;margin-bottom:2%}
+ .seed-tray{left:3.5%;top:69%;width:47%;height:30%;gap:0 2px;background:radial-gradient(ellipse,#240f32e8,#1c0b2880 75%,transparent);border-radius:16px}
+ .seed{min-width:43px;min-height:43px;width:88%;height:95%}
+ .planted-seeds{top:64%}
+ .root-tip,.root-target{width:44px;height:44px}
+ .root-tip0{left:38.5%}.root-tip1{left:52.5%}.root-tip2{left:66.8%}
+ .real-lada{left:70.4%;top:34%;height:23%;width:13%}
+ .stage-action{bottom:8%;min-height:45px;font-size:16px;padding:8px 15px}
+ .finish{bottom:1.5%;padding:9px 8px;gap:7px}.finish p{font-size:13px}
+}
+@media(prefers-reduced-motion:reduce){.bed.ready:before,.seed.selected,.root-tip.selected,.portal-flare{animation:none}.root-path{transition:none}}
+</style>
+</head>
+<body>
+<main>
+<header><a class="nav" href="egypt-apophis.html">← Апоп</a><h1>Гранатовая тропа</h1><a class="nav" href="index.html">⌂ Карта</a></header>
+<section class="scene" id="pomegranateScene" data-phase="intro" aria-label="Персефона раскрыла гранат. Помоги Ладе посадить семена и провести корни к порталу в Египет.">
+ <img class="backdrop" src="images/egypt-pomegranate-garden.webp" alt="Персефона в цветущем саду с гранатом, зёрна, три клумбы, корни под землёй и светящийся портал с видом на Нил" fetchpriority="high" draggable="false">
+ <div class="portal-flare" aria-hidden="true"></div>
+ <div class="real-lada" role="img" aria-label="Лада в наряде Гекаты, с её оригинальным лицом">
+  <img src="images/lada-cutout.webp" alt="" draggable="false">
+  <img class="costume" src="images/hecate-lyre-costume-layer.webp" alt="" draggable="false">
+  <img class="head" src="images/lada-cutout.webp" alt="" draggable="false">
+ </div>
+ <h2 class="scene-title" id="title"><span>ЕГИПЕТ · ГЛАВА II</span>Персефона ищет дорогу</h2>
+ <div class="message" id="message" role="status" aria-live="polite">Помоги гранатовым зёрнам вырастить дорогу к Нилу!</div>
+ <button class="stage-action" id="gardenStart" type="button" data-tivvig-sound="manual">Посадить зёрна!</button>
+ <div class="seed-tray" id="seedTray" aria-label="Шесть гранатовых зёрен" hidden>
+  <button class="seed" id="garden-seed-0" aria-label="Взять гранатовое зерно 1" type="button" data-tivvig-sound="manual"></button>
+  <button class="seed" id="garden-seed-1" aria-label="Взять гранатовое зерно 2" type="button" data-tivvig-sound="manual"></button>
+  <button class="seed" id="garden-seed-2" aria-label="Взять гранатовое зерно 3" type="button" data-tivvig-sound="manual"></button>
+  <button class="seed" id="garden-seed-3" aria-label="Взять гранатовое зерно 4" type="button" data-tivvig-sound="manual"></button>
+  <button class="seed" id="garden-seed-4" aria-label="Взять гранатовое зерно 5" type="button" data-tivvig-sound="manual"></button>
+  <button class="seed" id="garden-seed-5" aria-label="Взять гранатовое зерно 6" type="button" data-tivvig-sound="manual"></button>
+ </div>
+ <button class="bed bed0" id="garden-bed-0" type="button" aria-label="Посадить одно зерно в первую клумбу" data-tivvig-sound="manual" hidden><span class="bed-count" id="count0">0/1</span></button>
+ <button class="bed bed1" id="garden-bed-1" type="button" aria-label="Посадить два зерна во вторую клумбу" data-tivvig-sound="manual" hidden><span class="bed-count" id="count1">0/2</span></button>
+ <button class="bed bed2" id="garden-bed-2" type="button" aria-label="Посадить три зерна в третью клумбу" data-tivvig-sound="manual" hidden><span class="bed-count" id="count2">0/3</span></button>
+ <div class="planted-seeds" data-bed="0" id="planted0" aria-hidden="true"></div>
+ <div class="planted-seeds" data-bed="1" id="planted1" aria-hidden="true"></div>
+ <div class="planted-seeds" data-bed="2" id="planted2" aria-hidden="true"></div>
+ <svg class="root-network" viewBox="0 0 1448 1086" preserveAspectRatio="none" id="rootNetwork" aria-hidden="true" hidden>
+  <path id="rootPath0" class="root-path" pathLength="1" d="M 559 700 C 590 770, 765 763, 865 835 S 930 900, 930 906"/>
+  <path id="rootPath1" class="root-path" pathLength="1" d="M 760 700 C 690 746, 590 772, 485 824 S 414 884, 413 905"/>
+  <path id="rootPath2" class="root-path" pathLength="1" d="M 965 700 C 929 766, 836 743, 772 816 S 672 886, 672 906"/>
+ </svg>
+ <svg width="0" height="0" aria-hidden="true" style="position:absolute;pointer-events:none"><defs>
+  <symbol id="icon-lotus" viewBox="0 0 64 64"><path d="M32 51C23 41 24 26 32 16c8 10 9 25 0 35ZM32 50C17 48 8 34 10 23c12 1 23 12 22 27ZM32 50c15-2 24-16 22-27-12 1-23 12-22 27ZM13 52c9 5 29 5 38 0"/></symbol>
+  <symbol id="icon-ankh" viewBox="0 0 64 64"><path d="M32 34C11 23 23 7 32 7s21 16 0 27ZM32 34v23M18 37h28"/></symbol>
+  <symbol id="icon-eye" viewBox="0 0 64 64"><path d="M7 32Q32 10 57 32Q32 54 7 32ZM32 24a8 8 0 1 0 .01 0M32 40l-4 13M41 39l4 10"/></symbol>
+ </defs></svg>
+ <button class="root-tip root-tip0" id="garden-source-0" aria-label="Выбрать росток с глазом" type="button" hidden data-tivvig-sound="manual"><svg class="icon"><use href="#icon-eye"/></svg></button>
+ <button class="root-tip root-tip1" id="garden-source-1" aria-label="Выбрать росток с лотосом" type="button" hidden data-tivvig-sound="manual"><svg class="icon"><use href="#icon-lotus"/></svg></button>
+ <button class="root-tip root-tip2" id="garden-source-2" aria-label="Выбрать росток с анкхом" type="button" hidden data-tivvig-sound="manual"><svg class="icon"><use href="#icon-ankh"/></svg></button>
+ <button class="root-target root-target0" id="garden-target-0" aria-label="Корень с лотосом" type="button" hidden data-tivvig-sound="manual"><svg class="icon"><use href="#icon-lotus"/></svg></button>
+ <button class="root-target root-target1" id="garden-target-1" aria-label="Корень с анкхом" type="button" hidden data-tivvig-sound="manual"><svg class="icon"><use href="#icon-ankh"/></svg></button>
+ <button class="root-target root-target2" id="garden-target-2" aria-label="Корень с глазом" type="button" hidden data-tivvig-sound="manual"><svg class="icon"><use href="#icon-eye"/></svg></button>
+ <div class="finish" id="gardenFinish" hidden>
+  <p>Дорога к Нилу открыта!</p>
+  <button type="button" id="gardenReplay" data-tivvig-sound="manual">↻ Ещё раз</button>
+  <a href="index.html">⌂ На карту</a>
+ </div>
+</section>
+</main>
+<script src="game-registry.js?v=4" defer></script>
+<script src="egypt-pomegranate.js?v=1" defer></script>
+<script src="hades-sounds.js?v=4" defer></script>
+<script src="game-runtime.js?v=5" defer></script>
+</body>
+</html>
