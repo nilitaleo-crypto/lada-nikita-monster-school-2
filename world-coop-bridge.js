@@ -58,6 +58,8 @@ document.addEventListener("click",e=>{
  // iPad WebAudio must be unlocked by a real local gesture, not a Firebase replay.
  // The sound-check button is strictly LOCAL on each iPad/iPhone/computer.
   if(target.matches('[data-tivvig-local-audio]'))return;
+  // Speech synthesis requires a trusted local gesture on iPad Safari.
+  if(current==='hades-gate.html'&&target.id==='hadesHear')return;
   if(current==="ladaburg-forge.html"&&target.id==="enableForgeSound")return;
  const selector=pathOf(target);
  if(selector && selector.length<=450){
