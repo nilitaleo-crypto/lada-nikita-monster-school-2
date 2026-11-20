@@ -36,9 +36,13 @@ async function run(engine,name,profile){
   await page.locator('#startRescue').click({timeout:3000});
   assert.equal(await page.evaluate(()=>window.TivvigEgyptDebug.state().phase),'playing');
   assert.equal(await page.locator('.anchor:visible').count(),3);
-  await page.waitForTimeout(700);
+  try{
+   await page.waitForFunction(()=>window.TivvigEgyptDebug.state().energy[0]<.98,null,{timeout:5000});
+  }catch(e){
+   const info=await page.evaluate(()=>window.TivvigEgyptDebug.state());
+   throw Error('Rays did not fade after Start: '+JSON.stringify(info));
+  }
   const before=await page.evaluate(()=>window.TivvigEgyptDebug.state().energy[0]);
-  assert(before<.98, 'Rays must start fading AFTER pressing Start');
   await page.locator('#rayButton0').click({timeout:3000});
   const after=await page.evaluate(()=>window.TivvigEgyptDebug.state().energy[0]);
   assert(after>before,'Press must visibly strengthen ray');
