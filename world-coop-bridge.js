@@ -56,7 +56,9 @@ document.addEventListener("click",e=>{
  const target=e.target.closest("button,[role=button],[data-open-reward],#rewardImg,#scene,#stage,#arena,#reward,#win,#viewer,#lightbox,#rewardReveal,#prize,#transformation");
  if(!target || target.matches("button[disabled]"))return;
  // iPad WebAudio must be unlocked by a real local gesture, not a Firebase replay.
- if(current==="ladaburg-forge.html"&&target.id==="enableForgeSound")return;
+ // The sound-check button is strictly LOCAL on each iPad/iPhone/computer.
+  if(target.matches('[data-tivvig-local-audio]'))return;
+  if(current==="ladaburg-forge.html"&&target.id==="enableForgeSound")return;
  const selector=pathOf(target);
  if(selector && selector.length<=450){
    // Firebase is authoritative: execute this click only after it is received from the room.
