@@ -36,7 +36,7 @@ let stage=0,busy=false,transitioning=false,epoch=0;
 let sealRound=0,rhythmRound=0,played=[],listened=false;
 let wordRound=0,wordStep=0,bridgeCount=0,clockRound=0;
 let finalPlayed=[],songReady=false,finalDone=false;
-let audio=null,clips=null,soundOn=true;
+let audio=null,audioSeeded=false,clips=null,soundOn=true;
 const countSaved=Number(read(KEY));
 const freshStart=Number.isInteger(countSaved)&&countSaved>=0&&countSaved<=5?Math.min(countSaved,4):0;
 function wardrobe(){window.TivvigWardrobe?.equip($('hadesLada'))}
@@ -46,7 +46,20 @@ window.addEventListener('pageshow',wardrobe);
 window.addEventListener('pointerdown',primeAudio,{passive:true});
 window.addEventListener('touchend',primeAudio,{passive:true});
 window.addEventListener('keydown',primeAudio);
-function primeAudio(){try{const T=window.AudioContext||window.webkitAudioContext;if(!T)return;if(!audio)audio=new T();if(audio.state==='suspended')audio.resume().catch(()=>{});}catch{}}
+function primeAudio(){
+ try{
+  const T=window.AudioContext||window.webkitAudioContext;if(!T)return;
+  if(!audio)audio=new T();
+  // Safari/iPad: seed an actual (silent) oscillator on a trusted local gesture.
+  // Simply constructing/resuming the context does not always unlock later tones.
+  if(!audioSeeded){
+   const osc=audio.createOscillator(),gain=audio.createGain();
+   gain.gain.value=0;osc.connect(gain);gain.connect(audio.destination);
+   osc.start();osc.stop(audio.currentTime+.012);audioSeeded=true;
+  }
+  if(audio.state==='suspended')audio.resume().catch(()=>{});
+ }catch(e){console.warn('Hades music unlock:',e)}
+}
 function makeWav(kind){
  // Reuses the native WAV strategy of ladaburg-forge.js (iPad safe; no external audio).
  const rate=22050,n=Math.round(rate*(kind==='B'?.36:.30));
@@ -152,7 +165,7 @@ function rhythmPanel(final=false){
 function renderRhythm(){rhythmPanel(false)}
 function renderFinalSong(){rhythmPanel(true)}
 async function listen(final){
- if(stage!==(final?4:1)||busy)return;busy=true;
+ if(stage!==(final?4:1)||busy)return;primeAudio();getClips();busy=true;
  if(final){songReady=false;finalPlayed=[]}else{listened=false;played=[]}
  const id=++epoch;const seq=final?LAST_SONG:BEATS[rhythmRound];rhythmPanel(final);
  setMessage('Слушай и смотри');await delay(250);
