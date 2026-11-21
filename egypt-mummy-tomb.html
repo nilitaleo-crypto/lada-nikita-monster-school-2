@@ -32,12 +32,18 @@ header h1{font-size:clamp(17px,2.4vw,30px);font-weight:normal;margin:0;text-alig
 .action{position:absolute;z-index:10;left:46%;bottom:2.7%;transform:translateX(-50%);min-height:clamp(48px,5vw,65px);min-width:170px;border:3px solid #926326;background:linear-gradient(#fff0bc,#dca351);color:#402718;font:bold clamp(16px,1.65vw,23px) Georgia,serif;padding:8px 17px;border-radius:13px;box-shadow:0 5px 0 #674125,0 9px 20px #2f1b13aa}
 .action[hidden],[hidden]{display:none!important}.action:active,.tile:active,.weight:active{filter:brightness(.95)}
 .stage-title{position:absolute;z-index:8;font:bold clamp(15px,1.4vw,21px) Georgia,serif;color:#3d2619;text-shadow:0 1px #ffe0a6}
-.fresco{position:absolute;z-index:8;left:8%;top:29%;width:25%;height:21%;display:flex;align-items:center;justify-content:space-evenly;gap:3%;padding:2% 1%;background:#cba06b50;border:2px solid #f1d09970;border-radius:5px}
-.tile{flex:1;min-width:0;height:87%;display:grid;place-items:center;padding:0;border:3px solid #99652d;border-radius:9px;background:linear-gradient(#f9e1a4ed,#cd965be8);box-shadow:0 4px 0 #65422755;color:#42291c;font-size:clamp(26px,4vw,60px)}
-.tile.done{border-color:#4d9a58;background:#d5df9bfa}
-.fresco-slots{position:absolute;z-index:9;left:9.1%;top:51.2%;width:23%;display:flex;gap:2%;justify-content:center}
-.fresco-slots span{display:grid;place-items:center;flex:1;min-height:clamp(27px,3.2vw,46px);border:2px solid #d7a564;background:#3f302b9c;border-radius:50%;font-size:clamp(15px,2vw,29px)}
-.fresco-slots span.done{background:#e8d49c;border-color:#f8e8ad}
+/* The relief becomes an animated, touchable wall fresco: no detached game window. */
+.fresco{position:absolute;z-index:8;left:24%;top:21%;width:73%;height:38%;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));align-items:stretch;gap:1%;padding:1.15%;border:5px ridge #d4a45b;border-radius:11px;background:linear-gradient(160deg,#d7a567cf,#91623e9c);box-shadow:0 3px 0 #6d4329,0 7px 15px #1a101373}
+.tile{display:grid;place-items:center;min-width:0;min-height:90px;border:3px solid #f0d09b;border-radius:7px;padding:0;box-shadow:inset 0 0 0 1px #70462b,0 3px 6px #3a251a80;color:#f6e5c2;font-size:0;touch-action:manipulation}
+.cycle-tile{background-color:#876344;background-image:none;background-size:400% 300%;background-repeat:no-repeat;background-origin:border-box;transition:filter .16s,opacity .16s,transform .16s}
+.cycle-tile:hover:not(:disabled),.cycle-tile:focus-visible{outline:3px solid #fff2bc;outline-offset:-3px;filter:brightness(1.12)}
+.cycle-tile.done{opacity:.29;border-color:#e7ca9a;filter:sepia(.4)}
+.fresco-slots{position:absolute;z-index:9;left:24%;top:62%;width:73%;height:16%;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:1%;align-items:stretch}
+.cycle-slot{position:relative;display:grid;place-items:center;min-width:0;height:100%;border:3px solid #e6c58c;border-radius:8px;background:#3e2e31a8;color:#f8e0a2;font:bold clamp(22px,2.7vw,43px) Georgia,serif}
+.cycle-slot.done{border-color:#ffe3a3;background-color:#a57c4b;background-size:400% 300%;background-repeat:no-repeat;box-shadow:0 0 13px #ffd37c6c,0 2px 4px #170b0db8}
+.cycle-slot.done:not(:last-child)::after{content:'➜';position:absolute;z-index:2;right:-12%;top:32%;width:21%;color:#ffefad;line-height:1;text-shadow:0 2px 2px #472b0c,0 0 8px #fff0a3;font-size:clamp(23px,2.7vw,36px);pointer-events:none}
+.no-cycle-art .cycle-tile{font-size:clamp(30px,4.3vw,58px);background-image:linear-gradient(#e9d6a6,#b9834d)!important}
+.no-cycle-art .cycle-slot.done{background-image:linear-gradient(#f7dc9c,#ad7d4d)!important}
 .jar-targets{position:absolute;inset:0;z-index:8;pointer-events:none}
 .jar{pointer-events:auto;position:absolute;top:29%;width:5.6%;height:20%;border:3px solid #ffe3a100;background:#fff2ad00;border-radius:40% 40% 20% 20%;color:#fff9d6;transition:background .15s,border-color .15s}
 .jar:hover,.jar:focus-visible{border-color:#ffe3a1c9;background:#ffdd782c}
@@ -125,7 +131,7 @@ header h1{font-size:clamp(17px,2.4vw,30px);font-weight:normal;margin:0;text-alig
 </main>
 <script src="wardrobe.js?v=5" defer></script>
 <script src="game-registry.js?v=8" defer></script>
-<script src="egypt-mummy-tomb.js?v=1" defer></script>
+<script src="egypt-mummy-tomb.js?v=2" defer></script>
 <script src="hades-sounds.js?v=7" defer></script>
 <script src="game-runtime.js?v=5" defer></script>
 </body>
