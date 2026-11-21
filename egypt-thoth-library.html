@@ -1,0 +1,86 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#23415f">
+<meta name="description" content="Библиотека бога Тота: египетские знаки, слоги, память и чтение коротких предложений.">
+<title>Библиотека Тота · Египет · Тиввиг</title>
+<style>
+:root{--ink:#48311d;--gold:#c78d37;--paper:#f9deb1}
+*{box-sizing:border-box}[hidden]{display:none!important}
+html,body{margin:0;min-height:100%;background:#101b2e}
+body{font:16px Georgia,'Times New Roman',serif;color:#ffebbc;background:radial-gradient(circle at 50% 22%,#274967,#101522 80%)}
+a,button{font:inherit;touch-action:manipulation;-webkit-tap-highlight-color:transparent}a{color:inherit;text-decoration:none}button{cursor:pointer}
+a:focus-visible,button:focus-visible{outline:3px solid #4ad7fc;outline-offset:3px}
+main{max-width:1450px;min-height:100dvh;margin:auto;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;padding:8px 10px 16px}
+header{width:min(100%,1290px);min-height:46px;display:flex;justify-content:space-between;gap:8px;align-items:center}
+header h1{margin:0;text-align:center;color:#fff0ce;font:normal clamp(17px,2.3vw,29px) Georgia,serif;text-shadow:0 3px 9px #030811}
+.nav{border:1px solid #dbb979aa;border-radius:9px;background:#243d52de;color:#fff3d6;padding:9px 12px;min-height:44px;white-space:nowrap;display:grid;place-items:center;font-size:14px}
+.scene{position:relative;isolation:isolate;width:min(100%,1290px,calc((100dvh - 100px)*4/3));aspect-ratio:4/3;overflow:hidden;border:3px solid #b99350;border-radius:16px;box-shadow:0 4px 0 #76502c,0 14px 32px #020812bb;background:#324c67;touch-action:manipulation}
+.backdrop{position:absolute;inset:0;width:100%;height:100%;object-fit:fill;z-index:0;pointer-events:none;user-select:none}
+.backdrop img{width:100%;height:100%;object-fit:fill;display:block;pointer-events:none;user-select:none}
+.scene:after{content:'';position:absolute;inset:0;box-shadow:inset 0 0 18px #171d25a0;pointer-events:none;z-index:19}
+.lada{position:absolute;left:3.5%;bottom:0;z-index:5;width:17%;height:32%;pointer-events:none;filter:drop-shadow(0 6px 6px #161b28aa)}
+.lada img{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;pointer-events:none;user-select:none}
+.lada [data-outfit-layer]{clip-path:polygon(0 28%,100% 28%,100% 100%,0 100%);-webkit-clip-path:polygon(0 28%,100% 28%,100% 100%,0 100%)}
+.speech{position:absolute;z-index:7;top:2%;left:3%;width:52%;padding:9px 13px;border:1px solid #e8c47b96;border-radius:10px;background:#122e46d6;color:#fff2d6;font:500 clamp(13px,1.28vw,18px)/1.27 Georgia,serif;text-shadow:0 2px 3px #102033}
+.speech strong{color:#ffe096}
+.steps{position:absolute;bottom:3%;right:3%;display:flex;gap:5px;z-index:8;pointer-events:none}
+.steps i{width:clamp(7px,1vw,12px);height:clamp(7px,1vw,12px);border-radius:50%;background:#74542c;box-shadow:inset 0 0 0 1px #e3c4818f}
+.steps i.on{background:#ffef9c;box-shadow:0 0 10px #ffe883}
+.board{position:absolute;z-index:9;top:12%;left:60.1%;width:35.8%;height:40.5%;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:clamp(3px,.4vw,6px);padding:clamp(5px,.8vw,10px);background:linear-gradient(150deg,#fff0c892,#f5d5a08a);border:1px solid #9c714256;border-radius:5px;color:var(--ink);text-align:center}
+.board h2{font:bold clamp(16px,1.75vw,24px) Georgia,serif;margin:0;line-height:1.05;color:#67431b}
+.prompt{font:500 clamp(13px,1.3vw,19px)/1.1 Georgia,serif;margin:0;min-height:1.3em}
+.display{width:100%;display:flex;justify-content:center;align-items:center;gap:6px;min-height:clamp(30px,4.1vw,56px);flex-wrap:wrap}
+.display .big{font:normal clamp(30px,4vw,56px)/1 Georgia,serif}
+.choice-grid{width:100%;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));justify-content:center;align-items:stretch;gap:clamp(4px,.6vw,9px)}
+.choice-grid.symbol-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+.choice{min-height:clamp(39px,4vw,54px);display:grid;place-items:center;padding:3px 4px;border:2px solid #ad7e3d;border-radius:10px;color:#46321b;background:linear-gradient(#fff6e0,#f1c881);box-shadow:0 2px 0 #996a32;text-align:center;line-height:1.07;font:bold clamp(17px,1.9vw,26px) Georgia,serif}
+.choice svg{display:block;width:clamp(32px,3.6vw,48px);height:clamp(32px,3.6vw,48px)}
+.choice:active{transform:scale(.97)}.choice.good{background:#dcf6c0;border-color:#609448}.choice.bad{background:#f2c3ad;border-color:#bc5534}.choice:disabled{opacity:.63;cursor:default}
+.readout{display:flex;justify-content:center;gap:5px;flex-wrap:wrap;align-items:center;min-height:28px;width:100%;color:#5d3a16;font:bold clamp(17px,2vw,29px)/1.1 Georgia,serif}
+.readout .slot{min-width:clamp(25px,3.5vw,46px);min-height:26px;padding:2px 4px;border-bottom:2px solid #a2753c}
+.readout .slot.done{border-bottom-color:#4d8549;color:#326337}.readout .mini-sign{display:inline-flex;width:clamp(20px,2.8vw,39px);height:clamp(20px,2.8vw,39px)}.readout .mini-sign svg{width:100%;height:100%}.display svg{width:clamp(36px,4.6vw,62px);height:clamp(36px,4.6vw,62px)}
+.readout.complete{font-size:clamp(15px,1.8vw,27px);color:#37603a}
+.feedback{min-height:17px;margin:0;font:500 clamp(11px,1vw,14px)/1.15 Georgia,serif;color:#775325}
+.action{border:2px solid #986828;border-radius:11px;padding:8px 15px;min-height:43px;background:linear-gradient(#fff1ce,#e3ac57);color:#4b321d;font:bold clamp(16px,1.45vw,22px) Georgia,serif;box-shadow:0 3px 0 #9b622d;white-space:nowrap}
+.memory-look{font:500 clamp(12px,1.1vw,17px) Georgia,serif;color:#70512c}
+.feather{max-height:clamp(78px,12vw,160px);width:auto;filter:drop-shadow(0 4px 6px #a25e2477)}
+@media(max-width:750px){
+ main{padding:5px 5px 10px;justify-content:flex-start}header{min-height:44px}header h1{font-size:clamp(14px,3.3vw,20px)}.nav{min-height:42px;font-size:12px;padding:6px 8px}
+ .scene{width:100%;aspect-ratio:4/3;min-height:0}.speech{font-size:clamp(10px,2vw,13px);padding:5px 7px}.board{padding:5px;gap:3px}.board h2{font-size:clamp(12px,2.4vw,18px)}.prompt{font-size:clamp(10px,2vw,14px)}.display{min-height:38px}.display .big{font-size:clamp(28px,4vw,44px)}.choice-grid{gap:3px}.choice{min-height:37px;border-width:1px;border-radius:5px;padding:1px;font-size:clamp(11px,2.5vw,16px)}.choice svg{width:clamp(27px,4vw,40px);height:clamp(27px,4vw,40px)}.readout{min-height:19px;font-size:clamp(12px,2.5vw,18px)}.readout .slot{min-height:20px;padding:0 2px}.feedback{font-size:10px;min-height:13px}.action{min-height:32px;padding:3px 8px;font-size:12px;border-radius:5px;border-width:1px}.steps{gap:3px}
+}
+@media(max-width:600px) and (orientation:portrait){
+ .scene{aspect-ratio:3/4;min-height:520px;max-height:none}.backdrop img{object-fit:cover;object-position:36% center}.speech{top:2%;left:3%;width:94%;font-size:14px;padding:7px 9px;min-height:60px}.board{top:33%;left:22%;width:75%;height:59%;border-radius:8px;background:#f8dfbceB;padding:10px 8px;gap:7px}.board h2{font-size:22px}.prompt{font-size:18px}.display{min-height:56px}.display .big{font-size:45px}.choice{min-height:48px;font-size:18px;border-radius:8px}.choice svg{width:46px;height:46px}.readout{font-size:21px;min-height:26px}.readout .slot{min-height:27px}.feedback{font-size:13px;min-height:19px}.action{min-height:43px;padding:7px 15px;font-size:17px}.lada{left:0;bottom:3%;width:24%;height:27%}.steps{bottom:2%;right:5%}
+}
+@media(max-width:730px) and (orientation:landscape){.scene{width:100%;aspect-ratio:4/3}.board{height:52%;top:11%}.speech{top:1%}}
+@media(prefers-reduced-motion:reduce){.choice{transition:none}}
+</style>
+</head>
+<body>
+<main>
+ <header><a class="nav" href="egypt-sphinx-temple.html">← Сфинкс</a><h1>Библиотека Тота</h1><a class="nav" href="index.html">⌂ Карта</a></header>
+ <section class="scene" id="thothScene" data-stage="intro" aria-label="Библиотека бога Тота. Найди знаки, собери слова и прочти предложения.">
+  <picture class="backdrop"><source srcset="images/egypt-thoth-library.avif" type="image/avif"><img src="images/egypt-thoth-library.webp" alt="Бог Тот приглашает Ладу в золотую библиотеку над Нилом" fetchpriority="high" draggable="false"></picture>
+  <div class="lada" id="thothLada" role="img" aria-label="Лада в выбранном наряде"><img src="images/lada-cutout.webp" alt="" draggable="false"><img data-outfit-layer alt="" hidden draggable="false"></div>
+  <div class="speech" id="thothSpeech" aria-live="polite"><strong>Тот:</strong> Сфинкс вас пропустил! Кто-то перепутал знаки в моих свитках. Помоги их восстановить.</div>
+  <div class="steps" id="thothSteps" aria-label="Этап 1 из 4"><i class="on"></i><i></i><i></i><i></i></div>
+  <section class="board" id="thothBoard" aria-label="Волшебная папирусная доска">
+   <h2 id="boardTitle">Тайна папирусов</h2>
+   <p id="boardPrompt" class="prompt">Четыре испытания Тота</p>
+   <div id="boardDisplay" class="display"><span class="big">𓂀</span></div>
+   <div id="boardReadout" class="readout" aria-live="polite"></div>
+   <div id="boardChoices" class="choice-grid" aria-label="Выбери ответ"></div>
+   <p id="boardFeedback" class="feedback" role="status" aria-live="polite"></p>
+   <button id="boardAction" class="action" type="button" data-tivvig-sound="manual">Начать урок</button>
+  </section>
+ </section>
+</main>
+<script src="wardrobe.js?v=5" defer></script>
+<script src="game-registry.js?v=7" defer></script>
+<script src="egypt-thoth-library.js?v=1" defer></script>
+<script src="hades-sounds.js?v=7" defer></script>
+<script src="game-runtime.js?v=5" defer></script>
+</body>
+</html>
