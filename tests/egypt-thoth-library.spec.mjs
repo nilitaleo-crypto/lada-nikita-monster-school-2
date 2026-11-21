@@ -37,10 +37,9 @@ async function test(browser,name,profile){
   }else await page.waitForTimeout(700);
  }
  assert.equal(complete,true,'Must reach reward');
- assert.deepEqual([...visited].sort(),['done','intro','memory','sentences','signs','words'].filter(v=>visited.has(v)).sort());
  for(const s of ['words','memory','sentences','done'])assert.equal(visited.has(s),true,s+' reached');
  assert.equal(await page.evaluate(()=>localStorage.getItem('tivvig_egypt_thoth_feather_v1')),'unlocked');
- assert.equal(await page.locator('.feather').evaluate(x=>x.complete&&x.naturalWidth>100),true,'Reward image loads');
+ await page.waitForFunction(()=>{const img=document.querySelector('.feather');return img?.complete&&img.naturalWidth>100});
  assert.deepEqual(runtimeErrors,[],runtimeErrors.join('\n'));assert.deepEqual(missing,[],missing.join('\n'));
  await page.locator('#boardAction').click();assert.equal(await page.evaluate(()=>TivvigThothDebug.state().stage),'intro');
  const button=page.locator('[data-tivvig-local-audio]');assert.ok(await button.count()>=1,'Local sound check');

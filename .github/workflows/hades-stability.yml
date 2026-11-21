@@ -13,6 +13,7 @@ on:
       - 'tests/egypt-pomegranate.spec.mjs'
       - 'tests/egypt-nile-mystery.spec.mjs'
       - 'tests/egypt-sphinx-temple.spec.mjs'
+      - 'tests/egypt-thoth-library.spec.mjs'
       - '.github/workflows/hades-stability.yml'
   workflow_dispatch:
 permissions:
@@ -63,6 +64,8 @@ jobs:
         run: node tests/egypt-nile-mystery.spec.mjs
       - name: Sphinx temple riddles, original Lada, iOS touch/audio and Firebase co-op
         run: node tests/egypt-sphinx-temple.spec.mjs
+      - name: Thoth reading, sign memory, syllables, reward and synchronized taps
+        run: node tests/egypt-thoth-library.spec.mjs
       - name: Archive results (even on failure)
         if: always()
         uses: actions/upload-artifact@v4
