@@ -1,0 +1,112 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#19162b">
+<meta name="description" content="Храм Сфинкса в ночном Египте: детские народные загадки, три картинки-ответа и превращение Сфинкса в камень.">
+<title>Храм загадок Сфинкса · Египет · Тиввиг</title>
+<style>
+:root{color-scheme:dark;--sand:#ffdfa0;--ink:#1c1526;--light:#fff3dc}
+*{box-sizing:border-box}[hidden]{display:none!important}
+html,body{margin:0;min-height:100%;background:#110d1c}
+body{font:16px Georgia,'Times New Roman',serif;color:var(--light);background:radial-gradient(ellipse at 50% 40%,#34304c,#100b1a 82%)}
+button,a{font:inherit;touch-action:manipulation;-webkit-tap-highlight-color:transparent}button{cursor:pointer}a{color:inherit;text-decoration:none}
+button:focus-visible,a:focus-visible{outline:3px solid #bceeff;outline-offset:3px}
+main{min-height:100dvh;max-width:1520px;margin:auto;padding:7px 9px 12px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:7px}
+header{width:min(100%,1380px);display:flex;align-items:center;justify-content:space-between;gap:9px;min-height:44px}
+header h1{margin:0;text-align:center;font:normal clamp(17px,2.35vw,28px) Georgia,serif;color:#ffdfad;text-shadow:0 2px 8px #090619}
+.nav{min-height:42px;min-width:66px;display:grid;place-items:center;border:1px solid #a59fc090;border-radius:11px;background:#29213edb;padding:7px 11px;font-size:13px;white-space:nowrap}
+.scene{position:relative;isolation:isolate;width:min(100%,1380px,calc((100dvh - 92px)*16/9));aspect-ratio:16/9;min-height:420px;overflow:hidden;border:3px solid #967e89;border-radius:17px;background:#241b30;box-shadow:0 5px 0 #26192c,0 14px 35px #040411ad;touch-action:manipulation}
+.backdrop{position:absolute;inset:0;width:100%;height:100%;object-fit:fill;pointer-events:none;user-select:none;z-index:0}
+.stone-backdrop{z-index:1;clip-path:inset(calc(100% - var(--stonePct,0%)) 0 0 0);-webkit-clip-path:inset(calc(100% - var(--stonePct,0%)) 0 0 0);transition:clip-path .55s ease,-webkit-clip-path .55s ease}
+.scene::after{position:absolute;inset:0;content:'';z-index:30;pointer-events:none;box-shadow:inset 0 0 26px 4px #090b23a8}
+.scene-label{position:absolute;left:2%;top:2%;z-index:12;color:#ffe3a5;font:600 clamp(10px,1.07vw,14px) system-ui,sans-serif;letter-spacing:.09em;text-shadow:0 2px 5px #160c23}
+/* Photographic cutout from the original game; head stays unchanged. */
+.lada{position:absolute;left:1.7%;bottom:2%;width:12.3%;height:30%;z-index:9;pointer-events:none;filter:drop-shadow(0 5px 6px #0d101da0)}
+.lada img{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;user-select:none;pointer-events:none}
+.lada .outfit{z-index:2;clip-path:polygon(0 29%,100% 29%,100% 100%,0 100%)}
+.lada .head{z-index:3;clip-path:ellipse(24% 15% at 49.6% 14.5%)}
+.sidekick{position:absolute;z-index:9;pointer-events:none;filter:drop-shadow(0 4px 5px #07091eb5);object-fit:contain}
+.sidekick.fox{height:18%;width:11%;bottom:3%;left:12%}.sidekick.nafiri{height:22%;width:10%;bottom:2%;left:20%}
+.progress{position:absolute;right:2.4%;top:2%;z-index:13;display:flex;gap:5px;align-items:center}
+.progress .star{font-size:clamp(12px,1.5vw,20px);color:#b5a29a;text-shadow:0 0 3px #100e26}
+.progress .star.lit{color:#ffe4a3;text-shadow:0 0 9px #ffe395}
+.speech{position:absolute;z-index:15;top:3.9%;left:50%;transform:translateX(-50%);width:min(66%,820px);text-align:center;color:#fff6e6;font:600 clamp(17px,2.1vw,30px)/1.23 Georgia,'Times New Roman',serif;text-shadow:0 3px 8px #080715,0 0 15px #080715;min-height:54px}
+.speech .intro{font-size:clamp(15px,1.65vw,23px);font-weight:500;line-height:1.28}
+.round-label{position:absolute;z-index:14;top:17%;right:2.7%;font:600 clamp(11px,1.1vw,15px) system-ui,sans-serif;color:#ffdb9e;text-shadow:0 1px 4px #1b1427}
+.choices{position:absolute;z-index:17;left:50%;transform:translateX(-50%);bottom:2.2%;width:min(73%,790px);height:22.5%;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:clamp(10px,1.7vw,24px)}
+.choice{display:flex;align-items:center;justify-content:center;background:radial-gradient(circle at 50% 35%,#ffefce,#e6c17b 59%,#986535 100%);border:3px solid #f8e4b2;color:#4f2a1d;border-radius:19px;min-height:0;min-width:0;box-shadow:inset 0 0 0 3px #8b643a,0 3px 11px #07091cc7;transition:transform .15s,background .15s}
+.choice .visual{font-family:'Apple Color Emoji','Segoe UI Emoji','Noto Color Emoji',sans-serif;font-size:clamp(43px,6.4vw,93px);line-height:1;filter:drop-shadow(0 4px 2px #71512a5c);user-select:none}
+.choice .visual svg{width:1.1em;height:1.1em;vertical-align:middle}
+.choice:active{transform:scale(.93)}.choice.correct{box-shadow:inset 0 0 0 3px #327b45,0 0 24px #efff9d;background:#e6ffb7}.choice.wrong{box-shadow:inset 0 0 0 3px #a13f2b,0 0 20px #ff967c;background:#efb8a1}
+.choice[disabled]{pointer-events:none;opacity:.8}
+.hint{position:absolute;z-index:17;right:2%;bottom:2.5%;border:1px solid #e2c48c;background:#271c38ca;border-radius:10px;color:#fff0d1;min-height:40px;padding:5px 11px;font:500 clamp(12px,1.16vw,16px) Georgia,serif}
+.feedback{position:absolute;z-index:18;left:50%;bottom:26.5%;transform:translateX(-50%);text-align:center;color:#fff0c4;text-shadow:0 2px 6px #060812;font:500 clamp(14px,1.45vw,19px) Georgia,serif;min-height:23px;max-width:75%}
+.action{min-height:49px;border:2px solid #f4e2af;border-radius:13px;background:linear-gradient(#fff1d1,#eabd78);color:#3f2538;font:bold clamp(15px,1.65vw,22px) Georgia,serif;padding:11px 20px;white-space:nowrap;box-shadow:0 4px 18px #0b0c21b5}
+.story-actions{position:absolute;left:50%;bottom:5%;transform:translateX(-50%);z-index:20;display:flex;gap:12px;align-items:center;justify-content:center;flex-wrap:wrap;width:90%}
+.story-actions .minor{border:1px solid #dfc69b;background:#322b44e3;color:#ffeac2}
+.tale{position:absolute;z-index:17;left:50%;transform:translateX(-50%);top:66%;width:82%;text-align:center;font-size:clamp(15px,1.8vw,24px);line-height:1.3;text-shadow:0 2px 8px #070b23}
+.riddleNum{position:absolute;z-index:16;left:50%;transform:translateX(-50%);top:24%;color:#ffdb9b;font:600 clamp(11px,1.15vw,16px) system-ui,sans-serif;letter-spacing:.06em;text-shadow:0 2px 5px #131121}
+@media (max-width:760px){
+ main{padding:5px 4px 8px;justify-content:flex-start}
+ header{min-height:38px;gap:3px}header h1{font-size:clamp(15px,3.5vw,20px)}.nav{min-height:42px;min-width:50px;font-size:11px;padding:6px}
+ .scene{width:100%;aspect-ratio:4/5;min-height:440px;max-height:calc(100dvh - 64px)}
+ .backdrop{object-fit:cover;object-position:49% center}
+ .scene-label{top:2%;left:3%;font-size:10px}
+ .speech{top:8%;width:92%;font-size:clamp(17px,4.3vw,22px);min-height:76px}
+ .speech .intro{font-size:clamp(15px,4vw,19px)}
+ .progress{top:2%;right:3%;gap:2px}
+ .round-label{top:23%;right:3%}
+ .choices{bottom:4%;width:96%;height:18%;gap:6px}
+ .choice{border-width:2px;border-radius:14px;box-shadow:inset 0 0 0 2px #8b643a,0 3px 9px #07091cc7}
+ .choice .visual{font-size:clamp(43px,12vw,63px)}
+ .feedback{bottom:24%;font-size:13px;max-width:90%}
+ .hint{bottom:23%;right:2%;font-size:12px;min-height:32px}
+ .lada{height:23%;width:21%;left:0;bottom:20%}.sidekick.fox{height:12%;width:15%;left:17%;bottom:20%}.sidekick.nafiri{height:15%;width:13%;left:27%;bottom:20%}
+ .tale{top:66%;width:95%;font-size:15px}
+ .action{font-size:15px;padding:9px 13px;min-height:45px}
+ .story-actions{bottom:5%;gap:7px}
+}
+@media(prefers-reduced-motion:reduce){.stone-backdrop,.choice{transition:none}}
+</style>
+</head>
+<body>
+<main>
+ <header><a class="nav" href="egypt-nile-mystery.html">← Нил</a><h1>Храм загадок Сфинкса</h1><a class="nav" href="index.html">⌂ Карта</a></header>
+ <section class="scene" id="sphinxScene" data-stage="intro" aria-label="Храм у Нила. Отгадай загадки, выбирая картинки, и помоги Сфинксу вернуться в каменное обличье." style="--stonePct:0%">
+  <img class="backdrop living-backdrop" src="images/egypt-sphinx-living.webp" alt="Живой крылатый Сфинкс охраняет храм возле ночного Нила" fetchpriority="high" draggable="false">
+  <img class="backdrop stone-backdrop" src="images/egypt-sphinx-stone.webp" alt="Каменный Сфинкс у египетского храма" draggable="false">
+  <div class="lada" role="img" aria-label="Лада с оригинальным лицом и в наряде Гекаты"><img src="images/lada-cutout.webp" alt="" draggable="false"><img class="outfit" src="images/hecate-lyre-costume-layer.webp" alt="" draggable="false"><img class="head" src="images/lada-cutout.webp" alt="" draggable="false"></div>
+  <img class="sidekick fox" src="images/egypt-fox-friend.webp" alt="" draggable="false">
+  <img class="sidekick nafiri" src="images/egypt-nafiri.webp" alt="" draggable="false">
+  <div class="scene-label">ЕГИПЕТ · ХРАМ СФИНКСА</div>
+  <div class="progress" id="progress" aria-label="Прогресс загадок"></div>
+  <div class="speech" id="sphinxSpeech" aria-live="polite"><span class="intro">Сфинкс не пропускает к храму. Он задаст загадки: сначала отгадай вслух, потом выбери картинку!</span></div>
+  <div class="round-label" id="roundLabel" hidden>Загадка 1 из 6</div>
+  <div class="riddleNum" id="riddleNum" hidden>ЗАГАДКА</div>
+  <div class="feedback" id="feedback" role="status" aria-live="polite"></div>
+  <div class="choices" id="choices" hidden>
+   <button class="choice" id="choice-0" type="button" data-tivvig-sound="manual"><span class="visual" id="icon-0"></span></button>
+   <button class="choice" id="choice-1" type="button" data-tivvig-sound="manual"><span class="visual" id="icon-1"></span></button>
+   <button class="choice" id="choice-2" type="button" data-tivvig-sound="manual"><span class="visual" id="icon-2"></span></button>
+  </div>
+  <button class="hint" type="button" id="hintButton" data-tivvig-sound="manual" hidden>Подсказка</button>
+  <div class="story-actions" id="introActions"><button class="action" id="startSphinx" type="button" data-tivvig-sound="manual">Слушать загадки</button></div>
+  <div class="story-actions" id="checkpointActions" hidden>
+    <button class="action" id="finishSphinx" type="button" data-tivvig-sound="manual">В храм →</button>
+    <button class="action minor" id="bonusSphinx" type="button" data-tivvig-sound="manual">Ещё две загадки</button>
+  </div>
+  <div class="story-actions" id="finishActions" hidden>
+    <a class="action" href="index.html">⌂ На карту</a>
+    <button class="action minor" id="replaySphinx" type="button" data-tivvig-sound="manual">↻ Ещё раз</button>
+  </div>
+  <p class="tale" id="finishTale" hidden>Сфинкс снова стал каменным хранителем. Теперь Лада может искать солнечную ладью Ра!</p>
+ </section>
+</main>
+<script src="game-registry.js?v=6" defer></script>
+<script src="egypt-sphinx-temple.js?v=1" defer></script>
+<script src="hades-sounds.js?v=6" defer></script>
+<script src="game-runtime.js?v=5" defer></script>
+</body>
+</html>

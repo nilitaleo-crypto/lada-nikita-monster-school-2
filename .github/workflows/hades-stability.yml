@@ -12,6 +12,7 @@ on:
       - 'tests/egypt-apophis.spec.mjs'
       - 'tests/egypt-pomegranate.spec.mjs'
       - 'tests/egypt-nile-mystery.spec.mjs'
+      - 'tests/egypt-sphinx-temple.spec.mjs'
       - '.github/workflows/hades-stability.yml'
   workflow_dispatch:
 permissions:
@@ -60,6 +61,8 @@ jobs:
         run: node tests/egypt-pomegranate.spec.mjs
       - name: Nile mystery, original characters, co-op and iOS WebKit tests
         run: node tests/egypt-nile-mystery.spec.mjs
+      - name: Sphinx temple riddles, original Lada, iOS touch/audio and Firebase co-op
+        run: node tests/egypt-sphinx-temple.spec.mjs
       - name: Archive results (even on failure)
         if: always()
         uses: actions/upload-artifact@v4
