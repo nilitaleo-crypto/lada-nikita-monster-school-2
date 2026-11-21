@@ -6,7 +6,7 @@
  'use strict';
  if(window.TivvigHadesSounds)return;
  const file=location.pathname.split('/').pop()||'';
- if(!/^(?:hades-(gate|cerberus|charon|angler-chase|hypnos|hecate|final)|egypt-(?:apophis|pomegranate))\.html$/.test(file))return;
+ if(!/^(?:hades-(gate|cerberus|charon|angler-chase|hypnos|hecate|final)|egypt-(?:apophis|pomegranate|nile-mystery))\.html$/.test(file))return;
  const coop=new URLSearchParams(location.search).get('coop')==='1';
  const reduce=!!window.matchMedia?.('(prefers-reduced-motion:reduce)').matches;
  const T=window.AudioContext||window.webkitAudioContext;
