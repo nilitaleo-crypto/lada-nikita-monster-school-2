@@ -5,10 +5,15 @@ const $=id=>document.getElementById(id),scene=$('mummyScene');
 if(!scene||window.TivvigMummyDebug)return;
 const REWARD='tivvig_egypt_mummy_scarab_v1';
 const fresco=[
- {question:'Что появляется сначала?',order:['🌰','🌱','🌸'],options:['🌸','🌰','🌱']},
- {question:'Как появляется птенец?',order:['🥚','🐣','🐥'],options:['🐥','🥚','🐣']},
- {question:'Как проходит день?',order:['🌅','☀️','🌙'],options:['🌙','🌅','☀️']}
+ {key:'frog',question:'Как головастик превращается в лягушку?',order:[0,1,2,3],options:[3,0,2,1],names:['Икра в воде','Появился головастик','Выросли лапки','Взрослая лягушка'],story:['Сначала лягушка откладывает икру.','Из икринки выходит головастик.','У головастика вырастают лапки.','Он становится лягушкой и снова может отложить икру.'],fallback:['🥚','🐟','🐸','🐸'],row:0},
+ {key:'apple',question:'Как из семечка вырастает яблоня?',order:[0,1,2,3],options:[2,0,3,1],names:['Семечко','Молодой росток','Яблоня цветёт','Яблоки с семечками'],story:['Семечко падает в землю.','Появляется маленький росток.','Вырастает яблоня с цветами.','Созревает яблоко, внутри новые семечки.'],fallback:['🌰','🌱','🌸','🍎'],row:1},
+ {key:'moon',question:'Как меняется Луна?',order:[0,1,2,3],options:[2,3,0,1],names:['Новолуние','Растущий серп','Полнолуние','Убывающий серп'],story:['В новолуние Луну почти не видно.','Освещённая часть Луны растёт.','Теперь видна полная Луна.','Освещённая часть уменьшается, затем вновь наступает новолуние.'],fallback:['🌑','🌒','🌕','🌘'],row:2}
 ];
+const cycleFrame=(row,col)=>({x:(col*100/3).toFixed(4)+'%',y:(row*50)+'%'});
+function paintCycle(el,row,col){
+ const place=cycleFrame(row,col);el.style.backgroundPosition=place.x+' '+place.y;el.style.backgroundImage="url('images/egypt-mummy-cycles.avif')";
+ el.dataset.cycleRow=String(row);el.dataset.cycleCol=String(col);
+}
 const jars=[
  {name:'соколом',index:1,thing:'цветок лотоса'},
  {name:'шакалом',index:0,thing:'волшебный камень'},
@@ -38,23 +43,28 @@ function render(){
   button('Помочь мумии');return;
  }
  if(stage==='fresco'){
-  const q=fresco[round];$('mummyFresco').hidden=false;$('mummyFrescoSlots').hidden=false;
-  title('На стенах моя история. '+q.question+' Выбери рисунки по порядку.');
+  const q=fresco[round],complete=pos===q.order.length;
+  $('mummyFresco').hidden=false;$('mummyFrescoSlots').hidden=false;
+  title(complete?'Весь круг восстановлен! Расскажи, что происходит, и как всё начинается снова.':pos? q.story[pos-1]+' Что будет дальше?':q.question+' Нажимай картинки по порядку.');
   $('mummyFresco').replaceChildren();
-  q.options.forEach((icon,i)=>{
+  q.options.forEach((step,i)=>{
    const b=document.createElement('button');
-   b.type='button';b.className='tile';b.id='mummy-fresco-'+i;b.textContent=icon;
-   b.setAttribute('aria-label','Рисунок '+icon);
+   b.type='button';b.className='tile cycle-tile';b.id='mummy-fresco-'+i;
+   b.setAttribute('aria-label',q.names[step]);
+   b.title=q.names[step];paintCycle(b,q.row,step);
    if(chosen.includes(i)){b.classList.add('done');b.disabled=true}
    b.addEventListener('click',()=>chooseFresco(i));$('mummyFresco').append(b);
   });
   $('mummyFrescoSlots').replaceChildren();
-  q.order.forEach((_,i)=>{
-   const slot=document.createElement('span');slot.textContent=i<pos?q.order[i]:'·';
-   if(i<pos)slot.className='done';$('mummyFrescoSlots').append(slot);
+  q.order.forEach((step,i)=>{
+   const slot=document.createElement('span');slot.className='cycle-slot';
+   slot.setAttribute('aria-label',i<pos?q.names[step]:'Шаг '+(i+1)+' не найден');
+   if(i<pos){slot.classList.add('done');paintCycle(slot,q.row,step)}
+   else{slot.textContent=String(i+1)}
+   $('mummyFrescoSlots').append(slot);
   });
-  feedback(pos===q.order.length?'История восстановлена!':'Рисунки: '+(round+1)+' из '+fresco.length);
-  if(pos===q.order.length)button(round===fresco.length-1?'К сосудам →':'Следующая история →');
+  feedback(complete?'↻ История повторяется':(round+1)+' / '+fresco.length+'  ·  '+pos+' из 4');
+  if(complete)button(round===fresco.length-1?'К сосудам →':'Следующая история →');
   return;
  }
  if(stage==='jars'){
@@ -117,7 +127,7 @@ function render(){
 function next(){
  if(stage==='intro'){stage='fresco';round=0;pos=0;chosen=[];render();play('tap');return}
  if(stage==='fresco'){
-  if(pos!==3)return;round++;pos=0;chosen=[];
+  if(pos!==fresco[round].order.length)return;round++;pos=0;chosen=[];
   if(round>=fresco.length){stage='jars';round=0}
   render();play('tap');return
  }
@@ -141,9 +151,9 @@ function next(){
  if(stage==='done')reset();
 }
 function chooseFresco(i){
- if(stage!=='fresco'||pos>=3||chosen.includes(i))return;
+ if(stage!=='fresco'||pos>=fresco[round].order.length||chosen.includes(i))return;
  if(fresco[round].options[i]!==fresco[round].order[pos]){errors++;feedback('Подумай, что было раньше.');play('wrong');return}
- chosen.push(i);pos++;correct++;render();play(pos===3?'success':'tap');
+ chosen.push(i);pos++;correct++;render();play(pos===fresco[round].order.length?'success':'tap');
 }
 function chooseJar(i){
  if(stage!=='jars'||pos)return;
@@ -192,7 +202,7 @@ window.TivvigMummyDebug=Object.freeze({
  state:()=>({stage,round,pos,namePhase,pieces:[...pieces],chosen:[...chosen],correct,errors,reward:(()=>{try{return localStorage.getItem(REWARD)==='unlocked'}catch(e){return false}})()}),
  reset,finish,advance:()=>{
   if(stage==='intro'||stage==='done')return $('mummyAction').click();
-  if(stage==='fresco')return pos===3?$('mummyAction').click():$('mummy-fresco-'+fresco[round].options.indexOf(fresco[round].order[pos]))?.click();
+  if(stage==='fresco')return pos===fresco[round].order.length?$('mummyAction').click():$('mummy-fresco-'+fresco[round].options.indexOf(fresco[round].order[pos]))?.click();
   if(stage==='jars')return pos?$('mummyAction').click():$('mummy-jar-'+jars[round].index)?.click();
   if(stage==='scales'){
    const rem=targets[round]-pieces.reduce((a,b)=>a+b,0);
