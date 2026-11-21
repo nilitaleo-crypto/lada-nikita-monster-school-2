@@ -108,10 +108,11 @@
   heading('Перо Тота','Все истории спасены!');say('Ты прочитала мои папирусы. Возьми перо мудрости! Впереди солнечная ладья Ра.');
   $('boardDisplay').innerHTML='<img class="feather" src="images/egypt-thoth-feather.svg" alt="Волшебное перо Тота">';
   $('boardReadout').className='readout complete';$('boardReadout').textContent='Ла-да — хра-ни-тель-ни-ца зна-ний!';
-  $('boardAction').textContent='Сыграть снова';$('boardAction').hidden=false;locked=true;saveReward();play('finish');
+  $('boardAction').textContent='Сыграть снова';$('boardAction').hidden=false;locked=true;$('thothToMummy').hidden=false;saveReward();play('finish');
  }
  function reset(){
   clear();setStage('intro');index=0;pos=0;locked=false;phase='intro';errors=0;answerHits=0;
+  $('thothToMummy').hidden=true;
   heading('Тайна папирусов','Четыре испытания Тота');say('Сфинкс вас пропустил! Кто-то перепутал знаки в моих свитках. Помоги их восстановить.');big('📜');$('boardAction').textContent='Начать урок';$('boardAction').hidden=false;
  }
  $('boardAction').addEventListener('click',()=>{
