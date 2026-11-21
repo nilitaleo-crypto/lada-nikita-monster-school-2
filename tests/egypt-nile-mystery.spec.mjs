@@ -32,8 +32,15 @@ async function test(browser,name,profile){
   assert.equal(await page.locator('#toInvestigation').isVisible(),true);
   await page.locator('#toInvestigation').click({force:true});
   assert.equal(await page.evaluate(()=>window.TivvigNileDebug.state().stage),'investigate');
-  assert.equal(await page.locator('#clueField').isVisible(),true);
+  assert.equal(await page.locator('#clueField').evaluate(el=>!el.hidden),true,'Actual investigation hotspots enabled');
+  assert.equal(await page.locator('.clue svg,.clue .clue-art').count(),0,'No floating clue icons');
+  assert.equal(await page.locator('.intro-backdrop').count(),1);
+  assert.equal(await page.locator('.evidence-backdrop').count(),1);
+  assert.equal(await page.evaluate(()=>getComputedStyle(document.querySelector('.evidence-backdrop')).opacity),'1','Evidence painted into environment');
   assert.equal(await page.locator('#suspects').isHidden(),true);
+  // The dog can point out the area without creating permanent decorations.
+  await page.locator('#fox').click({force:true});
+  assert.equal(await page.locator('.clue.hint').count(),1,'Dog reveals a temporary hint area');
   // A wrong clue answer must not count.
   await page.locator('#clue-paw').click({force:true});
   await page.locator('#answer-paw-bird').click({force:true});
@@ -48,12 +55,19 @@ async function test(browser,name,profile){
   await page.locator('[data-suspect="sekhmet"]').click({force:true});
   assert.equal(await page.evaluate(()=>window.TivvigNileDebug.state().stage),'investigate','Incorrect suspect rejected');
   await page.locator('[data-suspect="sphinx"]').click({force:true});
+  assert.equal(await page.evaluate(()=>window.TivvigNileDebug.state().stage),'confirm');
+  await page.locator('#reason-0-bird').click({force:true});
+  assert.equal(await page.evaluate(()=>window.TivvigNileDebug.state().confirmStep),0,'Wrong explanation cannot finish investigation');
+  await page.locator('#reason-0-lion').click({force:true});
+  await page.locator('#reason-1-human').click({force:true});
   assert.equal(await page.evaluate(()=>window.TivvigNileDebug.state().stage),'done');
   assert.equal(await page.locator('#victory').isVisible(),true);
   assert.equal(await page.evaluate(()=>localStorage.getItem('tivvig_egypt_sphinx_investigation_v1')),'unlocked');
   await page.locator('#restartNile').click({force:true});
   assert.equal(await page.evaluate(()=>window.TivvigNileDebug.state().stage),'meet');
   assert.equal(await page.locator('#clueField').isHidden(),true);
+  const evidenceImg=page.locator('.evidence-backdrop');
+  assert.equal(await evidenceImg.evaluate(el=>el.complete&&el.naturalWidth>800),true,'Detailed painted clue scene loads');
   const broken=await page.evaluate(()=>[...document.images].filter(im=>im.complete&&im.naturalWidth===0).map(im=>im.src));
   assert.deepEqual(broken,[],'All original assets load');
   assert.deepEqual(errors,[],'No runtime exceptions');assert.deepEqual(missing,[],'No 404 assets');
