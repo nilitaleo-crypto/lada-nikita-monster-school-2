@@ -6,7 +6,8 @@ const server=spawn('python3',['-m','http.server',String(PORT),'--bind','127.0.0.
 const profiles=[
  {name:'desktop',viewport:{width:1280,height:800},hasTouch:false,isMobile:false},
  {name:'tablet',viewport:{width:1024,height:768},hasTouch:true,isMobile:true},
- {name:'phone',viewport:{width:390,height:844},hasTouch:true,isMobile:true}
+ {name:'phone',viewport:{width:390,height:844},hasTouch:true,isMobile:true},
+ {name:'phone-landscape',viewport:{width:844,height:390},hasTouch:true,isMobile:true}
 ];
 let passed=0;const errors=[];
 const sleep=ms=>new Promise(r=>setTimeout(r,ms));
