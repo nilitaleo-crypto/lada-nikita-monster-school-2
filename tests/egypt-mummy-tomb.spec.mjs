@@ -26,17 +26,30 @@ async function testSolo(browser,name,p){
  assert.ok(overlaps?.width>=120&&overlaps?.height>=44,'Touch action has adequate hit area');
  await page.locator('#mummyAction').click();
  assert.equal(await page.evaluate(()=>TivvigMummyDebug.state().stage),'fresco');
+ assert.equal(await page.locator('.cycle-tile').count(),4,'four large illustrated pictures');
+ const loaded=await page.evaluate(async()=>{const img=new Image();img.src='images/egypt-mummy-cycles.avif';try{await img.decode();return {width:img.naturalWidth,height:img.naturalHeight}}catch{return {width:0,height:0}}});
+ assert.deepEqual(loaded,{width:520,height:347},'AI fresco atlas decodes on this engine');
+ assert.match(await page.locator('#mummy-fresco-0').evaluate(el=>getComputedStyle(el).backgroundImage),/egypt-mummy-cycles.avif/);
  await page.locator('#mummy-fresco-0').click();
  assert.equal(await page.evaluate(()=>TivvigMummyDebug.state().errors),1,'Mistake is harmless');
- const visited=new Set();
+ const visited=new Set(),cycleKeys=new Set(),frames=new Set();
  for(let i=0;i<120;i++){
   const st=await page.evaluate(()=>TivvigMummyDebug.state());
   visited.add(st.stage);if(st.stage==='done')break;
+  if(st.stage==='fresco'){
+   cycleKeys.add(st.round);
+   assert.equal(await page.locator('.cycle-tile').count(),4,'every cycle has four pictures');
+   const label=await page.locator('#mummy-fresco-1').getAttribute('aria-label');
+   assert.ok(label?.length>4,'picture has narrative label');
+   frames.add(await page.locator('#mummy-fresco-1').getAttribute('data-cycle-row'));
+  }
   await page.evaluate(()=>TivvigMummyDebug.advance());
  }
+ assert.deepEqual([...cycleKeys],[0,1,2],'frog, apple, moon in this order');
+ assert.deepEqual([...frames],['0','1','2'],'three rows of real picture frames');
  const state=await page.evaluate(()=>TivvigMummyDebug.state());
  assert.equal(state.stage,'done','Every stage reaches the ending');
- assert.ok(state.correct>=29,'Answer progression fully traversed');
+ assert.ok(state.correct>=32,'Four illustrated steps in each natural cycle');
  for(const part of ['fresco','jars','scales','name','done'])assert.ok(visited.has(part),part+' reached');
  assert.equal(await page.evaluate(()=>localStorage.getItem('tivvig_egypt_mummy_scarab_v1')),'unlocked');
  assert.equal(await page.locator('#mummyScarab').isVisible(),true);
@@ -79,6 +92,8 @@ async function testCoop(browser,name){
  await page.waitForFunction(()=>Array.from(document.querySelectorAll('iframe[data-test-room]')).every(f=>f.contentWindow?.TivvigMummyDebug?.state().errors===1),{timeout:9000});
  await teacher.locator('#mummy-fresco-1').click();
  await page.waitForFunction(()=>Array.from(document.querySelectorAll('iframe[data-test-room]')).every(f=>f.contentWindow?.TivvigMummyDebug?.state().pos===1),{timeout:9000});
+ assert.equal(await teacher.locator('.cycle-slot.done').count(),1,'teacher sees ordered illustrated frame');
+ assert.equal(await student.locator('.cycle-slot.done').count(),1,'student sees the same frame');
  await student.locator('[data-tivvig-local-audio]').first().click();
  assert.equal(await page.evaluate(()=>window.mummyEvents.filter(e=>e.type==='click'&&e.value?.selector==='#hadesLocalSound').length),0);
  assert.deepEqual(errorsHere,[],errorsHere.join('\n'));
