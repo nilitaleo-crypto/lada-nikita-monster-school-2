@@ -16,7 +16,7 @@ header{display:flex;align-items:center;justify-content:space-between;gap:10px;mi
 header h1{font-size:clamp(17px,2.4vw,30px);font-weight:normal;margin:0;text-align:center;color:#ffe2a4}
 .nav{display:grid;place-items:center;background:#263449;border:1px solid #be8b49;border-radius:9px;min-height:43px;min-width:83px;padding:7px 12px;font-size:14px}
 .viewport{width:100%;overflow-x:auto;overflow-y:hidden;border:3px solid #b88e4e;border-radius:15px;box-shadow:0 8px 35px #0008}
-.scene{position:relative;width:100%;min-width:660px;aspect-ratio:16/9;isolation:isolate;overflow:hidden;background:#2b2531;touch-action:manipulation}
+.scene{position:relative;width:100%;min-width:760px;aspect-ratio:16/9;isolation:isolate;overflow:hidden;background:#2b2531;touch-action:manipulation}
 .bg{position:absolute;inset:0;width:100%;height:100%;object-fit:fill;z-index:0;pointer-events:none}
 .scene::after{content:'';position:absolute;inset:0;box-shadow:inset 0 0 35px #0b0a18c2;z-index:12;pointer-events:none}
 .lada{position:absolute;left:1.2%;bottom:0;width:16%;height:39%;z-index:4;pointer-events:none;filter:drop-shadow(0 5px 6px #251915b2)}
@@ -27,7 +27,7 @@ header h1{font-size:clamp(17px,2.4vw,30px);font-weight:normal;margin:0;text-alig
 .dots{position:absolute;z-index:8;right:1.6%;top:2%;display:flex;gap:6px}
 .dots i{width:clamp(9px,1vw,15px);aspect-ratio:1;border:1px solid #cda771;background:#503c35;border-radius:50%}
 .dots i.on{background:#ffe2a1;box-shadow:0 0 11px #ffe8af}
-.status{position:absolute;z-index:9;left:18%;bottom:2%;min-width:28%;max-width:48%;min-height:44px;border:1px solid #a77840ba;background:#1b2842df;color:#fff1ce;border-radius:10px;padding:8px 12px;font-size:clamp(13px,1.34vw,18px);display:flex;align-items:center;justify-content:center;text-align:center;pointer-events:none}
+.status{position:absolute;z-index:9;left:17%;bottom:2%;min-width:15%;max-width:19%;min-height:44px;border:1px solid #a77840ba;background:#1b2842df;color:#fff1ce;border-radius:10px;padding:8px 12px;font-size:clamp(13px,1.34vw,18px);display:flex;align-items:center;justify-content:center;text-align:center;pointer-events:none}
 .status:empty{display:none}
 .action{position:absolute;z-index:10;left:46%;bottom:2.7%;transform:translateX(-50%);min-height:clamp(48px,5vw,65px);min-width:170px;border:3px solid #926326;background:linear-gradient(#fff0bc,#dca351);color:#402718;font:bold clamp(16px,1.65vw,23px) Georgia,serif;padding:8px 17px;border-radius:13px;box-shadow:0 5px 0 #674125,0 9px 20px #2f1b13aa}
 .action[hidden],[hidden]{display:none!important}.action:active,.tile:active,.weight:active{filter:brightness(.95)}
@@ -66,13 +66,16 @@ header h1{font-size:clamp(17px,2.4vw,30px);font-weight:normal;margin:0;text-alig
 .mummy-hand{position:absolute;z-index:6;left:50.1%;top:44%;width:8%;height:10%;transform-origin:0% 80%;animation:wave 3s ease-in-out infinite;pointer-events:none;filter:drop-shadow(0 3px 3px #25110988)}
 .mummy-hand svg{width:100%;height:100%;overflow:visible}
 .scene[data-stage="intro"] .mummy-glow,.scene[data-stage="intro"] .mummy-hand{opacity:0}
+.scene[data-stage="name"] .name-board{left:70%;top:65%;width:29%;height:29%}
+.scene[data-stage="name"] .name-label{left:71%;top:61%}
+.scene[data-stage="name"] .name-options button{font-size:clamp(12px,1.8vw,25px);min-height:clamp(42px,4vw,52px)}
 .scene[data-stage="done"] .mummy-glow{background:radial-gradient(ellipse,#ffefa9a3,transparent 75%);transform:scale(1.8)}
 .scene[data-stage="done"]{filter:saturate(1.12) brightness(1.07)}
 @keyframes pulse{50%{opacity:.5}}@keyframes wave{0%,100%{transform:rotate(-10deg)}50%{transform:rotate(19deg)}}@keyframes float{50%{transform:translateY(-12px)}}
 @media(min-width:1000px){.action{left:48%}}
 @media(max-width:740px){
  main{padding:4px}.nav{font-size:12px;min-height:39px;min-width:71px;padding:6px}header h1{font-size:16px}
- .viewport{border-radius:9px}.scene{min-width:660px}
+ .viewport{border-radius:9px}.scene{min-width:760px}
  .speech{font-size:14px;padding:5px 7px;max-height:16%}.status{font-size:13px;padding:5px}.action{min-height:47px;font-size:16px;padding:6px 10px;min-width:125px}
  .jar-label{font-size:14px}.name-label{font-size:15px}
 }
