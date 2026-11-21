@@ -4,6 +4,7 @@
 const $=id=>document.getElementById(id),scene=$('mummyScene');
 if(!scene||window.TivvigMummyDebug)return;
 const REWARD='tivvig_egypt_mummy_scarab_v1';
+const sprite=new Image();sprite.onerror=()=>document.documentElement.classList.add('no-cycle-art');sprite.src='images/egypt-mummy-cycles.avif';
 const fresco=[
  {key:'frog',question:'Как головастик превращается в лягушку?',order:[0,1,2,3],options:[3,0,2,1],names:['Икра в воде','Появился головастик','Выросли лапки','Взрослая лягушка'],story:['Сначала лягушка откладывает икру.','Из икринки выходит головастик.','У головастика вырастают лапки.','Он становится лягушкой и снова может отложить икру.'],fallback:['🥚','🐟','🐸','🐸'],row:0},
  {key:'apple',question:'Как из семечка вырастает яблоня?',order:[0,1,2,3],options:[2,0,3,1],names:['Семечко','Молодой росток','Яблоня цветёт','Яблоки с семечками'],story:['Семечко падает в землю.','Появляется маленький росток.','Вырастает яблоня с цветами.','Созревает яблоко, внутри новые семечки.'],fallback:['🌰','🌱','🌸','🍎'],row:1},
@@ -51,7 +52,7 @@ function render(){
    const b=document.createElement('button');
    b.type='button';b.className='tile cycle-tile';b.id='mummy-fresco-'+i;
    b.setAttribute('aria-label',q.names[step]);
-   b.title=q.names[step];paintCycle(b,q.row,step);
+   b.title=q.names[step];b.textContent=q.fallback[step];paintCycle(b,q.row,step);
    if(chosen.includes(i)){b.classList.add('done');b.disabled=true}
    b.addEventListener('click',()=>chooseFresco(i));$('mummyFresco').append(b);
   });
@@ -59,7 +60,7 @@ function render(){
   q.order.forEach((step,i)=>{
    const slot=document.createElement('span');slot.className='cycle-slot';
    slot.setAttribute('aria-label',i<pos?q.names[step]:'Шаг '+(i+1)+' не найден');
-   if(i<pos){slot.classList.add('done');paintCycle(slot,q.row,step)}
+   if(i<pos){slot.classList.add('done');slot.textContent=q.fallback[step];paintCycle(slot,q.row,step)}
    else{slot.textContent=String(i+1)}
    $('mummyFrescoSlots').append(slot);
   });
