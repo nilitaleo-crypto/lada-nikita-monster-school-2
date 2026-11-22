@@ -28,7 +28,26 @@ async function solo(browser,browserName,profile){
  assert.equal(await page.evaluate(()=>TivvigSolarDebug.state().stage),'sky');
  await page.locator('#solar-sun-2').click();
  assert.equal(await page.evaluate(()=>TivvigSolarDebug.state().errors),1,'Wrong position does not advance');
- for(let i=0;i<3;i++)await page.locator('#solar-sun-'+i).click();
+ await page.locator('#solar-sun-0').click();
+ assert.equal(await page.evaluate(()=>TivvigSolarDebug.state().picture),'sunrise','AI sunrise scene on wake-up');
+ assert.equal(await page.locator('#solarMovingSun').getAttribute('data-stop'),'0','Sun appears over eastern horizon');
+ await page.locator('#solar-sun-1').click();
+ assert.equal(await page.evaluate(()=>TivvigSolarDebug.state().picture),'noon','Switch to real AI painted midday storm');
+ assert.equal(await page.locator('#solarClouds').isVisible(),true,'Storm clouds become interactive');
+ assert.equal(await page.locator('#solarSuns').isVisible(),false,'Sun waypoints pause until clouds cleared');
+ assert.equal(await page.locator('.cloud-target').count(),3,'Three clouds to clear');
+ const cloudHit=await page.locator('#solar-cloud-1').boundingBox();
+ assert.ok(cloudHit?.width>=90&&cloudHit?.height>=60,'Storm clouds are reachable on touch devices');
+ for(let i=0;i<3;i++){
+  await page.locator('#solar-cloud-'+i).click();
+  assert.equal(await page.locator('#solar-cloud-'+i).isDisabled(),true,'Cleared cloud cannot be clicked again');
+  assert.equal(await page.locator('#solarCloudClear'+i).evaluate(e=>getComputedStyle(e).opacity),'1','Cloud disappears into the clear sky');
+ }
+ assert.deepEqual(await page.evaluate(()=>TivvigSolarDebug.state().cloudCleared),[true,true,true],'Three sky repairs recorded');
+ assert.equal(await page.locator('#solarSuns').isVisible(),true,'Sun control returns after storm');
+ await page.locator('#solar-sun-2').click();
+ assert.equal(await page.evaluate(()=>TivvigSolarDebug.state().picture),'sunset','Switch to AI sunset scene');
+ assert.equal(await page.locator('#solarMovingSun').getAttribute('data-stop'),'2','Sun reaches western gates');
  assert.equal(await page.evaluate(()=>TivvigSolarDebug.state().sunRound),3,'Sun travels east-noon-west');
  await page.locator('#solarAction').click();
  assert.equal(await page.evaluate(()=>TivvigSolarDebug.state().stage),'shadows');
@@ -58,11 +77,12 @@ async function solo(browser,browserName,profile){
  }
  const state=await page.evaluate(()=>TivvigSolarDebug.state());
  assert.equal(state.stage,'done','All gates lead to the sunrise');
- assert.equal(state.correct,18,'Every educational step completed');
+ assert.equal(state.correct,21,'Every educational and storm-clearing step completed');
  assert.equal(state.reward,true,'Amulet stored');
  assert.deepEqual(state.gateOpen,[true,true,true],'Three gates opened');
  assert.equal(await page.evaluate(()=>localStorage.getItem('tivvig_egypt_ra_solar_amulet_v1')),'unlocked');
  assert.equal(await page.locator('#solarReward').isVisible(),true);
+ assert.equal(await page.evaluate(()=>TivvigSolarDebug.state().picture),'sunrise','Sunrise returns after the night gates');
  assert.equal(await page.locator('#solarReward img').evaluate(el=>el.complete&&el.naturalWidth>200),true);
  assert.deepEqual(pageErrors,[],pageErrors.join('\n'));
  assert.deepEqual(missing,[],missing.join('\n'));
@@ -101,10 +121,15 @@ async function coOp(browser,name){
  await page.waitForFunction(()=>Array.from(document.querySelectorAll('iframe[data-solar-test]')).every(f=>f.contentWindow?.TivvigSolarDebug?.state().sunRound===1),{timeout:9000});
  await teacher.locator('#solar-sun-1').click();
  await page.waitForFunction(()=>Array.from(document.querySelectorAll('iframe[data-solar-test]')).every(f=>f.contentWindow?.TivvigSolarDebug?.state().sunRound===2),{timeout:9000});
+ for(const [role,idx] of [['student',0],['teacher',1],['student',2]]){
+  await (role==='teacher'?teacher:student).locator('#solar-cloud-'+idx).click();
+  await page.waitForFunction(i=>Array.from(document.querySelectorAll('iframe[data-solar-test]')).every(f=>f.contentWindow?.TivvigSolarDebug?.state().cloudCleared[i]),idx,{timeout:9000});
+ }
+ assert.deepEqual(await page.evaluate(()=>Array.from(document.querySelectorAll('iframe[data-solar-test]')).map(f=>f.contentWindow?.TivvigSolarDebug?.state().cloudCleared)),[[true,true,true],[true,true,true]],'Cloud clearing synchronized on both devices');
  await student.locator('#solar-sun-2').click();
  await page.waitForFunction(()=>Array.from(document.querySelectorAll('iframe[data-solar-test]')).every(f=>f.contentWindow?.TivvigSolarDebug?.state().sunRound===3),{timeout:9000});
  const states=await page.evaluate(()=>Array.from(document.querySelectorAll('iframe[data-solar-test]')).map(f=>f.contentWindow.TivvigSolarDebug.state()));
- assert.deepEqual(states.map(x=>x.correct),[3,3],'Both devices receive authoritative progress');
+ assert.deepEqual(states.map(x=>x.correct),[6,6],'Both devices receive authoritative sun and cloud progress');
  assert.deepEqual(pageErrors,[]);
  await ctx.close();passed++;console.log('PASS',name,'solar barque 2-player synchronisation');
 }
