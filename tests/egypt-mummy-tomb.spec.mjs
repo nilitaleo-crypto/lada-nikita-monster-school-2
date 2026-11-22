@@ -41,6 +41,20 @@ async function testSolo(browser,name,p){
   if(st.stage==='jars'&&!checkedCanopes&&st.jarPhase==='selectJar'&&st.jarSolved.length===0){
    assert.equal(await page.locator('#mummyOrgans').isVisible(),true,'Four organ seals plus the heart');
    assert.equal(await page.locator('.organ-choice').count(),5,'Five organ tokens');
+   const art=await page.evaluate(async()=>{
+    const i=new Image();i.src='images/egypt-canopic-illustrations.avif';
+    try{await i.decode();return {width:i.naturalWidth,height:i.naturalHeight}}
+    catch{return {width:0,height:0}}
+   });
+   assert.deepEqual(art,{width:480,height:258},'Original AI-drawn canopic jars and organ atlas is available');
+   assert.match(await page.locator('#mummy-jar-0 .jar-art').evaluate(e=>getComputedStyle(e).backgroundImage),/egypt-canopic-illustrations.avif/,'Jar contains AI illustration');
+   assert.match(await page.locator('#mummy-organ-lungs .organ-art').evaluate(e=>getComputedStyle(e).backgroundImage),/egypt-canopic-illustrations.avif/,'Organ uses illustrated token');
+   const artBounds=await page.locator('#mummy-jar-0').boundingBox();
+   assert.ok(artBounds?.width>=85&&artBounds?.height>=110,'Canopic jar remains a large touch target');
+   const speechBounds=await page.locator('#mummySpeech').boundingBox();
+   const sceneBounds=await page.locator('#mummyScene').boundingBox();
+   assert.ok(speechBounds.y>=sceneBounds.y+12,'Riddle banner starts below clipped top edge');
+
    assert.equal(await page.locator('.jar:not(:disabled)').count(),4,'Child may choose any jar');
    assert.equal(await page.locator('#mummy-organ-heart').isDisabled(),true,'Heart cannot be placed in a canopic jar');
    assert.equal(await page.locator('#mummy-organ-lungs').isDisabled(),true,'Canopic jar must speak before an answer');
