@@ -157,6 +157,8 @@ async function testCoop(browser,name){
  await page.waitForFunction(()=>Array.from(document.querySelectorAll('iframe[data-test-room]')).every(f=>f.contentWindow?.TivvigMummyDebug?.state().errors===1),{timeout:9000});
  await teacher.locator('#mummy-fresco-1').click();
  await page.waitForFunction(()=>Array.from(document.querySelectorAll('iframe[data-test-room]')).every(f=>f.contentWindow?.TivvigMummyDebug?.state().pos===1),{timeout:9000});
+ assert.deepEqual(await page.evaluate(()=>Array.from(document.querySelectorAll('iframe[data-test-room]')).map(f=>f.contentWindow?.TivvigMummyDebug?.state().tutenPose)),['idle','idle'],'Tutenstein listens calmly on both screens while Lada thinks');
+
  // Jump both already-synchronized local emulators through unchanged fresco rounds.
  // Then verify actual room-authoritative clicks on the new canopic targets.
  await page.evaluate(()=>{
