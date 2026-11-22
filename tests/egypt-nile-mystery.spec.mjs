@@ -93,6 +93,21 @@ async function test(browser,name,profile){
   console.log('PASS',name,profile.name,'2 scenes, original Lada, character dialogue, evidence, Sphinx, reward, reset, audio');passed++;
  }finally{await context.close()}
 }
+async function testSavedNileReward(browser,name){
+ const ctx=await browser.newContext({viewport:{width:1024,height:768},hasTouch:true,isMobile:true});
+ const page=await ctx.newPage();
+ try{
+  await page.goto(BASE+'wardrobe.html',{waitUntil:'load'});
+  await page.evaluate(()=>localStorage.setItem('tivvig_egypt_sphinx_investigation_v1','unlocked'));
+  await page.reload({waitUntil:'load'});
+  assert.equal(await page.locator('#card-egyptMoon button').isDisabled(),false,'Old Nile completion opens new outfit without replay');
+  assert.equal(await page.evaluate(()=>localStorage.getItem('tivvig_outfit_egypt_moon_unlocked_v1')),'unlocked','Legacy reward migrated');
+  await page.locator('#card-egyptMoon button').click();
+  assert.equal(await page.evaluate(()=>TivvigWardrobe.selected()),'egyptMoon');
+  assert.equal(await page.locator('#previewDoll').getAttribute('data-outfit'),'egyptMoon','Wardrobe mirrors selected costume');
+  console.log('PASS',name,'existing Nile reward unlocks new moon outfit without replay');
+ }finally{await ctx.close()}
+}
 async function testCoop(browser,name){
  const ctx=await browser.newContext({viewport:{width:1024,height:768},hasTouch:true,isMobile:true});const page=await ctx.newPage();
  try{
@@ -114,6 +129,7 @@ try{
  await ready();for(const [name,engine] of [['chromium',chromium],['webkit',webkit]]){
   const browser=await engine.launch({headless:true});
   try{for(const profile of profiles){try{await test(browser,name,profile)}catch(e){failures.push(name+' '+profile.name+' '+e.stack);console.error('FAIL',failures.at(-1))}}
+   try{await testSavedNileReward(browser,name)}catch(e){failures.push(name+' prior-save '+e.stack);console.error('FAIL',failures.at(-1))}
    try{await testCoop(browser,name)}catch(e){failures.push(name+' co-op '+e.stack);console.error('FAIL',failures.at(-1))}
   }finally{await browser.close()}
  }
