@@ -42,13 +42,16 @@ async function testSolo(browser,name,p){
    assert.equal(await page.locator('#mummyOrgans').isVisible(),true,'Four organ seals plus the heart');
    assert.equal(await page.locator('.organ-choice').count(),5,'Five organ tokens');
    const art=await page.evaluate(async()=>{
-    const i=new Image();i.src='images/egypt-canopic-illustrations.avif';
-    try{await i.decode();return {width:i.naturalWidth,height:i.naturalHeight}}
-    catch{return {width:0,height:0}}
+    const urls=['images/egypt-canopic-jars-hq.webp','images/egypt-canopic-organs-hq.webp'];
+    return await Promise.all(urls.map(async src=>{
+      const img=new Image();img.src=src;
+      try{await img.decode();return {width:img.naturalWidth,height:img.naturalHeight}}
+      catch{return {width:0,height:0}}
+    }));
    });
-   assert.deepEqual(art,{width:480,height:258},'Original AI-drawn canopic jars and organ atlas is available');
-   assert.match(await page.locator('#mummy-jar-0 .jar-art').evaluate(e=>getComputedStyle(e).backgroundImage),/egypt-canopic-illustrations.avif/,'Jar contains AI illustration');
-   assert.match(await page.locator('#mummy-organ-lungs .organ-art').evaluate(e=>getComputedStyle(e).backgroundImage),/egypt-canopic-illustrations.avif/,'Organ uses illustrated token');
+   assert.deepEqual(art,[{width:1024,height:340},{width:1075,height:220}], 'Original high-quality canopic and organ illustrations are loaded');
+   assert.match(await page.locator('#mummy-jar-0 .jar-art').evaluate(e=>getComputedStyle(e).backgroundImage),/egypt-canopic-jars-hq.webp/,'Jar uses high-resolution illustration');
+   assert.match(await page.locator('#mummy-organ-lungs .organ-art').evaluate(e=>getComputedStyle(e).backgroundImage),/egypt-canopic-organs-hq.webp/,'Organ uses high-resolution illustration');
    const artBounds=await page.locator('#mummy-jar-0').boundingBox();
    assert.ok(artBounds?.width>=85&&artBounds?.height>=110,'Canopic jar remains a large touch target');
    const speechBounds=await page.locator('#mummySpeech').boundingBox();
