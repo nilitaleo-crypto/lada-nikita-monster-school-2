@@ -37,8 +37,18 @@ let sealRound=0,rhythmRound=0,played=[],listened=false;
 let wordRound=0,wordStep=0,bridgeCount=0,clockRound=0;
 let finalPlayed=[],songReady=false,finalDone=false;
 let audio=null,audioSeeded=false,clips=null,soundOn=true;
+const PALACE_ENTRANCE='tivvig_hades_enter_from_hecate_v1';
+const enteringFromHecate=(()=>{
+ try{
+  const time=Number(sessionStorage.getItem(PALACE_ENTRANCE)||0);
+  sessionStorage.removeItem(PALACE_ENTRANCE);
+  return time>0&&Date.now()-time>=0&&Date.now()-time<120000;
+ }catch{return false}
+})();
 const countSaved=Number(read(KEY));
-const freshStart=Number.isInteger(countSaved)&&countSaved>=0&&countSaved<=5?Math.min(countSaved,4):0;
+// Entering from Hecate always starts with the encounter with Hades.
+// Re-entry from the map still resumes unfinished palace chapters.
+const freshStart=enteringFromHecate?0:Number.isInteger(countSaved)&&countSaved>=0&&countSaved<=5?Math.min(countSaved,4):0;
 function wardrobe(){window.TivvigWardrobe?.equip($('hadesLada'))}
 window.addEventListener('tivvig-outfit-changed',wardrobe);
 window.addEventListener('tivvig-inventory-changed',wardrobe);
@@ -273,7 +283,9 @@ function setup(){for(let i=0;i<19;i++){const dot=el('i','');dot.style.left=((i*2
  $('soundToggle').addEventListener('click',()=>{soundOn=true;primeAudio();sound('S');setMessage('Звук включён')});
  $('replayAll').addEventListener('click',startOver);
  $('hadesSkipTrial').addEventListener('click',skipTrial);
- stage=freshStart;renderScene();
+ stage=freshStart;
+ if(enteringFromHecate)write(KEY,'0');
+ renderScene();
  if(read(FINAL)==='unlocked'&&stage===4){finalDone=true;scene.classList.add('is-free');$('finale').hidden=false}
 }
 window.TivvigHadesDebug=Object.freeze({
