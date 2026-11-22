@@ -1,0 +1,122 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#172d4c">
+<meta name="description" content="Путешествие Лады на солнечной ладье Ра: восток и запад, тени, чтение по слогам, солнечный амулет.">
+<title>Солнечная ладья Ра · Тиввиг</title>
+<link rel="preload" as="image" href="images/egypt-solar-barque-hq.webp">
+<style>
+:root{--gold:#ffdc86;--ink:#1c3051}
+*{box-sizing:border-box}
+html,body{margin:0;min-height:100%;background:#152237;color:#fff0c6;font:16px Georgia,'Times New Roman',serif}
+button,a{font:inherit;-webkit-tap-highlight-color:transparent;touch-action:manipulation}
+button{cursor:pointer}button:disabled{cursor:default}
+button:focus-visible,a:focus-visible{outline:3px solid #9de7ff;outline-offset:3px}
+[hidden]{display:none!important}
+main{margin:0 auto;max-width:1480px;padding:8px}
+header{min-height:42px;display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:8px}
+header h1{margin:0;text-align:center;font-weight:normal;font-size:clamp(18px,2.4vw,29px)}
+.nav{display:grid;place-items:center;min-height:42px;min-width:78px;background:#243a55;border:1px solid #caa968;border-radius:10px;color:#ffe8b4;padding:6px 13px;text-decoration:none;font-size:clamp(12px,1.1vw,16px)}
+.viewport{overflow-x:auto;overflow-y:hidden;border:3px solid #cda55c;border-radius:14px;box-shadow:0 9px 36px #070a16aa}
+.scene{position:relative;width:100%;min-width:780px;aspect-ratio:1672/941;isolation:isolate;overflow:hidden;background:#253957}
+.backdrop{position:absolute;inset:0;width:100%;height:100%;object-fit:fill;z-index:0;pointer-events:none}
+.nightwash,.sunwash{position:absolute;inset:0;z-index:1;pointer-events:none;transition:opacity 1.1s ease}
+.nightwash{opacity:0;background:linear-gradient(180deg,#07142cda 0%,#111d43bf 58%,#1418327c 100%)}
+.nightwash::after{content:'';position:absolute;inset:0;background-image:radial-gradient(circle,#fff7d7d4 1.5px,transparent 2px),radial-gradient(circle,#dbecffab 1px,transparent 1.6px);background-size:107px 89px,167px 113px;background-position:12px 28px,62px 17px}
+.sunwash{opacity:0;background:linear-gradient(180deg,#fd985442,#e58c2130 53%,transparent 75%)}
+.scene[data-time="night"] .nightwash{opacity:1}
+.scene[data-time="sunset"] .sunwash{opacity:1}
+.scene::after{content:'';position:absolute;inset:0;box-shadow:inset 0 0 26px #11162d88;pointer-events:none;z-index:18}
+.lada{position:absolute;z-index:4;left:22%;bottom:2%;width:14%;height:48%;pointer-events:none;filter:drop-shadow(1px 5px 4px #2b182899)}
+.lada img{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;object-position:bottom center;user-select:none;pointer-events:none}
+.lada [data-outfit-layer]{clip-path:polygon(0 27%,100% 27%,100% 100%,0 100%)}
+.speech{position:absolute;z-index:9;top:2.8%;left:66%;width:32%;min-height:10%;max-height:25%;display:flex;align-items:center;justify-content:center;text-align:center;padding:9px 14px;border:2px solid #ffcf76;border-radius:13px;background:#162b4dea;color:#fff2ce;box-shadow:0 4px 16px #131a34a0;font-size:clamp(15px,1.33vw,21px);line-height:1.22}
+.speech strong{color:#ffe08d}
+.progress{position:absolute;top:3%;left:35%;z-index:10;display:flex;gap:6px}
+.progress i{height:13px;width:13px;background:#36465f;border:1px solid #f1c877;border-radius:50%}
+.progress i.on{background:#ffe09b;box-shadow:0 0 10px #ffcc63}
+.hint{position:absolute;z-index:10;left:36%;bottom:1.2%;width:28%;max-height:11%;min-height:35px;display:grid;place-items:center;padding:4px 8px;border:1px solid #e1b671;border-radius:10px;background:#203b57df;color:#fff0c8;text-align:center;font-size:clamp(12px,1.1vw,17px);pointer-events:none}
+.hint:empty{display:none}
+.action{position:absolute;z-index:13;right:3%;bottom:3%;min-height:52px;min-width:168px;padding:7px 15px;border:3px solid #94601b;border-radius:15px;background:linear-gradient(#fff3bd,#e3a34b);color:#493016;font-weight:bold;font-size:clamp(17px,1.48vw,22px);box-shadow:0 5px 0 #714826,0 8px 14px #1b203ba1}
+.sun-buttons{position:absolute;inset:0;z-index:7;pointer-events:none}
+.sun-point{pointer-events:auto;position:absolute;width:clamp(55px,5.6vw,84px);height:clamp(55px,5.6vw,84px);display:grid;place-items:center;border:3px solid #ffeda7;border-radius:50%;background:radial-gradient(circle,#ffffd4f7,#ffcc57eb 54%,#ffa83771 78%,transparent 90%);color:#72501d;font-size:clamp(24px,2.9vw,40px);font-weight:bold;box-shadow:0 0 22px #ffdf60,0 0 36px #fff1a67c;transform:translate(-50%,-50%);text-shadow:0 1px #ffffdd}
+.sun-point[data-index="0"]{left:35.4%;top:30.7%}
+.sun-point[data-index="1"]{left:60.4%;top:10.4%}
+.sun-point[data-index="2"]{left:88%;top:31.7%}
+.sun-point:disabled{opacity:.55;filter:grayscale(.5)}
+.sun-point.selected{border:5px solid #fff9cb;box-shadow:0 0 0 5px #f4b9398c,0 0 34px #ffdd57}
+.sun-point.done{background:#fbe29ba1;border-color:#d0d9aa;box-shadow:0 0 12px #fff2b0}
+.sun-label{position:absolute;z-index:8;top:44%;font:bold clamp(14px,1.25vw,20px) Georgia,serif;color:#ffe5a2;text-shadow:0 2px 6px #241929;pointer-events:none}
+.sun-label.east{left:36%}.sun-label.west{left:83%}
+.shadow-ray{position:absolute;z-index:7;left:65.3%;top:52.9%;height:14px;width:18%;background:linear-gradient(90deg,#2c284fbf,#15192c04);border-radius:50%;transform-origin:0 50%;transform:rotate(15deg);opacity:0;pointer-events:none;transition:width .45s,transform .45s,opacity .2s}
+.shadow-ray.show{opacity:.95}
+.shadow-ray[data-sun="0"]{width:24%;transform:rotate(13deg)}
+.shadow-ray[data-sun="1"]{width:7.5%;transform:rotate(85deg)}
+.shadow-ray[data-sun="2"]{width:24%;transform:rotate(167deg)}
+.shadow-options{position:absolute;z-index:10;left:35%;bottom:13%;width:62%;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:1.3%}
+.shadow-option{height:clamp(57px,6.2vw,83px);padding:5px 6px;border:3px solid #e7c58a;border-radius:12px;background:#edd3a6eb;color:#593b25;font:bold clamp(14px,1.4vw,21px) Georgia,serif;box-shadow:0 4px 8px #171d33aa}
+.shadow-option:disabled{opacity:.5}
+.shadow-option.chosen{border-color:#a7e7a3;background:#deecb8}
+.shadow-option .symbol{display:block;font-size:clamp(23px,2.3vw,35px);line-height:1}
+.gates{position:absolute;inset:0;z-index:8;pointer-events:none}
+.gate{position:absolute;top:31%;width:7.7%;height:18%;min-height:62px;border:3px solid #e7d1a9;border-radius:50% 50% 12% 12%;background:radial-gradient(ellipse,#e0a0fa70,#27296170);box-shadow:0 0 16px #cdacff91;color:#fff4c9;font-size:clamp(16px,1.6vw,23px);pointer-events:none}
+.gate[data-index="0"]{left:77%}.gate[data-index="1"]{left:85.2%}.gate[data-index="2"]{left:93%}
+.gate.ready{pointer-events:auto;border-color:#fff3ac;box-shadow:0 0 26px #ffde9d}
+.gate.open{border-color:#d0ffc3;background:#9ff0b84d;box-shadow:0 0 21px #aaf7b6}
+.inscription{position:absolute;z-index:10;left:35%;bottom:11%;width:62%;min-height:23%;display:flex;flex-direction:column;align-items:stretch;justify-content:center;gap:6px;padding:8px 10px;border:4px ridge #d4a15b;border-radius:12px;background:#3c3146ea;box-shadow:0 7px 20px #0e142dbb}
+.inscription .slots{display:flex;justify-content:center;gap:7px;min-height:40px}
+.inscription .slot{min-width:11%;display:grid;place-items:center;border-bottom:3px solid #e7c88c;border-radius:7px 7px 0 0;background:#dfc5943b;color:#fff4c9;font:bold clamp(18px,2.15vw,30px) Georgia,serif;padding:3px 6px}
+.inscription .slot.filled{background:#ffe4a9;color:#503520}
+.inscription .tiles{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:6px}
+.inscription .syllable{min-width:0;min-height:clamp(48px,4.2vw,62px);border:2px solid #d5ad61;border-radius:10px;background:linear-gradient(#fff0c4,#d3a258);color:#473021;font:bold clamp(17px,2vw,27px) Georgia,serif;padding:2px}
+.inscription .syllable:disabled{opacity:.27}
+.inscription .smallnote{text-align:center;font-size:clamp(13px,1.1vw,17px)}
+.reward{position:absolute;z-index:10;left:61%;top:24%;width:19%;height:38%;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;border:4px solid #f5db8a;border-radius:50%;background:radial-gradient(circle,#fff3cbdd,#b977328e 74%,#352b3b66);box-shadow:0 0 52px #ffe293ab}
+.reward img{max-width:82%;max-height:76%;object-fit:contain;border-radius:50%}
+.reward span{color:#54301f;font:bold clamp(15px,1.45vw,21px) Georgia,serif;text-align:center}
+.scene[data-stage="done"] .sunwash{opacity:.55;background:linear-gradient(180deg,#fff5b854,transparent)}
+@media(max-width:740px){main{padding:4px}header h1{font-size:16px}.nav{padding:4px 7px;min-width:70px;font-size:12px}.scene{min-width:780px}.viewport{border-radius:9px}}
+@media(prefers-reduced-motion:reduce){.nightwash,.sunwash,.shadow-ray{transition:none}}
+</style>
+</head>
+<body>
+<main>
+<header><a class="nav" href="egypt-mummy-tomb.html">← Гробница</a><h1>☀ Солнечная ладья Ра</h1><a class="nav" href="index.html">⌂ Карта</a></header>
+<div class="viewport" aria-label="Нил и солнечная ладья. На телефоне игровую сцену можно прокручивать по горизонтали">
+<section class="scene" id="solarScene" data-stage="intro" data-time="day" aria-label="Путешествие с Ра на солнечной ладье над Нилом">
+<picture><source type="image/webp" srcset="images/egypt-solar-barque-hq.webp"><img class="backdrop" src="images/egypt-solar-barque-hq.webp" alt="" draggable="false" fetchpriority="high" decoding="async"></picture>
+<div class="sunwash" aria-hidden="true"></div><div class="nightwash" aria-hidden="true"></div>
+<div class="lada" id="solarLada" role="img" aria-label="Лада в выбранном костюме"><img src="images/lada-cutout.webp" alt="" draggable="false"><img data-outfit-layer hidden alt="" draggable="false"></div>
+<div class="speech" id="solarSpeech" aria-live="polite"><strong>Ра:</strong> Поможешь мне провести Солнце по небу?</div>
+<div class="progress" id="solarProgress" aria-label="Этапы путешествия"><i></i><i></i><i></i></div>
+<div class="sun-buttons" id="solarSuns" hidden aria-label="Выбери положение Солнца">
+<button class="sun-point" id="solar-sun-0" data-index="0" type="button" aria-label="Восход: восток">☀</button>
+<button class="sun-point" id="solar-sun-1" data-index="1" type="button" aria-label="Полдень: высокое солнце">☀</button>
+<button class="sun-point" id="solar-sun-2" data-index="2" type="button" aria-label="Закат: запад">☀</button>
+</div>
+<div class="sun-label east" id="solarEast" hidden>ВОСТОК</div><div class="sun-label west" id="solarWest" hidden>ЗАПАД</div>
+<div class="shadow-ray" id="solarShadow" aria-hidden="true"></div>
+<div class="shadow-options" id="solarShadowOptions" hidden aria-label="Выбери тень">
+<button class="shadow-option" id="solar-shadow-0" type="button" aria-label="Длинная тень направо"><span class="symbol">⟶</span>Длинная</button>
+<button class="shadow-option" id="solar-shadow-1" type="button" aria-label="Короткая тень"><span class="symbol">↓</span>Короткая</button>
+<button class="shadow-option" id="solar-shadow-2" type="button" aria-label="Длинная тень налево"><span class="symbol">⟵</span>Длинная</button>
+</div>
+<div class="gates" id="solarGates" hidden aria-label="Три ночных врата">
+<button class="gate" data-index="0" id="solar-gate-0" type="button" aria-label="Первые врата">Ⅰ</button>
+<button class="gate" data-index="1" id="solar-gate-1" type="button" aria-label="Вторые врата">Ⅱ</button>
+<button class="gate" data-index="2" id="solar-gate-2" type="button" aria-label="Третьи врата">Ⅲ</button>
+</div>
+<div class="inscription" id="solarInscription" hidden aria-label="Собери надпись из слогов"><div class="slots" id="solarSlots"></div><div class="tiles" id="solarTiles"></div><div class="smallnote" id="solarInscriptionNote">Читай слева направо</div></div>
+<div class="reward" id="solarReward" hidden><img src="images/egypt-ra-amulet.webp" alt="Солнечный амулет Ра" draggable="false"><span>Солнечный амулет</span></div>
+<div class="hint" id="solarHint" role="status" aria-live="polite"></div>
+<button class="action" id="solarAction" type="button" data-tivvig-sound="manual">Отправиться!</button>
+</section></div><p id="gameConnection" role="status" style="min-height:1em;margin:4px 0;color:#ffdf9c;font-size:12px"></p>
+</main>
+<script src="wardrobe.js?v=5" defer></script>
+<script src="egypt-solar-barque.js?v=1" defer></script>
+<script src="hades-sounds.js?v=8" defer></script>
+<script src="game-runtime.js?v=5" defer></script>
+</body>
+</html>
