@@ -20,6 +20,11 @@ async function testSolo(browser,name,p){
  await page.goto(BASE+'egypt-mummy-tomb.html');
  await page.waitForFunction(()=>!!window.TivvigMummyDebug&&!!window.TivvigWardrobe,{timeout:9000});
  assert.equal(await page.locator('.bg').evaluate(e=>e.complete&&e.naturalWidth>0),true,'Tomb art loads');
+ const paintedBackdrop=await page.locator('.bg').evaluate(img=>({src:img.currentSrc,width:img.naturalWidth,height:img.naturalHeight}));
+ assert.match(paintedBackdrop.src,/egypt-mummy-tomb-art-hq\.webp$/,'Painted tomb replaces old vector background');
+ assert.deepEqual({width:paintedBackdrop.width,height:paintedBackdrop.height},{width:1672,height:941},'High-resolution painting retained');
+ assert.equal(await page.locator('#mummyScene .bg').count(),1,'Exactly one background is drawn beneath gameplay');
+
  assert.equal(await page.locator('#mummyLada [data-outfit-layer]').count(),1,'Wardrobe attaches');
  assert.equal(await page.locator('.dots i').count(),4);
  assert.equal(await page.locator('.tutenstein img').evaluate(e=>e.complete&&e.naturalWidth>=700),true,'Tutenstein art loads sharply');
