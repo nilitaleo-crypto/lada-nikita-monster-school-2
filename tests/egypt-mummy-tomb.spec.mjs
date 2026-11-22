@@ -29,16 +29,29 @@ async function testSolo(browser,name,p){
  assert.equal(await page.locator('.dots i').count(),4);
  assert.equal(await page.locator('.tutenstein img').evaluate(e=>e.complete&&e.naturalWidth>=700),true,'Tutenstein art loads sharply');
  assert.equal(await page.locator('.mummy-hand').count(),0,'old mummy hand removed');
+ await page.waitForFunction(()=>document.getElementById('mummyTutor')?.classList.contains('poses-ready'),{timeout:10000});
+ const poseAtlas=await page.evaluate(async()=>{
+  const i=new Image();i.src='images/egypt-tutenstein-poses.webp';
+  try{await i.decode();return {width:i.naturalWidth,height:i.naturalHeight}}
+  catch{return {width:0,height:0}}
+ });
+ assert.deepEqual(poseAtlas,{width:1262,height:1246},'Nine crisp transparent Tutenstein poses load');
+ assert.match(await page.locator('.tuten-sprite').evaluate(e=>getComputedStyle(e).backgroundImage),/egypt-tutenstein-poses.webp/);
+ assert.equal(await page.evaluate(()=>TivvigMummyDebug.state().tutenPose),'talk','Tutenstein speaks at introduction');
+ const spriteBounds=await page.locator('.tuten-sprite').boundingBox();
+ assert.ok(spriteBounds?.height>=210&&spriteBounds?.width>=210,'Pose has a readable size on touch devices');
  const overlaps=await page.locator('#mummyAction').boundingBox();
  assert.ok(overlaps?.width>=120&&overlaps?.height>=44,'Touch action has adequate hit area');
  await page.locator('#mummyAction').click();
  assert.equal(await page.evaluate(()=>TivvigMummyDebug.state().stage),'fresco');
+ assert.equal(await page.evaluate(()=>TivvigMummyDebug.state().tutenPose),'point-jars','Tutenstein points at the fresco');
  assert.equal(await page.locator('.cycle-tile').count(),4,'four large illustrated pictures');
  const loaded=await page.evaluate(async()=>{const img=new Image();img.src='images/egypt-mummy-cycles-hq.avif';try{await img.decode();return {width:img.naturalWidth,height:img.naturalHeight}}catch{return {width:0,height:0}}});
  assert.deepEqual(loaded,{width:1448,height:1086},'AI fresco atlas decodes on this engine');
  assert.match(await page.locator('#mummy-fresco-0').evaluate(el=>getComputedStyle(el).backgroundImage),/egypt-mummy-cycles-hq.avif/);
  await page.locator('#mummy-fresco-0').click();
  assert.equal(await page.evaluate(()=>TivvigMummyDebug.state().errors),1,'Mistake is harmless');
+ assert.equal(await page.evaluate(()=>TivvigMummyDebug.state().tutenPose),'wrong','Tutenstein reacts to an incorrect answer');
  const visited=new Set(),cycleKeys=new Set(),frames=new Set();let checkedCanopes=false;let sawHeart=false;
  for(let i=0;i<120;i++){
   const st=await page.evaluate(()=>TivvigMummyDebug.state());
@@ -67,6 +80,7 @@ async function testSolo(browser,name,p){
    assert.equal(await page.locator('#mummy-organ-heart').isDisabled(),true,'Heart cannot be placed in a canopic jar');
    assert.equal(await page.locator('#mummy-organ-lungs').isDisabled(),true,'Canopic jar must speak before an answer');
    await page.locator('#mummy-jar-2').click();
+   assert.equal(await page.evaluate(()=>TivvigMummyDebug.state().tutenPose),'point-organs','Tutenstein indicates the organs during the riddle');
    assert.equal(await page.evaluate(()=>TivvigMummyDebug.state().jarPhase),'riddle','Jar starts its own riddle');
    assert.equal(await page.evaluate(()=>TivvigMummyDebug.state().selectedJar),2);
    assert.match(await page.locator('#mummySpeech').innerText(),/вдохе|воздухом/i,'The selected jar asks a lung riddle');
@@ -76,7 +90,10 @@ async function testSolo(browser,name,p){
    assert.equal(await page.locator('.jar.speaking').count(),1,'The speaker stays highlighted');
    checkedCanopes=true;
   }
-  if(st.stage==='jars'&&st.jarPhase==='heart')sawHeart=true;
+  if(st.stage==='jars'&&st.jarPhase==='heart'){
+   sawHeart=true;
+   assert.ok(['happy','heart'].includes(await page.evaluate(()=>TivvigMummyDebug.state().tutenPose)));
+  }
   if(st.stage==='fresco'){
    cycleKeys.add(st.round);
    assert.equal(await page.locator('.cycle-tile').count(),4,'every cycle has four pictures');
@@ -92,6 +109,7 @@ async function testSolo(browser,name,p){
  assert.deepEqual([...frames],['0','1','2'],'three rows of real picture frames');
  const state=await page.evaluate(()=>TivvigMummyDebug.state());
  assert.equal(state.stage,'done','Every stage reaches the ending');
+ assert.equal(state.tutenPose,'celebrate','Tutenstein dances when Lada receives the scarab');
  assert.ok(state.correct>=34,'Illustrated cycles, four solved riddles and heart discovery');
  assert.equal(state.heartFound,true,'Mummy heart located');
  assert.deepEqual(state.jarSolved,[2,1,3,0],'Canopic lids correctly paired with organs');
@@ -101,6 +119,7 @@ async function testSolo(browser,name,p){
  assert.equal(await page.locator('#mummyScarab img').evaluate(e=>e.complete&&e.naturalWidth>0),true);
  await page.locator('#mummyAction').click();
  assert.equal(await page.evaluate(()=>TivvigMummyDebug.state().stage),'intro','Replay starts clean');
+ assert.equal(await page.evaluate(()=>TivvigMummyDebug.state().tutenPose),'talk','Replay restores the opening pose');
  assert.deepEqual(runtimeErrors,[],runtimeErrors.join('\n'));
  assert.deepEqual(missing,[],missing.join('\n'));
  assert.ok(await page.locator('[data-tivvig-local-audio]').count()>=1,'Local audio test control');
@@ -133,6 +152,7 @@ async function testCoop(browser,name){
  await page.waitForFunction(()=>window.mummyEvents?.filter(e=>e.type==='ready').length>=2,{timeout:10000});
  await teacher.locator('#mummyAction').click();
  await page.waitForFunction(()=>Array.from(document.querySelectorAll('iframe[data-test-room]')).every(f=>f.contentWindow?.TivvigMummyDebug?.state().stage==='fresco'),{timeout:9000});
+ assert.deepEqual(await page.evaluate(()=>Array.from(document.querySelectorAll('iframe[data-test-room]')).map(f=>f.contentWindow?.TivvigMummyDebug?.state().tutenPose)),['point-jars','point-jars'],'Shared screen shows the same pose');
  await student.locator('#mummy-fresco-0').click();
  await page.waitForFunction(()=>Array.from(document.querySelectorAll('iframe[data-test-room]')).every(f=>f.contentWindow?.TivvigMummyDebug?.state().errors===1),{timeout:9000});
  await teacher.locator('#mummy-fresco-1').click();
@@ -148,6 +168,7 @@ async function testCoop(browser,name){
  await page.waitForFunction(()=>Array.from(document.querySelectorAll('iframe[data-test-room]')).every(f=>f.contentWindow?.TivvigMummyDebug?.state().stage==='jars'),{timeout:3000});
  await teacher.locator('#mummy-jar-2').click();
  await page.waitForFunction(()=>Array.from(document.querySelectorAll('iframe[data-test-room]')).every(f=>f.contentWindow?.TivvigMummyDebug?.state().jarPhase==='riddle'&&f.contentWindow?.TivvigMummyDebug?.state().selectedJar===2),{timeout:9000});
+ assert.deepEqual(await page.evaluate(()=>Array.from(document.querySelectorAll('iframe[data-test-room]')).map(f=>f.contentWindow?.TivvigMummyDebug?.state().tutenPose)),['point-organs','point-organs'],'Both devices show the riddle pose');
  await student.locator('#mummy-organ-lungs').click();
  await page.waitForFunction(()=>Array.from(document.querySelectorAll('iframe[data-test-room]')).every(f=>f.contentWindow?.TivvigMummyDebug?.state().jarPhase==='selectJar'&&f.contentWindow?.TivvigMummyDebug?.state().jarSolved.includes(2)),{timeout:9000});
 
