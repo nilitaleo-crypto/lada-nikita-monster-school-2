@@ -124,6 +124,13 @@ async function forward(){
  await delay(780);if(id!==epoch)return;party.classList.remove('is-travelling');
  stage++;if(stage>4){finish();return}renderScene();
 }
+function skipTrial(){
+ // An optional bypass changes only the scene and its resume pointer.
+ // It deliberately does not grant rewards for a puzzle not completed.
+ if(stage>=4||finalDone)return;
+ epoch++;busy=false;transitioning=false;party.classList.remove('is-travelling');
+ stage++;write(KEY,String(stage));renderScene();
+}
 function renderScene(){
  epoch++;busy=false;transitioning=false;sealRound=0;rhythmRound=0;played=[];listened=false;
  wordRound=0;wordStep=0;bridgeCount=0;clockRound=0;finalPlayed=[];songReady=false;
@@ -132,6 +139,8 @@ function renderScene(){
  $('bridgeTrack').hidden=stage!==2;
  $('soundHint').hidden=!(stage===1||stage===4);$('finale').hidden=true;
  chapter();wardrobe();setMessage(STAGES[stage].msg);
+ $('hadesSkipTrial').hidden=stage===4||finalDone;
+ $('hadesSkipPalace').hidden=stage!==4||finalDone;
  if(stage===0)renderSeals();if(stage===1)renderRhythm();if(stage===2)renderWords();
  if(stage===3)renderClock();if(stage===4)renderFinalSong();
 }
@@ -263,6 +272,7 @@ function startOver(){epoch++;stage=0;finalDone=false;write(KEY,'0');$('finale').
 function setup(){for(let i=0;i<19;i++){const dot=el('i','');dot.style.left=((i*29+7)%95)+'%';dot.style.top=((i*43+11)%83)+'%';dot.style.animationDelay=(-i*.19)+'s';$('ambience').appendChild(dot)}
  $('soundToggle').addEventListener('click',()=>{soundOn=true;primeAudio();sound('S');setMessage('Звук включён')});
  $('replayAll').addEventListener('click',startOver);
+ $('hadesSkipTrial').addEventListener('click',skipTrial);
  stage=freshStart;renderScene();
  if(read(FINAL)==='unlocked'&&stage===4){finalDone=true;scene.classList.add('is-free');$('finale').hidden=false}
 }
@@ -270,7 +280,7 @@ window.TivvigHadesDebug=Object.freeze({
  state:()=>({stage,busy,sealRound,rhythmRound,played:[...played],listened,wordRound,wordStep,bridgeCount,clockRound,finalPlayed:[...finalPlayed],songReady,finalDone}),
  seal:i=>$('hades-seal-'+i)?.click(),listen:()=>$('hades-listen')?.click(),hit:x=>$(x==='B'?'hades-big':'hades-small')?.click(),
  word:i=>$('hades-word-'+i)?.click(),answer:i=>$('hades-answer-'+i)?.click(),
- reset:startOver,stage:n=>{epoch++;stage=Math.max(0,Math.min(4,n));renderScene()},
+ reset:startOver,skip:()=>{$('hadesSkipTrial').click()},stage:n=>{epoch++;stage=Math.max(0,Math.min(4,n));renderScene()},
  data:()=>({seals:[...SEALS],beats:BEATS.map(a=>[...a]),words:WORDS.map(x=>({sentence:[...x.sentence],choices:[...x.choices]})),clock:CLOCK.map(x=>({...x})),song:[...LAST_SONG]})
 });
 setup();
