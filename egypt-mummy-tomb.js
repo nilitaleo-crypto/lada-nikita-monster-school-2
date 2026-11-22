@@ -32,7 +32,7 @@ const organArt={
  intestines:'<rect x="9" y="12" width="45" height="46" rx="17" fill="#e0a19a" stroke="#95625c" stroke-width="3"/><path d="M19 22h16q8 0 8 8t-8 8H22q-7 0-7 6t9 6h20M25 17v36" stroke="#965b60" stroke-width="4" fill="none"/>',
  heart:'<path d="M31 56 9 32Q-2 13 15 11q11 0 16 10 6-14 19-10 17 8 4 25Z" fill="#c75b64" stroke="#953c48" stroke-width="4"/>'
 };
-const art=k=>'<svg viewBox="0 0 64 64" aria-hidden="true" focusable="false">'+organArt[k]+'</svg><span class="organ-name">'+organNames[k]+'</span>';
+const art=k=>'<span class="organ-art" aria-hidden="true"></span><span class="organ-name">'+organNames[k]+'</span>';
 const targets=[5,7,8,9];
 const nameGame={
  name:{order:['МЕ','РИ'],options:['РИ','МИ','МЕ','РА']},
@@ -89,7 +89,7 @@ function render(){
    b.classList.toggle('sealed',done);
    b.classList.toggle('speaking',jarPhase==='riddle'&&selectedJar===i);
    b.classList.toggle('selected',jarPhase==='riddle'&&selectedJar===i);
-   b.innerHTML=done?'<span class="jar-mark" aria-hidden="true">✓</span>':'';
+   b.innerHTML='<span class="jar-art" aria-hidden="true"></span>'+(done?'<span class="jar-mark" aria-hidden="true">✓</span>':'');
    b.disabled=done||!['selectJar','riddle'].includes(jarPhase);
   }
   for(const kind of organs){
