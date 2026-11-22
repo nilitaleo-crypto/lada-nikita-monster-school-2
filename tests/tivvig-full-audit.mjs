@@ -29,7 +29,10 @@ function staticAudit(){
    if(!exists(ref))failures.push('STATIC '+name+' missing '+ref);
   }
   if(name.endsWith('.html')){
-   const ids=[...source.matchAll(/\bid=["']([^"']+)["']/g)].map(m=>m[1]);
+   // Static markup only: inline scripts construct dynamic elements and legitimately
+   // contain repeated id= tokens (e.g. when resetting a minigame).
+   const markup=source.replace(/<script\b[^>]*>[\s\S]*?<\/script>/gi,'');
+   const ids=[...markup.matchAll(/\bid=["']([^"']+)["']/g)].map(m=>m[1]);
    const dup=[...new Set(ids.filter((x,i)=>ids.indexOf(x)!==i))];
    if(dup.length)failures.push('STATIC '+name+' duplicate ID '+dup.join(','));
   }
