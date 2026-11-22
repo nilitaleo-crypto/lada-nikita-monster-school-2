@@ -121,9 +121,23 @@ async function skipNavigationTest(browser,label){
    const box=await skip.boundingBox();
    assert.ok(box&&box.width>=85&&box.height>=37,'Touch target for '+start);
    assert.ok((await skip.getAttribute('href')).endsWith(next),'No chapters omitted after '+start);
+   if(start==='hades-hecate.html'){
+    await page.evaluate(()=>{
+     localStorage.setItem('tivvig_hades_journey_stage_v1','4');
+     localStorage.setItem('tivvig_hades_persephone_freed_v1','unlocked');
+    });
+   }
    await skip.click({timeout:6500});
    await page.waitForURL(url+next,{timeout:9000});
   }
+  // Regression: after a previously completed journey, Hecate must lead to Hades,
+  // not reopen the Persephone ending stored in localStorage.
+  await page.waitForFunction(()=>!!window.TivvigHadesDebug);
+  assert.equal(await page.evaluate(()=>TivvigHadesDebug.state().stage),0,'Hecate leads to the first Hades trial even when the ending was already saved');
+  assert.equal(await page.locator('#finale').isVisible(),false,'Previously unlocked Persephone reward does not cover the palace');
+  assert.equal(await page.evaluate(()=>localStorage.getItem('tivvig_hades_journey_stage_v1')),'0','Fresh palace entry resets only the resume pointer');
+  assert.equal(await page.evaluate(()=>localStorage.getItem('tivvig_hades_persephone_freed_v1')),'unlocked','Existing prize stays unlocked');
+  await page.evaluate(()=>localStorage.removeItem('tivvig_hades_persephone_freed_v1'));
   await page.goto(url+'hades-final.html',{waitUntil:'load'});
   await page.waitForFunction(()=>!!window.TivvigHadesDebug);
   await page.evaluate(()=>window.TivvigHadesDebug.reset());
@@ -170,7 +184,25 @@ async function skipCoopTest(browser,label){
   await page.waitForFunction(()=>window.hadesSkipRelay.filter(e=>e.type==='ready').length>=2,{timeout:15000});
   await student.locator('#hadesSkipTrial').click();
   await page.waitForFunction(()=>[...document.querySelectorAll('iframe[data-hades-skip-test]')].every(f=>f.contentWindow?.TivvigHadesDebug?.state().stage===1),{timeout:9000});
-  console.log('PASS',label,'palace chapter skip mirrored on both co-op devices');
+  // Both devices should begin the palace at Hades when coming from Hecate,
+  // even if their previous Persephone ending was unlocked.
+  await page.evaluate(base=>{
+   localStorage.setItem('tivvig_hades_journey_stage_v1','4');
+   localStorage.setItem('tivvig_hades_persephone_freed_v1','unlocked');
+   for(const f of document.querySelectorAll('iframe[data-hades-skip-test]')){
+    const role=f.dataset.hadesSkipTest;
+    f.src=base+'hades-hecate.html?coop=1&role='+role+'&seed=skip-test';
+   }
+  },url);
+  await page.waitForFunction(()=>[...document.querySelectorAll('iframe[data-hades-skip-test]')].every(f=>!!f.contentWindow?.document.getElementById('hecateScene')),{timeout:10000});
+  await page.evaluate(base=>{
+   for(const f of document.querySelectorAll('iframe[data-hades-skip-test]')){
+    f.src=base+'hades-final.html?coop=1&role='+f.dataset.hadesSkipTest+'&seed=skip-test';
+   }
+  },url);
+  await page.waitForFunction(()=>[...document.querySelectorAll('iframe[data-hades-skip-test]')].every(f=>f.contentWindow?.TivvigHadesDebug?.state().stage===0),{timeout:10000});
+  assert.deepEqual(await page.evaluate(()=>[...document.querySelectorAll('iframe[data-hades-skip-test]')].map(f=>f.contentWindow?.document.getElementById('finale').hidden)),[true,true],'Neither device starts on the Persephone ending');
+  console.log('PASS',label,'palace chapter skip and Hecate-to-Hades entry mirrored on both devices');
  }finally{await context.close()}
 }
 
