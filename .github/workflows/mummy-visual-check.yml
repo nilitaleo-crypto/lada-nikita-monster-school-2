@@ -1,0 +1,26 @@
+name: Mummy tomb illustrated browser check
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'egypt-mummy-tomb.html'
+      - 'egypt-mummy-tomb.js'
+      - 'images/egypt-canopic-illustrations.avif'
+      - 'tests/egypt-mummy-tomb.spec.mjs'
+      - '.github/workflows/mummy-visual-check.yml'
+  workflow_dispatch:
+jobs:
+  interactive-mummy:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Install Playwright
+        run: npm install --no-save playwright
+      - name: Install Chromium and WebKit
+        run: npx playwright install --with-deps chromium webkit
+      - name: Check mummy tomb on computer, tablet, phone and 2-player room
+        run: node tests/egypt-mummy-tomb.spec.mjs
