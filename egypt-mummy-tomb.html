@@ -109,6 +109,39 @@ header h1{font-size:clamp(17px,2.4vw,30px);font-weight:normal;margin:0;text-alig
 .scene[data-stage="jars"] .jar-label{font-size:clamp(15px,1.15vw,20px)}
 .scene[data-stage="jars"] .organ-name{font-size:clamp(11px,1.05vw,16px)}
 
+/* High-contrast canopic lesson using a single illustrated sprite atlas. */
+.scene[data-stage="jars"] .speech{left:35%;top:5.4%;width:62%;min-height:16%;padding:11px 15px;line-height:1.28;font-size:clamp(18px,1.85vw,26px);background:#14233bf7;border:2px solid #ffda9b;box-shadow:0 5px 17px #090f1b9a}
+.scene[data-stage="jars"] .status{left:61%;bottom:1.3%;width:36%;max-width:36%;min-height:36px;padding:5px 9px;font-size:clamp(14px,1.2vw,18px)}
+.scene[data-stage="jars"] .jar-label{right:1.8%;top:22.3%;background:#e5bc76ed;border:2px solid #f8e0ab;border-radius:15px;font-size:clamp(16px,1.25vw,21px);padding:5px 13px;max-width:23%}
+.scene[data-stage="jars"] .jar-targets{z-index:8}
+.scene[data-stage="jars"] .jar-targets::before{content:'';pointer-events:none;position:absolute;left:35.5%;top:28%;width:64%;height:37%;border:8px ridge #b08040;border-radius:16px 16px 5px 5px;background:linear-gradient(150deg,#1d2232f7,#4b3540fa);box-shadow:inset 0 0 48px #060d1cb2,0 5px 17px #26191b9c}
+.scene[data-stage="jars"] .jar-targets::after{content:'';pointer-events:none;position:absolute;left:34.5%;top:63.6%;width:65.3%;height:5%;border:5px solid #6b4120;border-radius:7px;background:linear-gradient(#f8d58f,#a06a32);box-shadow:0 9px 7px #1b12108a}
+.scene[data-stage="jars"] .jar{top:30%;width:14%;height:34%;background:transparent;border:3px solid transparent;border-radius:13px;z-index:1;display:grid;place-items:center;transition:background .15s,filter .15s,transform .15s}
+.scene[data-stage="jars"] .jar:nth-child(1){left:37.7%}
+.scene[data-stage="jars"] .jar:nth-child(2){left:53.1%}
+.scene[data-stage="jars"] .jar:nth-child(3){left:68.5%}
+.scene[data-stage="jars"] .jar:nth-child(4){left:83.9%}
+.scene[data-stage="jars"] .jar-art{position:absolute;inset:0;display:block;pointer-events:none;background-image:url('images/egypt-canopic-illustrations.avif');background-repeat:no-repeat;background-size:400% 161.5%;background-position-y:0%;filter:drop-shadow(0 5px 3px #100d18a8)}
+.scene[data-stage="jars"] #mummy-jar-0 .jar-art{background-position-x:0%}
+.scene[data-stage="jars"] #mummy-jar-1 .jar-art{background-position-x:33.3333%}
+.scene[data-stage="jars"] #mummy-jar-2 .jar-art{background-position-x:66.6667%}
+.scene[data-stage="jars"] #mummy-jar-3 .jar-art{background-position-x:100%}
+.scene[data-stage="jars"] .jar:not(:disabled):hover,.scene[data-stage="jars"] .jar.speaking{filter:brightness(1.1);background:#ffce5330;transform:translateY(-3px);border-color:#ffe59b;box-shadow:0 0 16px #ffc971}
+.scene[data-stage="jars"] .jar.sealed{filter:none;border-color:#b0e4b3}
+.scene[data-stage="jars"] .jar-mark{left:38%;bottom:4%;width:27%;height:19%;border:3px solid #f5de99;z-index:3}
+.scene[data-stage="jars"] .organ-tray{left:34%;top:70%;width:65%;height:20%;gap:1.1%;padding:.4%;border:4px ridge #b58952;border-radius:12px;background:#533e2dc5}
+.scene[data-stage="jars"] .organ-choice{min-height:62px;padding:5px 4px;gap:3px;border:3px solid #d4aa6c;background:linear-gradient(#f6ddb0,#c99e66);box-shadow:0 3px 6px #25141688}
+.scene[data-stage="jars"] .organ-art{display:block;pointer-events:none;width:92%;height:74%;background-image:url('images/egypt-canopic-illustrations.avif');background-repeat:no-repeat;background-size:500% 263%;background-position-y:100%}
+.scene[data-stage="jars"] #mummy-organ-lungs .organ-art{background-position-x:0%}
+.scene[data-stage="jars"] #mummy-organ-stomach .organ-art{background-position-x:25%}
+.scene[data-stage="jars"] #mummy-organ-liver .organ-art{background-position-x:50%}
+.scene[data-stage="jars"] #mummy-organ-intestines .organ-art{background-position-x:75%}
+.scene[data-stage="jars"] #mummy-organ-heart .organ-art{background-position-x:100%}
+.scene[data-stage="jars"] .organ-name{font:700 clamp(12px,1.02vw,17px)/1.05 system-ui,sans-serif;white-space:normal;text-align:center}
+.scene[data-stage="jars"] .organ-choice:not(:disabled){border-color:#ffe6a7}
+.scene[data-stage="jars"] .organ-choice.used{opacity:.55}
+.scene[data-stage="jars"] .heart-spot{z-index:11}
+
 @media(prefers-reduced-motion:reduce){.mummy-glow,.scarab{animation:none!important}}
 </style>
 </head>
@@ -163,7 +196,7 @@ header h1{font-size:clamp(17px,2.4vw,30px);font-weight:normal;margin:0;text-alig
 </main>
 <script src="wardrobe.js?v=5" defer></script>
 <script src="game-registry.js?v=8" defer></script>
-<script src="egypt-mummy-tomb.js?v=5" defer></script>
+<script src="egypt-mummy-tomb.js?v=6" defer></script>
 <script src="hades-sounds.js?v=7" defer></script>
 <script src="game-runtime.js?v=5" defer></script>
 </body>
