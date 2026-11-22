@@ -251,13 +251,17 @@ async function skipCoopTest(browser,label){
     f.src=base+'hades-hecate.html?coop=1&role='+role+'&seed=skip-test';
    }
   },url);
-  await page.waitForFunction(()=>[...document.querySelectorAll('iframe[data-hades-skip-test]')].every(f=>!!f.contentWindow?.document.getElementById('hecateScene')),{timeout:10000});
-  await page.evaluate(base=>{
-   for(const f of document.querySelectorAll('iframe[data-hades-skip-test]')){
-    f.src=base+'hades-final.html?coop=1&role='+f.dataset.hadesSkipTest+'&seed=skip-test';
-   }
-  },url);
-  await page.waitForFunction(()=>[...document.querySelectorAll('iframe[data-hades-skip-test]')].every(f=>f.contentWindow?.TivvigHadesDebug?.state().stage===0),{timeout:10000});
+  await page.waitForFunction(()=>[...document.querySelectorAll('iframe[data-hades-skip-test]')].every(f=>!!f.contentWindow?.TivvigHecateBookDebug),{timeout:10000});
+  // The test uses same-origin iframes that share sessionStorage, unlike two real
+  // remote devices. Complete each navigation before starting the next to avoid
+  // one iframe consuming the other's one-shot Hecate entrance marker.
+  for(const role of ['teacher','student']){
+   await page.evaluate(({base,role})=>{
+    const f=document.getElementById('hades-skip-'+role);
+    f.src=base+'hades-final.html?coop=1&role='+role+'&seed=skip-test';
+   },{base:url,role});
+   await page.waitForFunction(role=>document.getElementById('hades-skip-'+role)?.contentWindow?.TivvigHadesDebug?.state().stage===0,role,{timeout:10000});
+  }
   assert.deepEqual(await page.evaluate(()=>[...document.querySelectorAll('iframe[data-hades-skip-test]')].map(f=>f.contentWindow?.document.getElementById('finale').hidden)),[true,true],'Neither device starts on the Persephone ending');
   console.log('PASS',label,'palace chapter skip and Hecate-to-Hades entry mirrored on both devices');
  }finally{await context.close()}
