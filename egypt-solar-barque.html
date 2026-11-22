@@ -6,7 +6,9 @@
 <meta name="theme-color" content="#172d4c">
 <meta name="description" content="Путешествие Лады на солнечной ладье Ра: восток и запад, тени, чтение по слогам, солнечный амулет.">
 <title>Солнечная ладья Ра · Тиввиг</title>
-<link rel="preload" as="image" href="images/egypt-solar-barque-hq.webp">
+<link rel="preload" as="image" href="images/egypt-solar-sunrise-action.webp">
+<link rel="prefetch" as="image" href="images/egypt-solar-noon-action.webp">
+<link rel="prefetch" as="image" href="images/egypt-solar-sunset-action.webp">
 <style>
 :root{--gold:#ffdc86;--ink:#1c3051}
 *{box-sizing:border-box}
@@ -77,6 +79,47 @@ header h1{margin:0;text-align:center;font-weight:normal;font-size:clamp(18px,2.4
 .reward img{max-width:82%;max-height:76%;object-fit:contain;border-radius:50%}
 .reward span{color:#54301f;font:bold clamp(15px,1.45vw,21px) Georgia,serif;text-align:center}
 .scene[data-stage="done"] .sunwash{opacity:.55;background:linear-gradient(180deg,#fff5b854,transparent)}
+
+/* Cinematic illustrated journey: all interactions are elements in the painted scene. */
+.scene[data-stage="sky"] .speech{top:53%;left:41%;width:37%;max-height:none;min-height:10%;padding:9px 13px;font-size:clamp(17px,1.45vw,22px);background:#142d4ee9;text-align:center}
+.scene[data-stage="sky"] .hint{left:39%;width:30%;bottom:1%;min-height:36px}
+.scene[data-stage="sky"] .sun-point{width:clamp(63px,6.6vw,92px);height:clamp(63px,6.6vw,92px);background:#fff9cd12;color:transparent;font-size:0;border:3px solid #fff5c4b5;box-shadow:0 0 10px #ffdb73a8;transition:box-shadow .25s,opacity .25s,filter .25s}
+.scene[data-stage="sky"] .sun-point:disabled{opacity:.3}
+.scene[data-stage="sky"] .sun-point:not(:disabled){box-shadow:0 0 0 3px #f6bd5680,0 0 23px #ffe7a3;animation:destination-glow 2.5s ease-in-out infinite}
+.scene[data-stage="sky"] .sun-point.selected{box-shadow:0 0 0 4px #fff5c6,0 0 30px #ffdf70}
+.sun-point[data-index="0"]{left:30.5%;top:31.5%}
+.sun-point[data-index="1"]{left:59.2%;top:10.3%}
+.sun-point[data-index="2"]{left:83.8%;top:23.1%}
+.travelling-sun{position:absolute;z-index:8;width:clamp(52px,6.1vw,91px);height:clamp(52px,6.1vw,91px);left:30.5%;top:31.5%;border-radius:50%;pointer-events:none;transform:translate(-50%,-50%);border:3px solid #fff5b9;background:radial-gradient(circle,#fffdd6 0%,#fff3a2 22%,#ffbf24d9 49%,#f2871129 70%,transparent 87%);box-shadow:0 0 28px 10px #ffe171a1,0 0 60px 25px #ffca5958;transition:left 1s cubic-bezier(.16,.75,.27,1),top 1s cubic-bezier(.16,.75,.27,1),opacity .25s;animation:orb-glow 3s ease-in-out infinite}
+.travelling-sun[data-stop="0"]{left:30.5%;top:31.5%}
+.travelling-sun[data-stop="1"]{left:59.2%;top:10.3%}
+.travelling-sun[data-stop="2"]{left:83.8%;top:23.1%}
+.storm-clouds{position:absolute;inset:0;z-index:12;pointer-events:none}
+.cloud-target{pointer-events:auto;position:absolute;display:grid;place-items:center;padding:0;border:3px solid #ffe5a98c;border-radius:46% 48% 47% 44%;background:radial-gradient(ellipse,#ffffd510,transparent 70%);color:#ffebac;box-shadow:0 0 15px #d298f078;transition:opacity .25s,transform .25s,box-shadow .25s}
+.cloud-target span{font-size:clamp(23px,2vw,31px);text-shadow:0 0 8px #fff0b0,0 0 15px #f0c6ff;pointer-events:none}
+.cloud-target:not(:disabled){animation:storm-call 2s ease-in-out infinite}
+.cloud-target:hover,.cloud-target:focus-visible{border-color:#fff2aa;box-shadow:0 0 22px #ffe4a5}
+.cloud-target:disabled{opacity:0;pointer-events:none}
+#solar-cloud-0{left:28%;top:6%;width:17.5%;height:21%}
+#solar-cloud-1{left:45%;top:17%;width:19.5%;height:21%}
+#solar-cloud-2{left:67.5%;top:7%;width:17%;height:21%}
+.cloud-clear{position:absolute;z-index:2;inset:0;opacity:0;pointer-events:none;background:url('images/egypt-solar-noon-cleared.webp') center / 100% 100% no-repeat;transition:opacity .65s ease}
+.cloud-clear.cleared{opacity:1}
+#solarCloudClear0{-webkit-mask-image:radial-gradient(ellipse 15% 23% at 36% 16%,#000 58%,transparent 95%);mask-image:radial-gradient(ellipse 15% 23% at 36% 16%,#000 58%,transparent 95%)}
+#solarCloudClear1{-webkit-mask-image:radial-gradient(ellipse 17% 22% at 54% 27%,#000 55%,transparent 95%);mask-image:radial-gradient(ellipse 17% 22% at 54% 27%,#000 55%,transparent 95%)}
+#solarCloudClear2{-webkit-mask-image:radial-gradient(ellipse 16% 24% at 75% 17%,#000 55%,transparent 95%);mask-image:radial-gradient(ellipse 16% 24% at 75% 17%,#000 55%,transparent 95%)}
+.river-motion{position:absolute;z-index:2;left:47%;top:55%;width:51%;height:22%;pointer-events:none;opacity:.22;background-image:radial-gradient(ellipse,#fff8c8 0,transparent 62%);background-size:70px 4px;transform:skewX(-10deg);animation:river-current 8s linear infinite}
+.scene[data-stage="gates"] .river-motion,.scene[data-stage="done"] .river-motion{opacity:.1}
+.scene[data-stage="sky"][data-time="sunset"] .sunwash{opacity:.26}
+@keyframes river-current{to{background-position:210px 0}}
+@keyframes storm-call{50%{box-shadow:0 0 17px 6px #f9ca68aa;transform:scale(1.035)}}
+@keyframes orb-glow{50%{box-shadow:0 0 33px 14px #ffe08ec2,0 0 61px 28px #ffca596b}}
+@keyframes destination-glow{50%{box-shadow:0 0 0 3px #ffda78a8,0 0 20px 8px #fff4bc64}}
+@media(prefers-reduced-motion:reduce){
+ .river-motion,.travelling-sun,.cloud-target,.scene[data-stage="sky"] .sun-point:not(:disabled){animation:none!important;transition:none!important}
+ .cloud-clear{transition:none}
+}
+
 @media(max-width:740px){main{padding:4px}header h1{font-size:16px}.nav{padding:4px 7px;min-width:70px;font-size:12px}.scene{min-width:780px}.viewport{border-radius:9px}}
 @media(prefers-reduced-motion:reduce){.nightwash,.sunwash,.shadow-ray{transition:none}}
 </style>
@@ -86,11 +129,21 @@ header h1{margin:0;text-align:center;font-weight:normal;font-size:clamp(18px,2.4
 <header><a class="nav" href="egypt-mummy-tomb.html">← Гробница</a><h1>☀ Солнечная ладья Ра</h1><a class="nav" href="index.html">⌂ Карта</a></header>
 <div class="viewport" aria-label="Нил и солнечная ладья. На телефоне игровую сцену можно прокручивать по горизонтали">
 <section class="scene" id="solarScene" data-stage="intro" data-time="day" aria-label="Путешествие с Ра на солнечной ладье над Нилом">
-<picture><source type="image/webp" srcset="images/egypt-solar-barque-hq.webp"><img class="backdrop" src="images/egypt-solar-barque-hq.webp" alt="" draggable="false" fetchpriority="high" decoding="async"></picture>
+<img class="backdrop" id="solarBackdrop" src="images/egypt-solar-sunrise-action.webp" alt="" draggable="false" fetchpriority="high" decoding="async">
+<div class="cloud-clear" id="solarCloudClear0" aria-hidden="true"></div>
+<div class="cloud-clear" id="solarCloudClear1" aria-hidden="true"></div>
+<div class="cloud-clear" id="solarCloudClear2" aria-hidden="true"></div>
+<div class="river-motion" aria-hidden="true"></div>
 <div class="sunwash" aria-hidden="true"></div><div class="nightwash" aria-hidden="true"></div>
 <div class="lada" id="solarLada" role="img" aria-label="Лада в выбранном костюме"><img src="images/lada-cutout.webp" alt="" draggable="false"><img data-outfit-layer hidden alt="" draggable="false"></div>
 <div class="speech" id="solarSpeech" aria-live="polite"><strong>Ра:</strong> Поможешь мне провести Солнце по небу?</div>
 <div class="progress" id="solarProgress" aria-label="Этапы путешествия"><i></i><i></i><i></i></div>
+<div class="travelling-sun" id="solarMovingSun" aria-hidden="true" hidden></div>
+<div class="storm-clouds" id="solarClouds" hidden aria-label="Разгони грозовые тучи">
+<button type="button" class="cloud-target" id="solar-cloud-0" aria-label="Разогнать левую грозовую тучу"><span aria-hidden="true">✦</span></button>
+<button type="button" class="cloud-target" id="solar-cloud-1" aria-label="Разогнать среднюю грозовую тучу"><span aria-hidden="true">✦</span></button>
+<button type="button" class="cloud-target" id="solar-cloud-2" aria-label="Разогнать правую грозовую тучу"><span aria-hidden="true">✦</span></button>
+</div>
 <div class="sun-buttons" id="solarSuns" hidden aria-label="Выбери положение Солнца">
 <button class="sun-point" id="solar-sun-0" data-index="0" type="button" aria-label="Восход: восток">☀</button>
 <button class="sun-point" id="solar-sun-1" data-index="1" type="button" aria-label="Полдень: высокое солнце">☀</button>
@@ -115,7 +168,7 @@ header h1{margin:0;text-align:center;font-weight:normal;font-size:clamp(18px,2.4
 </section></div><p id="gameConnection" role="status" style="min-height:1em;margin:4px 0;color:#ffdf9c;font-size:12px"></p>
 </main>
 <script src="wardrobe.js?v=5" defer></script>
-<script src="egypt-solar-barque.js?v=1" defer></script>
+<script src="egypt-solar-barque.js?v=2" defer></script>
 <script src="hades-sounds.js?v=8" defer></script>
 <script src="game-runtime.js?v=5" defer></script>
 </body>
