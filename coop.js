@@ -75,7 +75,7 @@ let skipLegacyRoomSelectionSave=false;
 // state snapshot must not cancel the latest selection on either device.
 let pendingWardrobeOutfit=null;
 let outfitWriteInFlight=null;
-const outfits=['default','mermaid','stars','monankaka'];
+const outfits=['default','mermaid','stars','monankaka','hecate','egyptMoon'];
 function profileRef(path=''){
  return ref(db,'teacherProfiles/'+uid+'/lada'+(path?'/'+path:''));
 }
@@ -153,7 +153,7 @@ function pushSelected(value){
   if(pendingWardrobeOutfit===value)persistTeacherSelection(value);
  }).catch(e=>{
   if(outfitWriteInFlight===value)outfitWriteInFlight=null;
-  if((value==='stars'||value==='monankaka')&&String(e?.code||e).includes('permission-denied')){
+  if(['stars','monankaka','hecate','egyptMoon'].includes(value)&&String(e?.code||e).includes('permission-denied')){
    saveInfo('⚠ Новый наряд надет в этом занятии, но для облачного сохранения нужны обновлённые правила Firebase.',true);
    report('⚠ Наряд выбран в занятии; для постоянного сохранения обнови правила Firebase.');
    return;
@@ -578,7 +578,7 @@ teacher.addEventListener("click",async()=>{
    await set(dbref(""),initialRoom);
   }catch(error){
    // Older deployed rules do not accept the "stars" outfit. Keep the lesson usable.
-   if(!['stars','monankaka'].includes(initialRoom.state.selected)||!String(error?.code||error).includes('permission-denied'))throw error;
+   if(!['stars','monankaka','hecate','egyptMoon'].includes(initialRoom.state.selected)||!String(error?.code||error).includes('permission-denied'))throw error;
    initialRoom.state.selected='default';
    await set(dbref(""),initialRoom);
    skipLegacyRoomSelectionSave=true;
