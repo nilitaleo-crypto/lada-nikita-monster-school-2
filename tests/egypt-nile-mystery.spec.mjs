@@ -19,7 +19,7 @@ async function test(browser,name,profile){
   await page.goto(BASE+'egypt-nile-mystery.html',{waitUntil:'load',timeout:20000});
   await page.locator('#hadesLocalSound').waitFor({timeout:7000});
   assert.equal(await page.locator('.lada img[src="images/lada-cutout.webp"]').count(),2,'Original Lada head and body');
-  assert.equal(await page.locator('.lada img[src="images/hecate-lyre-costume-layer.webp"]').count(),1,'Hecate outfit');
+  assert.equal(await page.locator('#nileLada [data-outfit-layer]').count(),1,'Lada outfit is controlled by shared wardrobe');
   assert.equal(await page.locator('#fox img').count(),1);
   assert.equal(await page.locator('#nafiri img').count(),1);
   assert.equal(await page.evaluate(()=>window.TivvigNileDebug.state().stage),'meet');
@@ -86,7 +86,6 @@ async function test(browser,name,profile){
   assert.equal(await page.locator('#card-egyptMoon').isVisible(),true,'Egyptian costume appears in the wardrobe');
   assert.equal(await page.locator('#card-egyptMoon button').isDisabled(),false,'Egyptian costume is unlocked');
   assert.equal(await page.locator('#card-egyptMoon button').innerText(),'✓ Надето','Egyptian outfit selected in wardrobe');
-  await page.locator('#card-hecate button').isDisabled(); // Existing reward remains untouched
   await page.goto(BASE+'egypt-sphinx-temple.html',{waitUntil:'load'});
   assert.equal(await page.locator('#sphinxLada').getAttribute('data-outfit'),'egyptMoon','Next Egyptian game inherits the same outfit');
   assert.match(await page.locator('#sphinxLada [data-outfit-layer]').getAttribute('src'),/lada-egypt-moon-outfit.webp$/);
