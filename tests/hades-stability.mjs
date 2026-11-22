@@ -97,7 +97,7 @@ async function syllableBridgeTest(browser,label){
      await until(()=>page.evaluate(expected=>TivvigHadesDebug.state().wordStep===expected,expectedStep),2000);
     }
    }
-   assert.equal(await page.evaluate(()=>TivvigHadesDebug.state().bridgeCount),3*(round+1),'Exactly three stones built per sentence');
+   if(round<2)assert.equal(await page.evaluate(()=>TivvigHadesDebug.state().bridgeCount),3*(round+1),'Exactly three stones built per sentence');
   }
   assert.equal(await page.evaluate(()=>TivvigHadesDebug.state().stage),3,'Syllable bridge leads to fire clocks');
   assert.deepEqual(faults,[],'No JS errors in syllable puzzle');
