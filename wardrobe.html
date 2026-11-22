@@ -26,7 +26,7 @@ main{width:min(1200px,100%);min-height:100dvh;margin:0 auto;padding:clamp(12px,2
 .message{background:#e6c99b;border:1px solid #ad805c;border-radius:8px;padding:10px 13px;font-size:clamp(13px,1.45vw,16px);line-height:1.5;margin:0}.message strong{color:#684039}.nav{display:flex;flex-wrap:wrap;gap:10px;justify-content:center;margin-top:7px}.nav a{background:#593443;color:#ffead0;border:1px solid #c29a62;border-radius:10px;padding:10px 16px;font-weight:bold}
 @media(max-width:760px){main{padding:10px}.book{padding:17px 13px}.book:before{display:none}.layout{grid-template-columns:1fr}.preview{min-height:0}.doll{height:min(45dvh,440px);min-height:210px}.options{gap:10px}.item{grid-template-columns:72px minmax(0,1fr)}.thumb{width:72px;height:95px}.intro{margin-bottom:11px}}
 </style>
-<script src="wardrobe.js?v=5" defer></script>
+<script src="wardrobe.js?v=6" defer></script>
 </head>
 <body>
 <main>
@@ -66,6 +66,10 @@ main{width:min(1200px,100%);min-height:100dvh;margin:0 auto;padding:clamp(12px,2
     <article class="item locked" id="card-hecate">
      <div class="thumb"><img src="images/lada-cutout.webp" alt="" draggable="false"><img src="images/hecate-lyre-costume-layer.webp" alt="" draggable="false"><span id="hecateLock" class="lock" aria-hidden="true">🔒</span></div>
      <div><h3>Наряд Гекаты и лира</h3><p id="hecateCaption">Награда за историю Орфея и Эвридики</p><button data-choose="hecate" type="button" disabled>Пока закрыто</button></div>
+    </article>
+    <article class="item locked" id="card-egyptMoon">
+     <div class="thumb"><img src="images/lada-egypt-moon-outfit.webp" alt="Лада в лунном наряде Древнего Египта" draggable="false"><span id="egyptMoonLock" class="lock" aria-hidden="true">🔒</span></div>
+     <div><h3>Лунная принцесса Нила</h3><p id="egyptMoonCaption">Награда за «Ночную тайну Нила»</p><button data-choose="egyptMoon" type="button" disabled>Пока закрыто</button></div>
     </article>
     <p class="message" id="wardrobeStatus" role="status" aria-live="polite">Наряды открываются после приключений.</p>
     <div class="nav"><a href="michael-jackson-jungle.html">🌿 К испытаниям леса</a><a href="collection.html">✦ Коллекция</a></div>
@@ -112,8 +116,16 @@ window.addEventListener('DOMContentLoaded',()=>{
   hecateButton.disabled=!hecateOpen;
   hecateButton.textContent=!hecateOpen?'🔒 Пока закрыто':chosen==='hecate'?'✓ Надето':'Надеть';
   $('hecateCaption').textContent=hecateOpen?'Получено у Гекаты · Лира в руках':'Награда за историю Орфея и Эвридики';
-  $('previewName').textContent=chosen==='hecate'?'Лада — лунная хранительница лиры':chosen==='monankaka'?'Лада в доспехах ночных крыльев':chosen==='stars'?'Лада в звёздном наряде':chosen==='mermaid'?'Лада-русалка':'Обычный наряд';
-  $('wardrobeStatus').innerHTML=hecateOpen?'✦ Дар Гекаты получен. <strong>Наряд и лира готовы к приключениям в Аиде.</strong>':armorOpen?'✦ Доспехи ночных крыльев получены! <strong>Теперь можно менять броню и другие открытые наряды.</strong>':starOpen?'✦ Звёздный наряд получен! <strong>Выбирай любой открытый костюм.</strong>':open?'Русалка открыта! Переодевай Ладу, когда захочешь.':'Исследуй Тиввиг, чтобы открыть новые наряды.';
+  const egyptMoonOpen=api.unlocked('egyptMoon');
+  $('card-egyptMoon').classList.toggle('active',chosen==='egyptMoon');
+  $('card-egyptMoon').classList.toggle('locked',!egyptMoonOpen);
+  $('egyptMoonLock').hidden=egyptMoonOpen;
+  const egyptButton=$('card-egyptMoon').querySelector('button');
+  egyptButton.disabled=!egyptMoonOpen;
+  egyptButton.textContent=!egyptMoonOpen?'🔒 Пока закрыто':chosen==='egyptMoon'?'✓ Надето':'Надеть';
+  $('egyptMoonCaption').textContent=egyptMoonOpen?'Лунный наряд получен на берегах Нила.':'Награда за «Ночную тайну Нила»';
+  $('previewName').textContent=chosen==='egyptMoon'?'Лада — лунная принцесса Нила':chosen==='hecate'?'Лада — лунная хранительница лиры':chosen==='monankaka'?'Лада в доспехах ночных крыльев':chosen==='stars'?'Лада в звёздном наряде':chosen==='mermaid'?'Лада-русалка':'Обычный наряд';
+  $('wardrobeStatus').innerHTML=egyptMoonOpen?'✦ Лунный наряд Нила открыт! <strong>Выбирай наряд для следующего приключения.</strong>':hecateOpen?'✦ Дар Гекаты получен. <strong>Наряд и лира готовы к приключениям в Аиде.</strong>':armorOpen?'✦ Доспехи ночных крыльев получены! <strong>Теперь можно менять броню и другие открытые наряды.</strong>':starOpen?'✦ Звёздный наряд получен! <strong>Выбирай любой открытый костюм.</strong>':open?'Русалка открыта! Переодевай Ладу, когда захочешь.':'Исследуй Тиввиг, чтобы открыть новые наряды.';
   api.equip($('previewDoll'));
  }
  document.querySelectorAll('[data-choose]').forEach(btn=>btn.addEventListener('click',()=>{if(api.select(btn.dataset.choose))paint()}));
