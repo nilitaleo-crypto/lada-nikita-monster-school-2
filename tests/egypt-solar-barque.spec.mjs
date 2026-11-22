@@ -25,7 +25,32 @@ async function solo(browser,browserName,profile){
  const sound=page.locator('[data-tivvig-local-audio]');await sound.first().waitFor({timeout:10000});
  assert.equal(await page.locator('.sun-point').count(),3);
  await page.locator('#solarAction').click();
+ assert.equal(await page.evaluate(()=>TivvigSolarDebug.state().stage),'compass','Directions are taught before the sun game');
+ assert.equal(await page.locator('#solarCompass').isVisible(),true,'Compass is embedded on the deck');
+ assert.equal(await page.locator('.compass-direction').count(),4,'Four cardinal directions available');
+ const dial=await page.locator('#solarCompass').boundingBox();
+ assert.ok(dial?.width>=175&&dial?.height>=175,'Compass remains large on tablet and phone');
+ const east=await page.locator('#solar-direction-east').boundingBox();
+ const west=await page.locator('#solar-direction-west').boundingBox();
+ assert.ok(east.x<west.x,'On this south-facing scene east is left of west');
+ for(const dir of ['north','south','west','east']){
+  await page.locator('#solar-direction-'+dir).click();
+  assert.ok((await page.evaluate(()=>TivvigSolarDebug.state().compassSeen)).includes(dir),'Each direction is discovered');
+ }
+ assert.equal(await page.evaluate(()=>TivvigSolarDebug.state().compassSeen.length),4);
+ assert.match(await page.locator('#solarSpeech').innerText(),/восток слева, запад справа/i,'Scene orientation is explained');
+ await page.locator('#solarAction').click();
+ assert.equal(await page.evaluate(()=>TivvigSolarDebug.state().compassMode),'quiz');
+ await page.locator('#solar-direction-north').click();
+ assert.equal(await page.evaluate(()=>TivvigSolarDebug.state().compassQuizRound),0,'Wrong direction does not advance');
+ assert.equal(await page.evaluate(()=>TivvigSolarDebug.state().errors),1);
+ await page.locator('#solar-direction-east').click();
+ await page.locator('#solar-direction-west').click();
+ assert.equal(await page.evaluate(()=>TivvigSolarDebug.state().compassMode),'ready','Learner found east and west');
+ assert.equal(await page.evaluate(()=>TivvigSolarDebug.state().correct),2,'Two direction questions answered');
+ await page.locator('#solarAction').click();
  assert.equal(await page.evaluate(()=>TivvigSolarDebug.state().stage),'sky');
+ assert.equal(await page.locator('#solarCompass').isVisible(),false,'Compass disappears for clear sky game');
  await page.locator('#solar-sun-2').click();
  assert.equal(await page.evaluate(()=>TivvigSolarDebug.state().errors),1,'Wrong position does not advance');
  await page.locator('#solar-sun-0').click();
@@ -77,7 +102,7 @@ async function solo(browser,browserName,profile){
  }
  const state=await page.evaluate(()=>TivvigSolarDebug.state());
  assert.equal(state.stage,'done','All gates lead to the sunrise');
- assert.equal(state.correct,21,'Every educational and storm-clearing step completed');
+ assert.equal(state.correct,23,'Compass questions plus all educational and storm-clearing steps completed');
  assert.equal(state.reward,true,'Amulet stored');
  assert.deepEqual(state.gateOpen,[true,true,true],'Three gates opened');
  assert.equal(await page.evaluate(()=>localStorage.getItem('tivvig_egypt_ra_solar_amulet_v1')),'unlocked');
@@ -116,6 +141,19 @@ async function coOp(browser,name){
  await teacher.locator('#solarAction').waitFor();await student.locator('#solarAction').waitFor();
  await page.waitForFunction(()=>window.solarRelay?.filter(x=>x.type==='ready').length>=2,{timeout:15000});
  await teacher.locator('#solarAction').click();
+ await page.waitForFunction(()=>Array.from(document.querySelectorAll('iframe[data-solar-test]')).every(f=>f.contentWindow?.TivvigSolarDebug?.state().stage==='compass'),{timeout:9000});
+ for(const [role,dir] of [['student','south'],['teacher','west'],['student','north'],['teacher','east']]){
+  await (role==='teacher'?teacher:student).locator('#solar-direction-'+dir).click();
+  await page.waitForFunction(d=>Array.from(document.querySelectorAll('iframe[data-solar-test]')).every(f=>f.contentWindow?.TivvigSolarDebug?.state().compassSeen.includes(d)),dir,{timeout:9000});
+ }
+ assert.deepEqual(await page.evaluate(()=>Array.from(document.querySelectorAll('iframe[data-solar-test]')).map(f=>f.contentWindow?.TivvigSolarDebug?.state().compassSeen)),[['south','west','north','east'],['south','west','north','east']],'Four direction lessons synchronized');
+ await teacher.locator('#solarAction').click();
+ await page.waitForFunction(()=>Array.from(document.querySelectorAll('iframe[data-solar-test]')).every(f=>f.contentWindow?.TivvigSolarDebug?.state().compassMode==='quiz'),{timeout:9000});
+ await student.locator('#solar-direction-east').click();
+ await page.waitForFunction(()=>Array.from(document.querySelectorAll('iframe[data-solar-test]')).every(f=>f.contentWindow?.TivvigSolarDebug?.state().compassQuizRound===1),{timeout:9000});
+ await teacher.locator('#solar-direction-west').click();
+ await page.waitForFunction(()=>Array.from(document.querySelectorAll('iframe[data-solar-test]')).every(f=>f.contentWindow?.TivvigSolarDebug?.state().compassMode==='ready'),{timeout:9000});
+ await student.locator('#solarAction').click();
  await page.waitForFunction(()=>Array.from(document.querySelectorAll('iframe[data-solar-test]')).every(f=>f.contentWindow?.TivvigSolarDebug?.state().stage==='sky'),{timeout:9000});
  await student.locator('#solar-sun-0').click();
  await page.waitForFunction(()=>Array.from(document.querySelectorAll('iframe[data-solar-test]')).every(f=>f.contentWindow?.TivvigSolarDebug?.state().sunRound===1),{timeout:9000});
@@ -129,7 +167,7 @@ async function coOp(browser,name){
  await student.locator('#solar-sun-2').click();
  await page.waitForFunction(()=>Array.from(document.querySelectorAll('iframe[data-solar-test]')).every(f=>f.contentWindow?.TivvigSolarDebug?.state().sunRound===3),{timeout:9000});
  const states=await page.evaluate(()=>Array.from(document.querySelectorAll('iframe[data-solar-test]')).map(f=>f.contentWindow.TivvigSolarDebug.state()));
- assert.deepEqual(states.map(x=>x.correct),[6,6],'Both devices receive authoritative sun and cloud progress');
+ assert.deepEqual(states.map(x=>x.correct),[8,8],'Both devices receive authoritative compass, sun and cloud progress');
  assert.deepEqual(pageErrors,[]);
  await ctx.close();passed++;console.log('PASS',name,'solar barque 2-player synchronisation');
 }
