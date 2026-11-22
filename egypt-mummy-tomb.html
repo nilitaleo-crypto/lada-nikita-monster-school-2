@@ -4,6 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#172038">
+<link rel="preload" as="image" href="images/egypt-tutenstein-poses.webp">
 <meta name="description" content="Тайна мумии Мери: фрески, сосуды, весы Анубиса и чтение слогов.">
 <title>Гробница забытого имени · Тиввиг</title>
 <style>
@@ -85,6 +86,43 @@ header h1{font-size:clamp(17px,2.4vw,30px);font-weight:normal;margin:0;text-alig
 .mummy-glow{position:absolute;z-index:3;left:12%;top:28%;width:21%;height:53%;background:radial-gradient(ellipse,#fbe68d42,transparent 73%);pointer-events:none;animation:pulse 3.4s ease-in-out infinite}
 .tutenstein{position:absolute;left:11%;bottom:2%;width:24%;height:73%;z-index:6;pointer-events:none;filter:drop-shadow(0 10px 9px #261718aa)}
 .tutenstein img{display:block;width:100%;height:100%;object-fit:contain;object-position:bottom center;user-select:none;pointer-events:none}
+
+/* One transparent 3x3 atlas, nine poses, no timers or extra game panels in CSS. */
+.tutenstein{left:3%;bottom:0;width:30%;height:76%;transition:left .45s ease;will-change:auto}
+.tutenstein .tuten-fallback{transition:opacity .18s linear}
+.tutenstein .tuten-sprite{
+ position:absolute;z-index:1;display:block;left:-23%;bottom:0;
+ width:140%;height:auto;aspect-ratio:1262/1246;opacity:0;
+ background-image:url('images/egypt-tutenstein-poses.webp');
+ background-size:300% 300%;background-repeat:no-repeat;background-position:0% 0%;
+ transform-origin:50% 92%;pointer-events:none;user-select:none;
+ filter:drop-shadow(0 7px 6px #241628a3);
+ animation:tuten-idle 4.1s ease-in-out infinite;
+}
+.tutenstein.poses-ready .tuten-fallback{opacity:0}
+.tutenstein.poses-ready .tuten-sprite{opacity:1}
+.tutenstein[data-pose="talk"] .tuten-sprite{background-position:50% 0%;animation:tuten-talk 3.2s ease-in-out infinite}
+.tutenstein[data-pose="point-jars"] .tuten-sprite{background-position:100% 0%;animation:tuten-point 2.9s ease-in-out infinite}
+.tutenstein[data-pose="point-organs"] .tuten-sprite{background-position:0% 50%;animation:tuten-point 2.9s ease-in-out infinite}
+.tutenstein[data-pose="happy"] .tuten-sprite{background-position:50% 50%;animation:tuten-happy .58s ease-in-out 2}
+.tutenstein[data-pose="wrong"] .tuten-sprite{background-position:100% 50%;animation:tuten-wrong .48s ease-in-out 2}
+.tutenstein[data-pose="heart"] .tuten-sprite{background-position:0% 100%;animation:tuten-idle 3.8s ease-in-out infinite}
+.tutenstein[data-pose="scales"] .tuten-sprite{background-position:50% 100%;animation:tuten-point 3.3s ease-in-out infinite}
+.tutenstein[data-pose="celebrate"] .tuten-sprite{background-position:100% 100%;animation:tuten-celebrate 1.25s ease-in-out infinite}
+.tutenstein[data-pose="point-organs"]{left:6%}
+.tutenstein[data-pose="heart"]{left:6%}
+.tutenstein[data-pose="scales"]{left:4%}
+@keyframes tuten-idle{0%,100%{transform:translateY(0) rotate(-.7deg)}50%{transform:translateY(-5px) rotate(.7deg)}}
+@keyframes tuten-talk{0%,100%{transform:rotate(-1deg)}50%{transform:translateY(-4px) rotate(1.5deg)}}
+@keyframes tuten-point{0%,100%{transform:translateY(0)}50%{transform:translateY(-4px) rotate(-1deg)}}
+@keyframes tuten-happy{0%,100%{transform:translateY(0) scale(1)}50%{transform:translateY(-13px) scale(1.035)}}
+@keyframes tuten-wrong{0%,100%{transform:rotate(0)}25%{transform:rotate(-5deg)}75%{transform:rotate(5deg)}}
+@keyframes tuten-celebrate{0%,100%{transform:translateY(0) rotate(0)}25%{transform:translateY(-14px) rotate(-4deg)}75%{transform:translateY(-10px) rotate(4deg)}}
+@media(prefers-reduced-motion:reduce){
+ .tutenstein{transition:none}
+ .tutenstein .tuten-sprite{animation:none!important;transition:none!important;transform:none!important}
+}
+
 .scene[data-stage="intro"] .mummy-glow{opacity:.4}
 .scene[data-stage="name"] .name-board{left:70%;top:65%;width:29%;height:29%}
 .scene[data-stage="name"] .name-label{left:71%;top:61%}
@@ -157,7 +195,7 @@ header h1{font-size:clamp(17px,2.4vw,30px);font-weight:normal;margin:0;text-alig
 <picture><source type="image/webp" srcset="images/egypt-mummy-tomb-art-hq.webp"><img class="bg" src="images/egypt-mummy-tomb.svg" alt="" draggable="false" fetchpriority="high" decoding="async"></picture>
 <div class="lada" id="mummyLada" role="img" aria-label="Лада в выбранном костюме"><img src="images/lada-cutout.webp" alt="" draggable="false"><img data-outfit-layer hidden alt="" draggable="false"></div>
 <div class="mummy-glow" aria-hidden="true"></div>
-<div class="tutenstein" role="img" aria-label="Тутенштейн — мумия в фиолетовом головном уборе"><img src="images/egypt-tutenstein.webp" alt="" draggable="false" fetchpriority="high"></div>
+<div class="tutenstein" id="mummyTutor" role="img" data-pose="idle" aria-label="Тутенштейн — живая мумия, реагирующая на задания"><img class="tuten-fallback" src="images/egypt-tutenstein.webp" alt="" draggable="false" fetchpriority="high"><span class="tuten-sprite" aria-hidden="true"></span></div>
 <div class="speech" id="mummySpeech" aria-live="polite"><strong>Мумия:</strong> Кто разбудил меня? Ой... я забыла своё имя!</div>
 <div class="dots" id="mummyDots" aria-label="Этап 1 из 4"><i></i><i></i><i></i><i></i></div>
 <div class="fresco" id="mummyFresco" hidden aria-label="Расположи рисунки в правильном порядке"></div>
@@ -196,7 +234,7 @@ header h1{font-size:clamp(17px,2.4vw,30px);font-weight:normal;margin:0;text-alig
 </main>
 <script src="wardrobe.js?v=5" defer></script>
 <script src="game-registry.js?v=8" defer></script>
-<script src="egypt-mummy-tomb.js?v=6" defer></script>
+<script src="egypt-mummy-tomb.js?v=7" defer></script>
 <script src="hades-sounds.js?v=7" defer></script>
 <script src="game-runtime.js?v=5" defer></script>
 </body>
