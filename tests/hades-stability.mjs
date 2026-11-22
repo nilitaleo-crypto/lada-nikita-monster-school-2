@@ -90,7 +90,7 @@ async function syllableBridgeTest(browser,label){
     if(step===5){
      await until(()=>page.evaluate(expected=>{
       const x=TivvigHadesDebug.state();
-      return x.stage===3||x.wordRound===expected;
+      return expected===3?x.stage===3:x.wordRound===expected;
      },round+1),7000);
     }else{
      const expectedStep=step+1;
