@@ -41,7 +41,44 @@ const nameGame={
 const groups=['mummyFresco','mummyFrescoSlots','mummyJars','mummyJarLabel','mummyOrgans','mummyHeartSpot','mummyScaleNumbers','mummyWeights','mummyPlaced','mummyNameBoard','mummyNameLabel','mummyScarab'];
 let stage='intro',round=0,pos=0,chosen=[],pieces=[],namePhase='name',errors=0,correct=0,unlocked=false;
 let jarPhase='selectJar',selectedJar=null,lastFilled=null,jarSolved=new Set(),heartFound=false,jarHint=false;
-function play(kind){try{void window.TivvigHadesSounds?.play(kind)}catch(e){}}
+/* Pose is a visual projection of co-op game state; no unsynced random movements. */
+const tutor=$('mummyTutor');
+let poseTimeout=null;
+function basePose(){
+ if(stage==='intro')return 'talk';
+ if(stage==='fresco')return pos===fresco[round].order.length?'talk':'point-jars';
+ if(stage==='jars'){
+  if(jarPhase==='selectJar')return 'point-jars';
+  if(jarPhase==='riddle')return 'point-organs';
+  if(jarPhase==='heart'||jarPhase==='locateHeart')return 'heart';
+  return 'happy';
+ }
+ if(stage==='scales')return 'scales';
+ if(stage==='name')return 'talk';
+ if(stage==='done')return 'celebrate';
+ return 'idle';
+}
+function applyPose(p){if(tutor)tutor.dataset.pose=p}
+function syncPose(){
+ if(poseTimeout!==null){clearTimeout(poseTimeout);poseTimeout=null}
+ applyPose(basePose());
+}
+function reactPose(p,duration){
+ if(poseTimeout!==null)clearTimeout(poseTimeout);
+ applyPose(p);
+ poseTimeout=setTimeout(()=>{poseTimeout=null;applyPose(basePose())},duration);
+}
+const posePreload=new Image();
+posePreload.onload=()=>{if(tutor)tutor.classList.add('poses-ready')};
+posePreload.onerror=()=>{if(tutor)tutor.classList.remove('poses-ready')};
+posePreload.src='images/egypt-tutenstein-poses.webp';
+function play(kind){
+ try{void window.TivvigHadesSounds?.play(kind)}catch(e){}
+ if(kind==='wrong')reactPose('wrong',850);
+ else if(kind==='success')reactPose('happy',1040);
+ else if(kind==='finish')reactPose('celebrate',1400);
+}
+
 function title(t){$('mummySpeech').innerHTML='<strong>Мумия:</strong> '+t}
 function feedback(t){$('mummyStatus').textContent=t}
 function button(t){const a=$('mummyAction');a.hidden=false;a.textContent=t}
@@ -51,7 +88,7 @@ function dots(){const n=stage==='fresco'?1:stage==='jars'?2:stage==='scales'?3:s
  $('mummyDots').setAttribute('aria-label','Этап '+Math.max(1,n)+' из 4');
  scene.dataset.stage=stage}
 function render(){
- hideExtras();dots();
+ hideExtras();dots();syncPose();
  if(stage==='intro'){
   title('Кто посмел меня разбудить? Ой... я забыла своё имя! Поможешь?');
   button('Помочь мумии');return;
@@ -263,7 +300,7 @@ window.addEventListener('tivvig-outfit-changed',outfit);
 window.addEventListener('tivvig-inventory-changed',outfit);
 window.addEventListener('pageshow',outfit);
 window.TivvigMummyDebug=Object.freeze({
- state:()=>({stage,round,pos,namePhase,jarPhase,selectedJar,lastFilled,jarHint,jarSolved:[...jarSolved],heartFound,pieces:[...pieces],chosen:[...chosen],correct,errors,reward:(()=>{try{return localStorage.getItem(REWARD)==='unlocked'}catch(e){return false}})()}),
+ state:()=>({stage,round,pos,namePhase,jarPhase,selectedJar,lastFilled,jarHint,tutenPose:tutor?.dataset.pose||'idle',jarSolved:[...jarSolved],heartFound,pieces:[...pieces],chosen:[...chosen],correct,errors,reward:(()=>{try{return localStorage.getItem(REWARD)==='unlocked'}catch(e){return false}})()}),
  reset,finish,advance:()=>{
   if(stage==='intro'||stage==='done')return $('mummyAction').click();
   if(stage==='fresco')return pos===fresco[round].order.length?$('mummyAction').click():$('mummy-fresco-'+fresco[round].options.indexOf(fresco[round].order[pos]))?.click();
