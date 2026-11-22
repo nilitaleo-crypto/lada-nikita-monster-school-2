@@ -26,7 +26,7 @@ main{width:min(1200px,100%);min-height:100dvh;margin:0 auto;padding:clamp(12px,2
 .message{background:#e6c99b;border:1px solid #ad805c;border-radius:8px;padding:10px 13px;font-size:clamp(13px,1.45vw,16px);line-height:1.5;margin:0}.message strong{color:#684039}.nav{display:flex;flex-wrap:wrap;gap:10px;justify-content:center;margin-top:7px}.nav a{background:#593443;color:#ffead0;border:1px solid #c29a62;border-radius:10px;padding:10px 16px;font-weight:bold}
 @media(max-width:760px){main{padding:10px}.book{padding:17px 13px}.book:before{display:none}.layout{grid-template-columns:1fr}.preview{min-height:0}.doll{height:min(45dvh,440px);min-height:210px}.options{gap:10px}.item{grid-template-columns:72px minmax(0,1fr)}.thumb{width:72px;height:95px}.intro{margin-bottom:11px}}
 </style>
-<script src="wardrobe.js?v=6" defer></script>
+<script src="wardrobe.js?v=7" defer></script>
 </head>
 <body>
 <main>
@@ -68,7 +68,7 @@ main{width:min(1200px,100%);min-height:100dvh;margin:0 auto;padding:clamp(12px,2
      <div><h3>Наряд Гекаты и лира</h3><p id="hecateCaption">Награда за историю Орфея и Эвридики</p><button data-choose="hecate" type="button" disabled>Пока закрыто</button></div>
     </article>
     <article class="item locked" id="card-egyptMoon">
-     <div class="thumb"><img src="images/lada-egypt-moon-outfit.webp" alt="Лада в лунном наряде Древнего Египта" draggable="false"><span id="egyptMoonLock" class="lock" aria-hidden="true">🔒</span></div>
+     <div class="thumb"><img src="images/lada-cutout.webp" alt="Лада в лунном наряде Древнего Египта" draggable="false"><img src="images/lada-egypt-moon-dress-layer.webp" alt="" draggable="false"><span id="egyptMoonLock" class="lock" aria-hidden="true">🔒</span></div>
      <div><h3>Лунная принцесса Нила</h3><p id="egyptMoonCaption">Награда за «Ночную тайну Нила»</p><button data-choose="egyptMoon" type="button" disabled>Пока закрыто</button></div>
     </article>
     <p class="message" id="wardrobeStatus" role="status" aria-live="polite">Наряды открываются после приключений.</p>
