@@ -17,10 +17,11 @@ const BEATS=[['B','S','B'],['B','B','S','B'],['S','B','B','S']];
 const LAST_SONG=['S','B','B','S','B','S'];
 const SEALS=[1,0,2];
 const HINTS=['Не огонь. Не змеи.','Не луна. Не змеи.','Не огонь. Не луна.'];
+// Each stone requires only two readable syllables. Show one short word at a time.
 const WORDS=[
- {sentence:['ЛАДА','НЕСЁТ','ЛИРУ'],choices:['ЛИРУ','ЛАДА','ЗМЕИ','НЕСЁТ']},
- {sentence:['ДРУЗЬЯ','СТРОЯТ','МОСТ'],choices:['МОСТ','СТРОЯТ','ДРУЗЬЯ','СОН']},
- {sentence:['ТЕНИ','УХОДЯТ','ПРОЧЬ'],choices:['УХОДЯТ','ПРОЧЬ','РЕКА','ТЕНИ']}
+ {sentence:['ЛАДА','НЕСЁТ','ЛИРУ'],syllables:[['ЛА','ДА'],['НЕ','СЁТ'],['ЛИ','РУ']]},
+ {sentence:['ТЕНИ','ВИДЯТ','ЛАДУ'],syllables:[['ТЕ','НИ'],['ВИ','ДЯТ'],['ЛА','ДУ']]},
+ {sentence:['ЛАДА','ИДЁТ','ДАЛЬШЕ'],syllables:[['ЛА','ДА'],['И','ДЁТ'],['ДА','ЛЬШЕ']]}
 ];
 const CLOCK=[{a:2,b:3,op:'+',choices:[5,4,7],correct:5},
  {a:8,b:3,op:'−',choices:[6,5,3],correct:5},
@@ -211,22 +212,53 @@ async function hit(which,final){
  if(rhythmRound===BEATS.length){await forward();return}
  rhythmPanel(false);setMessage('Новый ритм');
 }
+function syllableChoices(data,wordIndex){
+ // Alternate answer positions; no third distracting tile.
+ const pair=data.syllables[wordIndex];
+ return (wordRound+wordIndex)%2===0?[pair[1],pair[0]]:[pair[0],pair[1]];
+}
 function renderWords(){
  const data=WORDS[wordRound],box=wrap('word-area');
- const hint=prompt('Собери: '+data.sentence.join(' '));
- const bridge=el('div','word-bridge');for(let i=0;i<3;i++)bridge.appendChild(el('div','word-step'+(i<wordStep?' filled':''),i<wordStep?data.sentence[i]:'·'));
- const opts=el('div','word-options');data.choices.forEach((word,i)=>{
- const btn=makeButton('word','hades-word-'+i,word,()=>pickWord(i),word);
- btn.disabled=data.sentence.slice(0,wordStep).includes(word);opts.appendChild(btn)});
+ const wordIndex=Math.floor(wordStep/2),partIndex=wordStep%2;
+ const completed=Math.min(3,wordIndex);
+ const finished=wordStep===6;
+ const hint=prompt(finished?'Мост готов!': 'Прочитай: '+data.syllables[wordIndex].join(' — '));
+ const bridge=el('div','word-bridge');
+ for(let i=0;i<3;i++){
+  const done=i<completed,partial=!done&&i===wordIndex&&partIndex===1;
+  const label=done?data.syllables[i].join('‑'):partial?data.syllables[i][0]+' — ?':'·';
+  bridge.appendChild(el('div','word-step'+(done?' filled':'')+(partial?' partial':''),label));
+ }
+ const opts=el('div','word-options');
+ if(!finished){
+  const choices=syllableChoices(data,wordIndex),part=data.syllables[wordIndex];
+  for(let i=0;i<choices.length;i++){
+   const syllable=choices[i],btn=makeButton('word','hades-word-'+i,syllable,()=>pickWord(i),'Слог '+syllable);
+   btn.disabled=partIndex===1&&syllable===part[0];
+   opts.appendChild(btn);
+  }
+ }
  box.append(hint,bridge,opts,status());put([box]);
- const track=$('bridgeTrack');track.replaceChildren();for(let i=0;i<9;i++){const s=el('i',i<bridgeCount?'complete':'');track.appendChild(s)}
+ const track=$('bridgeTrack');track.replaceChildren();
+ for(let i=0;i<9;i++)track.appendChild(el('i',i<bridgeCount?'complete':''));
 }
-async function pickWord(i){if(stage!==2||busy)return;
+async function pickWord(i){
+ if(stage!==2||busy||wordStep>=6)return;
+ const data=WORDS[wordRound],wordIndex=Math.floor(wordStep/2);
+ const choices=syllableChoices(data,wordIndex),syllable=choices[i];
+ if(!syllable)return;
  flySpirit($('hades-word-'+i),i);
- const w=WORDS[wordRound].choices[i],correct=WORDS[wordRound].sentence[wordStep];
- if(w!==correct){$('hades-word-'+i).classList.add('wrong');setMessage('Другой камень');setTimeout(()=>$('hades-word-'+i)?.classList.remove('wrong'),350);return}
- wordStep++;bridgeCount++;setMessage('Камень на месте');
- if(wordStep<3){renderWords();return}
+ const right=data.syllables[wordIndex][wordStep%2];
+ if(syllable!==right){
+  $('hades-word-'+i)?.classList.add('wrong');
+  setMessage('Попробуй другой слог');
+  setTimeout(()=>$('hades-word-'+i)?.classList.remove('wrong'),350);
+  return;
+ }
+ wordStep++;
+ if(wordStep%2===0){bridgeCount++;setMessage('Камень появился!')}
+ else setMessage('Прочитай второй слог');
+ if(wordStep<6){renderWords();return}
  busy=true;renderWords();const id=++epoch;await delay(450);if(id!==epoch)return;
  wordRound++;wordStep=0;busy=false;
  if(wordRound===WORDS.length){await forward();return}
@@ -293,7 +325,7 @@ window.TivvigHadesDebug=Object.freeze({
  seal:i=>$('hades-seal-'+i)?.click(),listen:()=>$('hades-listen')?.click(),hit:x=>$(x==='B'?'hades-big':'hades-small')?.click(),
  word:i=>$('hades-word-'+i)?.click(),answer:i=>$('hades-answer-'+i)?.click(),
  reset:startOver,skip:()=>{$('hadesSkipTrial').click()},stage:n=>{epoch++;stage=Math.max(0,Math.min(4,n));renderScene()},
- data:()=>({seals:[...SEALS],beats:BEATS.map(a=>[...a]),words:WORDS.map(x=>({sentence:[...x.sentence],choices:[...x.choices]})),clock:CLOCK.map(x=>({...x})),song:[...LAST_SONG]})
+ data:()=>({seals:[...SEALS],beats:BEATS.map(a=>[...a]),words:WORDS.map(x=>({sentence:[...x.sentence],syllables:x.syllables.map(y=>[...y])})),clock:CLOCK.map(x=>({...x})),song:[...LAST_SONG]})
 });
 setup();
 })();
