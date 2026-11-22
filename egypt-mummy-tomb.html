@@ -99,6 +99,16 @@ header h1{font-size:clamp(17px,2.4vw,30px);font-weight:normal;margin:0;text-alig
  .speech{font-size:14px;padding:5px 7px;max-height:16%}.status{font-size:13px;padding:5px}.action{min-height:47px;font-size:16px;padding:6px 10px;min-width:125px}
  .jar-label{font-size:14px}.name-label{font-size:15px}
 }
+
+/* Keep the talking-canopic riddles readable without an extra dialogue window. */
+.scene[data-stage="jars"] .speech{left:32%;width:65%;top:1%;min-height:14%;padding:9px 13px;max-height:none;background:#17263bf5;font-size:clamp(18px,1.65vw,25px);line-height:1.26;text-align:left;border-color:#e6bf75}
+.scene[data-stage="jars"] .status{left:34%;width:46%;max-width:46%;bottom:1%;min-height:40px;padding:7px 10px;font-size:clamp(14px,1.2vw,18px)}
+.scene[data-stage="jars"] .jar:not(:disabled){border-color:#f6d392a6;box-shadow:0 0 0 2px #51381c88;cursor:pointer}
+.scene[data-stage="jars"] .jar.speaking{border-color:#fff4ac;box-shadow:0 0 18px #fff0a3, inset 0 0 17px #fff5b44d;background:#fff0b43b}
+.scene[data-stage="jars"] .organ-choice:not(:disabled){border-color:#ffe3a4;box-shadow:0 0 9px #efc98084;cursor:pointer}
+.scene[data-stage="jars"] .jar-label{font-size:clamp(15px,1.15vw,20px)}
+.scene[data-stage="jars"] .organ-name{font-size:clamp(11px,1.05vw,16px)}
+
 @media(prefers-reduced-motion:reduce){.mummy-glow,.scarab{animation:none!important}}
 </style>
 </head>
@@ -153,7 +163,7 @@ header h1{font-size:clamp(17px,2.4vw,30px);font-weight:normal;margin:0;text-alig
 </main>
 <script src="wardrobe.js?v=5" defer></script>
 <script src="game-registry.js?v=8" defer></script>
-<script src="egypt-mummy-tomb.js?v=4" defer></script>
+<script src="egypt-mummy-tomb.js?v=5" defer></script>
 <script src="hades-sounds.js?v=7" defer></script>
 <script src="game-runtime.js?v=5" defer></script>
 </body>
