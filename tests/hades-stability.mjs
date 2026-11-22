@@ -235,6 +235,12 @@ async function skipCoopTest(browser,label){
   await page.waitForFunction(()=>window.hadesSkipRelay.filter(e=>e.type==='ready').length>=2,{timeout:15000});
   await student.locator('#hadesSkipTrial').click();
   await page.waitForFunction(()=>[...document.querySelectorAll('iframe[data-hades-skip-test]')].every(f=>f.contentWindow?.TivvigHadesDebug?.state().stage===1),{timeout:9000});
+  // Same short syllable must be received by both devices through the room relay.
+  await page.evaluate(()=>{for(const f of document.querySelectorAll('iframe[data-hades-skip-test]'))f.contentWindow.TivvigHadesDebug.stage(2)});
+  await student.getByRole('button',{name:'Слог ЛА',exact:true}).click();
+  await page.waitForFunction(()=>[...document.querySelectorAll('iframe[data-hades-skip-test]')].every(f=>f.contentWindow?.TivvigHadesDebug?.state().wordStep===1),{timeout:9000});
+  await student.getByRole('button',{name:'Слог ДА',exact:true}).click();
+  await page.waitForFunction(()=>[...document.querySelectorAll('iframe[data-hades-skip-test]')].every(f=>f.contentWindow?.TivvigHadesDebug?.state().bridgeCount===1),{timeout:9000});
   // Both devices should begin the palace at Hades when coming from Hecate,
   // even if their previous Persephone ending was unlocked.
   await page.evaluate(base=>{
