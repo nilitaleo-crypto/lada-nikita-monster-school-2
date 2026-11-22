@@ -62,6 +62,17 @@ async function test(browser,name,profile){
   await page.locator('#reason-1-human').click({force:true});
   assert.equal(await page.evaluate(()=>window.TivvigNileDebug.state().stage),'done');
   assert.equal(await page.locator('#victory').isVisible(),true);
+  assert.equal(await page.evaluate(()=>localStorage.getItem('tivvig_outfit_egypt_moon_unlocked_v1')),'unlocked','Nile reward unlocks the Egyptian Moon costume');
+  assert.equal(await page.evaluate(()=>localStorage.getItem('tivvig_outfit_selected_v1')),'egyptMoon','The new costume is automatically equipped');
+  assert.equal(await page.locator('#nileLada').getAttribute('data-outfit'),'egyptMoon','Nile Lada is visibly dressed');
+  assert.equal(await page.locator('#nileLada .head').isVisible(),false,'Old head does not obscure the generated outfit');
+  assert.match(await page.locator('#nileLada [data-outfit-layer]').getAttribute('src'),/lada-egypt-moon-outfit.webp$/);
+  const moonArt=await page.evaluate(async()=>{
+   const image=new Image();image.src='images/lada-egypt-moon-outfit.webp';
+   try{await image.decode();return [image.naturalWidth,image.naturalHeight]}catch{return [0,0]}
+  });
+  assert.deepEqual(moonArt,[1024,1536],'Full resolution transparent costume loads on touch devices');
+
   assert.equal(await page.evaluate(()=>localStorage.getItem('tivvig_egypt_sphinx_investigation_v1')),'unlocked');
   await page.locator('#restartNile').click({force:true});
   assert.equal(await page.evaluate(()=>window.TivvigNileDebug.state().stage),'meet');
@@ -71,6 +82,15 @@ async function test(browser,name,profile){
   const broken=await page.evaluate(()=>[...document.images].filter(im=>im.complete&&im.naturalWidth===0).map(im=>im.src));
   assert.deepEqual(broken,[],'All original assets load');
   assert.deepEqual(errors,[],'No runtime exceptions');assert.deepEqual(missing,[],'No 404 assets');
+  await page.goto(BASE+'wardrobe.html',{waitUntil:'load'});
+  assert.equal(await page.locator('#card-egyptMoon').isVisible(),true,'Egyptian costume appears in the wardrobe');
+  assert.equal(await page.locator('#card-egyptMoon button').isDisabled(),false,'Egyptian costume is unlocked');
+  assert.equal(await page.locator('#card-egyptMoon button').innerText(),'✓ Надето','Egyptian outfit selected in wardrobe');
+  await page.locator('#card-hecate button').isDisabled(); // Existing reward remains untouched
+  await page.goto(BASE+'egypt-sphinx-temple.html',{waitUntil:'load'});
+  assert.equal(await page.locator('#sphinxLada').getAttribute('data-outfit'),'egyptMoon','Next Egyptian game inherits the same outfit');
+  assert.match(await page.locator('#sphinxLada [data-outfit-layer]').getAttribute('src'),/lada-egypt-moon-outfit.webp$/);
+
   console.log('PASS',name,profile.name,'2 scenes, original Lada, character dialogue, evidence, Sphinx, reward, reset, audio');passed++;
  }finally{await context.close()}
 }
