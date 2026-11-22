@@ -34,10 +34,20 @@ async function testSolo(browser,name,p){
  assert.match(await page.locator('#mummy-fresco-0').evaluate(el=>getComputedStyle(el).backgroundImage),/egypt-mummy-cycles-hq.avif/);
  await page.locator('#mummy-fresco-0').click();
  assert.equal(await page.evaluate(()=>TivvigMummyDebug.state().errors),1,'Mistake is harmless');
- const visited=new Set(),cycleKeys=new Set(),frames=new Set();
+ const visited=new Set(),cycleKeys=new Set(),frames=new Set();let checkedCanopes=false;let sawHeart=false;
  for(let i=0;i<120;i++){
   const st=await page.evaluate(()=>TivvigMummyDebug.state());
   visited.add(st.stage);if(st.stage==='done')break;
+  if(st.stage==='jars'&&!checkedCanopes&&st.jarPhase==='symbol'&&st.round===0){
+   assert.equal(await page.locator('#mummyOrgans').isVisible(),true,'Four organ seals plus the heart');
+   assert.equal(await page.locator('.organ-choice').count(),5,'Five organ tokens');
+   assert.equal(await page.locator('#mummy-organ-heart').isDisabled(),true,'Heart cannot be placed in a canopic jar');
+   await page.locator('#mummy-organ-stomach').click();
+   assert.equal(await page.evaluate(()=>TivvigMummyDebug.state().jarPhase),'symbol','Wrong organ leaves phase unchanged');
+   assert.equal(await page.evaluate(()=>TivvigMummyDebug.state().errors),2);
+   checkedCanopes=true;
+  }
+  if(st.stage==='jars'&&st.jarPhase==='heart')sawHeart=true;
   if(st.stage==='fresco'){
    cycleKeys.add(st.round);
    assert.equal(await page.locator('.cycle-tile').count(),4,'every cycle has four pictures');
@@ -47,11 +57,15 @@ async function testSolo(browser,name,p){
   }
   await page.evaluate(()=>TivvigMummyDebug.advance());
  }
+ assert.equal(checkedCanopes,true,'Canopic quiz exercised');
+ assert.equal(sawHeart,true,'Heart discovery phase reached');
  assert.deepEqual([...cycleKeys],[0,1,2],'frog, apple, moon in this order');
  assert.deepEqual([...frames],['0','1','2'],'three rows of real picture frames');
  const state=await page.evaluate(()=>TivvigMummyDebug.state());
  assert.equal(state.stage,'done','Every stage reaches the ending');
- assert.ok(state.correct>=32,'Four illustrated steps in each natural cycle');
+ assert.ok(state.correct>=38,'Illustrated cycles, four canopic pairings and heart discovery');
+ assert.equal(state.heartFound,true,'Mummy heart located');
+ assert.deepEqual(state.jarSolved,[2,1,3,0],'Canopic lids correctly paired with organs');
  for(const part of ['fresco','jars','scales','name','done'])assert.ok(visited.has(part),part+' reached');
  assert.equal(await page.evaluate(()=>localStorage.getItem('tivvig_egypt_mummy_scarab_v1')),'unlocked');
  assert.equal(await page.locator('#mummyScarab').isVisible(),true);
@@ -94,8 +108,22 @@ async function testCoop(browser,name){
  await page.waitForFunction(()=>Array.from(document.querySelectorAll('iframe[data-test-room]')).every(f=>f.contentWindow?.TivvigMummyDebug?.state().errors===1),{timeout:9000});
  await teacher.locator('#mummy-fresco-1').click();
  await page.waitForFunction(()=>Array.from(document.querySelectorAll('iframe[data-test-room]')).every(f=>f.contentWindow?.TivvigMummyDebug?.state().pos===1),{timeout:9000});
- assert.equal(await teacher.locator('.cycle-slot.done').count(),1,'teacher sees ordered illustrated frame');
- assert.equal(await student.locator('.cycle-slot.done').count(),1,'student sees the same frame');
+ // Jump both already-synchronized local emulators through unchanged fresco rounds.
+ // Then verify actual room-authoritative clicks on the new canopic targets.
+ await page.evaluate(()=>{
+  for(const frame of document.querySelectorAll('iframe[data-test-room]')){
+   const d=frame.contentWindow.TivvigMummyDebug;
+   for(let i=0;i<25&&d.state().stage==='fresco';i++)d.advance();
+  }
+ });
+ await page.waitForFunction(()=>Array.from(document.querySelectorAll('iframe[data-test-room]')).every(f=>f.contentWindow?.TivvigMummyDebug?.state().stage==='jars'),{timeout:3000});
+ await teacher.locator('#mummy-organ-lungs').click();
+ await page.waitForFunction(()=>Array.from(document.querySelectorAll('iframe[data-test-room]')).every(f=>f.contentWindow?.TivvigMummyDebug?.state().jarPhase==='jar'),{timeout:9000});
+ await student.locator('#mummy-jar-2').click();
+ await page.waitForFunction(()=>Array.from(document.querySelectorAll('iframe[data-test-room]')).every(f=>f.contentWindow?.TivvigMummyDebug?.state().round===1&&f.contentWindow?.TivvigMummyDebug?.state().jarSolved.includes(2)),{timeout:9000});
+
+ assert.equal(await teacher.locator('.jar.sealed').count(),1,'teacher sees protected canopic jar');
+ assert.equal(await student.locator('.jar.sealed').count(),1,'student sees the same restored seal');
  await student.locator('[data-tivvig-local-audio]').first().click();
  assert.equal(await page.evaluate(()=>window.mummyEvents.filter(e=>e.type==='click'&&e.value?.selector==='#hadesLocalSound').length),0);
  assert.deepEqual(errorsHere,[],errorsHere.join('\n'));
