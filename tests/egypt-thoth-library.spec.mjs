@@ -40,7 +40,8 @@ async function test(browser,name,profile){
  assert.equal(complete,true,'Must reach reward');
  for(const s of ['words','memory','sentences','done'])assert.equal(visited.has(s),true,s+' reached');
  assert.equal(await page.evaluate(()=>localStorage.getItem('tivvig_egypt_thoth_feather_v1')),'unlocked');
- await page.waitForFunction(()=>{const img=document.querySelector('.feather');return img?.complete&&img.naturalWidth>100});
+ await page.waitForFunction(()=>{const feather=document.querySelector('svg.feather');return feather?.getBBox().width>100&&feather?.getBBox().height>100;},{timeout:5000});
+ assert.ok(await page.locator('svg.feather path').count()>=2,'Thoth feather renders as inline SVG in mobile WebKit');
  assert.deepEqual(runtimeErrors,[],runtimeErrors.join('\n'));assert.deepEqual(missing,[],missing.join('\n'));
  await page.locator('#boardAction').click();assert.equal(await page.evaluate(()=>TivvigThothDebug.state().stage),'intro');
  const button=page.locator('[data-tivvig-local-audio]');assert.ok(await button.count()>=1,'Local sound check');
