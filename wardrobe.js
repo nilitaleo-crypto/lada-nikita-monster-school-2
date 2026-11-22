@@ -19,7 +19,7 @@
     {id:'stars',name:'Звёздный наряд',description:'Пять испытаний в обсерватории',src:'images/star-outfit.webp',available:'stars'},
     {id:'monankaka',name:'Доспехи ночных крыльев',description:'Кузница Вулкана в Дубовом квартале',src:'images/monankaka-armor.svg',available:'monankaka'},
     {id:'hecate',name:'Наряд Гекаты с лирой',description:'Книга Орфея и Эвридики',src:'images/hecate-lyre-costume-layer.webp',available:'hecate'},
-    {id:'egyptMoon',name:'Лунная принцесса Нила',description:'Награда за «Ночную тайну Нила»',src:'images/lada-egypt-moon-outfit.webp',available:'egyptMoon'}
+    {id:'egyptMoon',name:'Лунная принцесса Нила',description:'Награда за «Ночную тайну Нила»',src:'images/lada-egypt-moon-dress-layer.webp',available:'egyptMoon'}
   ];
   function get(key){try{return window.localStorage.getItem(key)}catch(e){return null}}
   function set(key,value){try{window.localStorage.setItem(key,value);return true}catch(e){return false}}
