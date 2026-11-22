@@ -4,7 +4,7 @@
 const $=id=>document.getElementById(id),scene=$('mummyScene');
 if(!scene||window.TivvigMummyDebug)return;
 const REWARD='tivvig_egypt_mummy_scarab_v1';
-const sprite=new Image();sprite.onerror=()=>document.documentElement.classList.add('no-cycle-art');sprite.src='images/egypt-mummy-cycles.avif';
+const sprite=new Image();sprite.onerror=()=>document.documentElement.classList.add('no-cycle-art');sprite.src='images/egypt-mummy-cycles-hq.avif';
 const fresco=[
  {key:'frog',question:'Как головастик превращается в лягушку?',order:[0,1,2,3],options:[3,0,2,1],names:['Икра в воде','Появился головастик','Выросли лапки','Взрослая лягушка'],story:['Сначала лягушка откладывает икру.','Из икринки выходит головастик.','У головастика вырастают лапки.','Он становится лягушкой и снова может отложить икру.'],fallback:['🥚','🐟','🐸','🐸'],row:0},
  {key:'apple',question:'Как из семечка вырастает яблоня?',order:[0,1,2,3],options:[2,0,3,1],names:['Семечко','Молодой росток','Яблоня цветёт','Яблоки с семечками'],story:['Семечко падает в землю.','Появляется маленький росток.','Вырастает яблоня с цветами.','Созревает яблоко, внутри новые семечки.'],fallback:['🌰','🌱','🌸','🍎'],row:1},
@@ -12,7 +12,7 @@ const fresco=[
 ];
 const cycleFrame=(row,col)=>({x:(col*100/3).toFixed(4)+'%',y:(row*50)+'%'});
 function paintCycle(el,row,col){
- const place=cycleFrame(row,col);el.style.backgroundPosition=place.x+' '+place.y;el.style.backgroundImage="url('images/egypt-mummy-cycles.avif')";
+ const place=cycleFrame(row,col);el.style.backgroundPosition=place.x+' '+place.y;el.style.backgroundImage="url('images/egypt-mummy-cycles-hq.avif')";
  el.dataset.cycleRow=String(row);el.dataset.cycleCol=String(col);
 }
 const jars=[

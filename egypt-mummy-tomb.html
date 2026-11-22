@@ -33,12 +33,12 @@ header h1{font-size:clamp(17px,2.4vw,30px);font-weight:normal;margin:0;text-alig
 .action[hidden],[hidden]{display:none!important}.action:active,.tile:active,.weight:active{filter:brightness(.95)}
 .stage-title{position:absolute;z-index:8;font:bold clamp(15px,1.4vw,21px) Georgia,serif;color:#3d2619;text-shadow:0 1px #ffe0a6}
 /* The relief becomes an animated, touchable wall fresco: no detached game window. */
-.fresco{position:absolute;z-index:8;left:24%;top:21%;width:73%;height:38%;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));align-items:stretch;gap:1%;padding:1.15%;border:5px ridge #d4a45b;border-radius:11px;background:linear-gradient(160deg,#d7a567cf,#91623e9c);box-shadow:0 3px 0 #6d4329,0 7px 15px #1a101373}
+.fresco{position:absolute;z-index:8;left:33%;top:21%;width:64%;height:38%;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));align-items:stretch;gap:1%;padding:1.15%;border:5px ridge #d4a45b;border-radius:11px;background:linear-gradient(160deg,#d7a567cf,#91623e9c);box-shadow:0 3px 0 #6d4329,0 7px 15px #1a101373}
 .tile{display:grid;place-items:center;min-width:0;min-height:90px;border:3px solid #f0d09b;border-radius:7px;padding:0;box-shadow:inset 0 0 0 1px #70462b,0 3px 6px #3a251a80;color:#f6e5c2;font-size:0;touch-action:manipulation}
 .cycle-tile{background-color:#876344;background-image:none;background-size:400% 300%;background-repeat:no-repeat;background-origin:border-box;transition:filter .16s,opacity .16s,transform .16s}
 .cycle-tile:hover:not(:disabled),.cycle-tile:focus-visible{outline:3px solid #fff2bc;outline-offset:-3px;filter:brightness(1.12)}
 .cycle-tile.done{opacity:.29;border-color:#e7ca9a;filter:sepia(.4)}
-.fresco-slots{position:absolute;z-index:9;left:24%;top:62%;width:73%;height:16%;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:1%;align-items:stretch}
+.fresco-slots{position:absolute;z-index:9;left:33%;top:62%;width:64%;height:16%;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:1%;align-items:stretch}
 .cycle-slot{position:relative;display:grid;place-items:center;min-width:0;height:100%;border:3px solid #e6c58c;border-radius:8px;background:#3e2e31a8;color:#f8e0a2;font:bold clamp(22px,2.7vw,43px) Georgia,serif}
 .cycle-slot.done{border-color:#ffe3a3;background-color:#a57c4b;background-size:400% 300%;background-repeat:no-repeat;box-shadow:0 0 13px #ffd37c6c,0 2px 4px #170b0db8}
 .cycle-slot.done:not(:last-child)::after{content:'➜';position:absolute;z-index:2;right:-12%;top:32%;width:21%;color:#ffefad;line-height:1;text-shadow:0 2px 2px #472b0c,0 0 8px #fff0a3;font-size:clamp(23px,2.7vw,36px);pointer-events:none}
@@ -68,10 +68,10 @@ header h1{font-size:clamp(17px,2.4vw,30px);font-weight:normal;margin:0;text-alig
 .name-label{position:absolute;left:75%;top:64%;z-index:8;color:#fff0bf;font:bold clamp(14px,1.45vw,22px) Georgia,serif;text-shadow:0 2px 4px #2d170d}
 .scarab{position:absolute;z-index:9;left:70%;top:71%;width:12%;height:17%;display:grid;place-items:center;filter:drop-shadow(0 4px 8px #1119);animation:float 3.2s ease-in-out infinite}
 .scarab img{width:100%;height:100%;object-fit:contain}
-.mummy-glow{position:absolute;z-index:3;left:40%;top:31%;width:17%;height:23%;background:radial-gradient(ellipse,#fbe68d52,transparent 73%);pointer-events:none;animation:pulse 2.5s ease-in-out infinite}
-.mummy-hand{position:absolute;z-index:6;left:50.1%;top:44%;width:8%;height:10%;transform-origin:0% 80%;animation:wave 3s ease-in-out infinite;pointer-events:none;filter:drop-shadow(0 3px 3px #25110988)}
-.mummy-hand svg{width:100%;height:100%;overflow:visible}
-.scene[data-stage="intro"] .mummy-glow,.scene[data-stage="intro"] .mummy-hand{opacity:0}
+.mummy-glow{position:absolute;z-index:3;left:12%;top:28%;width:21%;height:53%;background:radial-gradient(ellipse,#fbe68d42,transparent 73%);pointer-events:none;animation:pulse 3.4s ease-in-out infinite}
+.tutenstein{position:absolute;left:11%;bottom:2%;width:24%;height:73%;z-index:6;pointer-events:none;filter:drop-shadow(0 10px 9px #261718aa)}
+.tutenstein img{display:block;width:100%;height:100%;object-fit:contain;object-position:bottom center;user-select:none;pointer-events:none}
+.scene[data-stage="intro"] .mummy-glow{opacity:.4}
 .scene[data-stage="name"] .name-board{left:70%;top:65%;width:29%;height:29%}
 .scene[data-stage="name"] .name-label{left:71%;top:61%}
 .scene[data-stage="name"] .name-options button{font-size:clamp(12px,1.8vw,25px);min-height:clamp(42px,4vw,52px)}
@@ -85,7 +85,7 @@ header h1{font-size:clamp(17px,2.4vw,30px);font-weight:normal;margin:0;text-alig
  .speech{font-size:14px;padding:5px 7px;max-height:16%}.status{font-size:13px;padding:5px}.action{min-height:47px;font-size:16px;padding:6px 10px;min-width:125px}
  .jar-label{font-size:14px}.name-label{font-size:15px}
 }
-@media(prefers-reduced-motion:reduce){.mummy-glow,.mummy-hand,.scarab{animation:none!important}}
+@media(prefers-reduced-motion:reduce){.mummy-glow,.scarab{animation:none!important}}
 </style>
 </head>
 <body>
@@ -100,7 +100,7 @@ header h1{font-size:clamp(17px,2.4vw,30px);font-weight:normal;margin:0;text-alig
 <img class="bg" src="images/egypt-mummy-tomb.svg" alt="" draggable="false" fetchpriority="high">
 <div class="lada" id="mummyLada" role="img" aria-label="Лада в выбранном костюме"><img src="images/lada-cutout.webp" alt="" draggable="false"><img data-outfit-layer hidden alt="" draggable="false"></div>
 <div class="mummy-glow" aria-hidden="true"></div>
-<div class="mummy-hand" aria-hidden="true"><svg viewBox="0 0 145 95" xmlns="http://www.w3.org/2000/svg"><path d="M7 72q20-21 48-22l19-33q6-11 14-7t-4 24l32-20q11-5 14 3t-5 13q14-7 19 1t-13 15q15-2 13 10t-31 14L58 89Z" fill="#d8bf87" stroke="#8d734d" stroke-width="9"/><path d="M38 55l40 24M62 36l48 34M86 31l40 29" stroke="#9a8965" stroke-width="7"/></svg></div>
+<div class="tutenstein" role="img" aria-label="Тутенштейн — мумия в фиолетовом головном уборе"><img src="images/egypt-tutenstein.webp" alt="" draggable="false" fetchpriority="high"></div>
 <div class="speech" id="mummySpeech" aria-live="polite"><strong>Мумия:</strong> Кто разбудил меня? Ой... я забыла своё имя!</div>
 <div class="dots" id="mummyDots" aria-label="Этап 1 из 4"><i></i><i></i><i></i><i></i></div>
 <div class="fresco" id="mummyFresco" hidden aria-label="Расположи рисунки в правильном порядке"></div>
@@ -131,7 +131,7 @@ header h1{font-size:clamp(17px,2.4vw,30px);font-weight:normal;margin:0;text-alig
 </main>
 <script src="wardrobe.js?v=5" defer></script>
 <script src="game-registry.js?v=8" defer></script>
-<script src="egypt-mummy-tomb.js?v=2" defer></script>
+<script src="egypt-mummy-tomb.js?v=3" defer></script>
 <script src="hades-sounds.js?v=7" defer></script>
 <script src="game-runtime.js?v=5" defer></script>
 </body>
