@@ -89,6 +89,7 @@ function dots(){const n=stage==='fresco'?1:stage==='jars'?2:stage==='scales'?3:s
  scene.dataset.stage=stage}
 function render(){
  hideExtras();dots();syncPose();
+ $('mummyToSolar').hidden=stage!=='done';
  if(stage==='intro'){
   title('Кто посмел меня разбудить? Ой... я забыла своё имя! Поможешь?');
   button('Помочь мумии');return;
