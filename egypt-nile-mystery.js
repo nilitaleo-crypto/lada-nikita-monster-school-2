@@ -6,6 +6,8 @@
  const $=id=>document.getElementById(id),scene=$('nileScene');
  if(!scene||window.TivvigNileDebug)return;
  const REWARD='tivvig_egypt_sphinx_investigation_v1';
+ const MOON_OUTFIT='tivvig_outfit_egypt_moon_unlocked_v1';
+ const dress=()=>window.TivvigWardrobe?.equip($('nileLada'));
  const clues={
   paw:{question:'Чей это огромный след?',opts:[['Лев','lion'],['Птица','bird'],['Крокодил','croc']],correct:'lion',feedback:'Львиная лапа!'},
   cloth:{question:'Какой узор был на уборе?',opts:[['Синий с золотом','bluegold'],['Красный','red'],['Зелёный','green']],correct:'bluegold',feedback:'Сине-золотой царский убор!'},
@@ -111,6 +113,11 @@
   say('Это Сфинкс! Но зачем он разрушил ворота?');sound('finish');
   try{localStorage.setItem(REWARD,'unlocked')}catch(e){}
   try{if(window.TivvigRegistry?.byReward?.[REWARD])window.TivvigRegistry.unlockReward(REWARD);else window.dispatchEvent(new CustomEvent('tivvig:reward-unlocked',{detail:{key:REWARD}}))}catch(e){}
+  // One real reward unlock shared by Firebase and the collection; then equip it.
+  try{if(window.TivvigRegistry?.byReward?.[MOON_OUTFIT])window.TivvigRegistry.unlockReward(MOON_OUTFIT);
+  else{localStorage.setItem(MOON_OUTFIT,'unlocked');window.dispatchEvent(new CustomEvent('tivvig:reward-unlocked',{detail:{key:MOON_OUTFIT}}));}}catch(e){}
+  if(window.TivvigWardrobe?.unlocked('egyptMoon'))window.TivvigWardrobe.select('egyptMoon');
+  dress();
  }
  function reset(){
   if(hintTimeout)clearTimeout(hintTimeout);hintTimeout=null;
@@ -121,7 +128,7 @@
   $('suspects').hidden=true;$('victory').hidden=true;
   Object.keys(clues).forEach(x=>{const c=$('clue-'+x);c.disabled=false;c.classList.remove('solved','hint')});
   $('suspectFeedback').textContent='Вспомни след, убор и рисунок на папирусе.';
-  say('Лада вышла из портала… А где друзья?');
+  say('Лада вышла из портала… А где друзья?');dress();
  }
  $('fox').addEventListener('click',()=>hello('fox'));
  $('nafiri').addEventListener('click',()=>hello('nafiri'));
@@ -129,8 +136,11 @@
  Object.keys(clues).forEach(x=>$('clue-'+x).addEventListener('click',()=>selectClue(x)));
  document.querySelectorAll('[data-suspect]').forEach(b=>b.addEventListener('click',()=>suspect(b.dataset.suspect)));
  $('restartNile').addEventListener('click',reset);
+ window.addEventListener('tivvig-outfit-changed',dress);
+ window.addEventListener('tivvig-inventory-changed',dress);
+ window.addEventListener('pageshow',dress);
  window.TivvigNileDebug=Object.freeze({
-  state:()=>({stage,met:[...met],evidence:[...evidence],active,confirmStep,misses,stored:(()=>{try{return localStorage.getItem(REWARD)==='unlocked'}catch(e){return false}})()}),
+  state:()=>({stage,met:[...met],evidence:[...evidence],active,confirmStep,misses,stored:(()=>{try{return localStorage.getItem(REWARD)==='unlocked'}catch(e){return false}})(),moonUnlocked:window.TivvigWardrobe?.unlocked('egyptMoon')||false,selectedOutfit:window.TivvigWardrobe?.selected()||'default'}),
   hello,investigation,selectClue,answer,suspect,reason,hint,reset
  });
  reset();
