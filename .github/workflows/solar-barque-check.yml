@@ -1,0 +1,27 @@
+name: Solar barque cross-device game check
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'egypt-solar-barque.html'
+      - 'egypt-solar-barque.js'
+      - 'images/egypt-solar-barque-hq.webp'
+      - 'images/egypt-ra-amulet.webp'
+      - 'tests/egypt-solar-barque.spec.mjs'
+      - '.github/workflows/solar-barque-check.yml'
+  workflow_dispatch:
+jobs:
+  solar-journey:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Install Playwright
+        run: npm install --no-save playwright
+      - name: Install Chromium and WebKit
+        run: npx playwright install --with-deps chromium webkit
+      - name: Test sun positions, shadow puzzles, reading gates, wardrobe, reward and two devices
+        run: node tests/egypt-solar-barque.spec.mjs
