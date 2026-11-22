@@ -1,0 +1,43 @@
+name: Tivvig full-site stability audit
+on:
+  push:
+    branches: [main]
+    paths:
+      - '*.html'
+      - '*.js'
+      - '*.css'
+      - 'images/**'
+      - 'tests/tivvig-full-audit.mjs'
+      - '.github/workflows/tivvig-full-audit.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: tivvig-full-audit
+  cancel-in-progress: true
+jobs:
+  audit:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Check syntax of every JavaScript file
+        run: |
+          find . -maxdepth 1 -name '*.js' -print0 | xargs -0 -n1 node --check
+          find tests -name '*.mjs' -print0 | xargs -0 -n1 node --check
+      - name: Install browser tests
+        run: npm install --no-save --package-lock=false playwright@1.57.0
+      - name: Install Chromium and WebKit
+        run: npx playwright install --with-deps chromium webkit
+      - name: Scan local assets, registry and smoke-test every page on desktop and tablet
+        run: node tests/tivvig-full-audit.mjs
+      - name: Save diagnostics
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: tivvig-full-audit
+          path: tivvig-audit-results.json
+          if-no-files-found: ignore
