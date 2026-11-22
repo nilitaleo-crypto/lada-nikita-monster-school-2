@@ -137,6 +137,12 @@ header h1{margin:0;font-size:clamp(18px,2.4vw,29px);font-weight:normal;letter-sp
 <script src="wardrobe.js?v=5" defer></script>
 <script>
 (()=>{'use strict';
+ // When leaving Hecate, the next entry into the palace should begin with Hades,
+ // even when an earlier playthrough already unlocked Persephone's ending.
+ const PALACE_ENTRANCE='tivvig_hades_enter_from_hecate_v1';
+ const markPalaceEntrance=()=>{try{sessionStorage.setItem(PALACE_ENTRANCE,String(Date.now()))}catch{}};
+ window.addEventListener('pagehide',markPalaceEntrance);
+ document.querySelectorAll('a[href="hades-final.html"]').forEach(a=>a.addEventListener('click',markPalaceEntrance));
  const scene=document.getElementById('hecateScene');
  const dress=()=>window.TivvigWardrobe?.equip(document.getElementById('hecateLada'));
  for(let i=0;i<15;i++){
