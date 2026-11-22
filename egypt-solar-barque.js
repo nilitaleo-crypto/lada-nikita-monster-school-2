@@ -50,7 +50,7 @@ function updateScenery(){
   const stop=selectedSun===null?-1:selectedSun;
   if(stop>=0){orb.hidden=false;orb.dataset.stop=String(stop)}
  }
- for(let i=0;i<3;i++)$('solarCloudClear'+i).classList.toggle('cleared',stage==='sky'&&sunRound===2&&cloudCleared[i]);
+ for(let i=0;i<3;i++){$('solarCloudClear'+i).classList.toggle('cleared',stage==='sky'&&sunRound===2&&cloudCleared[i]);$('solar-cloud-'+i).disabled=cloudCleared[i];}
  scene.dataset.clouds=String(cloudsRemaining());
 }
 function setSunButtons(){ $('solarSuns').hidden=false;$('solarEast').hidden=false;$('solarWest').hidden=false;for(let i=0;i<3;i++){const b=$('solar-sun-'+i);b.classList.toggle('selected',selectedSun===i);b.classList.toggle('done',stage==='sky'&&i<sunRound);b.disabled=(stage==='sky'&&(sunRound>=3||i<sunRound))||(stage==='shadows'&&shadowDone)} }
