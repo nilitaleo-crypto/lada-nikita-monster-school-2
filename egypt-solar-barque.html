@@ -33,6 +33,7 @@ header h1{margin:0;text-align:center;font-weight:normal;font-size:clamp(18px,2.4
 .scene::after{content:'';position:absolute;inset:0;box-shadow:inset 0 0 26px #11162d88;pointer-events:none;z-index:18}
 .lada{position:absolute;z-index:4;left:22%;bottom:2%;width:14%;height:48%;pointer-events:none;filter:drop-shadow(1px 5px 4px #2b182899)}
 .lada img{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;object-position:bottom center;user-select:none;pointer-events:none}
+.lada[data-outfit="egyptMoon"] [data-outfit-layer]{clip-path:none;-webkit-clip-path:none}
 .lada [data-outfit-layer]{clip-path:polygon(0 27%,100% 27%,100% 100%,0 100%)}
 .speech{position:absolute;z-index:9;top:2.8%;left:66%;width:32%;min-height:10%;max-height:25%;display:block;text-align:center;padding:12px 14px;border:2px solid #ffcf76;border-radius:13px;background:#162b4dea;color:#fff2ce;box-shadow:0 4px 16px #131a34a0;font-size:clamp(15px,1.33vw,21px);line-height:1.22}
 .speech strong{color:#ffe08d}
@@ -200,7 +201,7 @@ header h1{margin:0;text-align:center;font-weight:normal;font-size:clamp(18px,2.4
 <button class="action" id="solarAction" type="button" data-tivvig-sound="manual">Отправиться!</button>
 </section></div><p id="gameConnection" role="status" style="min-height:1em;margin:4px 0;color:#ffdf9c;font-size:12px"></p>
 </main>
-<script src="wardrobe.js?v=5" defer></script>
+<script src="wardrobe.js?v=6" defer></script>
 <script src="egypt-solar-barque.js?v=3" defer></script>
 <script src="hades-sounds.js?v=8" defer></script>
 <script src="game-runtime.js?v=5" defer></script>
