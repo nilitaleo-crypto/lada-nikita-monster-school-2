@@ -54,6 +54,57 @@ async function smoke(browser,label,view,p){
   console.log('PASS',label,view.name,p,'audio',JSON.stringify(state));
  }finally{await context.close()}
 }
+
+async function syllableBridgeTest(browser,label){
+ const context=await browser.newContext({viewport:{width:1024,height:768},isMobile:true,hasTouch:true,reducedMotion:'reduce'});
+ const page=await context.newPage(),faults=[];
+ page.on('pageerror',e=>faults.push(e.message));
+ try{
+  await page.goto(url+'hades-final.html',{waitUntil:'load'});
+  await page.evaluate(()=>TivvigHadesDebug.stage(2));
+  const rounds=await page.evaluate(()=>TivvigHadesDebug.data().words);
+  assert.equal(rounds.length,3,'Three short sentences remain');
+  for(const sentence of rounds){
+   assert.equal(sentence.syllables.length,3,'Three words per sentence');
+   assert.ok(sentence.syllables.every(parts=>parts.length===2),'All words split into two syllables');
+   assert.deepEqual(sentence.syllables.map(parts=>parts.join('')),sentence.sentence,'Syllables reconstruct original display words');
+  }
+  assert.equal(await page.locator('.word-options button').count(),2,'Only two syllables on screen');
+  await page.getByRole('button',{name:'Слог ЛА',exact:true}).click();
+  assert.equal(await page.evaluate(()=>TivvigHadesDebug.state().wordStep),1);
+  assert.equal(await page.locator('.word-step.partial').count(),1,'First syllable is shown on an unfinished stone');
+  await page.getByRole('button',{name:'Слог ДА',exact:true}).click();
+  assert.equal(await page.evaluate(()=>TivvigHadesDebug.state().bridgeCount),1,'One whole word makes one bridge stone');
+  for(let round=0;round<3;round++){
+   const start=round===0?2:0;
+   for(let step=start;step<6;step++){
+    const syllable=rounds[round].syllables[Math.floor(step/2)][step%2];
+    assert.equal(await page.locator('.word-options button').count(),2,'Always only two choices');
+    const buttons=page.locator('.word-options button');
+    const labels=await buttons.allTextContents();
+    assert.ok(labels.includes(syllable),'Current syllable is a visible choice');
+    const active=page.getByRole('button',{name:'Слог '+syllable,exact:true});
+    const bounds=await active.boundingBox();
+    assert.ok(bounds?.width>=75&&bounds?.height>=60,'Readable touch target');
+    await active.click();
+    if(step===5){
+     await until(()=>page.evaluate(expected=>{
+      const x=TivvigHadesDebug.state();
+      return x.stage===3||x.wordRound===expected;
+     },round+1),7000);
+    }else{
+     const expectedStep=step+1;
+     await until(()=>page.evaluate(expected=>TivvigHadesDebug.state().wordStep===expected,expectedStep),2000);
+    }
+   }
+   assert.equal(await page.evaluate(()=>TivvigHadesDebug.state().bridgeCount),3*(round+1),'Exactly three stones built per sentence');
+  }
+  assert.equal(await page.evaluate(()=>TivvigHadesDebug.state().stage),3,'Syllable bridge leads to fire clocks');
+  assert.deepEqual(faults,[],'No JS errors in syllable puzzle');
+  console.log('PASS',label,'18 syllables, nine bridge stones and next stage on iPad');
+ }finally{await context.close()}
+}
+
 async function finalTest(browser,label){
  const context=await browser.newContext({viewport:{width:1024,height:768},hasTouch:true,isMobile:true,reducedMotion:'reduce'});
  const page=await context.newPage();
@@ -216,6 +267,7 @@ try{
     catch(e){failed=true;errors.push(label+' '+v.name+' '+p+': '+e.message);console.error('FAIL',errors.at(-1))}
    }
    try{await finalTest(browser,label)}catch(e){failed=true;errors.push(label+' final: '+e.stack);console.error('FAIL',errors.at(-1))}
+   try{await syllableBridgeTest(browser,label)}catch(e){failed=true;errors.push(label+' syllables: '+e.stack);console.error('FAIL',errors.at(-1))}
    try{await coOpTest(browser,label)}catch(e){failed=true;errors.push(label+' coop: '+e.stack);console.error('FAIL',errors.at(-1))}
    try{await skipNavigationTest(browser,label)}catch(e){failed=true;errors.push(label+' skip: '+e.stack);console.error('FAIL',errors.at(-1))}
    try{await skipCoopTest(browser,label)}catch(e){failed=true;errors.push(label+' skip-coop: '+e.stack);console.error('FAIL',errors.at(-1))}
