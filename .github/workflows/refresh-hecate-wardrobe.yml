@@ -1,4 +1,4 @@
-name: Refresh shared wardrobe links
+name: Refresh shared wardrobe links for Egyptian outfit
 on:
   push:
     paths: ['.github/workflows/refresh-hecate-wardrobe.yml']
@@ -22,7 +22,7 @@ jobs:
           for f in Path('.').rglob('*.html'):
             if f.is_relative_to('.git'):continue
             before=f.read_text('utf-8')
-            after=re.sub(r'wardrobe\.js\?v=\d+','wardrobe.js?v=5',before)
+            after=re.sub(r'wardrobe\.js\?v=\d+','wardrobe.js?v=6',before)
             if before!=after:
               f.write_text(after,'utf-8')
               print('REFRESHED',f)
@@ -35,6 +35,6 @@ jobs:
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add -- '*.html'
           if ! git diff --cached --quiet; then
-            git commit -m "Refresh shared wardrobe in all adventure scenes for Hecate costume"
+            git commit -m "Refresh wardrobe cache in all adventures for Egyptian moon outfit"
             git push
           fi
