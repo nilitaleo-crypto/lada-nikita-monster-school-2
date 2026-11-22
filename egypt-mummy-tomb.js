@@ -17,10 +17,10 @@ function paintCycle(el,row,col){
 }
 /* Four historically grounded canopic guardians. The heart stays with the mummy. */
 const jars=[
- {organ:'lungs',guardian:'Павиан',god:'Хапи',index:2,riddle:'Нас двое. Когда ты вдыхаешь, мы наполняемся воздухом. Без нас не подышать. Кто мы?'},
- {organ:'stomach',guardian:'Шакал',god:'Дуамутеф',index:1,riddle:'Я похож на мешочек. Внутри меня пища перемешивается и начинает перевариваться. Кто я?'},
- {organ:'liver',guardian:'Человек',god:'Имсети',index:3,riddle:'Я большой орган под рёбрами. Помогаю очищать кровь и перерабатывать пищу. Кто я?'},
- {organ:'intestines',guardian:'Сокол',god:'Кебехсенуф',index:0,riddle:'Я длинный и извилистый, словно змейка. После желудка пища путешествует по мне. Кто я?'}
+ {organ:'lungs',guardian:'Павиан',god:'Хапи',index:2,riddle:'Нас двое. Мы в груди и наполняемся воздухом при вдохе. Что мы?',hint:'Вспомни, чем мы дышим.'},
+ {organ:'stomach',guardian:'Шакал',god:'Дуамутеф',index:1,riddle:'Я похож на мешочек. Внутри меня начинает перевариваться еда. Кто я?',hint:'Подумай, куда еда попадает после того, как ты её проглотишь.'},
+ {organ:'liver',guardian:'Человек',god:'Имсети',index:3,riddle:'Я большой орган под правыми рёбрами. Помогаю очищать кровь. Кто я?',hint:'Это не желудок. Посмотри на большой красно-коричневый орган.'},
+ {organ:'intestines',guardian:'Сокол',god:'Кебехсенуф',index:0,riddle:'Я длинный, извиваюсь как змейка. После желудка пища идёт по мне. Кто я?',hint:'На рисунке он похож на множество петель.'}
 ];
 const jarByIndex=Object.fromEntries(jars.map(j=>[j.index,j]));
 const organs=['lungs','stomach','liver','intestines','heart'];
@@ -102,12 +102,12 @@ function render(){
   }
   $('mummyJarLabel').textContent=jarPhase==='complete'?'Все канопы защищены':jarSolved.size+' / 4 · Канопы';
   if(jarPhase==='selectJar'){
-   title(lastFilled===null?'Эти сосуды называются канопами. Египтяне хранили в них органы. Нажми на любой сосуд — он загадает загадку.':'Правильно! '+organNames[jarByIndex[lastFilled].organ]+' охраняет '+jarByIndex[lastFilled].god+'. Выбирай следующий сосуд!');
+   title(lastFilled===null?'Египтяне хранили органы в особых сосудах — канопах. Нажми на любой сосуд и отгадай его загадку.':'Верно! Ты нашла орган: '+organNames[jarByIndex[lastFilled].organ].toLowerCase()+'. Его охраняет '+jarByIndex[lastFilled].god+'. Выбирай следующий сосуд!');
    feedback('Нажми на сосуд с головой животного или человека.');
   }else if(jarPhase==='riddle'){
    const q=jarByIndex[selectedJar];
-   title('<strong>'+q.guardian+' спрашивает:</strong> '+q.riddle);
-   feedback(jarHint?'Подсказка: '+organNames[q.organ]+'. Теперь выбери картинку.':'Выбери орган на картинках снизу.');
+   $('mummySpeech').innerHTML='<strong>Канопа — '+q.guardian+':</strong> '+q.riddle;
+   feedback(jarHint?'Подсказка: '+q.hint:'Выбери картинку органа внизу.');
   }else if(jarPhase==='heart'){
    title('Все четыре канопы заполнены. Но какой орган египтяне оставляли внутри мумии?');
    feedback('Найди оставшийся орган.');
