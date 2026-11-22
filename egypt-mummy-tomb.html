@@ -44,6 +44,20 @@ header h1{font-size:clamp(17px,2.4vw,30px);font-weight:normal;margin:0;text-alig
 .cycle-slot.done:not(:last-child)::after{content:'➜';position:absolute;z-index:2;right:-12%;top:32%;width:21%;color:#ffefad;line-height:1;text-shadow:0 2px 2px #472b0c,0 0 8px #fff0a3;font-size:clamp(23px,2.7vw,36px);pointer-events:none}
 .no-cycle-art .cycle-tile{font-size:clamp(30px,4.3vw,58px);background-image:linear-gradient(#e9d6a6,#b9834d)!important}
 .no-cycle-art .cycle-slot.done{background-image:linear-gradient(#f7dc9c,#ad7d4d)!important}
+
+/* Kanopic protection puzzle: pictorial tiles sit on the tomb floor; no modal windows. */
+.organ-tray{position:absolute;z-index:9;left:40%;top:67%;width:57%;height:16%;display:grid;grid-template-columns:repeat(5,minmax(0,1fr));align-items:stretch;gap:1%;padding:.35%;border-top:3px solid #bd9155aa;border-bottom:3px solid #8e653baa;border-radius:9px;background:#58432e66}
+.organ-choice{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1px;min-width:0;min-height:56px;border:3px solid #d5af79;border-radius:10px;background:linear-gradient(165deg,#e9d7b0,#bd996b);color:#4d321f;padding:2px;box-shadow:0 3px 4px #261a1a88;touch-action:manipulation}
+.organ-choice svg{width:clamp(27px,4vw,53px);height:clamp(27px,4vw,53px);flex:1;max-height:70%;overflow:visible;stroke-linecap:round;stroke-linejoin:round}
+.organ-choice .organ-name{font:600 clamp(10px,.93vw,14px)/1 system-ui,sans-serif;white-space:nowrap}
+.organ-choice.selected{border-color:#d4f4a2;background:#cfe59a;box-shadow:0 0 15px #c5eb78b2}
+.organ-choice.used{opacity:.46;filter:grayscale(.45);border-color:#98b48d}
+.organ-choice.heart-ready{border-color:#ffa7a0;box-shadow:0 0 16px #ffd1a1;animation:pulse 2s ease-in-out infinite}
+.organ-choice:focus-visible{outline:3px solid #b5e5ff;outline-offset:1px}
+.jar.sealed{border-color:#a5df9d;background:#baf29635;box-shadow:0 0 16px #ffe1996f}
+.jar-mark{position:absolute;left:17%;bottom:8%;width:66%;height:36%;display:grid;place-items:center;border-radius:50%;border:2px solid #ffedac;background:#42775dbd;box-shadow:0 0 9px #fff0b6;font:bold clamp(17px,2vw,28px) Georgia,serif;color:#fff6c7;pointer-events:none}
+.heart-spot{position:absolute;z-index:10;left:21%;top:53%;width:10%;height:12%;display:grid;place-items:center;border:3px solid #ffe2ad;border-radius:45%;background:#9d3840a9;color:#fff4cb;font-size:clamp(23px,3vw,42px);box-shadow:0 0 22px #ffeab5;animation:pulse 1.9s ease-in-out infinite;touch-action:manipulation}
+@media(prefers-reduced-motion:reduce){.organ-choice.heart-ready,.heart-spot{animation:none!important}}
 .jar-targets{position:absolute;inset:0;z-index:8;pointer-events:none}
 .jar{pointer-events:auto;position:absolute;top:29%;width:5.6%;height:20%;border:3px solid #ffe3a100;background:#fff2ad00;border-radius:40% 40% 20% 20%;color:#fff9d6;transition:background .15s,border-color .15s}
 .jar:hover,.jar:focus-visible{border-color:#ffe3a1c9;background:#ffdd782c}
@@ -112,6 +126,14 @@ header h1{font-size:clamp(17px,2.4vw,30px);font-weight:normal;margin:0;text-alig
 <button class="jar" id="mummy-jar-3" aria-label="Сосуд с человеческой головой" type="button"></button>
 </div>
 <div class="jar-label" id="mummyJarLabel" hidden></div>
+<div class="organ-tray" id="mummyOrgans" hidden aria-label="Выбери знак органа">
+<button class="organ-choice" id="mummy-organ-lungs" type="button" aria-label="Лёгкие"></button>
+<button class="organ-choice" id="mummy-organ-stomach" type="button" aria-label="Желудок"></button>
+<button class="organ-choice" id="mummy-organ-liver" type="button" aria-label="Печень"></button>
+<button class="organ-choice" id="mummy-organ-intestines" type="button" aria-label="Кишечник"></button>
+<button class="organ-choice" id="mummy-organ-heart" type="button" aria-label="Сердце"></button>
+</div>
+<button class="heart-spot" id="mummyHeartSpot" type="button" hidden aria-label="Найди сердце на груди Тутенштейна">♥</button>
 <div class="scale-numbers" id="mummyScaleNumbers" hidden><span id="mummyTarget">3</span><span id="mummyCurrent">0</span></div>
 <div class="weights" id="mummyWeights" hidden aria-label="Добавить гири на весы">
 <button class="weight" type="button" id="mummy-weight-1">1</button>
