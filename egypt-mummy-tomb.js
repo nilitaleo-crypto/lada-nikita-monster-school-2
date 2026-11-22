@@ -85,7 +85,7 @@ function render(){
   $('mummyHeartSpot').hidden=jarPhase!=='locateHeart';
   for(let i=0;i<4;i++){
    const b=$('mummy-jar-'+i),done=jarSolved.has(i);
-   b.classList.toggle('sealed',done);b.classList.toggle('selected',jarPhase==='jar'&&i===jars[round]?.index);
+   b.classList.toggle('sealed',done);b.classList.remove('selected');
    b.innerHTML=done?'<span class="jar-mark" aria-hidden="true">✓</span>':'';
    b.disabled=done||jarPhase!=='jar';
   }
