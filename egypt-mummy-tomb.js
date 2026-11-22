@@ -15,19 +15,31 @@ function paintCycle(el,row,col){
  const place=cycleFrame(row,col);el.style.backgroundPosition=place.x+' '+place.y;el.style.backgroundImage="url('images/egypt-mummy-cycles-hq.avif')";
  el.dataset.cycleRow=String(row);el.dataset.cycleCol=String(col);
 }
+/* Four historically grounded canopic guardians. The heart stays with the mummy. */
 const jars=[
- {name:'соколом',index:1,thing:'цветок лотоса'},
- {name:'шакалом',index:0,thing:'волшебный камень'},
- {name:'обезьяной',index:2,thing:'золотое зерно'},
- {name:'человеческой головой',index:3,thing:'финики'}
+ {organ:'lungs',guardian:'обезьяны',god:'Хапи',index:2,question:'Мы дышим благодаря этим двум органам. Найди их знак.'},
+ {organ:'stomach',guardian:'шакала',god:'Дуамутеф',index:1,question:'В каком органе еда начинает перевариваться?'},
+ {organ:'liver',guardian:'человека',god:'Имсети',index:3,question:'Какой большой орган помогает перерабатывать пищу и очищать кровь?'},
+ {organ:'intestines',guardian:'сокола',god:'Кебехсенуф',index:0,question:'После желудка пища проходит по длинному извилистому пути. Как он называется?'}
 ];
+const organs=['lungs','stomach','liver','intestines','heart'];
+const organNames={lungs:'Лёгкие',stomach:'Желудок',liver:'Печень',intestines:'Кишечник',heart:'Сердце'};
+const organArt={
+ lungs:'<path d="M27 9v19M21 24q-4-6-8-4C3 28 4 50 14 53q10 2 11-11V24m8 0q4-6 8-4 10 8 9 26-1 10-10 7-10-2-11-11V24" fill="#c9747f" stroke="#804853" stroke-width="3"/><path d="M27 10v17" stroke="#f7dfc4" stroke-width="5"/>',
+ stomach:'<path d="M25 9q-2 19 6 19 7 2 13 11 8 11 0 18-12 9-26 0-7-6-4-18 2-9 11-10Z" fill="#dca468" stroke="#8b603f" stroke-width="3"/><path d="M20 43q14 13 24 1" fill="none" stroke="#fff0cc" stroke-width="4"/>',
+ liver:'<path d="M6 22q16-18 38-10 11 5 12 22-2 13-17 18-26 7-34-8Z" fill="#ab6667" stroke="#75423f" stroke-width="3"/><path d="M12 30q18-9 34 0" fill="none" stroke="#d9a2a0" stroke-width="3"/>',
+ intestines:'<rect x="9" y="12" width="45" height="46" rx="17" fill="#e0a19a" stroke="#95625c" stroke-width="3"/><path d="M19 22h16q8 0 8 8t-8 8H22q-7 0-7 6t9 6h20M25 17v36" stroke="#965b60" stroke-width="4" fill="none"/>',
+ heart:'<path d="M31 56 9 32Q-2 13 15 11q11 0 16 10 6-14 19-10 17 8 4 25Z" fill="#c75b64" stroke="#953c48" stroke-width="4"/>'
+};
+const art=k=>'<svg viewBox="0 0 64 64" aria-hidden="true" focusable="false">'+organArt[k]+'</svg><span class="organ-name">'+organNames[k]+'</span>';
 const targets=[5,7,8,9];
 const nameGame={
  name:{order:['МЕ','РИ'],options:['РИ','МИ','МЕ','РА']},
  sentence:{order:['МЕ','РИ','ВИ','ДИТ','РА'],options:['РА','ВИ','МЕ','ДИТ','РИ']}
 };
-const groups=['mummyFresco','mummyFrescoSlots','mummyJars','mummyJarLabel','mummyScaleNumbers','mummyWeights','mummyPlaced','mummyNameBoard','mummyNameLabel','mummyScarab'];
+const groups=['mummyFresco','mummyFrescoSlots','mummyJars','mummyJarLabel','mummyOrgans','mummyHeartSpot','mummyScaleNumbers','mummyWeights','mummyPlaced','mummyNameBoard','mummyNameLabel','mummyScarab'];
 let stage='intro',round=0,pos=0,chosen=[],pieces=[],namePhase='name',errors=0,correct=0,unlocked=false;
+let jarPhase='symbol', selectedOrgan=null,jarSolved=new Set(),heartFound=false;
 function play(kind){try{void window.TivvigHadesSounds?.play(kind)}catch(e){}}
 function title(t){$('mummySpeech').innerHTML='<strong>Мумия:</strong> '+t}
 function feedback(t){$('mummyStatus').textContent=t}
@@ -69,16 +81,41 @@ function render(){
   return;
  }
  if(stage==='jars'){
-  $('mummyJars').hidden=false;$('mummyJarLabel').hidden=false;
-  const q=jars[round];
-  title('Я спрятала '+q.thing+'. Найди сосуд с '+q.name+'.');
-  $('mummyJarLabel').textContent='Найди сосуд: '+(round+1)+' / '+jars.length;
+  $('mummyJars').hidden=false;$('mummyJarLabel').hidden=false;$('mummyOrgans').hidden=false;
+  $('mummyHeartSpot').hidden=jarPhase!=='locateHeart';
   for(let i=0;i<4;i++){
-   const b=$('mummy-jar-'+i);b.classList.toggle('selected',pos===1&&i===q.index);
-   b.disabled=pos===1;
+   const b=$('mummy-jar-'+i),done=jarSolved.has(i);
+   b.classList.toggle('sealed',done);b.classList.toggle('selected',jarPhase==='jar'&&i===jars[round]?.index);
+   b.innerHTML=done?'<span class="jar-mark" aria-hidden="true">✓</span>':'';
+   b.disabled=done||jarPhase!=='jar';
   }
-  feedback(pos?'Верно! Сосуд найден.':'Нажми на нужный сосуд.');
-  if(pos)button(round===jars.length-1?'К весам →':'Следующий сосуд →');
+  for(const kind of organs){
+   const b=$('mummy-organ-'+kind);
+   const done=jars.slice(0,round).some(q=>q.organ===kind);
+   b.classList.toggle('selected',selectedOrgan===kind&&jarPhase==='jar');
+   b.classList.toggle('used',done);
+   b.classList.toggle('heart-ready',kind==='heart'&&jarPhase==='heart');
+   b.disabled=done||(jarPhase==='symbol'&&kind==='heart')||jarPhase==='jar'||(jarPhase!=='symbol'&&!(kind==='heart'&&jarPhase==='heart'));
+  }
+  $('mummyJarLabel').textContent=jarPhase==='complete'?'Все печати на месте!':(Math.min(round+1,4)+' / 4 · Канопы');
+  if(jarPhase==='symbol'){
+   title('В канопах хранили органы. '+jars[round].question);
+   feedback('Выбери знак органа на каменных плитках.');
+  }else if(jarPhase==='jar'){
+   const q=jars[round];
+   title(organNames[q.organ]+' защищал '+q.god+' — хранитель с головой '+q.guardian+'. Найди его канопу!');
+   feedback('Теперь нажми на сосуд с нужной крышкой.');
+  }else if(jarPhase==='heart'){
+   title('Все четыре канопы защищены. Но куда египтяне помещали сердце?');
+   feedback('Выбери оставшееся сердце.');
+  }else if(jarPhase==='locateHeart'){
+   title('Сердце оставляли внутри мумии — оно понадобится на суде Анубиса. Где моё?');
+   feedback('Найди светящееся сердце у Тутенштейна.');
+  }else if(jarPhase==='complete'){
+   title('Да! Сердце остаётся со мной. Теперь можно отправиться к весам Анубиса!');
+   feedback('Четыре канопы защищены, сердце найдено.');
+   button('К весам →');
+  }
   return;
  }
  if(stage==='scales'){
@@ -133,9 +170,8 @@ function next(){
   render();play('tap');return
  }
  if(stage==='jars'){
-  if(!pos)return;round++;pos=0;
-  if(round>=jars.length){stage='scales';round=0;pieces=[]}
-  render();play('tap');return
+  if(jarPhase!=='complete')return;
+  stage='scales';round=0;pieces=[];render();play('tap');return
  }
  if(stage==='scales'){
   if(pieces.reduce((a,b)=>a+b,0)!==targets[round])return;
@@ -156,10 +192,27 @@ function chooseFresco(i){
  if(fresco[round].options[i]!==fresco[round].order[pos]){errors++;feedback('Подумай, что было раньше.');play('wrong');return}
  chosen.push(i);pos++;correct++;render();play(pos===fresco[round].order.length?'success':'tap');
 }
+function chooseOrgan(kind){
+ if(stage!=='jars'||!organs.includes(kind))return;
+ if(jarPhase==='symbol'){
+  if(kind!==jars[round].organ){errors++;feedback('Другой орган! Посмотри на рисунки ещё раз.');play('wrong');return}
+  selectedOrgan=kind;jarPhase='jar';correct++;render();play('tap');return;
+ }
+ if(jarPhase==='heart'&&kind==='heart'){
+  jarPhase='locateHeart';selectedOrgan=null;correct++;render();play('success');
+ }
+}
 function chooseJar(i){
- if(stage!=='jars'||pos)return;
- if(i!==jars[round].index){errors++;feedback('Посмотри на головы сосудов.');play('wrong');return}
- pos=1;correct++;render();play('success');
+ if(stage!=='jars'||jarPhase!=='jar')return;
+ const q=jars[round];
+ if(i!==q.index){errors++;feedback('Нужен хранитель с головой '+q.guardian+'.');play('wrong');return}
+ jarSolved.add(i);selectedOrgan=null;round++;correct++;
+ jarPhase=round>=jars.length?'heart':'symbol';
+ render();play('success');
+}
+function findHeart(){
+ if(stage!=='jars'||jarPhase!=='locateHeart')return;
+ heartFound=true;jarPhase='complete';correct++;render();play('success');
 }
 function chooseWeight(n){
  if(stage!=='scales')return;
@@ -189,22 +242,31 @@ function save(){
 function finish(){stage='done';save();render();play('finish')}
 function reset(){
  stage='intro';round=0;pos=0;chosen=[];pieces=[];namePhase='name';errors=0;correct=0;
+ jarPhase='symbol';selectedOrgan=null;jarSolved.clear();heartFound=false;
  render()
 }
 function outfit(){try{window.TivvigWardrobe?.equip($('mummyLada'))}catch(e){}}
 $('mummyAction').addEventListener('click',next);
 for(let i=0;i<4;i++)$('mummy-jar-'+i).addEventListener('click',()=>chooseJar(i));
+for(const kind of organs){$('mummy-organ-'+kind).innerHTML=art(kind);$('mummy-organ-'+kind).addEventListener('click',()=>chooseOrgan(kind))}
+$('mummyHeartSpot').addEventListener('click',findHeart);
 for(let i=1;i<=4;i++)$('mummy-weight-'+i).addEventListener('click',()=>chooseWeight(i));
 $('mummy-undo').addEventListener('click',undoWeight);
 window.addEventListener('tivvig-outfit-changed',outfit);
 window.addEventListener('tivvig-inventory-changed',outfit);
 window.addEventListener('pageshow',outfit);
 window.TivvigMummyDebug=Object.freeze({
- state:()=>({stage,round,pos,namePhase,pieces:[...pieces],chosen:[...chosen],correct,errors,reward:(()=>{try{return localStorage.getItem(REWARD)==='unlocked'}catch(e){return false}})()}),
+ state:()=>({stage,round,pos,namePhase,jarPhase,selectedOrgan,jarSolved:[...jarSolved],heartFound,pieces:[...pieces],chosen:[...chosen],correct,errors,reward:(()=>{try{return localStorage.getItem(REWARD)==='unlocked'}catch(e){return false}})()}),
  reset,finish,advance:()=>{
   if(stage==='intro'||stage==='done')return $('mummyAction').click();
   if(stage==='fresco')return pos===fresco[round].order.length?$('mummyAction').click():$('mummy-fresco-'+fresco[round].options.indexOf(fresco[round].order[pos]))?.click();
-  if(stage==='jars')return pos?$('mummyAction').click():$('mummy-jar-'+jars[round].index)?.click();
+  if(stage==='jars'){
+   if(jarPhase==='symbol')return $('mummy-organ-'+jars[round].organ)?.click();
+   if(jarPhase==='jar')return $('mummy-jar-'+jars[round].index)?.click();
+   if(jarPhase==='heart')return $('mummy-organ-heart')?.click();
+   if(jarPhase==='locateHeart')return $('mummyHeartSpot')?.click();
+   if(jarPhase==='complete')return $('mummyAction').click();
+  }
   if(stage==='scales'){
    const rem=targets[round]-pieces.reduce((a,b)=>a+b,0);
    if(!rem)return $('mummyAction').click();
