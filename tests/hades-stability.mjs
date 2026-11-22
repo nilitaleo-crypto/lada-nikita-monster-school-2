@@ -100,6 +100,80 @@ async function coOpTest(browser,label){
   console.log('PASS',label,'co-op local-only sound');
  }finally{await context.close()}
 }
+
+const NEXT_PAGES=[
+ ['hades-gate.html','hades-cerberus.html'],
+ ['hades-cerberus.html','hades-charon.html'],
+ ['hades-charon.html','hades-angler-chase.html'],
+ ['hades-angler-chase.html','hades-hypnos.html'],
+ ['hades-hypnos.html','hades-hecate.html'],
+ ['hades-hecate.html','hades-final.html']
+];
+async function skipNavigationTest(browser,label){
+ const context=await browser.newContext({viewport:{width:1024,height:768},isMobile:true,hasTouch:true,reducedMotion:'reduce'});
+ const page=await context.newPage(),faults=[];page.on('pageerror',e=>faults.push(e.message));
+ try{
+  for(const [start,next] of NEXT_PAGES){
+   await page.goto(url+start,{waitUntil:'load'});
+   const skip=page.locator('#hadesSkipPage');
+   assert.equal(await skip.count(),1,start+' skip link exists');
+   assert.ok((await skip.innerText()).includes('Пропустить'),'Skip text visible on '+start);
+   const box=await skip.boundingBox();
+   assert.ok(box&&box.width>=85&&box.height>=37,'Touch target for '+start);
+   assert.ok((await skip.getAttribute('href')).endsWith(next),'No chapters omitted after '+start);
+   await skip.click({timeout:6500});
+   await page.waitForURL(url+next,{timeout:9000});
+  }
+  await page.goto(url+'hades-final.html',{waitUntil:'load'});
+  await page.waitForFunction(()=>!!window.TivvigHadesDebug);
+  await page.evaluate(()=>window.TivvigHadesDebug.reset());
+  for(let i=0;i<4;i++){
+   assert.equal(await page.evaluate(()=>TivvigHadesDebug.state().stage),i);
+   assert.equal(await page.locator('#hadesSkipTrial').isVisible(),true,'Palace skip button visible');
+   await page.locator('#hadesSkipTrial').click();
+   assert.equal(await page.evaluate(()=>TivvigHadesDebug.state().stage),i+1,'Palace advances one mini-game');
+   assert.equal(await page.evaluate(()=>localStorage.getItem('tivvig_hades_journey_stage_v1')),String(i+1),'Skipped chapter resume preserved');
+   assert.equal(await page.evaluate(()=>localStorage.getItem('tivvig_hades_persephone_freed_v1')),null,'Skipping does not grant Persephone finale');
+  }
+  assert.equal(await page.locator('#hadesSkipTrial').isVisible(),false,'Last chapter uses direct next location');
+  assert.equal(await page.locator('#hadesSkipPalace').isVisible(),true);
+  await page.locator('#hadesSkipPalace').click();
+  await page.waitForURL(url+'egypt-apophis.html',{timeout:9000});
+  assert.deepEqual(faults,[],'No errors while skipping');
+  console.log('PASS',label,'skip every Hades page and all four palace minigames');
+ }finally{await context.close()}
+}
+async function skipCoopTest(browser,label){
+ const context=await browser.newContext({viewport:{width:1280,height:800},reducedMotion:'reduce'});
+ const page=await context.newPage();
+ try{
+  await page.goto(url+'index.html');
+  await page.evaluate(base=>{
+   window.hadesSkipRelay=[];
+   window.addEventListener('message',e=>{
+    if(e.data?.from!=='tivvig-world')return;
+    window.hadesSkipRelay.push(e.data);
+    if(e.data.type==='click')for(const f of document.querySelectorAll('iframe[data-hades-skip-test]')){
+     f.contentWindow.postMessage({from:'tivvig-parent',type:'click',value:e.data.value},location.origin);
+    }
+   });
+   for(const role of ['teacher','student']){
+    const f=document.createElement('iframe');
+    f.dataset.hadesSkipTest=role;f.id='hades-skip-'+role;
+    f.src=base+'hades-final.html?coop=1&role='+role+'&seed=skip-test';
+    f.style.cssText='width:1024px;height:720px;display:block';
+    document.body.appendChild(f);
+   }
+  },url);
+  const student=page.frameLocator('#hades-skip-student');
+  await student.locator('#hadesSkipTrial').waitFor({timeout:10000});
+  await page.waitForFunction(()=>window.hadesSkipRelay.filter(e=>e.type==='ready').length>=2,{timeout:15000});
+  await student.locator('#hadesSkipTrial').click();
+  await page.waitForFunction(()=>[...document.querySelectorAll('iframe[data-hades-skip-test]')].every(f=>f.contentWindow?.TivvigHadesDebug?.state().stage===1),{timeout:9000});
+  console.log('PASS',label,'palace chapter skip mirrored on both co-op devices');
+ }finally{await context.close()}
+}
+
 try{
  await ready();
  for(const [label,engine] of [['chromium',chromium],['webkit',webkit]]){
@@ -111,6 +185,8 @@ try{
    }
    try{await finalTest(browser,label)}catch(e){failed=true;errors.push(label+' final: '+e.stack);console.error('FAIL',errors.at(-1))}
    try{await coOpTest(browser,label)}catch(e){failed=true;errors.push(label+' coop: '+e.stack);console.error('FAIL',errors.at(-1))}
+   try{await skipNavigationTest(browser,label)}catch(e){failed=true;errors.push(label+' skip: '+e.stack);console.error('FAIL',errors.at(-1))}
+   try{await skipCoopTest(browser,label)}catch(e){failed=true;errors.push(label+' skip-coop: '+e.stack);console.error('FAIL',errors.at(-1))}
   }finally{await browser.close()}
  }
 }finally{
