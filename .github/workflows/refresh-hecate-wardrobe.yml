@@ -22,7 +22,7 @@ jobs:
           for f in Path('.').rglob('*.html'):
             if f.is_relative_to('.git'):continue
             before=f.read_text('utf-8')
-            after=re.sub(r'wardrobe\.js\?v=\d+','wardrobe.js?v=6',before)
+            after=re.sub(r'wardrobe\.js\?v=\d+','wardrobe.js?v=7',before)
             if before!=after:
               f.write_text(after,'utf-8')
               print('REFRESHED',f)
