@@ -46,15 +46,15 @@ const tutor=$('mummyTutor');
 let poseTimeout=null;
 function basePose(){
  if(stage==='intro')return 'talk';
- if(stage==='fresco')return pos===fresco[round].order.length?'talk':'point-jars';
+ if(stage==='fresco')return pos===fresco[round].order.length?'talk':pos%2===1?'idle':'point-jars';
  if(stage==='jars'){
-  if(jarPhase==='selectJar')return 'point-jars';
+  if(jarPhase==='selectJar')return lastFilled===null?'point-jars':'idle';
   if(jarPhase==='riddle')return 'point-organs';
   if(jarPhase==='heart'||jarPhase==='locateHeart')return 'heart';
   return 'happy';
  }
  if(stage==='scales')return 'scales';
- if(stage==='name')return 'talk';
+ if(stage==='name')return pos===0?'talk':'idle';
  if(stage==='done')return 'celebrate';
  return 'idle';
 }
