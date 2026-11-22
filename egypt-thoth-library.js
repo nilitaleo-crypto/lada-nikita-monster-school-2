@@ -4,6 +4,8 @@
  const $=id=>document.getElementById(id),scene=$('thothScene');
  if(!scene||window.TivvigThothDebug)return;
  const REWARD='tivvig_egypt_thoth_feather_v1';
+ // Native inline vector avoids mobile WebKit's dynamic image-load race.
+ const FEATHER_ART="<svg class=\"feather\" xmlns=\"http://www.w3.org/2000/svg\" width=\"360\" height=\"420\" viewBox=\"0 0 360 420\" role=\"img\" aria-label=\"Волшебное перо Тота\">\n <defs><linearGradient id=\"feather\" x1=\"0\" y1=\"0\" x2=\"1\" y2=\"1\"><stop stop-color=\"#e4fbff\"/><stop offset=\".28\" stop-color=\"#47b6cf\"/><stop offset=\".62\" stop-color=\"#225eaa\"/><stop offset=\"1\" stop-color=\"#1b2863\"/></linearGradient><linearGradient id=\"gold\" x1=\"0\" y1=\"0\" x2=\"1\" y2=\"1\"><stop stop-color=\"#fff1ac\"/><stop offset=\".65\" stop-color=\"#c89b35\"/><stop offset=\"1\" stop-color=\"#765129\"/></linearGradient></defs>\n <g opacity=\".8\" fill=\"#ffd67c\"><path d=\"M70 110l6 13 14 6-14 6-6 13-6-13-14-6 14-6z\"/><path d=\"M305 181l5 11 12 5-12 4-5 12-5-12-12-4 12-5z\"/><path d=\"M235 55l7 15 15 7-15 6-7 15-7-15-16-6 16-7z\"/></g>\n <path d=\"M105 329Q22 217 98 117Q155 42 282 21Q253 98 238 176Q210 273 105 329Z\" fill=\"url(#feather)\" stroke=\"url(#gold)\" stroke-width=\"7\"/>\n <path d=\"M96 354Q198 184 279 26\" fill=\"none\" stroke=\"#fff0b0\" stroke-linecap=\"round\" stroke-width=\"10\"/>\n <g stroke=\"#d8faff\" stroke-width=\"3\" opacity=\".85\" fill=\"none\"><path d=\"M127 294Q77 280 63 242M147 256Q92 236 68 194M172 217Q103 180 89 140M200 168Q131 127 125 96M223 124Q169 87 171 66\"/><path d=\"M130 293Q193 268 216 224M155 255Q224 221 242 177M180 211Q237 171 258 115M208 161Q258 113 272 65\"/></g>\n <path d=\"M95 352Q87 371 77 399\" fill=\"none\" stroke=\"url(#gold)\" stroke-width=\"12\" stroke-linecap=\"round\"/><circle cx=\"79\" cy=\"394\" r=\"8\" fill=\"#fff8cb\"/>\n</svg>";
  const SIGNS={
   sun:{name:'солнца',answer:'солнце',art:'<circle cx="50" cy="50" r="25" fill="#d9a126" stroke="#905c1b" stroke-width="5"/><circle cx="50" cy="50" r="13" fill="#ffe39a"/>'},
   water:{name:'воды',answer:'вода',art:'<path d="M6 30 Q18 16 30 30 T54 30 T78 30 T101 30 M6 51 Q18 37 30 51 T54 51 T78 51 T101 51 M6 72 Q18 58 30 72 T54 72 T78 72 T101 72" stroke="#267ca9" stroke-width="8" stroke-linecap="round" fill="none"/>'},
@@ -106,7 +108,7 @@
  function finish(){
   clear();setStage('done');phase='done';locked=true;
   heading('Перо Тота','Все истории спасены!');say('Ты прочитала мои папирусы. Возьми перо мудрости! Впереди солнечная ладья Ра.');
-  $('boardDisplay').innerHTML='<img class="feather" src="images/egypt-thoth-feather.svg" alt="Волшебное перо Тота">';
+  $('boardDisplay').innerHTML=FEATHER_ART;
   $('boardReadout').className='readout complete';$('boardReadout').textContent='Ла-да — хра-ни-тель-ни-ца зна-ний!';
   $('boardAction').textContent='Сыграть снова';$('boardAction').hidden=false;locked=true;$('thothToMummy').hidden=false;saveReward();play('finish');
  }
