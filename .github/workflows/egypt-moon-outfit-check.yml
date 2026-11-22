@@ -1,0 +1,41 @@
+name: Egyptian Moon outfit cross-device check
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'wardrobe.js'
+      - 'wardrobe.html'
+      - 'coop.js'
+      - 'coop.html'
+      - 'game-registry.js'
+      - 'egypt-nile-mystery.html'
+      - 'egypt-nile-mystery.js'
+      - 'egypt-sphinx-temple.html'
+      - 'egypt-sphinx-temple.js'
+      - 'images/lada-egypt-moon-outfit.webp'
+      - 'firebase.database.rules.json'
+      - 'tests/egypt-nile-mystery.spec.mjs'
+      - '.github/workflows/egypt-moon-outfit-check.yml'
+  workflow_dispatch:
+jobs:
+  moon-costume:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Validate rules and JavaScript syntax
+        run: |
+          node --check wardrobe.js
+          node --check egypt-nile-mystery.js
+          node --check egypt-sphinx-temple.js
+          node --check coop.js
+          node -e "JSON.parse(require('fs').readFileSync('firebase.database.rules.json','utf8'))"
+      - name: Install browser test runner
+        run: npm install --no-save playwright
+      - name: Install Chromium and WebKit
+        run: npx playwright install --with-deps chromium webkit
+      - name: Test Nile reward, wardrobe, legacy progress and co-op touch events
+        run: node tests/egypt-nile-mystery.spec.mjs
