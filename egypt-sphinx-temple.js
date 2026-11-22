@@ -4,6 +4,10 @@
  const $=id=>document.getElementById(id), scene=$('sphinxScene');
  if(!scene || window.TivvigSphinxDebug)return;
  const REWARD='tivvig_egypt_sphinx_temple_v1';
+ const dress=()=>window.TivvigWardrobe?.equip($('sphinxLada'));
+ window.addEventListener('tivvig-outfit-changed',dress);
+ window.addEventListener('tivvig-inventory-changed',dress);
+ window.addEventListener('pageshow',dress);
  // Folk riddles previously selected for the project; the answers are pictorial.
  const riddles=[
   {q:'Зелёные глаза — всем мышам гроза.',opts:[['Кошка','🐈'],['Собака','🐕'],['Мышь','🐭']],correct:0,hint:'Этот зверь мурлычет.'},
@@ -118,5 +122,5 @@
   begin,choose,checkpoint,extra,finish,reset,
   correctNow:()=>{if(stage==='quiz')choose(riddles[idx].correct)}
  });
- reset();
+ reset();dress();
 })();
