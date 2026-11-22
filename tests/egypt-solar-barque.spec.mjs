@@ -52,7 +52,7 @@ async function solo(browser,browserName,profile){
  assert.equal(await page.evaluate(()=>TivvigSolarDebug.state().stage),'sky');
  assert.equal(await page.locator('#solarCompass').isVisible(),false,'Compass disappears for clear sky game');
  await page.locator('#solar-sun-2').click();
- assert.equal(await page.evaluate(()=>TivvigSolarDebug.state().errors),1,'Wrong position does not advance');
+ assert.equal(await page.evaluate(()=>TivvigSolarDebug.state().errors),2,'Wrong position is rejected after a harmless compass mistake');
  await page.locator('#solar-sun-0').click();
  assert.equal(await page.evaluate(()=>TivvigSolarDebug.state().picture),'sunrise','AI sunrise scene on wake-up');
  assert.equal(await page.locator('#solarMovingSun').getAttribute('data-stop'),'0','Sun appears over eastern horizon');
