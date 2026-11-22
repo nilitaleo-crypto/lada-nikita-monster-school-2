@@ -305,10 +305,11 @@ header h1{margin:0;font-size:clamp(18px,2.5vw,28px);font-weight:normal;letter-sp
 #soundHint{display:none!important}
 
 </style>
+<link rel="stylesheet" href="hades-skip.css?v=1">
 </head>
 <body>
 <main>
-<header><a href="hades-hecate.html" class="back">← Геката</a><h1>Дворец Аида</h1><a href="index.html" class="back">⌂ Карта</a></header>
+<header><a href="hades-hecate.html" class="back">← Геката</a><h1>Дворец Аида</h1><button type="button" class="hades-skip" id="hadesSkipTrial" aria-label="Пропустить текущее испытание во дворце Аида">Пропустить →</button><a href="egypt-apophis.html" class="hades-skip" id="hadesSkipPalace" aria-label="Пропустить последнее испытание и перейти в Египет" hidden>В Египет →</a><a href="index.html" class="back">⌂ Карта</a></header>
 <section class="scene" id="stage" data-stage="0" aria-label="Последовательное приключение в подземном царстве">
 <img id="backdrop" class="backdrop" src="images/hades-throne-grand.webp" alt="Аид и Персефона возвышаются на отдельных тронах среди чудовищ, теней и голубых факелов" fetchpriority="high" draggable="false">
 <div class="mist" aria-hidden="true"></div><div class="underworld-motion" aria-hidden="true"></div><div class="ambience" id="ambience" aria-hidden="true"></div>
@@ -349,7 +350,7 @@ header h1{margin:0;font-size:clamp(18px,2.5vw,28px);font-weight:normal;letter-sp
 </main>
 <script src="wardrobe.js?v=5" defer></script>
 <script src="game-registry.js?v=3" defer></script>
-<script src="hades-final.js?v=3" defer></script>
+<script src="hades-final.js?v=4" defer></script>
 <script src="hades-sounds.js?v=1" defer></script>
 <script src="game-runtime.js?v=5" defer></script>
 </body>
