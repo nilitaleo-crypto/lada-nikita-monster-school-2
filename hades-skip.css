@@ -1,0 +1,18 @@
+/* A small optional escape hatch for the Underworld route.
+   Ordinary navigation: skipping does not award game prizes. */
+.hades-skip{
+ display:inline-flex;align-items:center;justify-content:center;flex:0 0 auto;
+ min-height:42px;min-width:114px;padding:7px 12px;
+ background:#24334bbf;border:1px solid #c9b18c;border-radius:11px;
+ color:#f3e4c9;text-decoration:none;font:600 clamp(13px,1.1vw,16px)/1.2 system-ui,sans-serif;
+ box-shadow:0 2px 7px #0a102052;white-space:nowrap;
+ touch-action:manipulation;-webkit-tap-highlight-color:transparent;
+}
+.hades-skip:hover,.hades-skip:focus-visible{background:#3d5267;color:#fff8e3;border-color:#f1dba9}
+.hades-skip:focus-visible{outline:3px solid #9ddffa;outline-offset:2px}
+header:has(>.hades-skip){flex-wrap:wrap}
+header .hades-skip{margin-left:auto}
+@media(max-width:650px){
+ .hades-skip{min-width:100px;min-height:40px;padding:5px 9px;font-size:13px}
+ header .hades-skip{margin-left:auto}
+}
