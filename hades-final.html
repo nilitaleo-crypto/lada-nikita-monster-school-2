@@ -304,6 +304,23 @@ header h1{margin:0;font-size:clamp(18px,2.5vw,28px);font-weight:normal;letter-sp
 /* One local sound-check button lives in the header on every Hades page. */
 #soundHint{display:none!important}
 
+
+/* Syllable-reading version: only the current short word and two clear choices. */
+.scene[data-stage="2"] .word-area{padding-top:8%;width:59%;max-width:59%;gap:10px}
+.scene[data-stage="2"] .word-area .prompt{font:700 clamp(21px,2.35vw,33px)/1.18 Georgia,serif;padding:10px 14px;background:#10293fdb;border-color:#84cfebc7}
+.scene[data-stage="2"] .word-bridge{gap:clamp(7px,1.1vw,14px)}
+.scene[data-stage="2"] .word-step{min-height:clamp(47px,5.8vw,73px);font:bold clamp(15px,1.7vw,22px)/1.1 Georgia,serif;border-radius:30% 35% 23% 25%}
+.scene[data-stage="2"] .word-step.partial{border-color:#f6d28d;background:#375b6ca8;color:#fff0ce}
+.scene[data-stage="2"] .word-options{grid-template-columns:repeat(2,minmax(0,1fr));width:min(100%,410px);gap:clamp(13px,2vw,27px);margin:4px auto 0}
+.scene[data-stage="2"] .word-options button{min-height:clamp(65px,7vw,88px);border-radius:22px;font:bold clamp(25px,2.8vw,38px)/1 Georgia,serif;padding:6px 10px;background:linear-gradient(#214c65,#162f47);border:3px solid #a2e0f0b8;touch-action:manipulation}
+.scene[data-stage="2"] .word-options button:disabled{opacity:.32}
+.scene[data-stage="2"] .bridge-track i:not(.complete){opacity:.12}
+@media(max-width:760px){
+ .scene[data-stage="2"] .word-area{width:69%;max-width:69%;padding-top:13%}
+ .scene[data-stage="2"] .word-options{gap:10px}
+ .scene[data-stage="2"] .word-options button{min-height:64px;font-size:clamp(24px,4vw,34px)}
+}
+
 </style>
 <link rel="stylesheet" href="hades-skip.css?v=1">
 </head>
@@ -350,7 +367,7 @@ header h1{margin:0;font-size:clamp(18px,2.5vw,28px);font-weight:normal;letter-sp
 </main>
 <script src="wardrobe.js?v=5" defer></script>
 <script src="game-registry.js?v=3" defer></script>
-<script src="hades-final.js?v=5" defer></script>
+<script src="hades-final.js?v=6" defer></script>
 <script src="hades-sounds.js?v=1" defer></script>
 <script src="game-runtime.js?v=5" defer></script>
 </body>
