@@ -7,6 +7,7 @@
   const MONANKAKA='tivvig_outfit_monankaka_unlocked_v1';
   const HECATE='tivvig_outfit_hecate_unlocked_v1';
   const EGYPT_MOON='tivvig_outfit_egypt_moon_unlocked_v1';
+  const NILE_CASE='tivvig_egypt_sphinx_investigation_v1';
   const CHAPTER=[
     'tivvig_reward_jungle_friends_v1',
     'tivvig_reward_merman_waterhouse_v1',
@@ -29,7 +30,13 @@
     if(complete&&!already)set(MERMAID,'unlocked');
     return {unlocked:already||complete,newlyUnlocked:complete&&!already};
   }
-  function unlocked(id){return id==='default'||(id==='mermaid'&&checkUnlock().unlocked)||(id==='stars'&&get(STARS)==='unlocked')||(id==='monankaka'&&get(MONANKAKA)==='unlocked')||(id==='hecate'&&get(HECATE)==='unlocked')||(id==='egyptMoon'&&get(EGYPT_MOON)==='unlocked')}
+  function egyptMoonUnlocked(){
+    if(get(EGYPT_MOON)==='unlocked')return true;
+    // Existing saves from the Nile chapter also receive this newly added prize.
+    if(get(NILE_CASE)==='unlocked'){set(EGYPT_MOON,'unlocked');return true}
+    return false;
+  }
+  function unlocked(id){return id==='default'||(id==='mermaid'&&checkUnlock().unlocked)||(id==='stars'&&get(STARS)==='unlocked')||(id==='monankaka'&&get(MONANKAKA)==='unlocked')||(id==='hecate'&&get(HECATE)==='unlocked')||(id==='egyptMoon'&&egyptMoonUnlocked())}
   function selected(){const id=get(SELECTED)||'default';return unlocked(id)?id:'default'}
   function select(id){if(!CATALOG.some(x=>x.id===id)||!unlocked(id))return false;set(SELECTED,id);window.dispatchEvent(new CustomEvent('tivvig-outfit-changed',{detail:{id}}));return true}
   function equip(container){
@@ -61,5 +68,5 @@
   }
   function rememberChapter(){const status=checkUnlock();return status}
   window.TivvigWardrobe={CATALOG,CHAPTER,checkUnlock,isChapterComplete,unlocked,selected,select,equip,rememberChapter};
-  checkUnlock();
+  checkUnlock();egyptMoonUnlocked();
 })();
