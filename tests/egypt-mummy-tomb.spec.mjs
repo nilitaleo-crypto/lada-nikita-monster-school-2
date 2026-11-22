@@ -38,13 +38,20 @@ async function testSolo(browser,name,p){
  for(let i=0;i<120;i++){
   const st=await page.evaluate(()=>TivvigMummyDebug.state());
   visited.add(st.stage);if(st.stage==='done')break;
-  if(st.stage==='jars'&&!checkedCanopes&&st.jarPhase==='symbol'&&st.round===0){
+  if(st.stage==='jars'&&!checkedCanopes&&st.jarPhase==='selectJar'&&st.jarSolved.length===0){
    assert.equal(await page.locator('#mummyOrgans').isVisible(),true,'Four organ seals plus the heart');
    assert.equal(await page.locator('.organ-choice').count(),5,'Five organ tokens');
+   assert.equal(await page.locator('.jar:not(:disabled)').count(),4,'Child may choose any jar');
    assert.equal(await page.locator('#mummy-organ-heart').isDisabled(),true,'Heart cannot be placed in a canopic jar');
+   assert.equal(await page.locator('#mummy-organ-lungs').isDisabled(),true,'Canopic jar must speak before an answer');
+   await page.locator('#mummy-jar-2').click();
+   assert.equal(await page.evaluate(()=>TivvigMummyDebug.state().jarPhase),'riddle','Jar starts its own riddle');
+   assert.equal(await page.evaluate(()=>TivvigMummyDebug.state().selectedJar),2);
+   assert.match(await page.locator('#mummySpeech').innerText(),/вдохе|воздухом/i,'The selected jar asks a lung riddle');
    await page.locator('#mummy-organ-stomach').click();
-   assert.equal(await page.evaluate(()=>TivvigMummyDebug.state().jarPhase),'symbol','Wrong organ leaves phase unchanged');
+   assert.equal(await page.evaluate(()=>TivvigMummyDebug.state().jarPhase),'riddle','Wrong answer keeps the riddle');
    assert.equal(await page.evaluate(()=>TivvigMummyDebug.state().errors),2);
+   assert.equal(await page.locator('.jar.speaking').count(),1,'The speaker stays highlighted');
    checkedCanopes=true;
   }
   if(st.stage==='jars'&&st.jarPhase==='heart')sawHeart=true;
@@ -63,7 +70,7 @@ async function testSolo(browser,name,p){
  assert.deepEqual([...frames],['0','1','2'],'three rows of real picture frames');
  const state=await page.evaluate(()=>TivvigMummyDebug.state());
  assert.equal(state.stage,'done','Every stage reaches the ending');
- assert.ok(state.correct>=38,'Illustrated cycles, four canopic pairings and heart discovery');
+ assert.ok(state.correct>=34,'Illustrated cycles, four solved riddles and heart discovery');
  assert.equal(state.heartFound,true,'Mummy heart located');
  assert.deepEqual(state.jarSolved,[2,1,3,0],'Canopic lids correctly paired with organs');
  for(const part of ['fresco','jars','scales','name','done'])assert.ok(visited.has(part),part+' reached');
@@ -117,10 +124,10 @@ async function testCoop(browser,name){
   }
  });
  await page.waitForFunction(()=>Array.from(document.querySelectorAll('iframe[data-test-room]')).every(f=>f.contentWindow?.TivvigMummyDebug?.state().stage==='jars'),{timeout:3000});
- await teacher.locator('#mummy-organ-lungs').click();
- await page.waitForFunction(()=>Array.from(document.querySelectorAll('iframe[data-test-room]')).every(f=>f.contentWindow?.TivvigMummyDebug?.state().jarPhase==='jar'),{timeout:9000});
- await student.locator('#mummy-jar-2').click();
- await page.waitForFunction(()=>Array.from(document.querySelectorAll('iframe[data-test-room]')).every(f=>f.contentWindow?.TivvigMummyDebug?.state().round===1&&f.contentWindow?.TivvigMummyDebug?.state().jarSolved.includes(2)),{timeout:9000});
+ await teacher.locator('#mummy-jar-2').click();
+ await page.waitForFunction(()=>Array.from(document.querySelectorAll('iframe[data-test-room]')).every(f=>f.contentWindow?.TivvigMummyDebug?.state().jarPhase==='riddle'&&f.contentWindow?.TivvigMummyDebug?.state().selectedJar===2),{timeout:9000});
+ await student.locator('#mummy-organ-lungs').click();
+ await page.waitForFunction(()=>Array.from(document.querySelectorAll('iframe[data-test-room]')).every(f=>f.contentWindow?.TivvigMummyDebug?.state().jarPhase==='selectJar'&&f.contentWindow?.TivvigMummyDebug?.state().jarSolved.includes(2)),{timeout:9000});
 
  assert.equal(await teacher.locator('.jar.sealed').count(),1,'teacher sees protected canopic jar');
  assert.equal(await student.locator('.jar.sealed').count(),1,'student sees the same restored seal');
