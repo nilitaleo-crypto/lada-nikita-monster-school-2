@@ -10,6 +10,13 @@ const sunPrompts=[
  {name:'полдень',question:'Где Солнце стоит ВЫШЕ всего?',explain:'В полдень Солнце высоко над нами.'},
  {name:'запад',question:'Где Солнце ЗАХОДИТ вечером?',explain:'Вечером Солнце скрывается на западе.'}
 ];
+const directions={
+ north:{name:'СЕВЕР',explain:'Север — одна из сторон света. Она находится напротив юга.'},
+ south:{name:'ЮГ',explain:'Юг — сторона света, противоположная северу.'},
+ east:{name:'ВОСТОК',explain:'Восток — направление, где по утрам появляется Солнце.'},
+ west:{name:'ЗАПАД',explain:'Запад — направление, где по вечерам Солнце заходит.'}
+};
+const directionQuiz=['east','west'];
 const shadowPrompts=[
  'Поставь Солнце на восток и посмотри на тень.',
  'Поставь Солнце высоко, в полдень. Как изменится тень?',
@@ -20,14 +27,14 @@ const gates=[
  {name:'Вторые врата',text:'НОЧЬ У-ХО-ДИТ',parts:['НОЧЬ','У','ХО','ДИТ'],choices:['ДИТ','ХО','ДОМ','НОЧЬ','У','РА']},
  {name:'Третьи врата',text:'ЛА-ДА ВИ-ДИТ РА',parts:['ЛА','ДА','ВИ','ДИТ','РА'],choices:['ДИТ','ЛА','ВИ','РА','ДА','МО']}
 ];
-let stage='intro',sunRound=0,shadowRound=0,selectedSun=null,shadowDone=false,gateRound=0,gatePos=0,gateChosen=[],gateOpen=[false,false,false],cloudCleared=[false,false,false],errors=0,correct=0,unlocked=false;
+let stage='intro',sunRound=0,shadowRound=0,selectedSun=null,shadowDone=false,gateRound=0,gatePos=0,gateChosen=[],gateOpen=[false,false,false],cloudCleared=[false,false,false],compassMode='learn',compassSeen=[],compassQuizRound=0,compassLast=null,errors=0,correct=0,unlocked=false;
 const sceneImages={sunrise:'images/egypt-solar-sunrise-action.webp',noon:'images/egypt-solar-noon-action.webp',sunset:'images/egypt-solar-sunset-action.webp'};
 for(const uri of Object.values(sceneImages)){const img=new Image();img.src=uri;}
 function play(kind){try{void window.TivvigHadesSounds?.play(kind)}catch(e){}}
 function talk(t){$('solarSpeech').innerHTML='<strong>Ра:</strong> '+t}
 function hint(t){$('solarHint').textContent=t}
 function action(t){const a=$('solarAction');a.hidden=false;a.textContent=t}
-function hide(){for(const id of ['solarSuns','solarEast','solarWest','solarShadowOptions','solarGates','solarInscription','solarReward','solarClouds','solarMovingSun'])$(id).hidden=true;$('solarAction').hidden=true;$('solarShadow').classList.remove('show');$('solarShadow').removeAttribute('data-sun');hint('')}
+function hide(){for(const id of ['solarSuns','solarEast','solarWest','solarShadowOptions','solarGates','solarInscription','solarReward','solarClouds','solarMovingSun','solarCompass'])$(id).hidden=true;$('solarAction').hidden=true;$('solarShadow').classList.remove('show');$('solarShadow').removeAttribute('data-sun');hint('')}
 function progress(){
  const n=stage==='sky'?1:stage==='shadows'?2:(stage==='gates'||stage==='done')?3:0;
  for(let i=0;i<3;i++)$('solarProgress').children[i].classList.toggle('on',i<n);
@@ -37,7 +44,7 @@ function progress(){
 }
 function cloudsRemaining(){return cloudCleared.filter(v=>!v).length}
 function scenePicture(){
- if(stage==='done'||stage==='intro')return 'sunrise';
+ if(stage==='done'||stage==='intro'||stage==='compass')return 'sunrise';
  if(stage==='sky')return sunRound===3?'sunset':sunRound===2?'noon':'sunrise';
  if(stage==='shadows')return selectedSun===2?'sunset':selectedSun===1?'noon':'sunrise';
  return 'sunset';
@@ -56,7 +63,38 @@ function updateScenery(){
 function setSunButtons(){ $('solarSuns').hidden=false;$('solarEast').hidden=false;$('solarWest').hidden=false;for(let i=0;i<3;i++){const b=$('solar-sun-'+i);b.classList.toggle('selected',selectedSun===i);b.classList.toggle('done',stage==='sky'&&i<sunRound);b.disabled=(stage==='sky'&&(sunRound>=3||i<sunRound))||(stage==='shadows'&&shadowDone)} }
 function render(){hide();progress();updateScenery();
  if(stage==='intro'){
-  talk('Солнце исчезает за горизонтом каждый вечер, но утром возвращается! Помоги моей ладье пройти весь путь.');action('В путь!');return
+  talk('Перед путешествием узнаем стороны света! Это четыре направления, которые помогают найти дорогу: север, юг, восток и запад.');
+  action('К компасу →');return;
+ }
+ if(stage==='compass'){
+  $('solarCompass').hidden=false;
+  for(const direction of Object.keys(directions)){
+   const b=$('solar-direction-'+direction);
+   b.classList.toggle('discovered',compassSeen.includes(direction));
+   b.classList.toggle('selected',compassLast===direction);
+   b.disabled=compassMode==='learn'&&compassSeen.includes(direction)||compassMode==='ready';
+  }
+  if(compassMode==='learn'){
+   if(compassSeen.length===4){
+    talk('Ты открыла все четыре стороны света! На этой картине мы смотрим на юг: восток слева, запад справа.');
+    hint('Теперь найди, где Солнце встаёт и где садится.');
+    action('Проверим →');
+   }else{
+    talk(compassLast?directions[compassLast].explain:'Компас помогает узнать направление. Нажми на четыре его стороны и послушай Ра.');
+    hint('Открыто направлений: '+compassSeen.length+' / 4');
+   }
+  }else if(compassMode==='quiz'){
+   if(compassQuizRound<directionQuiz.length){
+    const east=directionQuiz[compassQuizRound]==='east';
+    talk(east?'Где ВОСТОК — сторона, где Солнце встаёт утром?':'Где ЗАПАД — сторона, где Солнце садится вечером?');
+    hint('Нажми нужную сторону на компасе.');
+   }else{
+    talk('Отлично! Солнце утром восходит на востоке, а вечером заходит на западе. Теперь мы можем управлять ладьёй!');
+    hint('В этой картине восток слева, запад справа.');
+    compassMode='ready';action('Плывём! →');
+   }
+  }
+  return;
  }
  if(stage==='sky'){
   if(sunRound===2&&cloudsRemaining()>0){
@@ -103,6 +141,20 @@ function render(){hide();progress();updateScenery();
   $('solarReward').hidden=false;talk('Ночь закончилась! Солнце снова взошло. Возьми мой солнечный амулет!');hint('Три испытания пройдены.');action('Сыграть ещё раз');return
  }
 }
+function chooseDirection(direction){
+ if(stage!=='compass'||!Object.hasOwn(directions,direction))return;
+ if(compassMode==='learn'){
+  if(compassSeen.includes(direction))return;
+  compassSeen.push(direction);compassLast=direction;render();play('tap');return;
+ }
+ if(compassMode==='quiz'&&compassQuizRound<directionQuiz.length){
+  if(direction!==directionQuiz[compassQuizRound]){
+   errors++;hint('Подсказка: Солнце '+(directionQuiz[compassQuizRound]==='east'?'встаёт на востоке.':'садится на западе.'));
+   play('wrong');return;
+  }
+  compassLast=direction;compassQuizRound++;correct++;render();play('success');
+ }
+}
 function chooseSun(i){
  if(!Number.isInteger(i)||i<0||i>2)return;
  if(stage==='sky'&&sunRound<3){
@@ -130,18 +182,21 @@ function openGate(i){if(stage!=='gates'||i!==gateRound||gatePos!==gates[i].parts
 }
 function save(){if(unlocked)return;unlocked=true;try{localStorage.setItem(REWARD,'unlocked')}catch(e){}try{if(window.TivvigRegistry?.byReward?.[REWARD])window.TivvigRegistry.unlockReward(REWARD);else window.dispatchEvent(new CustomEvent('tivvig:reward-unlocked',{detail:{key:REWARD}}))}catch(e){}}
 function finish(){stage='done';save();render();play('finish')}
-function next(){if(stage==='intro'){stage='sky';sunRound=0;selectedSun=null;render();play('tap');return}
+function next(){if(stage==='intro'){stage='compass';compassMode='learn';compassSeen=[];compassQuizRound=0;compassLast=null;render();play('tap');return}
+ if(stage==='compass'&&compassMode==='learn'&&compassSeen.length===4){compassMode='quiz';compassLast=null;render();play('tap');return}
+ if(stage==='compass'&&compassMode==='ready'){stage='sky';sunRound=0;selectedSun=null;render();play('tap');return}
  if(stage==='sky'&&sunRound===3){stage='shadows';shadowRound=0;selectedSun=null;shadowDone=false;render();play('tap');return}
  if(stage==='shadows'&&shadowDone){shadowRound++;if(shadowRound===3){stage='gates';gateRound=0;gatePos=0;gateChosen=[];selectedSun=null}else{selectedSun=null;shadowDone=false}render();play('tap');return}
  if(stage==='done')reset()}
-function reset(){stage='intro';sunRound=0;shadowRound=0;selectedSun=null;shadowDone=false;gateRound=0;gatePos=0;gateChosen=[];gateOpen=[false,false,false];cloudCleared=[false,false,false];errors=0;correct=0;render()}
+function reset(){stage='intro';sunRound=0;shadowRound=0;selectedSun=null;shadowDone=false;gateRound=0;gatePos=0;gateChosen=[];gateOpen=[false,false,false];cloudCleared=[false,false,false];compassMode='learn';compassSeen=[];compassQuizRound=0;compassLast=null;errors=0;correct=0;render()}
 function outfit(){try{window.TivvigWardrobe?.equip($('solarLada'))}catch(e){}}
 $('solarAction').addEventListener('click',next);
 for(let i=0;i<3;i++){$('solar-sun-'+i).addEventListener('click',()=>chooseSun(i));$('solar-shadow-'+i).addEventListener('click',()=>chooseShadow(i));$('solar-gate-'+i).addEventListener('click',()=>openGate(i));$('solar-cloud-'+i).addEventListener('click',()=>clearCloud(i))}
+for(const dir of Object.keys(directions))$('solar-direction-'+dir).addEventListener('click',()=>chooseDirection(dir));
 window.addEventListener('tivvig-outfit-changed',outfit);window.addEventListener('tivvig-inventory-changed',outfit);window.addEventListener('pageshow',outfit);
 window.TivvigSolarDebug=Object.freeze({
- state:()=>({stage,sunRound,shadowRound,selectedSun,shadowDone,cloudCleared:[...cloudCleared],picture:$('solarBackdrop').dataset.picture,gateRound,gatePos,gateChosen:[...gateChosen],gateOpen:[...gateOpen],errors,correct,reward:(()=>{try{return localStorage.getItem(REWARD)==='unlocked'}catch(e){return false}})()}),
- reset,advance:()=>{if(stage==='intro'||stage==='done')return $('solarAction').click();if(stage==='sky'){if(sunRound===2&&cloudsRemaining()>0)return $('solar-cloud-'+cloudCleared.findIndex(v=>!v)).click();return sunRound<3?$('solar-sun-'+sunRound).click():$('solarAction').click();}if(stage==='shadows')return selectedSun===null?$('solar-sun-'+shadowRound).click():!shadowDone?$('solar-shadow-'+shadowRound).click():$('solarAction').click();if(stage==='gates'){const g=gates[gateRound];return gatePos===g.parts.length?$('solar-gate-'+gateRound).click():$('solar-syllable-'+g.choices.indexOf(g.parts[gatePos])).click()}}
+ state:()=>({stage,sunRound,shadowRound,selectedSun,shadowDone,cloudCleared:[...cloudCleared],compassMode,compassSeen:[...compassSeen],compassQuizRound,compassLast,picture:$('solarBackdrop').dataset.picture,gateRound,gatePos,gateChosen:[...gateChosen],gateOpen:[...gateOpen],errors,correct,reward:(()=>{try{return localStorage.getItem(REWARD)==='unlocked'}catch(e){return false}})()}),
+ reset,advance:()=>{if(stage==='intro'||stage==='done')return $('solarAction').click();if(stage==='compass'){if(compassMode==='learn')return compassSeen.length===4?$('solarAction').click():$('solar-direction-'+Object.keys(directions).find(k=>!compassSeen.includes(k))).click();if(compassMode==='quiz')return $('solar-direction-'+directionQuiz[compassQuizRound]).click();if(compassMode==='ready')return $('solarAction').click();}if(stage==='sky'){if(sunRound===2&&cloudsRemaining()>0)return $('solar-cloud-'+cloudCleared.findIndex(v=>!v)).click();return sunRound<3?$('solar-sun-'+sunRound).click():$('solarAction').click();}if(stage==='shadows')return selectedSun===null?$('solar-sun-'+shadowRound).click():!shadowDone?$('solar-shadow-'+shadowRound).click():$('solarAction').click();if(stage==='gates'){const g=gates[gateRound];return gatePos===g.parts.length?$('solar-gate-'+gateRound).click():$('solar-syllable-'+g.choices.indexOf(g.parts[gatePos])).click()}}
 });
 reset();outfit();
 })();
