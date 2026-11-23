@@ -8,6 +8,8 @@ on:
       - '*.css'
       - 'images/**'
       - 'tests/tivvig-full-audit.mjs'
+      - 'tests/firebase-sync-contract.mjs'
+      - 'firebase.database.rules.json'
       - '.github/workflows/tivvig-full-audit.yml'
   workflow_dispatch:
 permissions:
@@ -28,6 +30,8 @@ jobs:
         run: |
           find . -maxdepth 1 -name '*.js' -print0 | xargs -0 -n1 node --check
           find tests -name '*.mjs' -print0 | xargs -0 -n1 node --check
+      - name: Check Firebase room permissions, registry rewards and co-op safety
+        run: node tests/firebase-sync-contract.mjs
       - name: Install browser tests
         run: npm install --no-save --package-lock=false playwright@1.57.0
       - name: Install Chromium and WebKit

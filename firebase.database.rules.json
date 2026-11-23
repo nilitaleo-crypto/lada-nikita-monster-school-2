@@ -168,7 +168,7 @@
         "state": {
           "rewards": {
             "$key": {
-              ".write": "auth != null && (auth.uid === root.child('rooms').child($roomId).child('owner').val() || auth.token.firebase.sign_in_provider === 'anonymous') && ($key.matches(/^tivvig_reward_[a-z0-9_]{1,70}_v[0-9]{1,2}$/) || $key.matches(/^tivvig_outfit_[a-z0-9_]{1,70}_unlocked_v[0-9]{1,2}$/)) && newData.val() === 'unlocked'",
+              ".write": "auth != null && (auth.uid === root.child('rooms').child($roomId).child('owner').val() || auth.token.firebase.sign_in_provider === 'anonymous') && ($key.matches(/^tivvig_reward_[a-z0-9_]{1,70}_v[0-9]{1,2}$/) || $key.matches(/^tivvig_outfit_[a-z0-9_]{1,70}_unlocked_v[0-9]{1,2}$/) || $key.matches(/^tivvig_(?:weapon_hecate_lyre|hades_(?:stage_[1-5]|persephone_freed)|egypt_(?:apophis_prologue|pomegranate_portal|sphinx_investigation|sphinx_temple|thoth_feather|mummy_scarab|motion_temple|ra_solar_amulet))_v1$/)) && newData.val() === 'unlocked'",
               ".validate": "newData.isString() && newData.val() === 'unlocked'"
             }
           },
@@ -185,7 +185,7 @@
         "lada": {
           "rewards": {
             "$key": {
-              ".write": "auth != null && auth.uid === $teacherId && auth.token.firebase.sign_in_provider === 'google.com' && ($key.matches(/^tivvig_reward_[a-z0-9_]{1,70}_v[0-9]{1,2}$/) || $key.matches(/^tivvig_outfit_[a-z0-9_]{1,70}_unlocked_v[0-9]{1,2}$/)) && newData.val() === 'unlocked'",
+              ".write": "auth != null && auth.uid === $teacherId && auth.token.firebase.sign_in_provider === 'google.com' && ($key.matches(/^tivvig_reward_[a-z0-9_]{1,70}_v[0-9]{1,2}$/) || $key.matches(/^tivvig_outfit_[a-z0-9_]{1,70}_unlocked_v[0-9]{1,2}$/) || $key.matches(/^tivvig_(?:weapon_hecate_lyre|hades_(?:stage_[1-5]|persephone_freed)|egypt_(?:apophis_prologue|pomegranate_portal|sphinx_investigation|sphinx_temple|thoth_feather|mummy_scarab|motion_temple|ra_solar_amulet))_v1$/)) && newData.val() === 'unlocked'",
               ".validate": "newData.isString() && newData.val() === 'unlocked'"
             }
           },

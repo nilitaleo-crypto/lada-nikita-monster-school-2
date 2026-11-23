@@ -150,9 +150,18 @@ function pushSelected(value){
  outfitWriteInFlight=value;
  set(dbref('state/selected'),value).then(()=>{
   if(outfitWriteInFlight===value)outfitWriteInFlight=null;
-  if(pendingWardrobeOutfit===value)persistTeacherSelection(value);
+  if(pendingWardrobeOutfit===value){
+    persistTeacherSelection(value);
+    pendingWardrobeOutfit=null; // Do not pin stale clothes after confirmation.
+  }
  }).catch(e=>{
   if(outfitWriteInFlight===value)outfitWriteInFlight=null;
+  if(pendingWardrobeOutfit===value)pendingWardrobeOutfit=null;
+  // A rejected write must not leave a costume that only one participant sees.
+  get(dbref('state/selected')).then(snapshot=>{
+    const confirmed=snapshot.val();
+    if(outfits.includes(confirmed))showOutfit(confirmed);
+  }).catch(()=>{});
   if(['stars','monankaka','hecate','egyptMoon'].includes(value)&&String(e?.code||e).includes('permission-denied')){
    saveInfo('⚠ Новый наряд надет в этом занятии, но для облачного сохранения нужны обновлённые правила Firebase.',true);
    report('⚠ Наряд выбран в занятии; для постоянного сохранения обнови правила Firebase.');
@@ -208,6 +217,8 @@ function applySharedSelection(value){
   // Keep the override even when the rejected write rolls back to old state.
   if(value!==pendingWardrobeOutfit)return;
   if(outfitWriteInFlight===value){showOutfit(value);return;}
+  // Remote Firebase confirmation can now release the optimistic selection.
+  pendingWardrobeOutfit=null;
   persistTeacherSelection(value);
   showOutfit(value);
   return;
@@ -430,6 +441,7 @@ function startPage(path,epoch){
  if(!allowedPages.has(path)||typeof epoch!=="string"||epoch.length<12)return;
  if(path===currentPage&&epoch===currentEpoch)return;
  currentPage=path;currentEpoch=epoch;frameReady=false;
+ if(!outfitWriteInFlight)pendingWardrobeOutfit=null;
  readiness={teacher:false,student:false};
  if(frameWatchdog)clearTimeout(frameWatchdog);
  pageGate(true,'Загружаем '+(titles[path]||path)+' на обоих устройствах…');
@@ -450,7 +462,8 @@ function startPage(path,epoch){
  const url=new URL(path,location.href);url.searchParams.set("coop","1");url.searchParams.set("role",role);url.searchParams.set("seed",epoch);url.searchParams.set("build","8");
  $frame.src=url.href;
  refreshRemotePointer();
- offEvents=onChildAdded(query(dbref("actions/"+epoch),orderByKey(),limitToLast(160)),snapshot=>{
+ // Retain more history for tablet reconnection to a partly finished minigame.
+ offEvents=onChildAdded(query(dbref("actions/"+epoch),orderByKey(),limitToLast(512)),snapshot=>{
    const action={key:snapshot.key,value:snapshot.val()};
    eventBuffer.push(action);
    applyEvent(action);
@@ -647,10 +660,14 @@ window.addEventListener("message",e=>{
  if(type==="navigate"&&allowedPages.has(value)){navigate(value);return;}
  if(type==="rewardUnlocked"&&rewardSet.has(value?.key)){pushReward(value.key);return;}
  if(type==="click"&&currentPage!=="vulkan-labirint.html"&&typeof value?.selector==="string"&&value.selector.length<450){
+  // Never execute a failed action on only one screen. Firebase is authoritative.
+  if(!connected){
+   report('⚠ Нет связи с Firebase. Действие не выполнено; повтори после подключения.');
+   return;
+  }
   const action=push(dbref("actions/"+currentEpoch));
   set(action,{by:uid,kind:"click",selector:value.selector,at:Date.now()}).catch(e=>{
-   report('⚠ Firebase не передал нажатие. Оно сработает только здесь: '+explain(e));
-   sendToFrame("click",{selector:value.selector});
+   report('⚠ Нажатие не подтверждено Firebase. Проверь соединение и повтори: '+explain(e));
   });
  }
  if(type==="scroll"&&role==="student"&&Number.isFinite(value?.y)){
