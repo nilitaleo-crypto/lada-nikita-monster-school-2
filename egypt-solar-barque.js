@@ -34,7 +34,7 @@ function play(kind){try{void window.TivvigHadesSounds?.play(kind)}catch(e){}}
 function talk(t){$('solarSpeech').innerHTML='<strong>Ра:</strong> '+t}
 function hint(t){$('solarHint').textContent=t}
 function action(t){const a=$('solarAction');a.hidden=false;a.textContent=t}
-function hide(){for(const id of ['solarSuns','solarEast','solarWest','solarShadowOptions','solarGates','solarInscription','solarReward','solarClouds','solarMovingSun','solarCompass'])$(id).hidden=true;$('solarAction').hidden=true;$('solarShadow').classList.remove('show');$('solarShadow').removeAttribute('data-sun');hint('')}
+function hide(){for(const id of ['solarSuns','solarEast','solarWest','solarShadowOptions','solarGates','solarInscription','solarReward','solarClouds','solarMovingSun','solarCompass','solarToMotion'])$(id).hidden=true;$('solarAction').hidden=true;$('solarShadow').classList.remove('show');$('solarShadow').removeAttribute('data-sun');hint('')}
 function progress(){
  const n=stage==='sky'?1:stage==='shadows'?2:(stage==='gates'||stage==='done')?3:0;
  for(let i=0;i<3;i++)$('solarProgress').children[i].classList.toggle('on',i<n);
@@ -138,7 +138,7 @@ function render(){hide();progress();updateScenery();
   hint((gateRound+1)+' / 3 · '+(gatePos===g.parts.length?'Нажми на врата.':'Выбирай слоги.'));return
  }
  if(stage==='done'){
-  $('solarReward').hidden=false;talk('Ночь закончилась! Солнце снова взошло. Возьми мой солнечный амулет!');hint('Три испытания пройдены.');action('Сыграть ещё раз');return
+  $('solarToMotion').hidden=false;$('solarReward').hidden=false;talk('Ночь закончилась! Солнце снова взошло. Возьми мой солнечный амулет!');hint('Три испытания пройдены.');action('Сыграть ещё раз');return
  }
 }
 function chooseDirection(direction){

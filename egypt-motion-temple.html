@@ -1,0 +1,129 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#132237">
+<meta name="description" content="Лада оживляет стражей египетского храма настоящими движениями: равновесие, шаги, приседания и ритм.">
+<title>Храм оживших статуй · Тиввиг</title>
+<link rel="preload" as="image" href="images/egypt-nile-night-entrance.webp">
+<style>
+:root{--sand:#f7d897;--edge:#d5aa63;--deep:#16283b}
+*{box-sizing:border-box}[hidden]{display:none!important}
+html,body{margin:0;min-height:100%;background:#111d2b;color:#ffefd1;font-family:Georgia,'Times New Roman',serif}
+button,a{font:inherit;-webkit-tap-highlight-color:transparent;touch-action:manipulation}
+button{cursor:pointer}a{color:inherit;text-decoration:none}
+button:focus-visible,a:focus-visible{outline:3px solid #f7d88a;outline-offset:3px}
+main{max-width:1400px;margin:auto;padding:7px}
+header{display:flex;justify-content:space-between;align-items:center;gap:7px;min-height:44px;margin-bottom:8px}
+header h1{font-weight:normal;font-size:clamp(16px,2.5vw,28px);margin:0;text-align:center}
+.nav{border:1px solid #dfb477a0;border-radius:9px;background:#283e4dd9;padding:9px 13px;min-height:43px;display:grid;place-items:center;font-size:clamp(12px,1.3vw,16px)}
+.scene{width:100%;max-width:1280px;margin:auto;aspect-ratio:16/9;min-height:430px;position:relative;overflow:hidden;isolation:isolate;border:3px solid #d9af70;border-radius:15px;background:#132840;box-shadow:0 12px 25px #05091098}
+.landscape{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center 60%;filter:saturate(.85) brightness(.69);pointer-events:none;user-select:none}
+.scene::before{content:"";position:absolute;inset:0;z-index:1;pointer-events:none;background:linear-gradient(90deg,#0c162d70 0%,transparent 28%,transparent 73%,#1214287b 100%),linear-gradient(0deg,#2a1c20db,transparent 32%,#1c294c33)}
+.scene::after{content:"";position:absolute;inset:0;pointer-events:none;z-index:20;box-shadow:inset 0 0 25px #090d1388}
+.gate{position:absolute;z-index:2;left:29%;top:19%;width:43%;height:69%;filter:drop-shadow(0 10px 18px #100f1d99);pointer-events:none}
+.gate::before{content:"";position:absolute;inset:0;border:13px ridge #cb9c63;border-bottom-width:18px;border-radius:45% 45% 3% 3% / 13% 13% 2% 2%;background:radial-gradient(ellipse at 50% 24%,#f7c75b82,transparent 40%),repeating-linear-gradient(90deg,#b7814948 0 11px,#eac48937 11px 16px),#382b35;box-shadow:inset 0 0 29px #0607109c,0 0 15px #ffd7883b}
+.gate::after{content:"";position:absolute;inset:7% 9% 4%;border-radius:46% 46% 0 0 / 12% 12% 0 0;border:3px solid #f5d18b91;background:linear-gradient(90deg,#392d30e6 0 48%,#9d755b 49%,#322630 51%,#36272d 100%);box-shadow:inset 0 0 17px #100b15}
+.gate-light{position:absolute;inset:21% 33% 9%;z-index:3;opacity:.27;border-radius:30% 30% 0 0;background:radial-gradient(ellipse,#fff0a5 0,#ffb55c 32%,#ef9d3875 57%,transparent 78%);pointer-events:none;transition:opacity .45s,transform .5s}
+.scene[data-state="done"] .gate-light{opacity:1;transform:scale(1.6);filter:drop-shadow(0 0 24px #ffe28c)}
+.gate-left,.gate-right{position:absolute;top:15%;bottom:7%;width:43%;z-index:3;pointer-events:none;background:repeating-linear-gradient(0deg,transparent 0 25px,#70472f70 25px 28px),linear-gradient(90deg,#9a704d,#ddb57d 50%,#9b714c);border:3px ridge #e4c28c;transition:transform 1s ease;box-shadow:inset 0 0 17px #603e29;overflow:hidden}
+.gate-left{left:9%;border-radius:30% 0 0 0}.gate-right{right:9%;border-radius:0 30% 0 0}
+.gate-left::before,.gate-right::before{content:"𓂀　☥　𓆣";position:absolute;left:8%;top:30%;font-size:clamp(14px,2.4vw,27px);color:#66432b;writing-mode:vertical-rl;line-height:2}
+.scene[data-state="done"] .gate-left{transform:translateX(-90%)}.scene[data-state="done"] .gate-right{transform:translateX(90%)}
+.guardians{position:absolute;z-index:7;top:3%;left:19%;right:19%;display:flex;align-items:center;justify-content:center;gap:1.3%;height:10%}
+.guardian{width:clamp(37px,6.5vw,72px);height:100%;min-height:38px;border:2px solid #916e48;border-radius:45% 45% 12% 12%;display:grid;place-items:center;background:#a38b6970;color:#d4c09a;font-size:clamp(20px,2.5vw,31px);filter:grayscale(1);opacity:.66;box-shadow:inset 0 2px 9px #120c13b5;transition:filter .4s,background .4s,opacity .4s,box-shadow .4s}
+.guardian.awake{filter:none;background:radial-gradient(circle,#fff0b4,#d59f54);opacity:1;box-shadow:0 0 17px #ffd17b;color:#573e23}
+.chapter{position:absolute;z-index:9;left:20%;right:20%;top:14%;text-align:center;pointer-events:none;color:#ffdd95;text-shadow:0 2px 9px #100a16;font-size:clamp(12px,1.4vw,18px);letter-spacing:.06em}
+.command{position:absolute;z-index:9;top:20%;left:23%;right:23%;display:flex;flex-direction:column;align-items:center;gap:6px;text-align:center;pointer-events:none;text-shadow:0 3px 9px #171424}
+.command strong{font-size:clamp(21px,3.1vw,42px);font-weight:normal;color:#fff0c7}
+.command span{font-size:clamp(16px,2vw,26px);line-height:1.18;color:#ffe7ba}
+.figure{position:absolute;z-index:8;left:36%;top:38%;width:28%;height:41%;filter:drop-shadow(0 0 7px #fff1a26c);pointer-events:none;transition:opacity .25s}
+.figure svg{display:block;width:100%;height:100%;overflow:visible}
+.figure .skin{fill:none;stroke:#ffe8a5;stroke-width:9;stroke-linecap:round;stroke-linejoin:round;filter:drop-shadow(0 2px 2px #372017)}
+.figure .body{fill:#d8ae6b;stroke:#ffdf99;stroke-width:3}
+.figure .arm-left,.figure .arm-right,.figure .leg-left,.figure .leg-right{transform-box:view-box;transition:transform .5s ease}
+.figure .arm-left{transform-origin:97px 87px}.figure .arm-right{transform-origin:103px 87px}
+.figure .leg-left,.figure .leg-right{transform-origin:100px 151px}
+.figure[data-pose="ibis"] .arm-left{transform:rotate(-34deg)}.figure[data-pose="ibis"] .arm-right{transform:rotate(34deg)}
+.figure[data-pose="ibis"] .leg-right{transform:rotate(40deg)}
+.figure[data-pose="scarab"] .leg-left{transform:rotate(28deg)}.figure[data-pose="scarab"] .leg-right{transform:rotate(-28deg)}
+.figure[data-pose="cat"] .arm-left{transform:rotate(-110deg)}.figure[data-pose="cat"] .arm-right{transform:rotate(110deg)}
+.figure[data-pose="croc"] .leg-left{transform:rotate(-24deg)}.figure[data-pose="croc"] .leg-right{transform:rotate(24deg)}
+.figure[data-pose="jackal"] .arm-left{transform:rotate(-32deg)}.figure[data-pose="jackal"] .arm-right{transform:rotate(65deg)}
+.figure[data-pose="ra"] .arm-left{transform:rotate(-110deg)}.figure[data-pose="ra"] .arm-right{transform:rotate(110deg)}
+.figure[data-pose="ra"]::after{content:"☀";position:absolute;top:-9%;left:42%;font-size:clamp(36px,6vw,70px);color:#ffcb6e;text-shadow:0 0 16px #ffd46a}
+.figure:not([data-pose="intro"]) .skin{animation:stone-breath 1.7s ease-in-out infinite alternate}
+@keyframes stone-breath{to{stroke:#fffbd2;filter:drop-shadow(0 0 5px #fff4a4)}}
+.person{position:absolute;z-index:8;bottom:1%;height:42%;pointer-events:none;filter:drop-shadow(1px 6px 5px #0f0e199f)}
+.person img{display:block;width:100%;height:100%;object-fit:contain;object-position:bottom center;pointer-events:none;user-select:none}
+.lada{left:3%;width:17%}.lada img{position:absolute;inset:0}
+.lada [data-outfit-layer]{clip-path:polygon(0 27%,100% 27%,100% 100%,0 100%);-webkit-clip-path:polygon(0 27%,100% 27%,100% 100%,0 100%)}
+.lada[data-outfit="egyptMoon"] [data-outfit-layer]{clip-path:none;-webkit-clip-path:none}
+.tuten{right:2%;width:19%}
+.action{position:absolute;z-index:13;bottom:4%;left:50%;transform:translateX(-50%);min-height:59px;min-width:180px;padding:10px 23px;border-radius:13px;border:3px solid #ffedb4;background:linear-gradient(#ffe9a6,#eab65d);color:#53301e;font:700 clamp(19px,2.1vw,27px) Georgia,serif;box-shadow:0 5px 0 #886038,0 9px 17px #1a1c2b9f}
+.action:active{transform:translate(-50%,3px);box-shadow:0 2px 0 #886038}
+.reward{position:absolute;z-index:10;left:38%;top:38%;width:24%;height:38%;display:grid;place-items:center;pointer-events:none}
+.reward img{width:100%;height:100%;object-fit:contain;filter:drop-shadow(0 0 18px #ffde90)}
+.scene[data-state="done"] .figure{opacity:0}
+.scene[data-state="done"] .command{top:20%}
+.footer{position:absolute;z-index:12;right:3%;bottom:3%;min-height:48px;border-radius:11px;background:#29464bea;border:1px solid #f5d897;padding:12px;color:#fff1c7;font-weight:bold}
+#gameConnection{margin:5px 0 0;min-height:1em;font:12px system-ui,sans-serif;color:#f3ca99}
+@media(max-width:720px){
+ main{padding:4px}header h1{font-size:16px}.nav{min-height:42px;padding:6px 7px;font-size:12px}
+ .scene{min-height:440px;aspect-ratio:4/5}.landscape{object-position:center}
+ .gate{left:13%;width:74%;top:23%;height:65%}
+ .guardians{left:3%;right:3%;top:3%;gap:2px}.guardian{min-height:35px;flex:1;font-size:20px}
+ .chapter{top:14%;left:9%;right:9%;font-size:12px}
+ .command{top:22%;left:9%;right:9%}.command strong{font-size:26px}.command span{font-size:19px}
+ .figure{left:29%;width:42%;top:40%;height:36%}
+ .person{height:28%;bottom:4%}.lada{left:-2%;width:27%}.tuten{right:-2%;width:28%}
+ .action{bottom:5%;min-height:54px;min-width:156px;padding:9px 13px;font-size:19px}
+ .reward{left:32%;width:36%;top:40%;height:32%}.footer{right:2%;bottom:2%;font-size:12px;padding:8px}
+}
+@media(prefers-reduced-motion:reduce){.figure .skin{animation:none!important}.gate-left,.gate-right,.gate-light{transition:none}}
+</style>
+</head>
+<body>
+<main>
+<header>
+<a class="nav" href="egypt-solar-barque.html">← Ладья Ра</a>
+<h1>Храм оживших статуй</h1>
+<a class="nav" href="index.html">⌂ Карта</a>
+</header>
+<section class="scene" id="motionScene" data-state="intro" aria-label="Двигательные задания в египетском храме">
+<img class="landscape" src="images/egypt-nile-night-entrance.webp" alt="" draggable="false" fetchpriority="high">
+<div class="gate-light" aria-hidden="true"></div>
+<div class="gate" aria-hidden="true"><div class="gate-left"></div><div class="gate-right"></div></div>
+<div class="guardians" id="motionGuardians" aria-label="Шесть каменных стражей"></div>
+<div class="chapter" id="motionProgress" aria-live="polite">ХРАМ ОЖИДАЕТ ПРОБУЖДЕНИЯ</div>
+<div class="command" aria-live="polite"><strong id="motionName">Разбудим статуи!</strong><span id="motionInstruction">Повторяй движения своим телом.</span></div>
+<div class="figure" id="motionFigure" data-pose="intro" aria-hidden="true">
+<svg viewBox="0 0 200 245" xmlns="http://www.w3.org/2000/svg">
+<circle cx="100" cy="38" r="22" class="body"/>
+<path class="skin" d="M100 64 L100 151"/>
+<path class="skin arm-left" d="M97 87 Q64 102 44 127"/>
+<path class="skin arm-right" d="M103 87 Q136 102 156 127"/>
+<path class="skin leg-left" d="M100 150 L73 223"/>
+<path class="skin leg-right" d="M100 150 L127 223"/>
+<path class="body" d="M80 133 L120 133 L131 164 L69 164 Z"/>
+<path d="M89 39 L95 39 M106 39 L112 39" stroke="#765331" stroke-width="3" stroke-linecap="round"/>
+</svg>
+</div>
+<div class="person lada" id="motionLada" aria-label="Лада в выбранном наряде" role="img">
+<img src="images/lada-cutout.webp" alt="" draggable="false">
+<img data-outfit-layer hidden alt="" draggable="false">
+</div>
+<div class="person tuten" aria-label="Тутенштейн помогает Ладе" role="img"><img src="images/egypt-tutenstein.webp" alt="" draggable="false"></div>
+<div class="reward" id="motionReward" hidden><img src="images/egypt-motion-amulet.svg" alt="Золотой амулет оживших стражей"></div>
+<button id="motionAction" class="action" type="button" data-tivvig-sound="manual">Начать!</button>
+<a class="footer" id="motionToMap" href="index.html" hidden>Карта →</a>
+</section>
+<p id="gameConnection" role="status"></p>
+</main>
+<script src="wardrobe.js?v=7" defer></script>
+<script src="egypt-motion-temple.js?v=1" defer></script>
+<script src="hades-sounds.js?v=9" defer></script>
+<script src="game-runtime.js?v=5" defer></script>
+</body>
+</html>

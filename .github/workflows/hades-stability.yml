@@ -15,6 +15,7 @@ on:
       - 'tests/egypt-sphinx-temple.spec.mjs'
       - 'tests/egypt-thoth-library.spec.mjs'
       - 'tests/egypt-mummy-tomb.spec.mjs'
+      - 'tests/egypt-motion-temple.spec.mjs'
       - '.github/workflows/hades-stability.yml'
   workflow_dispatch:
 permissions:
@@ -69,6 +70,8 @@ jobs:
         run: node tests/egypt-thoth-library.spec.mjs
       - name: Mummy tomb touch puzzles, WebKit, gold scarab and two-device co-op
         run: node tests/egypt-mummy-tomb.spec.mjs
+      - name: Nile movement temple, desktop/iPad/phone and Firebase click replay
+        run: node tests/egypt-motion-temple.spec.mjs
       - name: Archive results (even on failure)
         if: always()
         uses: actions/upload-artifact@v4
