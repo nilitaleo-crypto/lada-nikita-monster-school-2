@@ -57,13 +57,17 @@ async function run(engine,name,profile){
   await page.evaluate(()=>window.TivvigEgyptDebug.finishImmediately());
   await page.waitForFunction(()=>window.TivvigEgyptDebug.state().phase==='lost',null,{timeout:5000});
   assert.equal(await page.evaluate(()=>localStorage.getItem('tivvig_egypt_apophis_prologue_v1')),'unlocked');
-  assert.equal(await page.locator('.ending-title').isVisible(),true);
+  assert.equal(await page.locator('.ending-art').isVisible(),true,'The finished ray game reveals the large Apophis illustration');
+  const reveal=await page.locator('.ending-art img').evaluate(img=>({loaded:img.complete&&img.naturalWidth>0,source:img.currentSrc}));
+  assert.equal(reveal.loaded,true,'The ending artwork must load in the active browser (AVIF or WebP fallback)');
+  assert.equal(await page.locator('.ending-sub').evaluate(el=>getComputedStyle(el).clipPath),'inset(50%)','The old ending paragraph must not cover the artwork');
   assert.equal(await page.locator('.ending-links a[href="egypt-pomegranate.html"]').count(),1,'Apophis must lead to Persephone garden');
   const broken=await page.evaluate(()=>[...document.images].filter(x=>x.complete&&x.naturalWidth===0).map(x=>x.src));
   assert.deepEqual(broken,[],'All art loads');
   assert.deepEqual(errors,[],'JS errors');assert.deepEqual(misses,[],'HTTP 404');
   await page.locator('#replayEgypt').click();
   assert.equal(await page.evaluate(()=>window.TivvigEgyptDebug.state().phase),'intro');
+  assert.equal(await page.locator('.ending-art').isVisible(),false,'The ending art must disappear after replay');
   assert.equal(await page.locator('.anchor:visible').count(),0);
   checked++;console.log('PASS',name,profile.name,'touch, rays, audio, models, ending, replay');
  }finally{await context.close()}
