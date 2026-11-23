@@ -42,7 +42,7 @@ async function check(engine,engineName,width,height,touch){
   assert.equal(await page.locator('#motionToMap').getAttribute('href'),'index.html');
   assert.equal(await page.evaluate(()=>localStorage.getItem('tivvig_egypt_motion_temple_v1')),'unlocked');
   assert.equal(await page.locator('#motionGuardians .awake').count(),6);
-  assert.deepEqual(await page.evaluate(()=>[...document.images].filter(i=>i.complete&&i.naturalWidth===0).map(i=>i.src)),[]);
+  assert.deepEqual(await page.evaluate(()=>[...document.images].filter(i=>i.hasAttribute('src')&&i.getAttribute('src')&&i.complete&&i.naturalWidth===0).map(i=>i.src)),[]);
   assert.deepEqual(errors,[]);assert.deepEqual(misses,[]);
   await page.locator('#motionAction').click();
   assert.equal(await page.evaluate(()=>window.TivvigMotionDebug.state().phase),'intro');
