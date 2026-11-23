@@ -36,6 +36,7 @@ assert(controller.includes('limitToLast(512)'),'Reconnection replay window chang
 assert(controller.includes('Never execute a failed action on only one screen'));
 assert(!controller.includes("Оно сработает только здесь: "),'One-sided Firebase failure fallback is dangerous');
 assert(controller.includes('pendingWardrobeOutfit=null'),'Stale outfit selection must be cleared');
+assert(controller.includes("who==='teacher'&&e.value.by!==owner"),'Teacher readiness must be authenticated by room owner UID');
 assert(bridge.includes("e.source!==window.parent||e.origin!==location.origin"),'Frame messages must check source and origin');
 assert(bridge.includes('if(el&&!el.matches(gameClickTargets))'),'Remote CSS selectors must not click arbitrary links');
 console.log('FIREBASE CONTRACT PASS:',rewardKeys.length,'registry rewards; room/profile rules, action checks, co-op guards');

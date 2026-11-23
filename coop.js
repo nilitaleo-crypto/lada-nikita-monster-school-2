@@ -400,6 +400,8 @@ function applyEvent(e){
  appliedEvents.add(e.key);
  if(e.value?.kind==="click"&&(e.value?.selector===readyMark.teacher||e.value?.selector===readyMark.student)){
   const who=e.value.selector===readyMark.teacher?'teacher':'student';
+  // A student's room event must not impersonate the teacher's READY marker.
+  if((who==='teacher'&&e.value.by!==owner)||(who==='student'&&e.value.by===owner))return;
   readiness[who]=true;updateReadyStatus();return;
  }
  if(e.value?.kind==="click"&&e.value?.selector==='#tivvig-connection-check'){
