@@ -13,6 +13,7 @@ if(current==="index.html")document.querySelectorAll('a[href="coop.html"]').forEa
 const isMaze=current==="vulkan-labirint.html";
 let role=q.get("role")==="teacher"?"teacher":"student",replaying=false,lastCursor=0,lastScroll=0;
 const tag="[data-tivvig-online]";
+const gameClickTargets='button,[role=button],[data-open-reward],#rewardImg,#scene,#stage,#arena,#reward,#win,#viewer,#lightbox,#rewardReveal,#prize,#transformation';
 const send=(type,value)=>window.parent.postMessage({from:"tivvig-world",type,value,page:current},location.origin);
 window.addEventListener("tivvig:reward-unlocked",e=>{
  const key=e.detail?.key;
@@ -53,7 +54,7 @@ document.addEventListener("click",e=>{
   return;
  }
  if(isMaze)return;
- const target=e.target.closest("button,[role=button],[data-open-reward],#rewardImg,#scene,#stage,#arena,#reward,#win,#viewer,#lightbox,#rewardReveal,#prize,#transformation");
+ const target=e.target.closest(gameClickTargets);
  if(!target || target.matches("button[disabled]"))return;
  // iPad WebAudio must be unlocked by a real local gesture, not a Firebase replay.
  // The sound-check button is strictly LOCAL on each iPad/iPhone/computer.
@@ -107,6 +108,12 @@ function replayNext(){
  if(!replayQueue.length){processing=false;return;}
  processing=true;
  const task=replayQueue[0],el=elementFor(task.selector);
+ // Never replay a room-supplied CSS selector against arbitrary links/elements.
+ // Only targets that a real click in this game would have synchronized are safe.
+ if(el&&!el.matches(gameClickTargets)){
+   replayQueue.shift();send("actionMissing",{selector:task.selector});
+   setTimeout(replayNext,10);return;
+ }
  if(el&&!el.matches(":disabled")&&el.getClientRects().length){
    replayQueue.shift();
    replaying=true;

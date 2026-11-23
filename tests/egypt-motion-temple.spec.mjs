@@ -59,6 +59,10 @@ async function coop(engine,name){
   const frame=page.frameLocator('#frame');
   await frame.locator('#motionAction').waitFor();
   await page.waitForFunction(()=>window.roomEvents.some(e=>e.type==='ready'),null,{timeout:6000});
+  // An action injected into the room must never click an arbitrary page link.
+  await page.evaluate(()=>document.getElementById('frame').contentWindow.postMessage({from:'tivvig-parent',type:'click',value:{selector:'header a.nav'}},location.origin));
+  await page.waitForFunction(()=>window.roomEvents.some(e=>e.type==='actionMissing'&&e.value?.selector==='header a.nav'),null,{timeout:3000});
+  assert((await frame.locator('body').evaluate(()=>location.pathname)).endsWith('egypt-motion-temple.html'));
   await frame.locator('#motionAction').click();
   await page.waitForFunction(()=>window.roomEvents.some(e=>e.type==='click'&&e.value?.selector==='#motionAction'));
   assert.equal(await frame.locator('body').evaluate(()=>TivvigMotionDebug.state().phase),'intro','The room owns click progression');
