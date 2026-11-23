@@ -9,7 +9,7 @@
  registry.onload=()=>{
   window.dispatchEvent(new Event("tivvig:registry-ready"));
   const bridge=document.createElement("script");
-  bridge.src="world-coop-bridge.js?v=13";
+  bridge.src="world-coop-bridge.js?v=14&fresh="+Date.now();
   bridge.onerror=()=>showError("Не загрузилась синхронизация игры. Проверь интернет.");
   document.body.append(bridge);
  };
