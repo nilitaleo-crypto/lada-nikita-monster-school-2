@@ -19,15 +19,26 @@ async function check(engine,engineName,width,height,touch){
   await page.waitForFunction(()=>Boolean(window.TivvigMotionDebug));
   assert.equal(await page.locator('#motionAction').isVisible(),true);
   assert.equal(await page.locator('#motionGuardians .guardian').count(),6);
+  assert.equal(await page.locator('#motionGuardians .guardian img').count(),6,'All six medallions must be images');
+  assert.equal(await page.locator('#motionFigure svg').count(),0,'The old stick figure must be removed');
+  assert.equal(await page.locator('#motionInstruction').count(),0,'The teacher gives movement instructions by video');
+  assert.equal(await page.locator('#motionBackdrop').getAttribute('src'),'images/egypt-motion-temple-bg.webp');
   assert.equal(await page.evaluate(()=>window.TivvigMotionDebug.state().phase),'intro');
   assert((await page.locator('#motionAction').boundingBox()).height>=44);
   await page.locator('#motionAction').click();
   for(let i=0;i<6;i++){
-   assert.equal(await page.locator('#motionProgress').textContent(),'СТРАЖ '+(i+1)+' ИЗ 6');
+   assert.equal(await page.locator('#motionProgress').textContent(),(i+1)+' / 6');
+   const names=['Ибис','Скарабей','Кошка','Крокодил','Анубис','Ра'];
+   const assets=['ibis','scarab','cat','crocodile','anubis','ra'];
+   assert.equal(await page.locator('#motionName').textContent(),names[i]);
+   assert.equal(await page.locator('#motionMedallion').getAttribute('src'),'images/egypt-motion-'+assets[i]+'.webp');
+   await page.locator('#motionMedallion').evaluate(img=>img.decode());
    assert.equal(await page.locator('#motionGuardians .awake').count(),i);
    await page.locator('#motionAction').click();
   }
   assert.equal(await page.locator('#motionReward').isVisible(),true);
+  assert.equal(await page.locator('#motionFigure').isVisible(),false,'The medallion leaves room for the reward');
+  assert.equal(await page.locator('.guardian.awake img').count(),6);
   assert.equal(await page.locator('#motionToMap').getAttribute('href'),'index.html');
   assert.equal(await page.evaluate(()=>localStorage.getItem('tivvig_egypt_motion_temple_v1')),'unlocked');
   assert.equal(await page.locator('#motionGuardians .awake').count(),6);
