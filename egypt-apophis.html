@@ -66,6 +66,14 @@ header h1{font:normal clamp(19px,2.7vw,30px) Georgia,serif;margin:0;color:#f3ddb
 .ending-links{position:absolute;right:3%;bottom:5%;display:flex;gap:9px;pointer-events:auto;align-items:center}
 .ending-links a,.ending-links button{display:grid;place-items:center;min-height:46px;padding:9px 14px;background:#ebd6ac;color:#392623;border:1px solid #fff1d4;border-radius:11px;font:bold clamp(13px,1.3vw,17px) Georgia,serif;text-decoration:none;box-shadow:0 4px 14px #0d0813c9}
 .ending-links button{background:#4e403be8;color:#ffedd2}
+/* The post-rescue reveal is an illustration, not a dark text panel. */
+.ending-art{position:absolute;inset:0;z-index:5;display:none;pointer-events:none;overflow:hidden;background:#11182b}
+.ending-art img{display:block;width:100%;height:100%;object-fit:cover;object-position:center;user-select:none}
+.scene[data-phase="lost"] .ending-art{display:block;animation:apophis-reveal .7s ease-out both}
+@keyframes apophis-reveal{from{opacity:0}to{opacity:1}}
+.scene[data-phase="lost"] .status{display:none}
+.scene[data-phase="lost"] .party{opacity:1}
+.ending-title,.ending-sub{position:absolute!important;clip-path:inset(50%);width:1px;height:1px;overflow:hidden;white-space:nowrap;left:0;top:0}
 @media(max-width:800px){
  main{padding:7px 5px 12px}header{gap:6px}header h1{font-size:clamp(15px,4vw,24px)}.nav{font-size:12px;padding:6px 8px}
  .scene{width:100%;aspect-ratio:4/3;min-height:clamp(360px,70dvh,490px)}
@@ -86,7 +94,7 @@ header h1{font:normal clamp(19px,2.7vw,30px) Georgia,serif;margin:0;color:#f3ddb
 <main>
 <header><a class="nav" href="hades-final.html">← Персефона</a><h1>Апоп похитил солнце</h1><a class="nav" href="index.html">⌂ Карта</a></header>
 <section class="scene" id="egyptScene" data-phase="intro" aria-label="Апоп пытается проглотить солнце, Лада и её друзья защищают солнечные лучи">
- <img class="world" src="images/egypt-apophis-scene.webp" alt="Гигантский Апоп над солнечным диском среди египетских руин и огненного неба" fetchpriority="high" draggable="false">
+ <img class="world" src="images/egypt-apophis-scene.webp" alt="Апоп над египетскими руинами до похищения солнца" fetchpriority="high" draggable="false">
  <div class="ember" aria-hidden="true"></div>
  <div class="night-veil" id="nightVeil" aria-hidden="true"></div>
  <div class="sun-shadow" id="sunShadow" aria-hidden="true"></div>
@@ -105,6 +113,7 @@ header h1{font:normal clamp(19px,2.7vw,30px) Georgia,serif;margin:0;color:#f3ddb
  <button class="anchor" type="button" id="rayButton3" aria-label="Усилить четвёртый солнечный луч" data-tivvig-sound="manual" hidden></button>
  <button class="anchor" type="button" id="rayButton4" aria-label="Усилить пятый солнечный луч" data-tivvig-sound="manual" hidden></button>
  <button class="anchor" type="button" id="rayButton5" aria-label="Усилить шестой солнечный луч" data-tivvig-sound="manual" hidden></button>
+ <picture class="ending-art" aria-hidden="true"><source srcset="images/egypt-apophis-ending.avif?v=1" type="image/avif"><img src="images/egypt-apophis-scene.webp" alt="" decoding="async" draggable="false"></picture>
  <div class="party" aria-label="Персефона и друзья помогают Ладе спасти солнце">
   <div class="actor cat"><img src="images/blue-cat.webp" alt="Ловкач" draggable="false"></div>
   <div class="actor rabbit"><img src="images/rabbit-cutout.webp" alt="Силач" draggable="false"></div>
