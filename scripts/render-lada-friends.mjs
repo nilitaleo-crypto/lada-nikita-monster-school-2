@@ -12,5 +12,6 @@ try {
  });
  if(misses.length)throw Error('Original images not loaded: '+misses.join(', '));
  await page.locator('#photo').screenshot({path:'images/lada-friends-original-photo.png',animations:'disabled'});
+ await page.locator('#photo').screenshot({path:'images/lada-friends-original-photo.jpg',type:'jpeg',quality:89,animations:'disabled'});
  console.log('Created photo with '+await page.locator('#photo img').count()+' original site images');
 }finally{await browser.close()}
