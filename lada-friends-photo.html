@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Лада и друзья · оригинальные игровые персонажи</title>
+<style>
+*{box-sizing:border-box}html,body{margin:0;padding:0;background:#4e3827}
+.portrait{position:relative;width:2400px;height:1350px;overflow:hidden;background:#d9ac75;isolation:isolate}
+.land{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;filter:brightness(.93) saturate(.95);z-index:0}
+.light{position:absolute;inset:0;pointer-events:none;z-index:1;background:radial-gradient(ellipse at 51% 24%,#ffde983b,transparent 47%),linear-gradient(180deg,#1c142520,transparent 45%,#3c252b66 100%)}
+.ground{position:absolute;left:4%;right:4%;bottom:3%;height:17%;border-radius:50%;z-index:2;filter:blur(45px);background:#45231e67}
+.friend{position:absolute;bottom:0;display:block;pointer-events:none;filter:drop-shadow(5px 11px 12px #21131eae)}
+.friend img{width:100%;height:100%;object-fit:contain;object-position:center bottom;display:block;user-select:none}
+.persephone{position:absolute;z-index:2;left:2037px;top:54px;width:307px;height:378px;filter:drop-shadow(3px 5px 9px #1c1c218e);border-radius:50%;border:12px ridge #eac276;box-shadow:inset 0 0 16px #352122a8;overflow:hidden}
+.persephone img{height:100%;width:100%;object-fit:cover;object-position:50% 24%}
+.cat{z-index:9;left:51px;bottom:106px;width:370px;height:755px}
+.rabbit{z-index:10;left:344px;bottom:115px;width:360px;height:850px}
+.monkey{z-index:11;left:650px;bottom:115px;width:322px;height:842px}
+.lada{z-index:15;left:932px;bottom:70px;width:550px;height:1170px}
+.lada img{position:absolute;inset:0}
+.lada .costume{z-index:2;clip-path:polygon(0 29%,100% 29%,100% 100%,0 100%)}
+.lada .real-head{z-index:3;clip-path:ellipse(24% 15% at 49.6% 14.5%)}
+.fox{z-index:8;left:1417px;bottom:114px;width:425px;height:864px}
+.tutenstein{z-index:12;left:1715px;bottom:112px;width:324px;height:835px}
+.merchant{z-index:10;left:1980px;bottom:113px;width:242px;height:760px}
+.bookseller{z-index:11;left:2150px;bottom:95px;width:280px;height:830px}
+</style></head>
+<body>
+<section class="portrait" id="photo" aria-label="Лада с друзьями — без перерисовки персонажей">
+<img class="land" src="images/egypt-motion-temple-bg.webp" alt="">
+<div class="light"></div><div class="ground"></div>
+<div class="persephone"><img src="images/hades-persephone-portrait.webp" alt="Персефона"></div>
+<div class="friend merchant"><img src="images/market-merchant.webp" alt="Зелёный друг"></div>
+<div class="friend bookseller"><img src="images/bookshop-merchant.webp" alt="Продавщица книг"></div>
+<div class="friend fox"><img src="images/egypt-fox-friend.webp" alt="Рыжий друг"></div>
+<div class="friend tutenstein"><img src="images/egypt-tutenstein.webp" alt="Тутенштейн"></div>
+<div class="friend monkey"><img src="images/monkey-cutout.webp" alt="Обезьянка Умняшка"></div>
+<div class="friend rabbit"><img src="images/rabbit-cutout.webp" alt="Заяц Силач"></div>
+<div class="friend cat"><img src="images/blue-cat.webp" alt="Кот Ловкач"></div>
+<div class="friend lada"><img src="images/lada-cutout.webp" alt="Лада"><img class="costume" src="images/hecate-lyre-costume-layer.webp" alt=""><img class="real-head" src="images/lada-cutout.webp" alt=""></div>
+</section>
+</body></html>

@@ -1,0 +1,36 @@
+name: Build photograph from original Lada friends
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'lada-friends-photo.html'
+      - 'scripts/render-lada-friends.mjs'
+      - '.github/workflows/build-lada-friends.yml'
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  photo:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Install screenshot dependencies
+        run: |
+          npm install --no-save --package-lock=false playwright@1.57.0
+          npx playwright install --with-deps chromium
+      - name: Assemble exact site cutouts into photograph
+        run: node scripts/render-lada-friends.mjs
+      - name: Verify photo exists
+        run: |
+          test -s images/lada-friends-original-photo.png
+          file images/lada-friends-original-photo.png
+      - name: Commit final PNG to main
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add images/lada-friends-original-photo.png
+          git diff --cached --quiet || (git commit -m "Add authentic Lada and friends photograph" && git push)
