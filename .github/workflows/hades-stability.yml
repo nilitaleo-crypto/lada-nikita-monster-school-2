@@ -16,6 +16,7 @@ on:
       - 'tests/egypt-thoth-library.spec.mjs'
       - 'tests/egypt-mummy-tomb.spec.mjs'
       - 'tests/egypt-motion-temple.spec.mjs'
+      - 'tests/egypt-school.spec.mjs'
       - '.github/workflows/hades-stability.yml'
   workflow_dispatch:
 permissions:
@@ -72,6 +73,8 @@ jobs:
         run: node tests/egypt-mummy-tomb.spec.mjs
       - name: Nile movement temple, desktop/iPad/phone and Firebase click replay
         run: node tests/egypt-motion-temple.spec.mjs
+      - name: Egyptian school math, print worksheets, reading, iPad and co-op
+        run: node tests/egypt-school.spec.mjs
       - name: Archive results (even on failure)
         if: always()
         uses: actions/upload-artifact@v4

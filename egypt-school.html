@@ -1,0 +1,107 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#5a3523">
+<title>Египетская школа — три учительницы · Тиввиг</title>
+<link rel="preload" as="image" href="images/egypt-school-teachers.webp">
+<style>
+:root{--ink:#462a23;--gold:#b27835;--paper:#fff3d8;--stroke:#b77c36;--blue:#37657e}
+*{box-sizing:border-box}body{margin:0;background:#182b39;color:#ffefce;font-family:Georgia,'Times New Roman',serif}
+button,a{font:inherit;-webkit-tap-highlight-color:transparent;touch-action:manipulation}
+button:focus-visible,a:focus-visible{outline:3px solid #1d88c0;outline-offset:3px}
+button{cursor:pointer}a{color:inherit;text-decoration:none}[hidden]{display:none!important}
+main{max-width:1330px;margin:auto;padding:7px}
+header{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:8px}
+header h1{text-align:center;font-weight:normal;margin:0;font-size:clamp(17px,2.3vw,29px)}
+.nav{min-height:43px;display:grid;place-items:center;border:1px solid #ffdb9c9c;background:#3b4c57;border-radius:9px;padding:9px 12px;font-size:clamp(12px,1.35vw,16px)}
+.stage{overflow:hidden;border-radius:17px;border:3px solid #d5a85e;background:#f7e5ba;color:var(--ink);box-shadow:0 10px 26px #070b1590}
+.hero{position:relative;height:min(35vw,420px);min-height:230px;isolation:isolate;overflow:hidden;transition:height .2s ease;background:#bc905f}
+.stage[data-phase="intro"] .hero{height:auto;aspect-ratio:1672/941;min-height:0}
+.school-backdrop{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center 45%;pointer-events:none;user-select:none}
+.stage:not([data-phase="intro"]) .school-backdrop{object-position:center 31%;filter:saturate(.98)}
+.hero::after{content:"";position:absolute;inset:0;pointer-events:none;background:linear-gradient(0deg,#26161145,transparent 36%);z-index:1}
+.school-lada{position:absolute;left:1%;bottom:1.8%;height:55%;width:19%;z-index:3;pointer-events:none;filter:drop-shadow(2px 5px 5px #251415aa)}
+.school-lada img{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;object-position:bottom;user-select:none}
+.school-lada [data-outfit-layer]{clip-path:polygon(0 27%,100% 27%,100% 100%,0 100%);-webkit-clip-path:polygon(0 27%,100% 27%,100% 100%,0 100%)}
+.school-lada[data-outfit="egyptMoon"] [data-outfit-layer]{clip-path:none;-webkit-clip-path:none}
+.stage:not([data-phase="intro"]) .school-lada{height:41%;width:13%;left:0}
+.intro-ribbon{position:absolute;left:18%;right:18%;bottom:3.5%;z-index:5;display:flex;align-items:center;justify-content:space-between;gap:16px;background:#fff0c5f2;border:3px solid #d5a15b;border-radius:19px;box-shadow:0 5px 17px #271e1766;padding:9px 15px;color:#4e3125}
+.intro-ribbon p{font-size:clamp(15px,2.2vw,27px);margin:0;line-height:1.18;font-weight:bold}
+.big-btn{border:2px solid #d1a04b;border-radius:15px;background:linear-gradient(#ffe4a1,#e8b756);box-shadow:0 4px 0 #a77937;color:#4e3124;font-weight:bold;font-size:clamp(18px,2vw,25px);padding:12px 22px;min-height:55px;white-space:nowrap}
+.big-btn:active{transform:translateY(2px);box-shadow:0 2px 0 #a77937}
+.learning{padding:12px clamp(12px,3vw,34px) 18px;background:linear-gradient(#fae9bd,#fff7e3);min-height:278px;display:flex;flex-direction:column;gap:7px}
+.teacherline{display:flex;align-items:center;gap:12px;min-height:55px}
+.teacher-thumb{height:65px;width:75px;object-fit:cover;border:3px solid #cf9d58;border-radius:14px;background:#f2d4a2;box-shadow:0 2px 8px #86613438}
+.teacher-name{margin:0;font-size:clamp(19px,2.2vw,27px);font-weight:bold}
+.kicker{margin:0;color:#806044;font:700 clamp(11px,1.2vw,15px) system-ui,sans-serif;letter-spacing:.08em;text-transform:uppercase}
+.progress-wrap{margin-left:auto;align-self:flex-end;min-width:95px;max-width:220px;flex:1;display:flex;flex-direction:column;gap:5px;align-items:flex-end}
+.progress-text{font:700 14px system-ui,sans-serif;color:#705238}
+.track{height:8px;width:100%;border:1px solid #d4a767;border-radius:999px;overflow:hidden;background:#e5ca9a}
+.track span{display:block;height:100%;width:0%;background:linear-gradient(90deg,#4b8da0,#f3ad42);transition:width .12s}
+.question{font-size:clamp(21px,2.5vw,34px);line-height:1.15;margin:1px 0;font-weight:bold;text-align:center}
+.symbols{font:700 clamp(26px,3.4vw,48px)/1.2 system-ui,sans-serif;letter-spacing:.055em;text-align:center;white-space:pre-line;min-height:44px;display:grid;place-items:center;color:#493a29}
+.answer-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;width:min(100%,830px);margin:3px auto}
+.choice{min-height:62px;border-radius:12px;border:2px solid #c68e50;background:#fffaf0;color:#553b2b;font:700 clamp(20px,2.7vw,37px) system-ui,sans-serif;box-shadow:0 4px 0 #d5b57d;padding:7px;transition:background .14s}
+.choice:active{transform:translateY(2px)}.choice.correct{background:#ccebd4;border-color:#558b65}.choice.wrong{background:#ffe1d8;border-color:#cb7e72}
+.choice:disabled{opacity:.82}
+.feedback{min-height:25px;text-align:center;margin:1px 0;color:#805e34;font:700 17px system-ui,sans-serif}
+.feedback.bad{color:#a23f31}.feedback.good{color:#28694a}
+.controls{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-top:auto;min-height:52px}
+.skip{min-height:44px;background:transparent;border:1px solid #a88966;color:#604d3d;border-radius:10px;padding:7px 13px;font:500 14px system-ui,sans-serif}
+.print{padding:10px 14px;border:2px solid #ad7b45;background:#fff4d7;border-radius:10px;font:700 clamp(13px,1.3vw,17px) system-ui,sans-serif;color:#58371e}
+.writing-tip{text-align:center;font:600 16px/1.4 system-ui,sans-serif;color:#806044}
+.ending{padding:28px;text-align:center;background:linear-gradient(#fff4d9,#f2d9a2);display:grid;justify-items:center;gap:9px}
+.ending h2{font-size:clamp(25px,3.5vw,44px);margin:5px 0}.ending p{font-size:19px;margin:0 0 7px}.ending img{max-width:min(430px,90%);max-height:200px;object-fit:contain}
+.ending-actions{display:flex;justify-content:center;align-items:center;gap:12px;flex-wrap:wrap}
+#gameConnection{margin:6px 3px 0;min-height:1em;font:12px system-ui,sans-serif;color:#edc49b}
+@media(max-width:680px){
+ main{padding:3px}header{gap:5px}header h1{font-size:16px}.nav{font-size:12px;padding:5px;min-height:42px}
+ .stage[data-phase="intro"] .hero{height:305px;aspect-ratio:auto}.stage[data-phase="intro"] .school-backdrop{object-fit:contain;object-position:top;background:#b88d5e}
+ .stage[data-phase="intro"] .school-lada{height:45%;width:25%;bottom:0;left:1%}
+ .intro-ribbon{left:15%;right:2%;bottom:2%;padding:8px;gap:6px;border-width:2px}.intro-ribbon p{font-size:14px}.intro-ribbon .big-btn{min-height:47px;font-size:16px;padding:8px}
+ .hero{height:180px;min-height:0}.school-backdrop{object-fit:cover;object-position:center 28%}
+ .stage:not([data-phase="intro"]) .school-lada{height:44%;width:15%}
+ .teacher-thumb{width:56px;height:58px}.learning{padding:8px 10px 13px;min-height:345px;gap:6px}.teacher-name{font-size:20px}.progress-wrap{min-width:80px}
+ .symbols{font-size:30px;min-height:57px}.question{font-size:24px}.answer-grid{gap:6px}.choice{font-size:23px;min-height:61px}.feedback{font-size:15px}
+ .controls{gap:5px}.big-btn{min-height:48px;padding:8px 15px;font-size:17px}.skip{font-size:12px;padding:6px}.print{font-size:12px;padding:6px 7px}
+}
+@media(prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+</head>
+<body>
+<main>
+<header><a class="nav" href="egypt-motion-temple.html">← Храм ибиса</a><h1>Египетская школа</h1><a class="nav" href="index.html">⌂ Карта</a></header>
+<section class="stage" id="schoolStage" data-phase="intro" aria-label="Египетская школа Лады">
+ <div class="hero">
+   <img class="school-backdrop" src="images/egypt-school-teachers.webp" alt="Три учительницы египетской школы: МатематиКатя, строгая Уэнсдей и пушистая миссис Пухлис" draggable="false" fetchpriority="high">
+   <div class="school-lada" id="schoolLada" role="img" aria-label="Лада входит в египетскую школу">
+     <img src="images/lada-cutout.webp" alt="" draggable="false"><img data-outfit-layer hidden alt="" draggable="false">
+   </div>
+   <div class="intro-ribbon" id="schoolIntro"><p>Лада, тебя ждут три учительницы!</p><button class="big-btn" id="schoolStart" type="button" data-tivvig-sound="manual">Войти →</button></div>
+ </div>
+ <div class="learning" id="schoolLearning" hidden>
+   <div class="teacherline"><img class="teacher-thumb" id="schoolTeacherImg" src="images/egypt-school-katya.webp" alt="" draggable="false"><div><p class="kicker" id="schoolSubject">Математика</p><h2 class="teacher-name" id="schoolTeacher">МатематиКатя</h2></div>
+      <div class="progress-wrap"><span class="progress-text" id="schoolCounter">1 / 12</span><div class="track"><span id="schoolBar"></span></div></div>
+   </div>
+   <h3 class="question" id="schoolQuestion">Сколько?</h3>
+   <div class="symbols" id="schoolVisual"></div>
+   <div class="answer-grid" id="schoolAnswers">
+      <button class="choice" type="button" id="schoolOpt0" data-tivvig-sound="manual"></button>
+      <button class="choice" type="button" id="schoolOpt1" data-tivvig-sound="manual"></button>
+      <button class="choice" type="button" id="schoolOpt2" data-tivvig-sound="manual"></button>
+      <button class="choice" type="button" id="schoolOpt3" data-tivvig-sound="manual"></button>
+   </div>
+   <p class="feedback" id="schoolFeedback" role="status" aria-live="polite"></p>
+   <div class="controls"><button class="skip" id="schoolSkip" type="button" data-tivvig-sound="manual">Пропустить задание</button><a class="print" id="schoolPrint" href="egypt-school-worksheets.html" target="_blank" rel="noopener" hidden>🖨 Прописи для печати</a><button class="big-btn" id="schoolNext" type="button" data-tivvig-sound="manual" hidden>Дальше →</button></div>
+ </div>
+ <div class="ending" id="schoolEnding" hidden><h2>Все уроки пройдены!</h2><p>Лада получила школьную печать знаний.</p><img src="images/egypt-school-diploma.svg" alt="Золотая школьная печать и диплом Лады"><div class="ending-actions"><button class="big-btn" id="schoolAgain" type="button" data-tivvig-sound="manual">Ещё раз</button><a class="print" href="collection.html">В коллекцию →</a></div></div>
+</section>
+<p id="gameConnection" role="status"></p>
+</main>
+<script src="wardrobe.js?v=7" defer></script>
+<script src="egypt-school.js?v=1" defer></script>
+<script src="hades-sounds.js?v=9" defer></script>
+<script src="game-runtime.js?v=6" defer></script>
+</body></html>

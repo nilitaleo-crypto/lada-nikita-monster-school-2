@@ -39,7 +39,7 @@ async function check(engine,engineName,width,height,touch){
   assert.equal(await page.locator('#motionReward').isVisible(),true);
   assert.equal(await page.locator('#motionFigure').isVisible(),false,'The medallion leaves room for the reward');
   assert.equal(await page.locator('.guardian.awake img').count(),6);
-  assert.equal(await page.locator('#motionToMap').getAttribute('href'),'index.html');
+  assert.equal(await page.locator('#motionToMap').getAttribute('href'),'egypt-school.html');
   assert.equal(await page.evaluate(()=>localStorage.getItem('tivvig_egypt_motion_temple_v1')),'unlocked');
   assert.equal(await page.locator('#motionGuardians .awake').count(),6);
   assert.deepEqual(await page.evaluate(()=>[...document.images].filter(i=>i.hasAttribute('src')&&i.getAttribute('src')&&i.complete&&i.naturalWidth===0).map(i=>i.src)),[]);
