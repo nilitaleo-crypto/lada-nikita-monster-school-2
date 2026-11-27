@@ -99,7 +99,7 @@ header h1{font-size:clamp(18px,2.1vw,28px);font-weight:normal;margin:0;text-alig
 }
 @media(max-width:440px){.school{min-height:670px;max-height:825px}.board{top:33%;bottom:4%;padding:9px}.teacher-figure{top:9%;height:27%}.board h2{font-size:22px}.board-art{font-size:25px}.answer{min-height:46px}.board-bottom{gap:4px}.little-button{font-size:11px}.next-button{font-size:14px}}
 @media(prefers-reduced-motion:reduce){.hall,.room,.reaction,.teacher-figure img{animation:none!important;transition:none!important}}
-</style></head>
+</style><link rel="stylesheet" href="egypt-school-integrated.css?v=3"></head>
 <body>
 <main>
 <header><a class="nav" href="egypt-motion-temple.html">← Храм ибиса</a><h1>Египетская школа</h1><a class="nav" href="index.html">⌂ Карта</a></header>
@@ -114,7 +114,7 @@ header h1{font-size:clamp(18px,2.1vw,28px);font-weight:normal;margin:0;text-alig
   <span id="hallHint">Нажми на имя учительницы</span>
  </div>
  <div class="room" id="schoolRoom" hidden>
-  <img class="scene-bg" id="schoolRoomBg" src="images/egypt-school-math-room.webp" alt="Интерьер египетского учебного класса" draggable="false">
+  <img class="scene-bg" id="schoolRoomBg" src="images/egypt-school-math-integrated.webp" alt="Интерьер египетского учебного класса" draggable="false">
   <button class="back-to-hall" id="schoolBack" type="button" data-tivvig-sound="manual">← В холл</button>
   <div class="room-label" id="schoolTeacher">МатематиКатя</div>
   <div class="board" id="schoolBoard" aria-label="Школьная доска">
@@ -132,7 +132,7 @@ header h1{font-size:clamp(18px,2.1vw,28px);font-weight:normal;margin:0;text-alig
    <p class="feedback" id="schoolFeedback" role="status" aria-live="polite"></p>
    <div class="board-bottom"><button class="little-button" id="schoolSkip" type="button" data-tivvig-sound="manual">Пропустить</button><a class="print-link" id="schoolPrint" href="egypt-school-worksheets.html" target="_blank" rel="noopener" hidden>🖨 Прописи А4</a><button class="next-button" id="schoolNext" type="button" data-tivvig-sound="manual" hidden>Дальше →</button></div>
   </div>
-  <div class="teacher-figure" id="schoolTeacherFigure" data-mood="neutral" role="img" aria-label="Учительница реагирует на ответ"><img id="schoolTeacherImg" src="images/egypt-school-katya.webp" alt=""><span class="reaction" id="schoolReaction" aria-hidden="true"></span></div>
+  <div class="teacher-figure" id="schoolTeacherFigure" data-mood="neutral" role="img" aria-label="Учительница реагирует на ответ"><img id="schoolTeacherImg" src="images/egypt-school-math-neutral.webp" alt=""><span class="reaction" id="schoolReaction" aria-hidden="true"></span></div>
   <div class="room-lada" id="schoolRoomLada" role="img" aria-label="Лада"><img src="images/lada-cutout.webp" alt=""><img data-outfit-layer hidden alt=""></div>
  </div>
  <div class="complete-cover" id="schoolEnding" hidden><div class="complete-card"><h2>Диплом Лады!</h2><img src="images/egypt-school-diploma.svg" alt="Золотой школьный диплом"><p>Все три учительницы гордятся тобой!</p><div class="complete-actions"><button id="schoolAgain" type="button">В школу ещё раз</button><a href="collection.html">В коллекцию →</a></div></div></div>
@@ -140,7 +140,7 @@ header h1{font-size:clamp(18px,2.1vw,28px);font-weight:normal;margin:0;text-alig
 <p id="gameConnection" role="status"></p>
 </main>
 <script src="wardrobe.js?v=7" defer></script>
-<script src="egypt-school.js?v=2" defer></script>
+<script src="egypt-school.js?v=3" defer></script>
 <script src="hades-sounds.js?v=9" defer></script>
 <script src="game-runtime.js?v=6" defer></script>
 </body></html>

@@ -1,0 +1,110 @@
+/* Egyptian School v3 — architecture IS the board; all teachers are layered sprites.
+   Keep native buttons/IDs for multiplayer relay and touchscreen compatibility. */
+.school[data-phase="math"] .room{
+  --ink:#513219;--tile:#ffe1a4;--tile-border:#c38a36;--accent:#5b391e;
+}
+.school[data-phase="writing"] .room{
+  --ink:#fff0df;--tile:#c7b1d8;--tile-border:#815ea4;--accent:#fff1e1;
+}
+.school[data-phase="reading"] .room{
+  --ink:#65384a;--tile:#ffe0e8;--tile-border:#b66c89;--accent:#62364e;
+}
+.school .room{background:#372747;color:var(--ink)}
+.school .room::before{background:none}
+.school .room .scene-bg{object-fit:cover;object-position:center;width:100%;height:100%;filter:none}
+/* A transparent gameplay layer aligned to the illustrated board on the WALL. */
+.school .room .board{
+  z-index:8;left:23.5%;right:19.5%;top:17%;bottom:35%;
+  padding:1.1% 1.2%;margin:0;gap:3px;
+  background:transparent!important;border:0!important;
+  border-radius:0!important;box-shadow:none!important;
+  display:flex;flex-direction:column;justify-content:space-between;
+  color:var(--ink);font-family:Georgia,'Times New Roman',serif;
+}
+.school .room .board::before{display:none!important}
+.school .room .board-top{
+  font:700 clamp(11px,1vw,15px) system-ui,sans-serif;
+  letter-spacing:.05em;color:var(--accent);
+  min-height:18px;text-shadow:none;
+}
+.school .room .board h2{
+  color:var(--ink);font:700 clamp(19px,2.25vw,33px)/1.13 Georgia,serif;
+  margin:0;min-height:0;text-align:center;text-shadow:none;
+}
+.school .room .board-art{
+  color:var(--ink);font:700 clamp(21px,2.6vw,37px)/1.13 system-ui,sans-serif;
+  min-height:37px;flex:1;text-align:center;white-space:pre-line;
+  display:grid;place-items:center;letter-spacing:.01em;text-shadow:none;
+}
+.school .room .answer-grid{width:100%;gap:6px;grid-template-columns:repeat(4,minmax(0,1fr))}
+.school .room .answer{
+  min-height:clamp(46px,4.5vw,60px);border:2px solid var(--tile-border);
+  background:var(--tile);color:#483020;box-shadow:0 3px 0 #74543d;
+  border-radius:9px;font:700 clamp(17px,1.9vw,27px)/1.1 system-ui,sans-serif;
+  padding:4px 6px;transition:background .18s ease,transform .15s ease;
+}
+.school .room .answer:active{transform:translateY(2px)}
+.school .room .answer.hit{background:#d9edbb!important;border-color:#70a975}
+.school .room .answer.missed{background:#f5bbbd!important;border-color:#a74358}
+.school .room .feedback{
+  min-height:17px;margin:0;color:var(--accent);
+  font:700 clamp(11px,1vw,15px) system-ui,sans-serif;
+  text-shadow:none;
+}
+.school .room .board-bottom{min-height:39px;gap:6px;margin:0;align-items:center}
+.school .room .little-button{
+  min-height:37px;padding:6px 10px;border:1px solid var(--tile-border);
+  border-radius:8px;background:#493d427a;color:var(--ink);
+  font:700 clamp(11px,1.1vw,14px) system-ui,sans-serif;
+}
+.school[data-phase="math"] .room .little-button,
+.school[data-phase="reading"] .room .little-button{background:#ffedcfb0}
+.school .room .next-button{
+  min-height:41px;min-width:102px;padding:6px 13px;font-size:clamp(14px,1.4vw,19px);
+}
+.school .room .print-link{min-height:40px;padding:5px 9px;font-size:clamp(12px,1.1vw,15px)}
+/* Distinct, real alpha-models, not crops from the classroom painting. */
+.school .room .teacher-figure{
+  z-index:7;left:0%;right:auto;top:15%;bottom:2%;
+  height:81%;width:27%;display:grid;place-items:end center;
+  transform-origin:50% 80%;pointer-events:none;filter:drop-shadow(3px 9px 7px #16102173);
+}
+.school .room .teacher-figure img{
+  display:block;width:100%;height:100%;object-fit:contain;object-position:bottom center;
+  -webkit-mask-image:none!important;mask-image:none!important;
+  transition:transform .3s ease,filter .3s ease;will-change:transform;
+}
+.school .room .teacher-figure[data-mood="good"] img{
+  transform:translateY(-8px) rotate(-1.3deg) scale(1.035);
+  filter:brightness(1.04) saturate(1.08);
+}
+.school .room .teacher-figure[data-mood="wrong"] img{
+  animation:school-scold-v3 .31s ease-in-out;
+  filter:contrast(1.06);
+}
+@keyframes school-scold-v3{0%,100%{transform:translateX(0)}35%{transform:translateX(-6px) rotate(-1deg)}70%{transform:translateX(5px) rotate(1deg)}}
+.school .room .reaction{right:2%;top:9%;font-size:clamp(30px,3.3vw,50px)}
+.school .room .room-lada{left:auto;right:-.8%;width:12%;height:24%;bottom:1%;z-index:6}
+.school .room .room-label{display:none}
+.school .room .back-to-hall{z-index:12;left:1%;top:2%;min-height:43px}
+@media(max-width:850px){
+  .school .room .scene-bg{object-fit:cover;object-position:52% center}
+  .school .room .teacher-figure{top:4%;left:1%;width:33%;height:30%;bottom:auto}
+  .school .room .reaction{top:1%;right:4%;font-size:34px}
+  .school .room .board{top:34%;bottom:4%;left:3%;right:3%;padding:8px 7px;gap:3px}
+  .school .room .board h2{font-size:clamp(17px,4.3vw,24px);line-height:1.12}
+  .school .room .board-art{font-size:clamp(19px,5vw,30px);min-height:35px}
+  .school .room .answer-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:5px}
+  .school .room .answer{min-height:45px;font-size:clamp(17px,4.9vw,24px)}
+  .school .room .board-bottom{min-height:38px}
+  .school .room .room-lada{height:21%;width:17%;left:auto;right:0;bottom:66%}
+  .school .room .back-to-hall{top:1%;left:1%}
+}
+@media(max-width:440px){
+  .school .room .board{top:33.5%;bottom:3.5%;padding:7px 6px}
+  .school .room .teacher-figure{height:29%;width:37%;left:-1%}
+  .school .room .board-art{font-size:clamp(18px,5.6vw,25px)}
+  .school .room .answer{min-height:44px}
+  .school .room .room-lada{display:none}
+}
+@media(prefers-reduced-motion:reduce){.school .room .teacher-figure img{animation:none!important;transition:none!important}}

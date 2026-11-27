@@ -45,11 +45,16 @@ const reading=[
  {q:'Собери имя героини',art:'ЛА-ДА',type:'sequence',a:['ДА','МА','ЛА'],order:[2,0]}
 ];
 const subjects={
- math:{name:'МатематиКатя',label:'СОКРОВИЩА И ЧИСЛА',image:'images/egypt-school-katya.webp',background:'images/egypt-school-math-room.webp',data:math,bad:'😕',good:'✨'},
- writing:{name:'Злая Уэнсдей',label:'ТАЙНЫЕ ПРОПИСИ',image:'images/egypt-school-wednesday.webp',background:'images/egypt-school-writing-room.webp',data:writing,bad:'⚡',good:'☾'},
- reading:{name:'Миссис Пухлис',label:'ЧИТАЛЬНАЯ КОМНАТА',image:'images/egypt-school-puhlis.webp',background:'images/egypt-school-reading-room.webp',data:reading,bad:'😿',good:'💗'}
+ math:{name:'МатематиКатя',label:'СОКРОВИЩА И ЧИСЛА',sprites:{neutral:'images/egypt-school-math-neutral.webp',good:'images/egypt-school-math-good.webp',wrong:'images/egypt-school-math-wrong.webp'},background:'images/egypt-school-math-integrated.webp',data:math,bad:'😕',good:'✨'},
+ writing:{name:'Злая Уэнсдей',label:'ТАЙНЫЕ ПРОПИСИ',sprites:{neutral:'images/egypt-school-writing-neutral.webp',good:'images/egypt-school-writing-good.webp',wrong:'images/egypt-school-writing-wrong.webp'},background:'images/egypt-school-writing-integrated.webp',data:writing,bad:'⚡',good:'☾'},
+ reading:{name:'Миссис Пухлис',label:'ЧИТАЛЬНАЯ КОМНАТА',sprites:{neutral:'images/egypt-school-reading-neutral.webp',good:'images/egypt-school-reading-good.webp',wrong:'images/egypt-school-reading-wrong.webp'},background:'images/egypt-school-reading-integrated.webp',data:reading,bad:'😿',good:'💗'}
 };
 const names=Object.keys(subjects);
+// Preload three expressions for each movable teacher; keep it image-only, no extra network APIs.
+const characterArt=[];
+for(const room of Object.values(subjects))for(const source of Object.values(room.sprites)){
+ const image=new Image();image.decoding='async';image.src=source;characterArt.push(image);
+}
 const progress={math:0,writing:0,reading:0},done=new Set();
 let phase='hall',answered=false,wrong=null,sequencePos=0,selected=new Set(),mood='neutral';
 function tone(which){try{void window.TivvigHadesSounds?.play(which)}catch{}}
@@ -70,9 +75,10 @@ function render(){
  if(hall||end)return;
  const subject=subjects[phase];if(!subject)return;
  const n=progress[phase];const task=subject.data[n];if(!task)return;
- $('schoolRoomBg').src=subject.background;
- $('schoolTeacherImg').src=subject.image;
- $('schoolTeacherImg').alt=subject.name;
+ if($('schoolRoomBg').getAttribute('src')!==subject.background)$('schoolRoomBg').src=subject.background;
+ const sprite=subject.sprites[mood]||subject.sprites.neutral;
+ if($('schoolTeacherImg').getAttribute('src')!==sprite)$('schoolTeacherImg').src=sprite;
+ $('schoolTeacherImg').alt=subject.name+(mood==='wrong'?' недовольна':mood==='good'?' радуется':'');
  $('schoolTeacher').textContent=subject.name;
  $('schoolSubject').textContent=subject.label;
  $('schoolCounter').textContent=(n+1)+' / '+subject.data.length;

@@ -26,6 +26,11 @@ async function play(browser,label,viewport,mobile,order){
    await page.locator('#'+ids[room]).click();
    assert.equal(await page.locator('#schoolStage').getAttribute('data-phase'),room);
    assert.equal(await page.locator('#schoolBoard').isVisible(),true);
+   assert.equal(await page.locator('#schoolRoomBg').getAttribute('src'),`images/egypt-school-${room}-integrated.webp`);
+   assert.equal(await page.locator('#schoolTeacherImg').getAttribute('src'),`images/egypt-school-${room}-neutral.webp`);
+   const boardStyle=await page.locator('#schoolBoard').evaluate(el=>({border:getComputedStyle(el).borderTopWidth,bg:getComputedStyle(el).backgroundColor}));
+   assert.equal(boardStyle.border,'0px','Gameplay must not be surrounded by a huge separate board frame');
+   assert.equal(boardStyle.bg,'rgba(0, 0, 0, 0)','The illustrated wall itself must remain the board');
    await page.locator('#schoolRoomBg').evaluate(async i=>{await i.decode();if(i.naturalWidth<100)throw Error('Broken room background')});
    await page.locator('#schoolTeacherImg').evaluate(async i=>{await i.decode();if(i.naturalWidth<100)throw Error('Broken teacher image')});
    const state=await page.evaluate(()=>TivvigSchoolDebug.state());
@@ -40,19 +45,24 @@ async function play(browser,label,viewport,mobile,order){
     assert.equal(await page.evaluate(()=>TivvigSchoolDebug.state().step),n);
     if(room==='writing'){
      assert.equal(await page.locator('#schoolPrint').isVisible(),true);
-     if(n===0){await page.locator('#schoolOpt0').click();assert.equal(await page.locator('#schoolTeacherFigure').getAttribute('data-mood'),'wrong');}
+     if(n===0){await page.locator('#schoolOpt0').click();assert.equal(await page.locator('#schoolTeacherFigure').getAttribute('data-mood'),'wrong');
+     assert.equal(await page.locator('#schoolTeacherImg').getAttribute('src'),`images/egypt-school-${room}-wrong.webp`,'Incorrect answer must show the wrong-expression asset');}
      await page.locator('#schoolOpt1').click();
     }else if(task.type==='sequence'){
-     if(n===2){const wrong=task.a.findIndex((_,j)=>j!==task.order[0]);await page.locator('#schoolOpt'+wrong).click();assert.equal(await page.locator('#schoolTeacherFigure').getAttribute('data-mood'),'wrong');}
+     if(n===2){const wrong=task.a.findIndex((_,j)=>j!==task.order[0]);await page.locator('#schoolOpt'+wrong).click();assert.equal(await page.locator('#schoolTeacherFigure').getAttribute('data-mood'),'wrong');
+     assert.equal(await page.locator('#schoolTeacherImg').getAttribute('src'),`images/egypt-school-${room}-wrong.webp`,'Incorrect answer must show the wrong-expression asset');}
      for(const choice of task.order)await page.locator('#schoolOpt'+choice).click();
     }else if(task.type==='collect'){
      for(let k=0;k<task.target;k++)await page.locator('#schoolOpt'+k).click();
     }else{
-     if(n===0){const bad=(task.ok+1)%task.a.length;await page.locator('#schoolOpt'+bad).click();assert.equal(await page.evaluate(()=>TivvigSchoolDebug.state().answered),false);assert.equal(await page.locator('#schoolTeacherFigure').getAttribute('data-mood'),'wrong');}
+     if(n===0){const bad=(task.ok+1)%task.a.length;await page.locator('#schoolOpt'+bad).click();assert.equal(await page.evaluate(()=>TivvigSchoolDebug.state().answered),false);assert.equal(await page.locator('#schoolTeacherFigure').getAttribute('data-mood'),'wrong');
+     assert.equal(await page.locator('#schoolTeacherImg').getAttribute('src'),`images/egypt-school-${room}-wrong.webp`,'Incorrect answer must show the wrong-expression asset');}
      await page.locator('#schoolOpt'+task.ok).click();
     }
     assert.equal(await page.evaluate(()=>TivvigSchoolDebug.state().answered),true);
     assert.equal(await page.locator('#schoolTeacherFigure').getAttribute('data-mood'),'good');
+    assert.equal(await page.locator('#schoolTeacherImg').getAttribute('src'),`images/egypt-school-${room}-good.webp`,'Correct answer swaps to the actual happy character asset');
+    await page.locator('#schoolTeacherImg').evaluate(img=>img.decode());
     await page.locator('#schoolNext').click();
    }
    const now=await page.evaluate(()=>TivvigSchoolDebug.state());
