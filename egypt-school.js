@@ -45,9 +45,9 @@ const reading=[
  {q:'Собери имя героини',art:'ЛА-ДА',type:'sequence',a:['ДА','МА','ЛА'],order:[2,0]}
 ];
 const subjects={
- math:{name:'МатематиКатя',label:'СОКРОВИЩА И ЧИСЛА',sprites:{neutral:'images/egypt-school-math-neutral.webp',good:'images/egypt-school-math-good.webp',wrong:'images/egypt-school-math-wrong.webp'},background:'images/egypt-school-math-integrated.webp',data:math,bad:'😕',good:'✨'},
- writing:{name:'Злая Уэнсдей',label:'ТАЙНЫЕ ПРОПИСИ',sprites:{neutral:'images/egypt-school-writing-neutral.webp',good:'images/egypt-school-writing-good.webp',wrong:'images/egypt-school-writing-wrong.webp'},background:'images/egypt-school-writing-integrated.webp',data:writing,bad:'⚡',good:'☾'},
- reading:{name:'Миссис Пухлис',label:'ЧИТАЛЬНАЯ КОМНАТА',sprites:{neutral:'images/egypt-school-reading-neutral.webp',good:'images/egypt-school-reading-good.webp',wrong:'images/egypt-school-reading-wrong.webp'},background:'images/egypt-school-reading-integrated.webp',data:reading,bad:'😿',good:'💗'}
+ math:{name:'МатематиКатя',label:'СОКРОВИЩА И ЧИСЛА',sprites:{neutral:'images/egypt-school-math-neutral.webp',good:'images/egypt-school-math-good.webp',wrong:'images/egypt-school-math-wrong.webp'},background:'images/egypt-school-math-integrated-v2.webp',data:math,bad:'😕',good:'✨'},
+ writing:{name:'Злая Уэнсдей',label:'ТАЙНЫЕ ПРОПИСИ',sprites:{neutral:'images/egypt-school-writing-neutral.webp',good:'images/egypt-school-writing-good.webp',wrong:'images/egypt-school-writing-wrong.webp'},background:'images/egypt-school-writing-integrated-v2.webp',data:writing,bad:'⚡',good:'☾'},
+ reading:{name:'Миссис Пухлис',label:'ЧИТАЛЬНАЯ КОМНАТА',sprites:{neutral:'images/egypt-school-reading-neutral.webp',good:'images/egypt-school-reading-good.webp',wrong:'images/egypt-school-reading-wrong.webp'},background:'images/egypt-school-reading-integrated-v2.webp',data:reading,bad:'😿',good:'💗'}
 };
 const names=Object.keys(subjects);
 // Preload three expressions for each movable teacher; keep it image-only, no extra network APIs.

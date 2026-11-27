@@ -26,7 +26,7 @@ async function play(browser,label,viewport,mobile,order){
    await page.locator('#'+ids[room]).click();
    assert.equal(await page.locator('#schoolStage').getAttribute('data-phase'),room);
    assert.equal(await page.locator('#schoolBoard').isVisible(),true);
-   assert.equal(await page.locator('#schoolRoomBg').getAttribute('src'),`images/egypt-school-${room}-integrated.webp`);
+   assert.equal(await page.locator('#schoolRoomBg').getAttribute('src'),`images/egypt-school-${room}-integrated-v2.webp`);
    assert.equal(await page.locator('#schoolTeacherImg').getAttribute('src'),`images/egypt-school-${room}-neutral.webp`);
    const boardStyle=await page.locator('#schoolBoard').evaluate(el=>({border:getComputedStyle(el).borderTopWidth,bg:getComputedStyle(el).backgroundColor}));
    assert.equal(boardStyle.border,'0px','Gameplay must not be surrounded by a huge separate board frame');
