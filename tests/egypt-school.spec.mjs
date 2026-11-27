@@ -26,8 +26,8 @@ async function play(browser,label,viewport,mobile,order){
    await page.locator('#'+ids[room]).click();
    assert.equal(await page.locator('#schoolStage').getAttribute('data-phase'),room);
    assert.equal(await page.locator('#schoolBoard').isVisible(),true);
-   assert.equal(await page.locator('#schoolRoomBg').evaluate(i=>i.complete&&i.naturalWidth>100),true);
-   assert.equal(await page.locator('#schoolTeacherImg').evaluate(i=>i.complete&&i.naturalWidth>100),true);
+   await page.locator('#schoolRoomBg').evaluate(async i=>{await i.decode();if(i.naturalWidth<100)throw Error('Broken room background')});
+   await page.locator('#schoolTeacherImg').evaluate(async i=>{await i.decode();if(i.naturalWidth<100)throw Error('Broken teacher image')});
    const state=await page.evaluate(()=>TivvigSchoolDebug.state());
    assert.equal(state.lessonCount,expected[room]);
    // The board must be *within* the scene, not a disconnected lower gameplay card.
