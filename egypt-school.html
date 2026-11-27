@@ -2,106 +2,145 @@
 <html lang="ru">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<meta name="theme-color" content="#5a3523">
-<title>Египетская школа — три учительницы · Тиввиг</title>
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#1a2e3c">
+<title>Египетская школа · Тиввиг</title>
 <link rel="preload" as="image" href="images/egypt-school-teachers.webp">
 <style>
-:root{--ink:#462a23;--gold:#b27835;--paper:#fff3d8;--stroke:#b77c36;--blue:#37657e}
-*{box-sizing:border-box}body{margin:0;background:#182b39;color:#ffefce;font-family:Georgia,'Times New Roman',serif}
-button,a{font:inherit;-webkit-tap-highlight-color:transparent;touch-action:manipulation}
-button:focus-visible,a:focus-visible{outline:3px solid #1d88c0;outline-offset:3px}
-button{cursor:pointer}a{color:inherit;text-decoration:none}[hidden]{display:none!important}
-main{max-width:1330px;margin:auto;padding:7px}
-header{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:8px}
-header h1{text-align:center;font-weight:normal;margin:0;font-size:clamp(17px,2.3vw,29px)}
-.nav{min-height:43px;display:grid;place-items:center;border:1px solid #ffdb9c9c;background:#3b4c57;border-radius:9px;padding:9px 12px;font-size:clamp(12px,1.35vw,16px)}
-.stage{overflow:hidden;border-radius:17px;border:3px solid #d5a85e;background:#f7e5ba;color:var(--ink);box-shadow:0 10px 26px #070b1590}
-.hero{position:relative;height:min(35vw,420px);min-height:230px;isolation:isolate;overflow:hidden;transition:height .2s ease;background:#bc905f}
-.stage[data-phase="intro"] .hero{height:auto;aspect-ratio:1672/941;min-height:0}
-.school-backdrop{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center 45%;pointer-events:none;user-select:none}
-.stage:not([data-phase="intro"]) .school-backdrop{object-position:center 31%;filter:saturate(.98)}
-.hero::after{content:"";position:absolute;inset:0;pointer-events:none;background:linear-gradient(0deg,#26161145,transparent 36%);z-index:1}
-.school-lada{position:absolute;left:1%;bottom:1.8%;height:55%;width:19%;z-index:3;pointer-events:none;filter:drop-shadow(2px 5px 5px #251415aa)}
-.school-lada img{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;object-position:bottom;user-select:none}
+:root{font-family:Georgia,'Times New Roman',serif;color:#ffedca;background:#142335;--sand:#f9d894;--blue:#243d50}
+*{box-sizing:border-box}html,body{margin:0;min-height:100%;background:#142335}body{overflow-x:hidden}
+[hidden]{display:none!important}button,a{font:inherit;-webkit-tap-highlight-color:transparent;touch-action:manipulation}button{cursor:pointer}a{color:inherit;text-decoration:none}
+button:focus-visible,a:focus-visible{outline:3px solid #7ce8f3;outline-offset:3px}
+main{max-width:1520px;margin:auto;padding:6px 9px}
+header{display:flex;align-items:center;justify-content:space-between;gap:8px;min-height:46px;margin-bottom:6px}
+header h1{font-size:clamp(18px,2.1vw,28px);font-weight:normal;margin:0;text-align:center;color:#ffe8b0}
+.nav{min-height:43px;padding:9px 14px;background:#2b3f50;border:1px solid #a58659;border-radius:9px;font-size:clamp(12px,1.35vw,16px);display:grid;place-items:center}
+.school{position:relative;overflow:hidden;isolation:isolate;width:100%;aspect-ratio:16/9;min-height:555px;background:#3a2937;border:3px solid #deb971;border-radius:15px;box-shadow:0 11px 25px #080e1980}
+.scene-bg{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center;pointer-events:none;user-select:none}
+.school::after{content:"";position:absolute;inset:0;z-index:20;box-shadow:inset 0 0 28px #1b102147;pointer-events:none;border-radius:12px}
+.school[data-phase="hall"] .room,.school[data-phase="done"] .room{display:none}
+.school[data-phase="math"] .hall,.school[data-phase="writing"] .hall,.school[data-phase="reading"] .hall{display:none}
+.hall,.room{position:absolute;inset:0;animation:scene-in .55s cubic-bezier(.2,.75,.2,1) both}
+@keyframes scene-in{from{opacity:0;filter:blur(5px);transform:scale(1.018)}to{opacity:1;filter:blur(0);transform:scale(1)}}
+.hall .scene-bg{object-position:center 44%}
+.hall::after{content:"";z-index:1;position:absolute;inset:0;pointer-events:none;background:linear-gradient(0deg,#1e122ac7 0%,transparent 35%,transparent 78%,#21152b44)}
+.hall-title{position:absolute;z-index:4;top:3%;left:28%;right:28%;text-align:center;padding:5px 9px;border-radius:10px;background:#2e1e3096;text-shadow:0 2px 4px #220e19}
+.hall-title strong{display:block;font-size:clamp(17px,2vw,30px)}.hall-title span{display:block;font:500 clamp(11px,1.1vw,15px) system-ui,sans-serif;margin-top:4px;color:#ffe8bf}
+.school-lada{position:absolute;z-index:4;bottom:3%;left:0.5%;width:16%;height:50%;pointer-events:none;filter:drop-shadow(3px 7px 5px #170b15ad)}
+.school-lada img{width:100%;height:100%;position:absolute;inset:0;object-fit:contain;object-position:bottom;user-select:none}
 .school-lada [data-outfit-layer]{clip-path:polygon(0 27%,100% 27%,100% 100%,0 100%);-webkit-clip-path:polygon(0 27%,100% 27%,100% 100%,0 100%)}
 .school-lada[data-outfit="egyptMoon"] [data-outfit-layer]{clip-path:none;-webkit-clip-path:none}
-.stage:not([data-phase="intro"]) .school-lada{height:41%;width:13%;left:0}
-.intro-ribbon{position:absolute;left:18%;right:18%;bottom:3.5%;z-index:5;display:flex;align-items:center;justify-content:space-between;gap:16px;background:#fff0c5f2;border:3px solid #d5a15b;border-radius:19px;box-shadow:0 5px 17px #271e1766;padding:9px 15px;color:#4e3125}
-.intro-ribbon p{font-size:clamp(15px,2.2vw,27px);margin:0;line-height:1.18;font-weight:bold}
-.big-btn{border:2px solid #d1a04b;border-radius:15px;background:linear-gradient(#ffe4a1,#e8b756);box-shadow:0 4px 0 #a77937;color:#4e3124;font-weight:bold;font-size:clamp(18px,2vw,25px);padding:12px 22px;min-height:55px;white-space:nowrap}
-.big-btn:active{transform:translateY(2px);box-shadow:0 2px 0 #a77937}
-.learning{padding:12px clamp(12px,3vw,34px) 18px;background:linear-gradient(#fae9bd,#fff7e3);min-height:278px;display:flex;flex-direction:column;gap:7px}
-.teacherline{display:flex;align-items:center;gap:12px;min-height:55px}
-.teacher-thumb{height:65px;width:75px;object-fit:cover;border:3px solid #cf9d58;border-radius:14px;background:#f2d4a2;box-shadow:0 2px 8px #86613438}
-.teacher-name{margin:0;font-size:clamp(19px,2.2vw,27px);font-weight:bold}
-.kicker{margin:0;color:#806044;font:700 clamp(11px,1.2vw,15px) system-ui,sans-serif;letter-spacing:.08em;text-transform:uppercase}
-.progress-wrap{margin-left:auto;align-self:flex-end;min-width:95px;max-width:220px;flex:1;display:flex;flex-direction:column;gap:5px;align-items:flex-end}
-.progress-text{font:700 14px system-ui,sans-serif;color:#705238}
-.track{height:8px;width:100%;border:1px solid #d4a767;border-radius:999px;overflow:hidden;background:#e5ca9a}
-.track span{display:block;height:100%;width:0%;background:linear-gradient(90deg,#4b8da0,#f3ad42);transition:width .12s}
-.question{font-size:clamp(21px,2.5vw,34px);line-height:1.15;margin:1px 0;font-weight:bold;text-align:center}
-.symbols{font:700 clamp(26px,3.4vw,48px)/1.2 system-ui,sans-serif;letter-spacing:.055em;text-align:center;white-space:pre-line;min-height:44px;display:grid;place-items:center;color:#493a29}
-.answer-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;width:min(100%,830px);margin:3px auto}
-.choice{min-height:62px;border-radius:12px;border:2px solid #c68e50;background:#fffaf0;color:#553b2b;font:700 clamp(20px,2.7vw,37px) system-ui,sans-serif;box-shadow:0 4px 0 #d5b57d;padding:7px;transition:background .14s}
-.choice:active{transform:translateY(2px)}.choice.correct{background:#ccebd4;border-color:#558b65}.choice.wrong{background:#ffe1d8;border-color:#cb7e72}
-.choice:disabled{opacity:.82}
-.feedback{min-height:25px;text-align:center;margin:1px 0;color:#805e34;font:700 17px system-ui,sans-serif}
-.feedback.bad{color:#a23f31}.feedback.good{color:#28694a}
-.controls{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-top:auto;min-height:52px}
-.skip{min-height:44px;background:transparent;border:1px solid #a88966;color:#604d3d;border-radius:10px;padding:7px 13px;font:500 14px system-ui,sans-serif}
-.print{padding:10px 14px;border:2px solid #ad7b45;background:#fff4d7;border-radius:10px;font:700 clamp(13px,1.3vw,17px) system-ui,sans-serif;color:#58371e}
-.writing-tip{text-align:center;font:600 16px/1.4 system-ui,sans-serif;color:#806044}
-.ending{padding:28px;text-align:center;background:linear-gradient(#fff4d9,#f2d9a2);display:grid;justify-items:center;gap:9px}
-.ending h2{font-size:clamp(25px,3.5vw,44px);margin:5px 0}.ending p{font-size:19px;margin:0 0 7px}.ending img{max-width:min(430px,90%);max-height:200px;object-fit:contain}
-.ending-actions{display:flex;justify-content:center;align-items:center;gap:12px;flex-wrap:wrap}
-#gameConnection{margin:6px 3px 0;min-height:1em;font:12px system-ui,sans-serif;color:#edc49b}
-@media(max-width:680px){
- main{padding:3px}header{gap:5px}header h1{font-size:16px}.nav{font-size:12px;padding:5px;min-height:42px}
- .stage[data-phase="intro"] .hero{height:305px;aspect-ratio:auto}.stage[data-phase="intro"] .school-backdrop{object-fit:contain;object-position:top;background:#b88d5e}
- .stage[data-phase="intro"] .school-lada{height:45%;width:25%;bottom:0;left:1%}
- .intro-ribbon{left:15%;right:2%;bottom:2%;padding:8px;gap:6px;border-width:2px}.intro-ribbon p{font-size:14px}.intro-ribbon .big-btn{min-height:47px;font-size:16px;padding:8px}
- .hero{height:180px;min-height:0}.school-backdrop{object-fit:cover;object-position:center 28%}
- .stage:not([data-phase="intro"]) .school-lada{height:44%;width:15%}
- .teacher-thumb{width:56px;height:58px}.learning{padding:8px 10px 13px;min-height:345px;gap:6px}.teacher-name{font-size:20px}.progress-wrap{min-width:80px}
- .symbols{font-size:30px;min-height:57px}.question{font-size:24px}.answer-grid{gap:6px}.choice{font-size:23px;min-height:61px}.feedback{font-size:15px}
- .controls{gap:5px}.big-btn{min-height:48px;padding:8px 15px;font-size:17px}.skip{font-size:12px;padding:6px}.print{font-size:12px;padding:6px 7px}
+.door{position:absolute;z-index:6;bottom:5%;min-width:18%;min-height:73px;border:3px ridge #ffe2a1;background:linear-gradient(170deg,#fce0ac,#c99b5c);box-shadow:0 6px 0 #69492e,0 11px 21px #1b1118ad;color:#45281b;border-radius:12px;padding:8px 13px;font-weight:bold;font-size:clamp(17px,1.7vw,25px)}
+.door .seal{display:block;font-size:clamp(19px,2.1vw,29px);margin-bottom:3px}
+.door .stamp{position:absolute;right:0;top:-17px;font:700 14px system-ui,sans-serif;color:#2e724f;background:#e2ffce;border:2px solid #74c385;border-radius:50px;padding:3px 8px}
+.door:active{transform:translateY(3px);box-shadow:0 2px 0 #69492e}
+.door[data-room="math"]{left:19%}.door[data-room="writing"]{left:41%}.door[data-room="reading"]{left:67%}
+#hallHint{position:absolute;z-index:4;bottom:0;left:0;right:0;text-align:center;font:12px system-ui,sans-serif;color:#fce7bfad;pointer-events:none}
+.room{--board:#122e37e8;--frame:#e5b35d;--writing:#f8e7b5;--choice:#ffe5a5;--text:#fff1cd}
+.school[data-phase="writing"] .room{--board:#1b1426ed;--frame:#a68abb;--writing:#e7c5ff;--choice:#d9beeb;--text:#f8eafc}
+.school[data-phase="reading"] .room{--board:#fff5f1eb;--frame:#c5829a;--writing:#913e62;--choice:#fce1e8;--text:#63334a}
+.room::before{content:"";position:absolute;inset:0;z-index:1;pointer-events:none;background:radial-gradient(ellipse at 60% 42%,transparent 36%,#0f102f38 99%)}
+.back-to-hall{position:absolute;z-index:12;left:1.6%;top:2%;border:2px solid #eac28b;border-radius:10px;background:#2d3c50e5;color:#ffedc8;font-weight:bold;padding:10px 16px;min-height:46px;font-size:clamp(13px,1.3vw,17px)}
+.room-label{position:absolute;z-index:7;top:4%;left:27%;right:22%;text-align:center;color:#fff2ce;text-shadow:0 2px 7px #211025;font-size:clamp(14px,1.5vw,22px);font-weight:bold;letter-spacing:.03em}
+.school[data-phase="reading"] .room-label{color:#6d2d4b;text-shadow:0 1px 3px #f9dce7}
+.board{position:absolute;z-index:5;left:25%;right:21%;top:15%;bottom:8%;display:flex;flex-direction:column;align-items:stretch;gap:6px;padding:clamp(12px,1.7vw,25px);background:var(--board);border:clamp(7px,.8vw,13px) ridge var(--frame);border-radius:12px;box-shadow:0 15px 25px #17121b8a,inset 0 0 25px #100b255e;color:var(--text)}
+.board::before{content:"";pointer-events:none;position:absolute;inset:-12px;border:1px solid #ffdfa273;border-radius:13px}
+.board-top{display:flex;align-items:center;justify-content:space-between;gap:12px;color:var(--writing);font:700 clamp(11px,1.1vw,15px) system-ui,sans-serif;letter-spacing:.05em}
+.board .pip-row{display:flex;gap:6px}.pip{width:10px;height:10px;border-radius:50%;background:#8d876a;border:1px solid #b0a182}.pip.done{background:#ffcf66;box-shadow:0 0 8px #ffc956}
+.board h2{font-weight:normal;line-height:1.13;text-align:center;font-size:clamp(21px,2.3vw,34px);margin:7px 0 1px;min-height:54px}
+.board-art{display:grid;place-items:center;white-space:pre-line;text-align:center;line-height:1.21;min-height:82px;flex:1;font:700 clamp(24px,3.3vw,49px) system-ui,sans-serif;color:var(--text);letter-spacing:.025em;text-shadow:0 1px 4px #12112066}
+.school[data-phase="reading"] .board-art{text-shadow:none}
+.answer-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px;align-items:stretch;max-width:100%}
+.answer{border:2px solid var(--frame);border-radius:10px;min-height:clamp(56px,6.3vw,75px);background:var(--choice);color:#3d2931;box-shadow:0 4px 0 #7b573c;font:700 clamp(19px,2.4vw,32px) system-ui,sans-serif;position:relative;white-space:normal;padding:6px;transition:transform .15s,background .15s}
+.answer:active{transform:translateY(3px);box-shadow:0 1px 0 #7b573c}.answer.hit{background:#d8edca;border-color:#78b978;box-shadow:0 0 18px #a6e48c9e}.answer.missed{background:#ffcdcb;border-color:#eb7278}
+.answer:disabled{opacity:.84}.answer[hidden]{display:none}
+.feedback{font:700 clamp(14px,1.3vw,18px) system-ui,sans-serif;color:var(--writing);text-align:center;min-height:24px;margin:3px 0}.feedback[data-mood="good"]{color:#7ae4a5}.feedback[data-mood="wrong"]{color:#ffaeab}
+.school[data-phase="reading"] .feedback[data-mood="good"]{color:#387947}.school[data-phase="reading"] .feedback[data-mood="wrong"]{color:#ba3753}
+.board-bottom{display:flex;align-items:center;justify-content:space-between;gap:8px;min-height:49px;margin-top:auto}
+.little-button{border:1px solid var(--frame);border-radius:9px;background:#00000024;color:var(--text);font:600 clamp(11px,1.1vw,15px) system-ui,sans-serif;padding:9px 12px;min-height:43px}
+.next-button{min-width:145px;min-height:49px;border:2px solid #ffe5a8;border-radius:10px;background:linear-gradient(#ffe1a4,#dcb16a);box-shadow:0 3px 0 #886038;color:#51301b;font:700 clamp(15px,1.5vw,20px) Georgia,serif;padding:10px 14px}
+.print-link{display:inline-grid;place-items:center;min-height:48px;border:2px solid #ffc9e4;border-radius:9px;background:#fae2f3;color:#5b244c;font:700 clamp(13px,1.4vw,17px) system-ui,sans-serif;padding:8px 12px}
+.teacher-figure{position:absolute;z-index:7;right:-1%;top:18%;height:67%;width:26%;display:grid;place-items:center;pointer-events:none;filter:drop-shadow(0 11px 14px #12122685);transform-origin:55% 80%}
+.teacher-figure img{height:100%;width:100%;object-fit:cover;object-position:center;mask-image:radial-gradient(ellipse 80% 82% at 50% 47%,#000 58%,transparent 92%);-webkit-mask-image:radial-gradient(ellipse 80% 82% at 50% 47%,#000 58%,transparent 92%);transition:transform .3s ease,filter .25s}
+.teacher-figure[data-mood="good"] img{transform:scale(1.065) translateY(-3px);filter:brightness(1.13) saturate(1.13)}
+.teacher-figure[data-mood="wrong"] img{animation:scold .37s ease-in-out both;filter:contrast(1.17) saturate(.8) sepia(.1)}
+.teacher-figure[data-mood="good"] .reaction{animation:reveal .4s ease-out both}.teacher-figure[data-mood="wrong"] .reaction{animation:reveal .4s ease-out both}
+@keyframes scold{0%,100%{transform:translateX(0) rotate(0)}35%{transform:translateX(-5px) rotate(-2deg)}65%{transform:translateX(4px) rotate(1.5deg)}}
+@keyframes reveal{0%{opacity:0;transform:scale(.7) rotate(-17deg)}100%{opacity:1;transform:scale(1) rotate(0)}}
+.reaction{position:absolute;z-index:9;right:5%;top:2%;font-size:clamp(30px,4vw,63px);color:#fff0b8;text-shadow:0 3px 10px #23111e,0 0 13px #ffc66f;filter:drop-shadow(0 2px 6px #220d28)}
+.teacher-figure[data-mood="neutral"] .reaction{display:none}
+.room-lada{position:absolute;z-index:7;left:0;bottom:1%;height:32%;width:17%;pointer-events:none;filter:drop-shadow(0 7px 7px #1b0f2099)}
+.room-lada img{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;object-position:bottom}
+.room-lada [data-outfit-layer]{clip-path:polygon(0 27%,100% 27%,100% 100%,0 100%);-webkit-clip-path:polygon(0 27%,100% 27%,100% 100%,0 100%)}
+.room-lada[data-outfit="egyptMoon"] [data-outfit-layer]{clip-path:none;-webkit-clip-path:none}
+.room-hint{position:absolute;z-index:6;left:1%;bottom:2%;font:700 12px system-ui,sans-serif;color:#ffe7b0;text-shadow:0 2px 5px #38262d}
+.complete-cover{position:absolute;z-index:11;inset:0;background:linear-gradient(130deg,#24182bcc,#5e3544b8),url(images/egypt-school-teachers.webp) center/cover;display:grid;place-items:center;padding:16px;animation:scene-in .55s ease-out}
+.complete-card{display:grid;place-items:center;gap:9px;text-align:center;max-width:650px;padding:18px 25px;border-radius:17px;border:3px ridge #ffe0a1;background:#fce6b9f0;color:#4a2c25}
+.complete-card img{width:min(310px,60vw);height:180px;object-fit:contain}.complete-card h2{font-size:clamp(26px,3vw,45px);margin:0}.complete-card p{font-size:18px;margin:0}.complete-actions{display:flex;gap:8px;flex-wrap:wrap;justify-content:center}
+.complete-actions a,.complete-actions button{padding:11px 18px;border:2px solid #bc873e;background:#ffefca;border-radius:11px;color:#3b271e;font:700 17px Georgia,serif}
+#gameConnection{min-height:1em;margin:4px 0 0;font:12px system-ui,sans-serif;color:#f1cd9b}
+@media(max-width:850px){
+ main{padding:4px}header{gap:3px}header h1{font-size:16px}.nav{padding:8px;font-size:11px;min-height:44px}
+ .school{aspect-ratio:auto;min-height:700px;height:calc(100dvh - 74px);max-height:870px}
+ .hall .scene-bg{object-fit:cover;object-position:center}.hall-title{left:12%;right:12%;top:3%}.hall-title strong{font-size:23px}.hall-title span{font-size:12px}
+ .school-lada{height:38%;width:25%;bottom:18%;left:0}
+ .door{font-size:15px;min-height:76px;bottom:6%;min-width:30%;padding:6px 3px;line-height:1.12;border-width:2px}
+ .door .seal{font-size:25px}.door[data-room="math"]{left:1%}.door[data-room="writing"]{left:35%}.door[data-room="reading"]{left:69%}
+ .room .scene-bg{object-fit:cover;object-position:center}.back-to-hall{font-size:13px;min-height:43px;padding:7px 11px}
+ .room-label{left:38%;right:3%;top:4%;font-size:16px}
+ .teacher-figure{top:9%;right:1%;width:33%;height:28%}.reaction{font-size:35px;top:-7%}
+ .board{top:34%;bottom:5%;left:2%;right:2%;padding:11px;border-width:7px;gap:4px}
+ .board h2{font-size:clamp(18px,5vw,28px);min-height:38px;margin:3px 0}
+ .board-art{font-size:clamp(22px,6vw,35px);min-height:48px}
+ .board-top{font-size:12px}.answer-grid{gap:5px;grid-template-columns:repeat(2,minmax(0,1fr))}
+ .answer{min-height:49px;font-size:clamp(18px,5.2vw,25px)}.feedback{min-height:18px;font-size:13px}
+ .board-bottom{min-height:44px}.next-button{min-width:112px;padding:7px 11px;font-size:15px;min-height:43px}.little-button{min-height:40px;padding:6px;font-size:12px}.print-link{min-height:42px;font-size:12px;padding:5px}
+ .room-lada{width:21%;height:28%;bottom:65%;left:4%}.room-hint{display:none}
 }
-@media(prefers-reduced-motion:reduce){*{transition:none!important}}
-</style>
-</head>
+@media(max-width:440px){.school{min-height:670px;max-height:825px}.board{top:33%;bottom:4%;padding:9px}.teacher-figure{top:9%;height:27%}.board h2{font-size:22px}.board-art{font-size:25px}.answer{min-height:46px}.board-bottom{gap:4px}.little-button{font-size:11px}.next-button{font-size:14px}}
+@media(prefers-reduced-motion:reduce){.hall,.room,.reaction,.teacher-figure img{animation:none!important;transition:none!important}}
+</style></head>
 <body>
 <main>
 <header><a class="nav" href="egypt-motion-temple.html">← Храм ибиса</a><h1>Египетская школа</h1><a class="nav" href="index.html">⌂ Карта</a></header>
-<section class="stage" id="schoolStage" data-phase="intro" aria-label="Египетская школа Лады">
- <div class="hero">
-   <img class="school-backdrop" src="images/egypt-school-teachers.webp" alt="Три учительницы египетской школы: МатематиКатя, строгая Уэнсдей и пушистая миссис Пухлис" draggable="false" fetchpriority="high">
-   <div class="school-lada" id="schoolLada" role="img" aria-label="Лада входит в египетскую школу">
-     <img src="images/lada-cutout.webp" alt="" draggable="false"><img data-outfit-layer hidden alt="" draggable="false">
-   </div>
-   <div class="intro-ribbon" id="schoolIntro"><p>Лада, тебя ждут три учительницы!</p><button class="big-btn" id="schoolStart" type="button" data-tivvig-sound="manual">Войти →</button></div>
+<section class="school" id="schoolStage" data-phase="hall" aria-label="Египетская школа Лады">
+ <div class="hall" id="schoolHall">
+  <img class="scene-bg" src="images/egypt-school-teachers.webp" draggable="false" fetchpriority="high" alt="В египетской школе Ладу встречают МатематиКатя, строгая Уэнсдей и пушистая миссис Пухлис">
+  <div class="hall-title"><strong>К кому пойдём сначала?</strong><span>Три класса · выбери любую учительницу</span></div>
+  <div class="school-lada" id="schoolLada" role="img" aria-label="Лада в выбранном костюме"><img src="images/lada-cutout.webp" alt=""><img data-outfit-layer hidden alt=""></div>
+  <button class="door" id="schoolGoMath" data-room="math" type="button" data-tivvig-sound="manual"><span class="seal">◈</span>МатематиКатя<span class="stamp" id="schoolStampMath" hidden>✓</span></button>
+  <button class="door" id="schoolGoWriting" data-room="writing" type="button" data-tivvig-sound="manual"><span class="seal">☾</span>Злая Уэнсдей<span class="stamp" id="schoolStampWriting" hidden>✓</span></button>
+  <button class="door" id="schoolGoReading" data-room="reading" type="button" data-tivvig-sound="manual"><span class="seal">✿</span>Миссис Пухлис<span class="stamp" id="schoolStampReading" hidden>✓</span></button>
+  <span id="hallHint">Нажми на имя учительницы</span>
  </div>
- <div class="learning" id="schoolLearning" hidden>
-   <div class="teacherline"><img class="teacher-thumb" id="schoolTeacherImg" src="images/egypt-school-katya.webp" alt="" draggable="false"><div><p class="kicker" id="schoolSubject">Математика</p><h2 class="teacher-name" id="schoolTeacher">МатематиКатя</h2></div>
-      <div class="progress-wrap"><span class="progress-text" id="schoolCounter">1 / 12</span><div class="track"><span id="schoolBar"></span></div></div>
-   </div>
-   <h3 class="question" id="schoolQuestion">Сколько?</h3>
-   <div class="symbols" id="schoolVisual"></div>
+ <div class="room" id="schoolRoom" hidden>
+  <img class="scene-bg" id="schoolRoomBg" src="images/egypt-school-math-room.webp" alt="Интерьер египетского учебного класса" draggable="false">
+  <button class="back-to-hall" id="schoolBack" type="button" data-tivvig-sound="manual">← В холл</button>
+  <div class="room-label" id="schoolTeacher">МатематиКатя</div>
+  <div class="board" id="schoolBoard" aria-label="Школьная доска">
+   <div class="board-top"><span id="schoolSubject">Математика</span><span id="schoolCounter">1 / 14</span></div>
+   <h2 id="schoolQuestion">Сколько?</h2>
+   <div class="board-art" id="schoolVisual"></div>
    <div class="answer-grid" id="schoolAnswers">
-      <button class="choice" type="button" id="schoolOpt0" data-tivvig-sound="manual"></button>
-      <button class="choice" type="button" id="schoolOpt1" data-tivvig-sound="manual"></button>
-      <button class="choice" type="button" id="schoolOpt2" data-tivvig-sound="manual"></button>
-      <button class="choice" type="button" id="schoolOpt3" data-tivvig-sound="manual"></button>
+    <button class="answer" id="schoolOpt0" type="button" data-tivvig-sound="manual"></button>
+    <button class="answer" id="schoolOpt1" type="button" data-tivvig-sound="manual"></button>
+    <button class="answer" id="schoolOpt2" type="button" data-tivvig-sound="manual"></button>
+    <button class="answer" id="schoolOpt3" type="button" data-tivvig-sound="manual"></button>
+    <button class="answer" id="schoolOpt4" type="button" data-tivvig-sound="manual" hidden></button>
+    <button class="answer" id="schoolOpt5" type="button" data-tivvig-sound="manual" hidden></button>
    </div>
    <p class="feedback" id="schoolFeedback" role="status" aria-live="polite"></p>
-   <div class="controls"><button class="skip" id="schoolSkip" type="button" data-tivvig-sound="manual">Пропустить задание</button><a class="print" id="schoolPrint" href="egypt-school-worksheets.html" target="_blank" rel="noopener" hidden>🖨 Прописи для печати</a><button class="big-btn" id="schoolNext" type="button" data-tivvig-sound="manual" hidden>Дальше →</button></div>
+   <div class="board-bottom"><button class="little-button" id="schoolSkip" type="button" data-tivvig-sound="manual">Пропустить</button><a class="print-link" id="schoolPrint" href="egypt-school-worksheets.html" target="_blank" rel="noopener" hidden>🖨 Прописи А4</a><button class="next-button" id="schoolNext" type="button" data-tivvig-sound="manual" hidden>Дальше →</button></div>
+  </div>
+  <div class="teacher-figure" id="schoolTeacherFigure" data-mood="neutral" role="img" aria-label="Учительница реагирует на ответ"><img id="schoolTeacherImg" src="images/egypt-school-katya.webp" alt=""><span class="reaction" id="schoolReaction" aria-hidden="true"></span></div>
+  <div class="room-lada" id="schoolRoomLada" role="img" aria-label="Лада"><img src="images/lada-cutout.webp" alt=""><img data-outfit-layer hidden alt=""></div>
  </div>
- <div class="ending" id="schoolEnding" hidden><h2>Все уроки пройдены!</h2><p>Лада получила школьную печать знаний.</p><img src="images/egypt-school-diploma.svg" alt="Золотая школьная печать и диплом Лады"><div class="ending-actions"><button class="big-btn" id="schoolAgain" type="button" data-tivvig-sound="manual">Ещё раз</button><a class="print" href="collection.html">В коллекцию →</a></div></div>
+ <div class="complete-cover" id="schoolEnding" hidden><div class="complete-card"><h2>Диплом Лады!</h2><img src="images/egypt-school-diploma.svg" alt="Золотой школьный диплом"><p>Все три учительницы гордятся тобой!</p><div class="complete-actions"><button id="schoolAgain" type="button">В школу ещё раз</button><a href="collection.html">В коллекцию →</a></div></div></div>
 </section>
 <p id="gameConnection" role="status"></p>
 </main>
 <script src="wardrobe.js?v=7" defer></script>
-<script src="egypt-school.js?v=1" defer></script>
+<script src="egypt-school.js?v=2" defer></script>
 <script src="hades-sounds.js?v=9" defer></script>
 <script src="game-runtime.js?v=6" defer></script>
 </body></html>

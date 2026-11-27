@@ -1,137 +1,164 @@
-/* Египетская школа: детерминированные сцены, без таймеров и случайностей.
- * Каждое нажатие воспроизводится через общую Firebase-комнату.
- * Учитель видит и подтверждает выполнение бумажных прописей по видеосвязи.
+/* Тиввиг — Египетская школа, редакция 2.
+ * Три класса на одном игровом поле, свободный порядок, без таймеров.
+ * Все управляющие нажатия — обычные кнопки, одинаковые на двух устройствах;
+ * родительский Firebase bridge авторитетно воспроизводит их по порядку.
  */
 (()=>{
 'use strict';
 const $=id=>document.getElementById(id);
 if(!$('schoolStage')||window.TivvigSchoolDebug)return;
-const KEY='tivvig_reward_egypt_school_v1';
+const REWARD='tivvig_reward_egypt_school_v1';
 const math=[
- {q:'Сколько солнц на небе?',art:'☀️ ☀️ ☀️ ☀️',a:['3','4','5','6'],ok:1},
- {q:'Где больше скарабеев?',art:'СЛЕВА  🪲 🪲      СПРАВА  🪲 🪲 🪲 🪲',a:['Слева','Справа','Поровну'],ok:1},
- {q:'Какое число спряталось?',art:'1   2   3   ?   5',a:['6','4','7'],ok:1},
- {q:'У Ра было 2 луча. Появились ещё 3.',art:'☀️   2 + 3 = ?',a:['4','6','5'],ok:2},
- {q:'Продолжи солнечный узор.',art:'☀️ 🌙 ☀️ 🌙 ☀️  ?',a:['⭐','☀️','🌙'],ok:2},
- {q:'В лодке 6 рыб. Две уплыли.',art:'🐟 🐟 🐟 🐟 🐟 🐟  −  🐟 🐟',a:['4','3','5'],ok:0},
- {q:'Что больше?',art:'6   ?   4',a:['<','>','='],ok:1},
- {q:'Собери ровно 7 камней.',art:'🪨 🪨 🪨 🪨   +   ?   =   7',a:['2','4','3'],ok:2},
- {q:'Сколько ступенек до храма?',art:'1    3    5    ?',a:['6','7','8'],ok:1},
- {q:'У Тутенштейна 8 бусин. 3 он подарил.',art:'8 − 3 = ?',a:['4','5','6'],ok:1},
- {q:'Какая корзина легче?',art:'🥭🥭🥭🥭     ⚖️     🥭🥭',a:['Левая','Правая','Одинаково'],ok:1},
- {q:'Последний код школы!',art:'3 + ? = 10',a:['5','6','7'],ok:2}
+ {q:'Открой сундук: 4 + ? = 9',art:'🪙 🪙 🪙 🪙  +  ?  =  9',a:['4','5','6','3'],ok:1},
+ {q:'Равны ли чаши весов?',art:'3 + 2    ⚖️    4 + 1',a:['Левая тяжелее','Равны','Правая тяжелее'],ok:1},
+ {q:'Построй ступени по порядку',art:'От меньшего к большему',type:'sequence',a:['6','8','2','4'],order:[2,3,0,1]},
+ {q:'У жука 10 монет. 7 уже в сундуке.',art:'7 + ? = 10',a:['2','4','3','5'],ok:2},
+ {q:'Укрась дверь пятью камнями',art:'Касайся камней на доске',type:'collect',target:5,a:['💎','💎','💎','💎','💎','💎']},
+ {q:'Продолжи тайный узор',art:'☀️ 🌙 🌙   ☀️ 🌙 🌙   ☀️ ?',a:['⭐','🌙','☀️'],ok:1},
+ {q:'В пруду было 8 рыб. 3 уплыли.',art:'🐟   8 − 3 = ?',a:['6','4','5','3'],ok:2},
+ {q:'Какой путь длиннее?',art:'3 + 4   ⚖️   6 + 2',a:['Первый','Одинаковы','Второй'],ok:2},
+ {q:'Найди спрятанное число',art:'?  −  3  =  4',a:['7','6','8','5'],ok:0},
+ {q:'Проведи лодку по нечётным числам',art:'От меньшего к большему',type:'sequence',a:['3','7','1','5'],order:[2,0,3,1]},
+ {q:'На сколько 9 больше 6?',art:'9  −  6  =  ?',a:['2','3','4'],ok:1},
+ {q:'Как завершить солнечный круг?',art:'7  +  2  =  ?',a:['8','10','9'],ok:2},
+ {q:'В какой корзине больше плодов?',art:'ЛЕВАЯ: 5    ⚖️    ПРАВАЯ: 2 + 4',a:['Левая','Правая','Поровну'],ok:1},
+ {q:'8 бусин. 5 синих. Сколько золотых?',art:'🔵🔵🔵🔵🔵  +  🟡 ?  =  8',a:['4','2','5','3'],ok:3}
 ];
 const writing=[
- {q:'Уэнсдей: «Проведи путь ибиса!»',art:'𓅃   〰️   ﹏   ∿',detail:'Лист 1: прямые, волны и зигзаги.'},
- {q:'«Теперь укроти песчаную змею!»',art:'〰️   ⟳   〰️',detail:'Лист 2: изгибы, петли и спирали.'},
- {q:'«Обведи строгие буквы!»',art:'Л   М   А   О   У',detail:'Лист 3: крупные печатные буквы.'},
- {q:'«Напиши секретные слова!»',art:'МА-МА   ЛУ-НА   ЛА-ДА',detail:'Лист 4: короткие слова по слогам.'}
+ {q:'Найди дорогу для ибиса',art:'●  ─  ∿  ∧∧  ─  ★',detail:'Лист 1 · прямые, волны и углы'},
+ {q:'Укрощение песчаной змеи',art:'〰️   〰️   ∿   ⟳',detail:'Лист 2 · петли и извилины'},
+ {q:'Уэнсдей проверяет буквы',art:'Л   М   А   О   У',detail:'Лист 3 · крупные печатные буквы'},
+ {q:'Расшифруй послание',art:'МА-МА   ЛУ-НА   ЛА-ДА',detail:'Лист 4 · короткие слова по слогам'}
 ];
 const reading=[
- {q:'Найди слог МА.',art:'МА',a:['МО','МА','МУ','НА'],ok:1},
- {q:'Найди слог ЛУ.',art:'ЛУ',a:['ЛИ','ЛА','ЛУ','ЛО'],ok:2},
- {q:'Миссис Пухлис собирает слово.',art:'МА + ?',a:['КО','МА','ЛУ'],ok:1},
- {q:'Найди вторую половинку.',art:'ЛУ + ?',a:['НА','МА','ВА'],ok:0},
- {q:'Сложи слово КО-ЗА.',art:'КО + ?',a:['МА','ЗА','НА'],ok:1},
- {q:'Как заканчивается слово РЫ-БА?',art:'РЫ + ?',a:['МА','КО','БА'],ok:2},
- {q:'Прочти слово. Кто это?',art:'КОТ',a:['🐟','🐱','🐸'],ok:1},
- {q:'Прочти слово. Что это?',art:'ВА-ЗА',a:['🏺','🌙','🐈'],ok:0},
- {q:'Прочти короткую фразу.',art:'МА-МА ДО-МА.',a:['🏠','🚢','🌳'],ok:0},
- {q:'Последняя история!',art:'У ЛА-ДЫ КОТ.',a:['🐈','🐊','🐕'],ok:0}
+ {q:'Что получится из двух слогов?',art:'МА + МА',a:['ЛУНА','МАМА','МАША'],ok:1},
+ {q:'Собери ЛУ-НА',art:'Нажимай слоги по порядку',type:'sequence',a:['НА','ЛУ','КО'],order:[1,0]},
+ {q:'Прочитай и найди слово',art:'🐈',a:['ЛЕС','КОТ','ДОМ'],ok:1},
+ {q:'Миссис Пухлис спрятала слог',art:'Найди НО',a:['НА','МО','НО','НУ'],ok:2},
+ {q:'Сколько слогов?',art:'МА-ШИ-НА',a:['2','4','3'],ok:2},
+ {q:'Собери КО-РО-ВА',art:'Выбирай слоги по порядку',type:'sequence',a:['ВА','КО','РО'],order:[1,2,0]},
+ {q:'Прочти: МА-МА ДО-МА',art:'Где мама?',a:['🏠','🚢','🌳'],ok:0},
+ {q:'Как зовут пушистую подругу?',art:'КО-ШКА',type:'sequence',a:['ШКА','ЛИ','КО'],order:[2,0]},
+ {q:'Прочти короткую фразу',art:'У ЛА-ДЫ КОТ.',a:['🐈','🐊','🐕'],ok:0},
+ {q:'Какое слово рифмуется с ДОМ?',art:'ДОМ',a:['КОТ','СОМ','ЛЕС'],ok:1},
+ {q:'Найди то, что прочитала',art:'ЛУ-НА',a:['🌙','🏺','☀️'],ok:0},
+ {q:'Собери имя героини',art:'ЛА-ДА',type:'sequence',a:['ДА','МА','ЛА'],order:[2,0]}
 ];
 const subjects={
- math:{name:'МатематиКатя',sub:'Математика · сокровища и числа',image:'images/egypt-school-katya.webp',data:math},
- writing:{name:'Злая Уэнсдей',sub:'Письмо · строгая учительница',image:'images/egypt-school-wednesday.webp',data:writing},
- reading:{name:'Миссис Пухлис',sub:'Чтение · слоги и слова',image:'images/egypt-school-puhlis.webp',data:reading}
+ math:{name:'МатематиКатя',label:'СОКРОВИЩА И ЧИСЛА',image:'images/egypt-school-katya.webp',background:'images/egypt-school-math-room.webp',data:math,bad:'😕',good:'✨'},
+ writing:{name:'Злая Уэнсдей',label:'ТАЙНЫЕ ПРОПИСИ',image:'images/egypt-school-wednesday.webp',background:'images/egypt-school-writing-room.webp',data:writing,bad:'⚡',good:'☾'},
+ reading:{name:'Миссис Пухлис',label:'ЧИТАЛЬНАЯ КОМНАТА',image:'images/egypt-school-puhlis.webp',background:'images/egypt-school-reading-room.webp',data:reading,bad:'😿',good:'💗'}
 };
-const sequence=['math','writing','reading'];
-let phase='intro',step=0,answered=false,wrong=null;
+const names=Object.keys(subjects);
+const progress={math:0,writing:0,reading:0},done=new Set();
+let phase='hall',answered=false,wrong=null,sequencePos=0,selected=new Set(),mood='neutral';
 function tone(which){try{void window.TivvigHadesSounds?.play(which)}catch{}}
-function dress(){try{window.TivvigWardrobe?.equip($('schoolLada'))}catch{}}
-function finished(){
+function dress(){try{window.TivvigWardrobe?.equip($('schoolLada'));window.TivvigWardrobe?.equip($('schoolRoomLada'))}catch{}}
+function reward(){
  try{
-  if(window.TivvigRegistry?.byReward[KEY])window.TivvigRegistry.unlockReward(KEY);
-  else{
-   localStorage.setItem(KEY,'unlocked');
-   window.dispatchEvent(new CustomEvent('tivvig:reward-unlocked',{detail:{key:KEY}}));
-  }
+  if(window.TivvigRegistry?.byReward?.[REWARD])window.TivvigRegistry.unlockReward(REWARD);
+  else{localStorage.setItem(REWARD,'unlocked');window.dispatchEvent(new CustomEvent('tivvig:reward-unlocked',{detail:{key:REWARD}}));}
  }catch{}
 }
-function show(){
- const intro=phase==='intro',done=phase==='done';
+function render(){
+ const hall=phase==='hall',end=phase==='done';
  $('schoolStage').dataset.phase=phase;
- $('schoolIntro').hidden=!intro;
- $('schoolLearning').hidden=intro||done;
- $('schoolEnding').hidden=!done;
- if(intro||done)return;
+ $('schoolHall').hidden=!hall;
+ $('schoolRoom').hidden=hall||end;
+ $('schoolEnding').hidden=!end;
+ for(const name of names)$('schoolStamp'+name.charAt(0).toUpperCase()+name.slice(1)).hidden=!done.has(name);
+ if(hall||end)return;
  const subject=subjects[phase];if(!subject)return;
- const item=subject.data[step];
- if(!item)return;
- $('schoolTeacher').textContent=subject.name;
- $('schoolSubject').textContent=subject.sub;
+ const n=progress[phase];const task=subject.data[n];if(!task)return;
+ $('schoolRoomBg').src=subject.background;
  $('schoolTeacherImg').src=subject.image;
  $('schoolTeacherImg').alt=subject.name;
- $('schoolCounter').textContent=(step+1)+' / '+subject.data.length;
- $('schoolBar').style.width=String((step+(answered?1:0))/subject.data.length*100)+'%';
- $('schoolQuestion').textContent=item.q;
- $('schoolVisual').textContent=item.art;
+ $('schoolTeacher').textContent=subject.name;
+ $('schoolSubject').textContent=subject.label;
+ $('schoolCounter').textContent=(n+1)+' / '+subject.data.length;
+ $('schoolQuestion').textContent=task.q;
+ $('schoolVisual').textContent=task.art;
+ $('schoolTeacherFigure').dataset.mood=mood;
+ $('schoolReaction').textContent=mood==='good'?subject.good:mood==='wrong'?subject.bad:'';
+ $('schoolFeedback').dataset.mood=mood;
+ $('schoolFeedback').textContent=phase==='writing'?(mood==='wrong'?'Уэнсдей требует аккуратнее.':answered?'Отлично, лист готов!':task.detail):mood==='wrong'?'Попробуй ещё!':answered?'Правильно! ✨':task.type==='sequence'?'Нажимай по порядку':task.type==='collect'?'Собери пять':'Выбери ответ';
+ $('schoolAnswers').dataset.mode=task.type||'choice';
  $('schoolPrint').hidden=phase!=='writing';
  $('schoolSkip').hidden=answered;
- $('schoolNext').hidden=!answered && phase!=='writing';
- $('schoolNext').textContent=step===subject.data.length-1?(phase==='reading'?'Получить диплом →':'Следующий урок →'):'Дальше →';
- const hasChoices=phase!=='writing';
- $('schoolAnswers').hidden=!hasChoices;
- $('schoolFeedback').textContent=phase==='writing'?(item.detail+' Покажи лист по камере.'):(answered?'Правильно! ✨':wrong===null?'Найди ответ и нажми.':'Попробуй ещё!');
- $('schoolFeedback').className='feedback'+(answered?' good':wrong!==null?' bad':'');
- if(phase==='writing'){$('schoolNext').hidden=false;return}
- for(let i=0;i<4;i++){
-  const btn=$('schoolOpt'+i),exists=i<item.a.length;
-  btn.hidden=!exists;
-  if(!exists)continue;
-  btn.textContent=item.a[i];btn.disabled=answered;
-  btn.className='choice'+(answered&&i===item.ok?' correct':wrong===i?' wrong':'');
+ $('schoolNext').hidden=!answered;
+ $('schoolNext').textContent=n===subject.data.length-1?'В холл →':'Дальше →';
+ let opts=phase==='writing'?['Переделать','Лист готов!']:task.a;
+ for(let i=0;i<6;i++){
+  const btn=$('schoolOpt'+i),has=i<opts.length;
+  btn.hidden=!has;
+  if(!has){btn.disabled=true;continue}
+  btn.textContent=opts[i];
+  btn.disabled=answered||(task.type==='sequence'&&selected.has(i))||(task.type==='collect'&&selected.has(i));
+  btn.className='answer'+(selected.has(i)||answered&&phase!=='writing'&&i===task.ok?' hit':wrong===i?' missed':'');
  }
 }
-function next(){
- if(phase==='intro'){phase='math';step=0;answered=false;wrong=null;show();tone('tap');return}
- if(phase==='done'){phase='intro';step=0;answered=false;wrong=null;show();tone('tap');return}
- if(phase!=='writing'&&!answered)return;
- advance();
+function resetFeedback(){answered=false;wrong=null;sequencePos=0;selected=new Set();mood='neutral'}
+function enter(room){
+ if(!subjects[room])return;
+ // Completed subjects are replayable without losing their earlier school stamp.
+ if(done.has(room))progress[room]=0;
+ phase=room;resetFeedback();render();tone('tap');
 }
+function leave(){if(phase==='hall'||phase==='done')return;phase='hall';resetFeedback();render();tone('tap')}
 function advance(){
- const current=subjects[phase];
- if(!current)return;
- step++;
- if(step>=current.data.length){
-  const i=sequence.indexOf(phase);
-  if(i===sequence.length-1){phase='done';finished();tone('finish')}
-  else {phase=sequence[i+1];step=0;tone('success')}
- } else tone('tap');
- answered=false;wrong=null;show();
+ if(!(phase in subjects))return;
+ if(!answered&&phase!=='writing')return;
+ progress[phase]++;
+ if(progress[phase]>=subjects[phase].data.length){
+  done.add(phase);
+  if(done.size===names.length){phase='done';reward();tone('finish')}
+  else{phase='hall';tone('finish')}
+ }else tone('tap');
+ resetFeedback();render();
 }
+function skip(){if(!(phase in subjects))return;answered=true;advance()}
 function choose(i){
- const subject=subjects[phase];
- if(!subject||phase==='writing'||answered)return;
- const task=subject.data[step];
- if(i<0||i>=task.a.length)return;
- if(i===task.ok){answered=true;wrong=null;tone('success')}
- else {wrong=i;tone('wrong')}
- show();
+ if(!(phase in subjects)||answered)return;
+ const task=subjects[phase].data[progress[phase]];
+ const count=phase==='writing'?2:task.a.length;
+ if(i<0||i>=count)return;
+ wrong=null;
+ if(phase==='writing'){
+  if(i===1){answered=true;mood='good';tone('success')}
+  else{mood='wrong';wrong=0;tone('wrong')}
+ }else if(task.type==='sequence'){
+  if(i===task.order[sequencePos]){
+   selected.add(i);sequencePos++;
+   if(sequencePos===task.order.length){answered=true;mood='good';tone('success')}else{mood='neutral';tone('tap')}
+  }else{wrong=i;mood='wrong';tone('wrong')}
+ }else if(task.type==='collect'){
+  if(selected.has(i))return;
+  selected.add(i);
+  if(selected.size===task.target){answered=true;mood='good';tone('success')}
+  else{mood='neutral';tone('tap')}
+ }else{
+  if(i===task.ok){answered=true;mood='good';tone('success')}
+  else {wrong=i;mood='wrong';tone('wrong')}
+ }
+ render();
 }
-$('schoolStart').addEventListener('click',next);
-$('schoolNext').addEventListener('click',next);
-$('schoolAgain').addEventListener('click',()=>{phase='intro';step=0;answered=false;wrong=null;show();tone('tap')});
-$('schoolSkip').addEventListener('click',advance);
-for(let i=0;i<4;i++)$('schoolOpt'+i).addEventListener('click',()=>choose(i));
+$('schoolGoMath').addEventListener('click',()=>enter('math'));
+$('schoolGoWriting').addEventListener('click',()=>enter('writing'));
+$('schoolGoReading').addEventListener('click',()=>enter('reading'));
+$('schoolBack').addEventListener('click',leave);
+$('schoolSkip').addEventListener('click',skip);
+$('schoolNext').addEventListener('click',advance);
+for(let i=0;i<6;i++)$('schoolOpt'+i).addEventListener('click',()=>choose(i));
+$('schoolAgain').addEventListener('click',()=>{for(const name of names)progress[name]=0;done.clear();phase='hall';resetFeedback();render();tone('tap')});
 window.addEventListener('pageshow',dress);
 window.addEventListener('tivvig-inventory-changed',dress);
 window.addEventListener('tivvig-outfit-changed',dress);
 window.TivvigSchoolDebug=Object.freeze({
- state:()=>({phase,step,answered,wrong,lessonCount:phase in subjects?subjects[phase].data.length:0}),
- answers:()=>phase in subjects?subjects[phase].data.map(x=>x.ok):[],
- getTask:(which,n)=>subjects[which]?.data[n]||null,
- start:next,
- reset:()=>{phase='intro';step=0;answered=false;wrong=null;show()}
+ state:()=>({phase,step:progress[phase]??0,progress:{...progress},done:[...done],answered,wrong,sequencePos,selected:[...selected],mood,lessonCount:subjects[phase]?.data.length??0}),
+ getTask:(room,index)=>subjects[room]?.data[index]||null,
+ answers:room=>subjects[room]?.data.map(x=>x.ok??null)||[],
+ enter,choose,advance,leave,
+ reset:()=>{for(const n of names)progress[n]=0;done.clear();phase='hall';resetFeedback();render()}
 });
-show();dress();
+render();dress();
 })();
