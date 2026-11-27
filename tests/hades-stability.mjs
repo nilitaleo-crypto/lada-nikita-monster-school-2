@@ -258,6 +258,9 @@ async function skipCoopTest(browser,label){
   for(const role of ['teacher','student']){
    await page.evaluate(({base,role})=>{
     const f=document.getElementById('hades-skip-'+role);
+    // Real navigation from Hecate sets this token when the "К Аиду" link is clicked.
+    // Directly replacing iframe.src would bypass it, especially in WebKit.
+    sessionStorage.setItem('tivvig_hades_enter_from_hecate_v1',String(Date.now()));
     f.src=base+'hades-final.html?coop=1&role='+role+'&seed=skip-test';
    },{base:url,role});
    await page.waitForFunction(role=>document.getElementById('hades-skip-'+role)?.contentWindow?.TivvigHadesDebug?.state().stage===0,role,{timeout:10000});
