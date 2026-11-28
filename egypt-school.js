@@ -185,7 +185,7 @@ function render(){
  $('schoolTeacherFigure').dataset.mood=mood;
  $('schoolReaction').textContent=mood==='good'?subject.good:mood==='wrong'?subject.bad:'';
  $('schoolFeedback').dataset.mood=mood;
- $('schoolFeedback').textContent=phase==='writing'?(mood==='wrong'?'Уэнсдей требует аккуратнее.':answered?'Отлично, лист готов!':task.detail):mood==='wrong'?'Попробуй ещё!':answered?'Правильно! ✨':task.type==='sequence'?'Нажимай по порядку':task.type==='collect'?'Собери пять':'Выбери ответ';
+ if(phase!=='math') $('schoolFeedback').textContent=phase==='writing'?(mood==='wrong'?'Уэнсдей требует аккуратнее.':answered?'Отлично, лист готов!':task.detail):mood==='wrong'?'Попробуй ещё!':answered?'Правильно! ✨':task.type==='sequence'?'Нажимай по порядку':task.type==='collect'?'Собери пять':'Выбери ответ';
  $('schoolAnswers').dataset.mode=task.type||'choice';
  $('schoolPrint').hidden=phase!=='writing';
  $('schoolSkip').hidden=answered;
