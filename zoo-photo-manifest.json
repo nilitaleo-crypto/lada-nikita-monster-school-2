@@ -1,0 +1,68 @@
+{
+  "version": 1,
+  "photographs": {
+    "ibis": {
+      "filename": "African Sacred Ibis (Threskiornis aethiopicus) foraging.jpg",
+      "author": "Bernard DUPONT",
+      "license": "CC BY-SA 2.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/2.0/",
+      "caption": "Ибис ищет пищу клювом в природе",
+      "fact": "Ибис ощупывает длинным клювом землю и ил.",
+      "source": "https://commons.wikimedia.org/wiki/File:African%20Sacred%20Ibis%20(Threskiornis%20aethiopicus)%20foraging.jpg"
+    },
+    "camel": {
+      "filename": "Camelmomandbaby.jpg",
+      "author": "Henryhbk",
+      "license": "Public domain",
+      "licenseUrl": "https://commons.wikimedia.org/wiki/Commons:Public_domain",
+      "caption": "Мама-верблюдица с новорождённым детёнышем",
+      "fact": "Верблюжонок может встать на ноги вскоре после рождения.",
+      "source": "https://commons.wikimedia.org/wiki/File:Camelmomandbaby.jpg"
+    },
+    "fennec": {
+      "filename": "Fennec Foxes.jpg",
+      "author": "Umberto Salvagnin",
+      "license": "CC BY 2.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by/2.0/",
+      "caption": "Настоящие фенека рядом друг с другом",
+      "fact": "Фенеки могут жить семейными группами.",
+      "source": "https://commons.wikimedia.org/wiki/File:Fennec%20Foxes.jpg"
+    },
+    "baboon": {
+      "filename": "Papiones de Anubis (Papio anubis), parque nacional del lago Nakuru, Kenia, 2024-05-18, DD 39.jpg",
+      "author": "Diego Delso",
+      "license": "CC BY-SA 4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0/",
+      "caption": "Павианы чистят шерсть друг другу, рядом малыш",
+      "fact": "Павианы укрепляют дружбу, ухаживая за шерстью друг друга.",
+      "source": "https://commons.wikimedia.org/wiki/File:Papiones%20de%20Anubis%20(Papio%20anubis)%2C%20parque%20nacional%20del%20lago%20Nakuru%2C%20Kenia%2C%202024-05-18%2C%20DD%2039.jpg"
+    },
+    "cobra": {
+      "filename": "L14cobra.jpg",
+      "author": "John Walker",
+      "license": "Public domain",
+      "licenseUrl": "https://commons.wikimedia.org/wiki/Commons:Public_domain",
+      "caption": "Египетская кобра расправила капюшон",
+      "fact": "Кобра поднимает капюшон, когда предупреждает об опасности.",
+      "source": "https://commons.wikimedia.org/wiki/File:L14cobra.jpg"
+    },
+    "hippo": {
+      "filename": "Hippopotamus Calf on Back of Mother - Mikumi National Park - Tanzania (8892763085).jpg",
+      "author": "Adam Jones",
+      "license": "CC BY-SA 2.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/2.0/",
+      "caption": "Маленький бегемот устроился на спине мамы",
+      "fact": "Детёныш бегемота держится возле мамы и даже может отдыхать на её спине.",
+      "source": "https://commons.wikimedia.org/wiki/File:Hippopotamus%20Calf%20on%20Back%20of%20Mother%20-%20Mikumi%20National%20Park%20-%20Tanzania%20(8892763085).jpg"
+    },
+    "crocodile": {
+      "filename": "Nile crocodile with jaws open.jpg",
+      "author": "Steve Slater",
+      "license": "CC BY 2.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by/2.0/",
+      "caption": "Нильский крокодил отдыхает с открытой пастью",
+      "fact": "Крокодил может раскрывать пасть, чтобы охладиться.",
+      "source": "https://commons.wikimedia.org/wiki/File:Nile%20crocodile%20with%20jaws%20open.jpg"
+    }
+  }
+}
