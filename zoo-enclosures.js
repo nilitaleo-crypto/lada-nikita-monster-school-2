@@ -133,7 +133,9 @@ function choose(i,b,area){
 function createCrocodile(area,step){
  // Real illustrated crocodile, not a blinking ring or abstract stones.
  const focus=document.createElement('div');focus.className='zoo-croc-portrait';
- focus.append(pic('images/egypt-zoo-crocodile-cutout.webp','zoo-croc-portrait-img','Крокодил. На верхней части головы находятся глаза и ноздри.'));
+ const portrait=pic('images/egypt-zoo-crocodile-anatomy.avif','zoo-croc-portrait-img','Нильский крокодил. Глаза высоко на голове, ноздри на конце морды.');
+ portrait.addEventListener('error',()=>{portrait.classList.add('is-fallback');portrait.src='images/egypt-zoo-crocodile-cutout.webp';},{once:true});
+ focus.append(portrait);
  const water=document.createElement('div');water.className='zoo-croc-water';focus.append(water);
  const organs=[
   {key:'eyes',text:'ГЛАЗА',caption:'ВИЖУ',x:74,y:43},
