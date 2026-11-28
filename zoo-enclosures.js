@@ -81,6 +81,7 @@ function complete(area,target){
  busy=true;
  const step=config.steps[round];
  showFact(step.note,area,target);
+ window.TivvigZooLife?.react(area,animal,round);
  drawProgress();
  clearTimeout(feedbackTimer);
  feedbackTimer=setTimeout(()=>{
@@ -94,6 +95,7 @@ function finish(){
  fact.textContent=config.steps.at(-1).note;
  fact.classList.remove('hidden');
  const note=scene.querySelector('.zoo-in-scene-fact');if(note)note.remove();
+ window.TivvigZooLife?.reward({animal,scene,task,fact});
 }
 function spot(area,index,p,enabled,mode){
  const b=document.createElement('button');b.type='button';b.id='zoo-'+animal+'-'+index;
@@ -206,6 +208,7 @@ function render(){
   });
  }
  scene.append(area);
+ window.TivvigZooLife?.stage(area,animal,round);
  if(animal==='fennec')showHear();
 }
 function getAudio(){
