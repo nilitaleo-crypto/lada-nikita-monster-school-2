@@ -14,7 +14,7 @@ const math=[
  {q:'Построй ступени по порядку',art:'От меньшего к большему',type:'sequence',a:['6','8','2','4'],order:[2,3,0,1]},
  {q:'У жука 10 монет. 7 уже в сундуке.',art:'7 + ? = 10',a:['2','4','3','5'],ok:2},
  {q:'Укрась дверь пятью камнями',art:'Касайся камней на доске',type:'collect',target:5,a:['💎','💎','💎','💎','💎','💎']},
- {q:'Продолжи тайный узор',art:'☀️ 🌙 🌙   ☀️ 🌙 🌙   ☀️ ?',a:['⭐','🌙','☀️'],ok:1},
+ {q:'Кто появится следующим?',art:'Пёсель · Нафири · Нафири',a:['Тутенштейн','Нафири','Пёсель'],ok:1},
  {q:'В пруду было 8 рыб. 3 уплыли.',art:'🐟   8 − 3 = ?',a:['6','4','5','3'],ok:2},
  {q:'Какой путь длиннее?',art:'3 + 4   ⚖️   6 + 2',a:['Первый','Одинаковы','Второй'],ok:2},
  {q:'Найди спрятанное число',art:'?  −  3  =  4',a:['7','6','8','5'],ok:0},
@@ -37,11 +37,11 @@ const reading=[
  {q:'Миссис Пухлис спрятала слог',art:'Найди НО',a:['НА','МО','НО','НУ'],ok:2},
  {q:'Сколько слогов?',art:'МА-ШИ-НА',a:['2','4','3'],ok:2},
  {q:'Собери КО-РО-ВА',art:'Выбирай слоги по порядку',type:'sequence',a:['ВА','КО','РО'],order:[1,2,0]},
- {q:'Прочти: МА-МА ДО-МА',art:'Где мама?',a:['🏠','🚢','🌳'],ok:0},
+ {q:'Прочитай имя и найди героя',art:'НА-ФИ-РИ',a:['Нафири','Пёсель','Ибис'],ok:0},
  {q:'Как зовут пушистую подругу?',art:'КО-ШКА',type:'sequence',a:['ШКА','ЛИ','КО'],order:[2,0]},
- {q:'Прочти короткую фразу',art:'У ЛА-ДЫ КОТ.',a:['🐈','🐊','🐕'],ok:0},
+ {q:'Прочитай фразу',art:'У ЛА-ДЫ КОТ.',a:['Кот','Пёсель','Ибис'],ok:0},
  {q:'Какое слово рифмуется с ДОМ?',art:'ДОМ',a:['КОТ','СОМ','ЛЕС'],ok:1},
- {q:'Найди то, что прочитала',art:'ЛУ-НА',a:['🌙','🏺','☀️'],ok:0},
+ {q:'Прочитай и найди друга',art:'КОТ',a:['Кот','Тутенштейн','Нафири'],ok:0},
  {q:'Собери имя героини',art:'ЛА-ДА',type:'sequence',a:['ДА','МА','ЛА'],order:[2,0]}
 ];
 const subjects={
@@ -52,6 +52,111 @@ const subjects={
 const names=Object.keys(subjects);
 // Preload three expressions for each movable teacher; keep it image-only, no extra network APIs.
 const characterArt=[];
+
+/* Friends are the actual existing story sprites, not emoji or cropped backgrounds.
+ * Semantic button IDs remain unchanged for cross-device click relays. */
+const cast={
+ dog:{src:'images/egypt-fox-friend.webp',name:'Пёсель'},
+ nafiri:{src:'images/egypt-nafiri.webp',name:'Нафири'},
+ ibis:{src:'images/egypt-motion-ibis.webp',name:'Ибис'},
+ tuten:{src:'images/egypt-tutenstein.webp',name:'Тутенштейн'},
+ lada:{src:'images/lada-cutout.webp',name:'Лада'},
+ cat:{src:'images/egypt-school-reading-neutral.webp',name:'Миссис Пухлис'},
+ math:{src:'images/egypt-school-math-neutral.webp',name:'МатематиКатя'},
+ writing:{src:'images/egypt-school-writing-neutral.webp',name:'Уэнсдей'}
+};
+const scenes={
+ math:[
+  {hero:'dog',script:'4 + ? = 9'},
+  {hero:'nafiri',script:'3 + 2   ⚖   4 + 1'},
+  {hero:'tuten',script:'2 · 4 · 6 · 8'},
+  {hero:'dog',script:'7 + ? = 10'},
+  {hero:'lada',script:'✦ ✦ ✦ ✦ ✦',kind:'gems'},
+  {kind:'pattern',pattern:['dog','nafiri','nafiri','dog','nafiri','nafiri','dog','?']},
+  {hero:'ibis',script:'8 − 3 = ?'},
+  {hero:'dog',partner:'nafiri',script:'3 + 4    ⚖    6 + 2'},
+  {hero:'tuten',script:'? − 3 = 4'},
+  {hero:'nafiri',script:'1 · 3 · 5 · 7'},
+  {hero:'cat',script:'9 − 6 = ?'},
+  {hero:'ibis',script:'7 + 2 = ?'},
+  {hero:'dog',partner:'nafiri',script:'5    ⚖    2 + 4'},
+  {hero:'math',script:'5 + ? = 8'}
+ ],
+ writing:[
+  {hero:'ibis',script:'—  ∿  ∧∧  —'},
+  {hero:'tuten',script:'∿  ∿  ⟳  ∿'},
+  {hero:'writing',script:'Л   М   А   О   У'},
+  {hero:'dog',script:'МА-МА   ЛУ-НА   ЛА-ДА'}
+ ],
+ reading:[
+  {hero:'nafiri',script:'МА + МА'},
+  {hero:'lada',script:'ЛУ + НА'},
+  {hero:'cat',script:'КОТ'},
+  {hero:'dog',script:'НО'},
+  {hero:'tuten',script:'МА-ШИ-НА'},
+  {hero:'ibis',script:'КО-РО-ВА'},
+  {hero:'lada',script:'НА-ФИ-РИ'},
+  {hero:'cat',script:'КО-ШКА'},
+  {hero:'lada',script:'У ЛА-ДЫ КОТ.'},
+  {hero:'dog',script:'ДОМ'},
+  {hero:'lada',script:'КОТ'},
+  {hero:'lada',script:'ЛА-ДА'}
+ ]
+};
+const characterAnswers={
+ math:{5:['tuten','nafiri','dog']},
+ reading:{6:['nafiri','dog','ibis'],8:['cat','dog','ibis'],10:['cat','tuten','nafiri']}
+};
+function portrait(id,className){
+ const person=cast[id];if(!person)return null;
+ const img=document.createElement('img');
+ img.className=className||'school-character';
+ img.src=person.src;img.alt=person.name;img.draggable=false;img.decoding='async';
+ return img;
+}
+function renderScene(room,n,task){
+ const visual=$('schoolVisual'),scene=scenes[room]?.[n];
+ if(!scene){visual.textContent=task.art;return}
+ const el=document.createElement('div');
+ el.className='school-scene school-scene--'+(scene.kind|| (scene.partner?'duo':'single'));
+ el.dataset.mood=mood;
+ el.setAttribute('role','img');
+ el.setAttribute('aria-label',scene.kind==='pattern'?'Пёсель, Нафири, Нафири, Пёсель, Нафири, Нафири, Пёсель, кто следующий?':scene.script+'; '+(cast[scene.hero]?.name||''));
+ if(scene.pattern){
+  const ribbon=document.createElement('div');ribbon.className='school-friends-pattern';
+  for(let i=0;i<scene.pattern.length;i++){
+   const friend=scene.pattern[i],cell=document.createElement('div');
+   cell.className='school-friends-pattern__slot'+(friend==='?'?' school-friends-pattern__slot--unknown':'');
+   if(friend==='?')cell.textContent='?';else cell.appendChild(portrait(friend,'school-friends-pattern__image'));
+   ribbon.appendChild(cell);
+  }
+  el.appendChild(ribbon);
+ }else{
+  const hero=portrait(scene.hero,'school-character school-character--hero');
+  if(hero)el.appendChild(hero);
+  const caption=document.createElement('div');
+  caption.className='school-scene__script';
+  caption.textContent=scene.script;
+  el.appendChild(caption);
+  if(scene.partner){
+   const partner=portrait(scene.partner,'school-character school-character--partner');
+   if(partner)el.appendChild(partner);
+  }
+ }
+ visual.replaceChildren(el);
+}
+function renderAnswer(btn,room,n,i,value){
+ const character=characterAnswers[room]?.[n]?.[i];
+ if(!character){btn.removeAttribute('data-art-kind');btn.textContent=value;return}
+ btn.dataset.artKind='portrait';
+ const face=portrait(character,'school-answer-character');
+ const name=document.createElement('span');name.className='school-answer-name';name.textContent=value;
+ btn.replaceChildren(face,name);
+}
+for(const person of Object.values(cast)){
+ const img=new Image();img.decoding='async';img.src=person.src;characterArt.push(img);
+}
+
 for(const room of Object.values(subjects))for(const source of Object.values(room.sprites)){
  const image=new Image();image.decoding='async';image.src=source;characterArt.push(image);
 }
@@ -83,7 +188,7 @@ function render(){
  $('schoolSubject').textContent=subject.label;
  $('schoolCounter').textContent=(n+1)+' / '+subject.data.length;
  $('schoolQuestion').textContent=task.q;
- $('schoolVisual').textContent=task.art;
+ renderScene(phase,n,task);
  $('schoolTeacherFigure').dataset.mood=mood;
  $('schoolReaction').textContent=mood==='good'?subject.good:mood==='wrong'?subject.bad:'';
  $('schoolFeedback').dataset.mood=mood;
@@ -98,7 +203,7 @@ function render(){
   const btn=$('schoolOpt'+i),has=i<opts.length;
   btn.hidden=!has;
   if(!has){btn.disabled=true;continue}
-  btn.textContent=opts[i];
+  renderAnswer(btn,phase,n,i,opts[i]);
   btn.disabled=answered||(task.type==='sequence'&&selected.has(i))||(task.type==='collect'&&selected.has(i));
   btn.className='answer'+(selected.has(i)||answered&&phase!=='writing'&&i===task.ok?' hit':wrong===i?' missed':'');
  }
