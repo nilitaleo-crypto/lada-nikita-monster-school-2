@@ -123,3 +123,7 @@ h1{font-size:clamp(22px,3vw,32px);line-height:1.05;margin:0;white-space:nowrap;o
  .zoo-in-scene-fact,.zoo-hippo-step,.zoo-hippo-skin::before,
  .zoo-croc-water,.zoo-fennec-thief,.zoo-stage.zoo-listening::before{animation:none!important;transition:none!important}
 }
+
+/* The legacy crocodile crop includes a sandy rectangle. Mask the illustration
+   to its silhouette so the animal appears in the same water as the painted pond. */
+.zoo-croc-portrait-img{clip-path:polygon(0 52%,7% 42%,15% 35%,20% 29%,30% 26%,35% 23%,45% 22%,52% 19%,58% 20%,63% 24%,68% 26%,75% 31%,80% 27%,87% 33%,97% 42%,100% 50%,100% 67%,94% 70%,89% 76%,82% 75%,70% 68%,63% 68%,55% 73%,47% 72%,39% 94%,31% 100%,29% 82%,18% 82%,14% 100%,8% 100%,8% 78%,0 81%)}
