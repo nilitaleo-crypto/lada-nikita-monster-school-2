@@ -185,7 +185,7 @@ function fennecScene(area){
 }
 function render(){
  if(finished)return;
- clearTimeout(feedbackTimer);fact.classList.add('hidden');
+ clearTimeout(feedbackTimer); // Keep the last discovery in the small footer until the next one.
  const step=config.steps[round];
  drawProgress();task.textContent=step.prompt;scene.replaceChildren();
  const area=document.createElement('div');area.className='zoo-stage';area.setAttribute('role','group');
