@@ -37,9 +37,9 @@ const reading=[
  {q:'Миссис Пухлис спрятала слог',art:'Найди НО',a:['НА','МО','НО','НУ'],ok:2},
  {q:'Сколько слогов?',art:'МА-ШИ-НА',a:['2','4','3'],ok:2},
  {q:'Собери КО-РО-ВА',art:'Выбирай слоги по порядку',type:'sequence',a:['ВА','КО','РО'],order:[1,2,0]},
- {q:'Прочитай имя и найди героя',art:'НА-ФИ-РИ',a:['Нафири','Пёсель','Ибис'],ok:0},
+ {q:'Прочитай имя и найди героя',art:'НА-ФИ-РИ',a:['Нафири','Пёсель','Уэнсдей'],ok:0},
  {q:'Как зовут пушистую подругу?',art:'КО-ШКА',type:'sequence',a:['ШКА','ЛИ','КО'],order:[2,0]},
- {q:'Прочитай фразу',art:'У ЛА-ДЫ КОТ.',a:['Кот','Пёсель','Ибис'],ok:0},
+ {q:'Прочитай фразу',art:'У ЛА-ДЫ КОТ.',a:['Кот','Пёсель','Нафири'],ok:0},
  {q:'Какое слово рифмуется с ДОМ?',art:'ДОМ',a:['КОТ','СОМ','ЛЕС'],ok:1},
  {q:'Прочитай и найди друга',art:'КОТ',a:['Кот','Тутенштейн','Нафири'],ok:0},
  {q:'Собери имя героини',art:'ЛА-ДА',type:'sequence',a:['ДА','МА','ЛА'],order:[2,0]}
@@ -58,7 +58,6 @@ const characterArt=[];
 const cast={
  dog:{src:'images/egypt-fox-friend.webp',name:'Пёсель'},
  nafiri:{src:'images/egypt-nafiri.webp',name:'Нафири'},
- ibis:{src:'images/egypt-motion-ibis.webp',name:'Ибис'},
  tuten:{src:'images/egypt-tutenstein.webp',name:'Тутенштейн'},
  lada:{src:'images/lada-cutout.webp',name:'Лада'},
  cat:{src:'images/egypt-school-reading-neutral.webp',name:'Миссис Пухлис'},
@@ -73,17 +72,17 @@ const scenes={
   {hero:'dog',script:'7 + ? = 10'},
   {hero:'lada',script:'✦ ✦ ✦ ✦ ✦',kind:'gems'},
   {kind:'pattern',pattern:['dog','nafiri','nafiri','dog','nafiri','nafiri','dog','?']},
-  {hero:'ibis',script:'8 − 3 = ?'},
+  {hero:'dog',script:'8 − 3 = ?'},
   {hero:'dog',partner:'nafiri',script:'3 + 4    ⚖    6 + 2'},
   {hero:'tuten',script:'? − 3 = 4'},
   {hero:'nafiri',script:'1 · 3 · 5 · 7'},
   {hero:'cat',script:'9 − 6 = ?'},
-  {hero:'ibis',script:'7 + 2 = ?'},
+  {hero:'math',script:'7 + 2 = ?'},
   {hero:'dog',partner:'nafiri',script:'5    ⚖    2 + 4'},
   {hero:'math',script:'5 + ? = 8'}
  ],
  writing:[
-  {hero:'ibis',script:'—  ∿  ∧∧  —'},
+  {hero:'writing',script:'—  ∿  ∧∧  —'},
   {hero:'tuten',script:'∿  ∿  ⟳  ∿'},
   {hero:'writing',script:'Л   М   А   О   У'},
   {hero:'dog',script:'МА-МА   ЛУ-НА   ЛА-ДА'}
@@ -94,7 +93,7 @@ const scenes={
   {hero:'cat',script:'КОТ'},
   {hero:'dog',script:'НО'},
   {hero:'tuten',script:'МА-ШИ-НА'},
-  {hero:'ibis',script:'КО-РО-ВА'},
+  {hero:'tuten',script:'КО-РО-ВА'},
   {hero:'lada',script:'НА-ФИ-РИ'},
   {hero:'cat',script:'КО-ШКА'},
   {hero:'lada',script:'У ЛА-ДЫ КОТ.'},
@@ -105,7 +104,7 @@ const scenes={
 };
 const characterAnswers={
  math:{5:['tuten','nafiri','dog']},
- reading:{6:['nafiri','dog','ibis'],8:['cat','dog','ibis'],10:['cat','tuten','nafiri']}
+ reading:{6:['nafiri','dog','writing'],8:['cat','dog','nafiri'],10:['cat','tuten','nafiri']}
 };
 function portrait(id,className){
  const person=cast[id];if(!person)return null;
