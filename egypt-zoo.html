@@ -1,0 +1,58 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#b88c57">
+<meta name="description" content="Нафири показывает Ладе карту египетского зоопарка. Выбери любой вольер.">
+<title>Египетский зоопарк Нафири · Тиввиг</title>
+<link rel="preload" as="image" href="images/egypt-zoo-nafiri-map.webp">
+<style>
+:root{color-scheme:light;font-family:Georgia,'Times New Roman',serif}
+*{box-sizing:border-box}
+html,body{margin:0;min-height:100%;background:#a87b52}
+body{min-height:100svh;overflow-x:hidden}
+a{color:inherit}
+a:focus-visible{outline:3px solid #faffaa;outline-offset:3px}
+.zoo{width:100%;min-height:100svh;display:grid;place-items:center;position:relative;isolation:isolate;overflow:hidden;background:radial-gradient(ellipse at 50% 30%,#ddba82,#855639)}
+.zoo::before{content:"";position:absolute;inset:-5%;background:url('images/egypt-zoo-nafiri-map.webp') center/cover no-repeat;filter:blur(20px) brightness(.7);opacity:.35;z-index:-1;pointer-events:none}
+.zoo-map{width:min(100vw, calc(100svh * 4 / 3));aspect-ratio:1448/1086;position:relative;line-height:0;flex:none;box-shadow:0 0 25px #3d241440}
+.zoo-map img{display:block;width:100%;height:100%;object-fit:contain;-webkit-user-drag:none;user-select:none}
+.zoo-hit{position:absolute;display:block;background:transparent;border:0;padding:0;margin:0;touch-action:manipulation;-webkit-tap-highlight-color:transparent;border-radius:40%;cursor:pointer;transform:translate(-50%,-50%);z-index:3}
+.zoo-hit:hover:not(:focus-visible){outline:1px solid #ffecafa0;outline-offset:-2px;box-shadow:0 0 17px #ffdf7e80}
+.zoo-hit:focus-visible{outline:4px solid #ffe88f;outline-offset:0;box-shadow:0 0 0 5px #43271c77}
+.zoo-hit--ibis{left:23%;top:29%;width:19%;height:21%}
+.zoo-hit--camel{left:53%;top:20.5%;width:22%;height:21%}
+.zoo-hit--fennec{left:82%;top:28%;width:19%;height:19%}
+.zoo-hit--baboon{left:24%;top:47.5%;width:22%;height:20%}
+.zoo-hit--cobra{left:54%;top:42.5%;width:18%;height:20%}
+.zoo-hit--hippo{left:77.5%;top:60.5%;width:23%;height:20%}
+.zoo-hit--crocodile{left:27%;top:70%;width:25%;height:18%}
+.zoo-back{position:fixed;z-index:10;top:max(9px, env(safe-area-inset-top));left:max(9px, env(safe-area-inset-left));display:flex;align-items:center;justify-content:center;min-width:45px;height:45px;text-decoration:none;color:#fff3da;background:#3b2825c4;border:1px solid #f4d39d9e;border-radius:50%;box-shadow:0 2px 8px #23140c66;font:700 24px system-ui,sans-serif;line-height:1}
+.zoo-back:hover{background:#513125}
+.zoo-caption{position:fixed;z-index:5;bottom:max(8px, env(safe-area-inset-bottom));left:50%;transform:translateX(-50%);background:#3b2825be;color:#fff4d8;border-radius:20px;padding:7px 16px;text-align:center;white-space:nowrap;font:600 clamp(12px,1.4vw,17px) Georgia,serif;box-shadow:0 2px 8px #23140c50;pointer-events:none}
+.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+@media(orientation:portrait){.zoo-map{width:100vw}.zoo-caption{bottom:max(12px,env(safe-area-inset-bottom))}}
+@media(prefers-reduced-motion:reduce){.zoo-hit{transition:none}}
+</style>
+</head>
+<body>
+<main class="zoo">
+<h1 class="sr-only">Египетский зоопарк. Нафири показывает Ладе карту. Выбери вольер.</h1>
+<div class="zoo-map" role="group" aria-label="Карта египетского зоопарка с семью вольерами">
+<img src="images/egypt-zoo-nafiri-map.webp" width="1448" height="1086" alt="Нафири держит большую карту египетского зоопарка: ибис у воды, верблюд среди пальм, фенек в норе, павиан на скале, кобра среди песков, бегемот в реке и нильский крокодил у пруда. Выбирай животное касанием." draggable="false" fetchpriority="high">
+<a class="zoo-hit zoo-hit--ibis" id="zooIbis" href="egypt-zoo-ibis.html" aria-label="Войти в вольер священного ибиса" title="Ибис"></a>
+<a class="zoo-hit zoo-hit--camel" id="zooCamel" href="egypt-zoo-camel.html" aria-label="Войти в вольер одногорбого верблюда" title="Верблюд"></a>
+<a class="zoo-hit zoo-hit--fennec" id="zooFennec" href="egypt-zoo-fennec.html" aria-label="Войти в вольер фенека" title="Фенек"></a>
+<a class="zoo-hit zoo-hit--baboon" id="zooBaboon" href="egypt-zoo-baboon.html" aria-label="Войти в вольер павиана" title="Павиан"></a>
+<a class="zoo-hit zoo-hit--cobra" id="zooCobra" href="egypt-zoo-cobra.html" aria-label="Войти в вольер египетской кобры" title="Кобра"></a>
+<a class="zoo-hit zoo-hit--hippo" id="zooHippo" href="egypt-zoo-hippo.html" aria-label="Войти в вольер бегемота" title="Бегемот"></a>
+<a class="zoo-hit zoo-hit--crocodile" id="zooCrocodile" href="egypt-zoo-crocodile.html" aria-label="Войти в вольер нильского крокодила" title="Нильский крокодил"></a>
+</div>
+<a class="zoo-back" href="egypt-school.html" aria-label="Назад в школу">‹</a>
+<p class="zoo-caption">Выбери, к кому пойдём!</p>
+</main>
+<p class="sr-only" id="gameConnection" role="status" aria-live="polite"></p>
+<script src="game-runtime.js?v=6" defer></script>
+</body>
+</html>

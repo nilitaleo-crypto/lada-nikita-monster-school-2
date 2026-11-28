@@ -1,0 +1,13 @@
+:root{font-family:Georgia,'Times New Roman',serif;color:#fff0d4;background:#6f4b34}
+*{box-sizing:border-box}html,body{margin:0;min-height:100%;background:#6f4b34}
+body{min-height:100svh}
+a{color:inherit}
+a:focus-visible{outline:3px solid #fbeeb5;outline-offset:4px}
+main{min-height:100svh;display:grid;place-items:center;padding:25px;position:relative;isolation:isolate;overflow:hidden;text-align:center}
+main::before{content:"";z-index:-2;position:absolute;inset:-5%;background:url('images/egypt-zoo-nafiri-map.webp') center/cover no-repeat;filter:blur(17px) brightness(.38)}
+main::after{content:"";z-index:-1;position:absolute;inset:0;background:linear-gradient(150deg,#271d1580,#59361f30)}
+section{display:grid;justify-items:center;gap:18px;max-width:510px}
+h1{font-size:clamp(29px,5.6vw,56px);margin:0;line-height:1.06;text-shadow:0 3px 8px #2d180dbb}
+p{font-size:clamp(17px,2.2vw,23px);margin:0;text-shadow:0 2px 6px #2d180dcc}
+.back{display:inline-flex;align-items:center;justify-content:center;min-height:50px;padding:10px 23px;text-decoration:none;border:1px solid #ffe3a2;border-radius:22px;color:#fff3d9;background:#432d23c9;font:700 18px Georgia,serif}
+.back:hover{background:#61422c}
