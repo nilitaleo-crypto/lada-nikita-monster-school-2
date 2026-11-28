@@ -79,3 +79,11 @@ body[data-animal="ibis"] .scene .dunes,
 body[data-animal="ibis"] .scene .river{display:none}
 body[data-animal="ibis"] .scene .reed{opacity:.8}
 @media(prefers-reduced-motion:reduce){.animal,.ripple{animation:none!important}}
+/* Decoration never steals taps from the large interactive game targets. */
+.ripple,.eyes,.animal,.sun,.pool,.sky,.dunes,.river,.pad,.panel-card{pointer-events:none}
+
+/* Keep painted scenery behind controls but above the page background. */
+.scene{isolation:isolate}
+.zoo-ibis-spot{border:2px solid rgba(245,234,166,.35);background:radial-gradient(ellipse at 50% 55%,rgba(248,220,103,.28),transparent 68%);box-shadow:0 0 0 1px rgba(31,100,125,.2);animation:zoo-shimmer 2.8s ease-in-out infinite;border-radius:50%}
+@keyframes zoo-shimmer{0%,100%{opacity:.7}50%{opacity:1}}
+@media(prefers-reduced-motion:reduce){.zoo-ibis-spot{animation:none}}

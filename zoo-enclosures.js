@@ -44,11 +44,11 @@
   function initIbis(){
     const total=3; drawProgress(total); clearScene(); const inner=addBase('river');
     // Do not cover the original painted river with a synthetic pond.
-    const ibis = makeAnimal('10%','42%','🕊️','96px'); inner.append(ibis);
+    // Full-resolution ibis is painted directly into the background scene.
     const found = new Set(state.picks);
-    const spots=[{l:34,t:47,w:14,h:32},{l:49,t:45,w:14,h:31},{l:65,t:46,w:14,h:32},{l:79,t:45,w:13,h:32}];
+    const spots=[{l:36,t:54,w:12,h:19},{l:50,t:54,w:12,h:19},{l:64,t:52,w:12,h:19},{l:78,t:51,w:12,h:19}];
     const prey = [1,2,3];
-    spots.forEach((p,i)=>{ const reed=document.createElement('button'); reed.id='zoo-ibis-'+i; reed.className='tap reed'; reed.style.left=p.l+'%'; reed.style.top=p.t+'%'; reed.style.width=p.w+'%'; reed.style.height=p.h+'%'; reed.ariaLabel='Камыш'; reed.onclick=()=>{
+    spots.forEach((p,i)=>{ const reed=document.createElement('button'); reed.id='zoo-ibis-'+i; reed.className='tap zoo-ibis-spot'; reed.style.left=p.l+'%'; reed.style.top=p.t+'%'; reed.style.width=p.w+'%'; reed.style.height=p.h+'%'; reed.setAttribute('aria-label','Ищем пищу в воде '+(i+1)); reed.onclick=()=>{
       if(state.busy||state.done||found.has(i))return;
       if(prey.includes(i)){ state.picks.push(i); good(reed); const star=document.createElement('div'); star.textContent='🦐'; star.style.cssText=`position:absolute;left:${p.l+4}%;top:${p.t+20}%;font-size:32px`; inner.append(star); }
       else bad(reed);
@@ -115,7 +115,7 @@
     const rocks=[{x:20,label:'слева'},{x:47,label:'в центре'},{x:74,label:'справа'}];
     const safeIndex = state.score%3;
     rocks.forEach((r,i)=>{ const rock=document.createElement('button'); rock.id='zoo-cobra-'+i; rock.className='tap rock'; rock.setAttribute('aria-label','Камень '+(i+1)); rock.style.cssText=`left:${r.x}%;top:53%;width:18%;height:16%`; rock.onclick=()=>{ if(state.busy||state.done)return; if(i===safeIndex){ good(rock); drawProgress(total); next(total, initCobra); } else bad(rock);}; inner.append(rock);
-      const shade=document.createElement('div'); shade.style.cssText=`position:absolute;left:${r.x+4}%;top:61%;width:11%;height:7%;border-radius:50%;background:${i===safeIndex?'#4a678a99':'#0000'}`; inner.append(shade);
+      const shade=document.createElement('div'); shade.style.pointerEvents='none'; shade.style.cssText=`position:absolute;left:${r.x+4}%;top:61%;width:11%;height:7%;border-radius:50%;background:${i===safeIndex?'#4a678a99':'#0000'};pointer-events:none`; inner.append(shade);
     });
     setTask('Найди для кобры прохладную тень.');
   }
