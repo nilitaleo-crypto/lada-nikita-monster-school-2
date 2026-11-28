@@ -1,0 +1,57 @@
+/* Egypt School — Math Adventure. Scene props are AI-generated in one transparent WebP atlas.
+   Native buttons preserve the classroom's Firebase click relay and tablet accessibility. */
+.school .room .math-game{width:100%;flex:1;min-height:130px;position:relative;display:flex;flex-direction:column;align-items:center;justify-content:space-around;gap:3px;overflow:visible;isolation:isolate}
+.school .room .math-game[hidden]{display:none!important}
+.school .room .math-game__art{position:relative;width:100%;height:clamp(100px,13vw,166px);display:flex;align-items:center;justify-content:center;gap:4px}
+.school .room .math-sprite{display:block;background-image:url('images/egypt-school-math-props.webp');background-repeat:no-repeat;background-color:transparent;filter:drop-shadow(1px 3px 2px #3e251d61);pointer-events:none}
+.school .room .math-sprite--scale{width:clamp(130px,21vw,264px);height:clamp(88px,12vw,150px);background-size:200% 150%;background-position:0 0}
+.school .room .math-sprite--chest{width:clamp(128px,18vw,225px);height:clamp(96px,13vw,165px);background-size:200% 150%;background-position:100% 0}
+.school .room .math-sprite--weight{width:39px;height:40px;flex:0 0 auto;background-size:600% 290%;background-position:0 100%;filter:drop-shadow(1px 2px 1px #3e251d75)}
+.school .room .math-sprite--coin{width:37px;height:37px;flex:0 0 auto;background-size:600% 300%;background-position:100% 100%}
+.school .room .math-sprite--stone{width:100%;height:60px;background-size:490% 330%;background-position:29% 100%;filter:none}
+.school .room .math-game__sum{position:absolute;inset:6% 0 auto;display:grid;place-items:center;color:#4e2d19;font:800 clamp(20px,2.4vw,31px)/1.1 system-ui,sans-serif;letter-spacing:.03em;text-shadow:0 1px 2px #f7dcb7}
+.school .room .math-game__scale-marker{position:absolute;left:50%;bottom:3%;transform:translateX(-50%);font:800 clamp(16px,2vw,26px) system-ui,sans-serif;color:#4b321e;text-shadow:0 1px 2px #ffe6b1}
+.school .room .math-game__scale-marker--done{color:#287749}
+.school .room .math-game__choices{display:flex;gap:clamp(5px,1vw,13px);align-items:center;justify-content:center;flex-wrap:wrap;width:100%;min-height:60px}
+.school .room .math-game__choice{border:2px solid #ae853a;background:#ffe6bdbd;color:#49301a;border-radius:12px;min-width:clamp(50px,6.4vw,78px);min-height:55px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:0;cursor:pointer;touch-action:manipulation;box-shadow:0 2px 0 #9164348a;font:800 clamp(17px,2vw,26px) system-ui,sans-serif;padding:2px 5px}
+.school .room .math-game__choice:active{transform:translateY(2px);box-shadow:none}
+.school .room .math-game__choice:focus-visible{outline:3px solid #61b6d2;outline-offset:2px}
+.school .room .math-game__choice:disabled{opacity:.44;cursor:default;box-shadow:none}
+.school .room .math-game__choice.is-set{background:#a4d09f;border-color:#4b8a54;opacity:1}
+.school .room .math-game__choice.is-wrong{border-color:#c05e59;background:#ffd0c6;animation:math-wiggle .35s}
+.school .room .math-game__choice--coin{min-width:43px;min-height:43px;width:clamp(44px,4vw,52px);height:clamp(44px,4vw,52px);border:0;background:transparent;box-shadow:none;padding:2px}
+.school .room .math-game__choice--coin.is-set{background:transparent;opacity:.19;transform:translateY(-18px) scale(.65)}
+.school .room .math-game__counter{position:absolute;right:2%;top:12%;border-radius:12px;background:#f3d09ca8;color:#4d311c;padding:2px 8px;font:800 clamp(16px,1.9vw,25px) system-ui,sans-serif}
+.school .room .math-game__friend{position:absolute;bottom:4%;right:2%;width:clamp(35px,5.5vw,80px);height:60%;object-fit:contain;object-position:center bottom;filter:drop-shadow(0 3px 3px #35211c70);pointer-events:none;transition:transform .25s ease}
+.school .room .math-game__bridge .math-game__friend{left:calc(5% + var(--steps,0) * 19%);bottom:44%;width:clamp(32px,4vw,65px);height:45%;transition:left .26s ease}
+.school .room .math-game__stones{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:6px;width:100%;align-items:end}
+.school .room .math-game__choice--stone{min-width:0;width:100%;border:0;box-shadow:none;background:transparent;position:relative;min-height:67px;color:#50351f;isolation:isolate}
+.school .room .math-game__choice--stone .math-sprite{position:absolute;inset:0;z-index:-1;filter:drop-shadow(0 3px 2px #73553a50)}
+.school .room .math-game__choice--stone.is-set{background:transparent;color:#276241;transform:translateY(-7px)}
+.school .room .math-game__bridge{position:relative;min-height:130px;display:flex;flex-direction:column;justify-content:end;width:100%;padding-top:45px}
+.school .room .math-game__bridge-track{height:4px;background:#aa794e88;border-radius:50%;position:absolute;bottom:7px;left:2%;right:2%;z-index:-2}
+.school .room .math-game__round{align-self:center;color:#795331;font:700 clamp(10px,1.1vw,14px) system-ui,sans-serif}
+@keyframes math-wiggle{0%,100%{transform:translateX(0)}33%{transform:translateX(-4px)}70%{transform:translateX(4px)}}
+@media(max-width:850px){
+ .school[data-phase="math"] .room .board{top:33%;bottom:4%;left:3%;right:3%}
+ .school .room .math-game__art{height:clamp(105px,19vw,160px)}
+ .school .room .math-game__choice{min-height:48px}
+ .school .room .math-game__choices{min-height:48px}
+ .school .room .math-game__choice--coin{width:44px;height:44px;min-width:42px;min-height:42px}
+ .school .room .math-game__choice--stone{min-height:66px}
+ .school .room .math-game__friend{width:44px}
+ .school .room .math-sprite--scale{width:230px;height:132px}
+ .school .room .math-sprite--chest{width:205px;height:145px}
+}
+@media(max-width:440px){
+ .school .room .math-game__art{height:94px}
+ .school .room .math-game__choice{min-width:44px;min-height:46px;font-size:19px}
+ .school .room .math-sprite--scale{width:170px;height:97px}
+ .school .room .math-sprite--chest{width:152px;height:105px}
+ .school .room .math-game__choice--coin{min-width:36px;min-height:36px;width:37px;height:37px}
+ .school .room .math-game__choice--stone{min-height:58px}
+ .school .room .math-game__bridge{min-height:101px}
+ .school .room .math-game__friend{height:55%}
+ .school .room .math-game__choices{gap:3px}
+}
+@media(prefers-reduced-motion:reduce){.school .room .math-game__friend,.school .room .math-game__choice{transition:none!important;animation:none!important}}
