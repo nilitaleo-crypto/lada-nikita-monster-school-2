@@ -1,152 +1,102 @@
+/* Тиввиг · seven illustrated zoo habitats.
+ * The source art is generated at 1672×941; invisible, accessible native
+ * buttons sit inside the SAME 16:9 coordinate plane as each painting.
+ * No randomization: identical buttons / steps on both Firebase clients. */
 (()=>{
-  const $ = s => document.querySelector(s);
-  const scene = $('#scene');
-  const task = $('#task');
-  const fact = $('#fact');
-  const progress = $('#progress');
-  const controls = $('#controls');
-  const restartBtn = $('#restart');
-  const mapBtn = $('#mapBtn');
-  const animal = document.body.dataset.animal;
-  const state = {round:0, score:0, done:false, busy:false, picks:[], mode:'day'};
-  const facts = {
-    ibis:'Ибис ищет пищу длинным клювом в мелкой воде и иле.',
-    camel:'У верблюда широкие ступни для песка, длинные ресницы и горб с жиром.',
-    fennec:'Фенек активен ночью, а огромные уши помогают ему слышать добычу под песком.',
-    baboon:'Павианы живут семьями и часто чистят шерсть друг другу — так они дружат.',
-    cobra:'Кобра может расправлять капюшон как предупреждение. Змее нужны тёплые и прохладные места.',
-    hippo:'Днём бегемот часто сидит в воде, а ночью выходит на сушу щипать траву.',
-    crocodile:'У крокодила глаза и ноздри сверху головы, поэтому он может прятаться почти целиком в воде.'
-  };
-  const titles = {
-    ibis:'Священный ибис', camel:'Одногорбый верблюд', fennec:'Фенек', baboon:'Павиан', cobra:'Египетская кобра', hippo:'Бегемот', crocodile:'Нильский крокодил'
-  };
-  function clearScene(){ scene.innerHTML=''; }
-  function setTask(t){ task.textContent=t; }
-  function drawProgress(total){ progress.innerHTML=''; for(let i=0;i<total;i++){ const d=document.createElement('span'); d.className='dot'+(i<state.score?' on':''); progress.append(d);} }
-  function complete(){
-    state.done=true; fact.textContent=facts[animal]; fact.classList.remove('hidden'); controls.classList.remove('hidden'); setTask('Отлично! Задание выполнено.');
-  }
-  function addBase(bg='default'){
-    const sky=document.createElement('div'); sky.className='sky';
-    const dunes=document.createElement('div'); dunes.className='dunes';
-    scene.append(sky,dunes);
-    if(bg==='river'){ const r=document.createElement('div'); r.className='river'; scene.append(r); }
-    const inner=document.createElement('div'); inner.className='scene-inner'; scene.append(inner); return inner;
-  }
-  function makeAnimal(x,y,emoji,size,extra=''){
-    const d=document.createElement('div'); d.className='animal '+extra; d.style.left=x; d.style.top=y; d.style.fontSize=size; d.textContent=emoji; return d;
-  }
-  function good(btn){ if(state.busy||state.done)return false; state.score++; state.busy=true; btn?.classList.add('ok'); return true; }
-  function bad(btn){ btn?.classList.add('bad'); setTimeout(()=>btn?.classList.remove('bad'),340); }
-  function next(total, rerender){ if(state.score>=total){ setTimeout(()=>{state.busy=false;complete();},250); } else { setTimeout(()=>{state.busy=false;rerender();},360); } }
-
-  function initIbis(){
-    const total=3; drawProgress(total); clearScene(); const inner=addBase('river');
-    // Do not cover the original painted river with a synthetic pond.
-    // Full-resolution ibis is painted directly into the background scene.
-    const found = new Set(state.picks);
-    const spots=[{l:36,t:54,w:12,h:19},{l:50,t:54,w:12,h:19},{l:64,t:52,w:12,h:19},{l:78,t:51,w:12,h:19}];
-    const prey = [1,2,3];
-    spots.forEach((p,i)=>{ const reed=document.createElement('button'); reed.id='zoo-ibis-'+i; reed.className='tap zoo-ibis-spot'; reed.style.left=p.l+'%'; reed.style.top=p.t+'%'; reed.style.width=p.w+'%'; reed.style.height=p.h+'%'; reed.setAttribute('aria-label','Ищем пищу в воде '+(i+1)); reed.onclick=()=>{
-      if(state.busy||state.done||found.has(i))return;
-      if(prey.includes(i)){ state.picks.push(i); good(reed); const star=document.createElement('div'); star.textContent='🦐'; star.style.cssText=`position:absolute;left:${p.l+4}%;top:${p.t+20}%;font-size:32px`; inner.append(star); }
-      else bad(reed);
-      drawProgress(total); next(total, initIbis);
-    }; inner.append(reed); });
-    setTask(state.score? 'Найди ещё еду под водой.' : 'Помоги ибису найти 3 кусочка еды под камышами.');
-  }
-
-  function initCamel(){
-    const needed = ['💧','🧺','🧣'];
-    if(state.round===0) state.picks=[];
-    clearScene(); drawProgress(3); const inner=addBase();
-    inner.append(makeAnimal('58%','32%','🐪','124px'));
-    const tent=document.createElement('div'); tent.className='rock'; tent.style.cssText='left:70%;top:28%;width:18%;height:15%;border-radius:0;clip-path:polygon(0 100%,50% 0,100% 100%)'; inner.append(tent);
-    const items=['💧','🍉','🧺','🪨','🧣','🧸'];
-    items.forEach((it,i)=>{ const b=document.createElement('button'); b.id='zoo-camel-'+i; b.className='crate'; b.setAttribute('aria-label','Вещь '+it); b.style.cssText=`left:${10 + (i%3)*22}%;top:${52 + Math.floor(i/3)*18}%;width:16%;height:14%;position:absolute;font-size:44px`; b.textContent=it; b.onclick=()=>{
-      if(state.done||state.picks.includes(it)) return;
-      if(needed.includes(it) && state.picks.length<3){ state.picks.push(it); b.style.opacity='.35'; state.score=state.picks.length; b.classList.add('ok'); }
-      else bad(b);
-      drawProgress(3); if(state.picks.length===3) { state.done=true; complete(); }
-      else setTask('Выбери ещё вещи для пустыни.');
-    }; inner.append(b); });
-    const note=document.createElement('div'); note.className='panel-card'; note.style.cssText='left:8%;top:9%;width:32%;position:absolute'; note.innerHTML='<h2>Собираем караван</h2><p>Нужны вода, корзина с финиками и платок от песка.</p>'; inner.append(note);
-    setTask('Помоги верблюду собрать 3 нужные вещи.');
-  }
-
-  function initFennec(){
-    const total=4; drawProgress(total); clearScene(); const inner=addBase();
-    const moon=document.createElement('div'); moon.className='sun'; moon.style.cssText='right:8%;top:8%;transform:scale(.75);background:radial-gradient(circle at 35% 35%,#fffbe7,#fff4a8 60%,#dcbf67)'; inner.append(moon);
-    inner.append(makeAnimal('46%','22%','🦊','96px'));
-    const target=[1,0,2,1][state.score%4]; state.round = target; // Deterministic across both Firebase clients.
-    [20,46,72].forEach((left, idx)=>{
-      const hole=document.createElement('button'); hole.id='zoo-fennec-'+idx; hole.className='tap burrow sand'; hole.setAttribute('aria-label','Норка '+(idx+1)); hole.style.cssText=`left:${left}%;top:55%;width:18%;height:20%`; hole.onclick=()=>{ if(state.busy||state.done)return; if(idx===target){ good(hole); drawProgress(total); next(total, initFennec); } else { bad(hole); } }; inner.append(hole);
-      if(idx===target){ const pulse=document.createElement('div'); pulse.className='ripple'; pulse.style.cssText=`left:${left+4}%;top:58%;width:72px;height:72px`; inner.append(pulse); const bug=document.createElement('div'); bug.textContent='🦗'; bug.style.cssText=`position:absolute;left:${left+6}%;top:68%;font-size:16px;opacity:.55`; inner.append(bug); }
-    });
-    setTask('Где шуршит добыча? Найди 4 раза.');
-  }
-
-  function initBaboon(){
-    const total=4; clearScene(); drawProgress(total); const inner=addBase();
-    inner.append(makeAnimal('16%','38%','🐒','96px'));
-    inner.append(makeAnimal('68%','26%','🐒','88px'));
-    const bigRock=document.createElement('div'); bigRock.className='rock'; bigRock.style.cssText='left:33%;top:26%;width:22%;height:22%'; inner.append(bigRock);
-    const smallRock=document.createElement('div'); smallRock.className='rock'; smallRock.style.cssText='left:62%;top:51%;width:17%;height:14%'; inner.append(smallRock);
-    const palm=document.createElement('div'); palm.className='reed'; palm.style.cssText='left:12%;top:42%;width:18%;height:30%;transform:rotate(-10deg)'; inner.append(palm);
-    const cave=document.createElement('div'); cave.className='burrow'; cave.style.cssText='left:74%;top:38%;width:16%;height:18%'; inner.append(cave);
-    const spots=[
-      {key:'behind rock',label:'за большой скалой',x:40,y:34},
-      {key:'under palm',label:'под пальмой',x:17,y:58},
-      {key:'in cave',label:'в пещере',x:77,y:42},
-      {key:'near small rock',label:'рядом с маленькой скалой',x:64,y:57}
-    ];
-    const pick=spots[state.score%spots.length];
-    const baby=document.createElement('button'); baby.id='zoo-baboon-'+(state.score%spots.length); baby.className='tap zoo-trace'; baby.setAttribute('aria-label','Место малыша: '+pick.label); baby.style.cssText=`left:${pick.x}%;top:${pick.y}%;width:14%;height:16%`; baby.onclick=()=>{ if(state.busy||state.done)return; good(baby); const icon=makeAnimal(pick.x+'%',pick.y+'%','🐒','54px'); inner.append(icon); drawProgress(total); next(total, initBaboon); }; inner.append(baby);
-    // decoy taps
-    spots.filter(s=>s!==pick).forEach(s=>{ const d=document.createElement('button'); d.id='zoo-baboon-'+spots.indexOf(s); d.className='tap zoo-trace'; d.setAttribute('aria-label','Поиск: '+s.label); d.style.cssText=`left:${s.x}%;top:${s.y}%;width:14%;height:16%`; d.onclick=()=>bad(d); inner.append(d); });
-    setTask('Где малыш павиан? Он '+pick.label+'.');
-  }
-
-  function initCobra(){
-    const total=4; clearScene(); drawProgress(total); const inner=addBase();
-    const sun=document.createElement('div'); sun.className='sun'; sun.style.left=(state.score%2? '72%':'12%'); sun.style.top='10%'; inner.append(sun);
-    inner.append(makeAnimal('48%','42%','🐍','116px'));
-    const rocks=[{x:20,label:'слева'},{x:47,label:'в центре'},{x:74,label:'справа'}];
-    const safeIndex = state.score%3;
-    rocks.forEach((r,i)=>{ const rock=document.createElement('button'); rock.id='zoo-cobra-'+i; rock.className='tap rock'; rock.setAttribute('aria-label','Камень '+(i+1)); rock.style.cssText=`left:${r.x}%;top:53%;width:18%;height:16%`; rock.onclick=()=>{ if(state.busy||state.done)return; if(i===safeIndex){ good(rock); drawProgress(total); next(total, initCobra); } else bad(rock);}; inner.append(rock);
-      const shade=document.createElement('div'); shade.style.pointerEvents='none'; shade.style.cssText=`position:absolute;left:${r.x+4}%;top:61%;width:11%;height:7%;border-radius:50%;background:${i===safeIndex?'#4a678a99':'#0000'};pointer-events:none`; inner.append(shade);
-    });
-    setTask('Найди для кобры прохладную тень.');
-  }
-
-  function initHippo(){
-    const total=4; clearScene(); drawProgress(total); const inner=addBase('river');
-    state.mode = state.score%2===0 ? 'day' : 'night';
-    if(state.mode==='night'){ scene.querySelector('.sky').style.background='linear-gradient(#102544 0 37%, #27486d 37% 100%)'; }
-    const pool=document.createElement('div'); pool.className='pool'; pool.style.cssText='left:12%;top:48%;width:36%;height:23%'; inner.append(pool);
-    const meadow=document.createElement('div'); meadow.className='rock'; meadow.style.cssText='left:60%;top:50%;width:24%;height:15%;background:linear-gradient(180deg,#96b25c,#6f8d45);border-radius:34px'; inner.append(meadow);
-    const left=document.createElement('button'); left.id='zoo-hippo-water'; left.className='tap zoo-target zoo-target--water'; left.setAttribute('aria-label','Вода'); left.style.cssText='left:12%;top:42%;width:36%;height:32%';
-    const right=document.createElement('button'); right.id='zoo-hippo-grass'; right.className='tap zoo-target zoo-target--grass'; right.setAttribute('aria-label','Трава'); right.style.cssText='left:58%;top:42%;width:28%;height:28%';
-    left.onclick=()=> choose(true); right.onclick=()=> choose(false); inner.append(left,right);
-    inner.append(makeAnimal('43%','31%','🦛','104px'));
-    function choose(poolChoice){ if(state.busy||state.done)return; const ok = (state.mode==='day' && poolChoice) || (state.mode==='night' && !poolChoice); if(ok){good(poolChoice?left:right); drawProgress(total); next(total, initHippo);} else bad(poolChoice?left:right);}    
-    setTask(state.mode==='day'?'День. Где бегемот любит отдыхать?':'Ночь. Куда бегемот идёт есть траву?');
-  }
-
-  function initCroc(){
-    const total=4; clearScene(); drawProgress(total); const inner=addBase('river');
-    const pond=document.createElement('div'); pond.className='pool'; pond.style.cssText='left:8%;top:38%;width:84%;height:42%;border-radius:34px'; inner.append(pond);
-    const positions=[{x:18,y:52},{x:43,y:60},{x:72,y:48}]; const target=positions[state.score%3];
-    positions.forEach((p,i)=>{ const btn=document.createElement('button'); btn.id='zoo-crocodile-'+i; btn.className='tap'; btn.setAttribute('aria-label','Найти крокодила у ряби '+(i+1)); btn.style.cssText=`left:${p.x}%;top:${p.y}%;width:18%;height:18%`; btn.onclick=()=>{ if(state.busy||state.done)return; if(i===state.score%3){ good(btn); const body=makeAnimal((p.x-2)+'%',(p.y+3)+'%','🐊','90px'); inner.append(body); drawProgress(total); next(total, initCroc);} else bad(btn); }; inner.append(btn);
-      const ripple=document.createElement('div'); ripple.className='ripple'; ripple.style.cssText=`left:${p.x+2}%;top:${p.y+2}%;width:80px;height:54px;opacity:${i===state.score%3?1:.35}`; inner.append(ripple);
-      if(i===state.score%3){ const eyes=document.createElement('div'); eyes.className='eyes'; eyes.style.left=(p.x+5)+'%'; eyes.style.top=(p.y+5)+'%'; eyes.innerHTML='<span></span><em></em>'; inner.append(eyes); }
-    });
-    setTask('Где прячется крокодил? Смотри на глаза и рябь на воде.');
-  }
-
-  const inits={ibis:initIbis,camel:initCamel,fennec:initFennec,baboon:initBaboon,cobra:initCobra,hippo:initHippo,crocodile:initCroc};
-  restartBtn?.addEventListener('click', ()=>{ state.round=0; state.score=0; state.done=false; state.busy=false; state.picks=[]; fact.classList.add('hidden'); controls.classList.add('hidden'); inits[animal]?.();});
-  window.TivvigZooDebug=Object.freeze({state:()=>({...state,picks:[...state.picks]}),animal});
-  inits[animal]?.();
+ 'use strict';
+ const $=id=>document.getElementById(id);
+ const id=document.body.dataset.animal;
+ const stageRoot=$('scene'),task=$('task'),fact=$('fact'),progress=$('progress'),controls=$('controls');
+ const staticData={
+  ibis:{name:'Священный ибис',fact:'Ибис находит пищу длинным клювом в мелкой воде и иле.',rounds:[
+   {question:'Найди личинку в иле',target:0},
+   {question:'Теперь найди улитку',target:1},
+   {question:'Где спряталась рыбка?',target:2},
+   {question:'Найди рачка',target:3}],
+   spots:[[35,71,18,20],[64,53,14,16],[79,68,18,17],[68,84,20,15]]},
+  camel:{name:'Верблюд',fact:'Горб верблюда хранит жир, а не воду. Широкие ступни помогают ходить по песку.',rounds:[
+   {question:'Собери воду в дорогу',target:1},
+   {question:'Найди финики',target:2},
+   {question:'Возьми тёплый плед',target:0}],
+   spots:[[34,77,23,24],[53,77,14,25],[69,78,15,22],[84,79,19,22]]},
+  fennec:{name:'Фенек',fact:'Огромные уши помогают фенеку слышать добычу под песком и отдавать лишнее тепло.',rounds:[
+   {question:'Где шуршит песок?',target:2},
+   {question:'Слушай дальше: где шорох?',target:1},
+   {question:'Найди норку фенека',target:0},
+   {question:'Где снова шуршит?',target:2}],
+   spots:[[38,54,28,30],[71,38,19,18],[84,63,23,25]]},
+  baboon:{name:'Павиан',fact:'Павианы живут группами и заботятся друг о друге. Они часто чистят друг другу шерсть.',rounds:[
+   {question:'Найди большого павиана',target:0},
+   {question:'Кто сидит выше всех?',target:1},
+   {question:'Где пещера для малыша?',target:3},
+   {question:'Найди павиана на скале',target:2}],
+   spots:[[19,50,33,59],[30,15,17,23],[43,31,21,23],[87,38,22,24]]},
+  cobra:{name:'Египетская кобра',fact:'Кобра раскрывает капюшон для защиты. К змее нельзя приближаться, но за ней интересно наблюдать.',rounds:[
+   {question:'Найди кобру',target:0},
+   {question:'Где прохладная тень?',target:1},
+   {question:'Где песок согрет солнцем?',target:2}],
+   spots:[[66,51,24,42],[86,34,28,41],[55,80,25,22]]},
+  hippo:{name:'Бегемот',fact:'Днём бегемот много времени проводит в воде, а ночью выходит на сушу есть траву.',rounds:[
+   {question:'День: где отдыхает бегемот?',target:0},
+   {question:'Ночь: куда он идёт поесть?',target:1},
+   {question:'Где ему прохладнее днём?',target:0},
+   {question:'Где ночью растёт трава?',target:1}],
+   spots:[[45,62,49,39],[81,48,30,39]]},
+  crocodile:{name:'Нильский крокодил',fact:'Глаза и ноздри крокодила расположены высоко: он видит и дышит, почти целиком скрываясь в воде.',rounds:[
+   {question:'Где появились глаза?',target:1},
+   {question:'Смотри на рябь: где он?',target:2},
+   {question:'Крокодил снова спрятался',target:0},
+   {question:'Где он теперь?',target:1}],
+   spots:[[33,66,17,18],[55,59,17,18],[76,67,17,18]]}
+ };
+ const config=staticData[id];
+ if(!config){if(task)task.textContent='Не найден вольер';return;}
+ let round=0,finished=false,busy=false;
+ const choices=new Set();
+ function pic(url,klass){const img=document.createElement('img');img.src=url;img.className=klass;img.alt='';img.draggable=false;img.decoding='async';return img;}
+ function drawProgress(){progress.replaceChildren();for(let i=0;i<config.rounds.length;i++){let marker=document.createElement('span');marker.className='dot'+(i<round?' on':'');progress.append(marker);}}
+ function finish(){finished=true;controls.classList.remove('hidden');fact.classList.remove('hidden');fact.textContent=config.fact;task.textContent='Готово! Ты узнала тайну '+config.name.toLowerCase()+'.';}
+ function render(){
+   if(finished)return;
+   const r=config.rounds[round];drawProgress();task.textContent=r.question;
+   stageRoot.replaceChildren();
+   const area=document.createElement('div');area.className='zoo-stage';area.setAttribute('role','group');area.setAttribute('aria-label',config.name+' — '+r.question);
+   const bgUrl=`url("images/egypt-zoo-${id}-scene.webp")`;
+   area.style.backgroundImage=bgUrl;
+   stageRoot.style.setProperty('--zoo-scene',bgUrl);
+   if(id==='hippo' && round%2===1)area.classList.add('zoo-stage--night');
+   if(id==='crocodile'){
+     const croc=pic('images/egypt-zoo-crocodile-cutout.webp','zoo-crocodile-model');
+     const target=config.spots[r.target];croc.style.left=(target[0]-12)+'%';croc.style.top=(target[1]-9)+'%';
+     croc.id='zooCrocModel';area.append(croc);
+   }
+   config.spots.forEach((p,i)=>{
+     const b=document.createElement('button');b.type='button';b.className='zoo-spot';
+     b.id='zoo-'+id+'-'+i;
+     b.style.left=(p[0]-p[2]/2)+'%';b.style.top=(p[1]-p[3]/2)+'%';b.style.width=p[2]+'%';b.style.height=p[3]+'%';
+     b.setAttribute('aria-label',id==='camel'?['Одеяло','Фляга с водой','Финики','Верёвка'][i]:id==='fennec'?'Норка '+(i+1):id==='baboon'?['Большой павиан','Павиан наверху','Павиан на скале','Пещера'][i]:'Место '+(i+1));
+     if(id==='fennec' && i===r.target)b.classList.add('zoo-spot--hint');
+     if(id==='crocodile' && i===r.target)b.classList.add('zoo-spot--ripple');
+     if(choices.has(i) && id==='camel'){b.classList.add('zoo-spot--collected');b.disabled=true;}
+     b.addEventListener('click',()=>select(i,b,area));area.append(b);
+   });
+   stageRoot.append(area);
+ }
+ function select(i,b,area){
+   if(busy||finished)return;
+   const r=config.rounds[round];
+   if(i!==r.target){b.classList.remove('is-wrong');void b.offsetWidth;b.classList.add('is-wrong');return;}
+   busy=true;
+   if(id==='camel')choices.add(i);
+   b.classList.add('is-success');
+   if(id==='crocodile')area.querySelector('.zoo-crocodile-model')?.classList.add('is-visible');
+   if(id==='hippo' && round%2===1)area.classList.add('zoo-stage--night');
+   const badge=document.createElement('span');badge.className='zoo-reward-flash';badge.textContent='✓';badge.style.left=r.target===i?config.spots[i][0]+'%':'50%';badge.style.top=config.spots[i][1]+'%';area.append(badge);
+   setTimeout(()=>{round++;busy=false;if(round===config.rounds.length){drawProgress();finish();}else render();},510);
+ }
+ function restart(){round=0;finished=false;busy=false;choices.clear();controls.classList.add('hidden');fact.classList.add('hidden');render();}
+ $('restart')?.addEventListener('click',restart);
+ // A synchronous inspectable interface for regression tests; not game UI.
+ window.TivvigZooDebug=Object.freeze({state:()=>({round,finished,busy,animal:id}),rounds:config.rounds.map(r=>r.target),restart});
+ render();
 })();

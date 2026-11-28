@@ -1,89 +1,47 @@
-:root{
-  --sand:#e7c17d;--sand2:#d6a35a;--sky:#b5e4ff;--ink:#3d2417;--panel:#40281dcc;
-  --gold:#f7d58d;--cream:#fff6dc;--leaf:#5d8b4f;--water:#54bfd7;--water2:#2a8fb0;
-  font-family: Georgia, 'Times New Roman', serif;
-}
+/* Seven AI-painted enclosures. Only invisible hotspots and minimal text UI;
+   the photographic art is always rendered at its intrinsic 16:9 aspect. */
+:root{font-family:Georgia,'Times New Roman',serif;color:#fff5dc;background:#422e2a}
 *{box-sizing:border-box}
-html,body{margin:0;min-height:100%;background:#8e623d;color:var(--cream)}
-body{min-height:100svh;overflow:hidden}
-a{color:inherit}
-a:focus-visible,button:focus-visible,input:focus-visible{outline:3px solid #fff3a1;outline-offset:3px}
-button{font:inherit;cursor:pointer}
-.game{position:relative;min-height:100svh;display:grid;grid-template-rows:auto 1fr auto;overflow:hidden}
-.sky{position:absolute;inset:0;background:linear-gradient(#aee1ff 0 37%, #f3d39a 37% 100%);z-index:-4}
-.dunes{position:absolute;left:-5%;right:-5%;bottom:20%;height:40%;background:radial-gradient(120% 70% at 15% 100%, transparent 45%, #d7a45d 46% 60%, transparent 61%),radial-gradient(90% 65% at 55% 100%, transparent 43%, #e8bc74 44% 63%, transparent 64%),radial-gradient(85% 55% at 90% 100%, transparent 45%, #c88d47 46% 62%, transparent 63%);z-index:-3;opacity:.95}
-.river{position:absolute;left:0;right:0;bottom:0;height:34%;background:linear-gradient(180deg,#63cfe4,#2e93b8 55%,#1b698a);z-index:-2;clip-path:polygon(0 24%,11% 18%,19% 24%,29% 17%,43% 24%,58% 12%,70% 18%,82% 11%,100% 16%,100% 100%,0 100%)}
-header{display:flex;gap:10px;align-items:center;padding:10px 12px 8px}
-.back{display:inline-flex;align-items:center;justify-content:center;width:46px;height:46px;border-radius:50%;text-decoration:none;background:#3d281ccc;border:1px solid #efcc96;box-shadow:0 2px 8px #2a180c55;font:700 28px/1 system-ui,sans-serif}
-.title-wrap{min-width:0;flex:1;background:#4a3023cb;border:1px solid #efcf98a6;border-radius:18px;padding:7px 16px;box-shadow:0 3px 10px #20110840}
-h1{margin:0;font-size:clamp(22px,4.7vw,40px);line-height:1.05}
-.subtitle{margin-top:2px;color:#ffefc1;font-size:clamp(12px,2.2vw,18px)}
-.scene{position:relative;min-height:0;overflow:hidden}
-.scene-inner{position:relative;width:min(100%,1120px);height:100%;margin:0 auto}
-.info-bar{display:grid;gap:8px;padding:10px 12px 14px}
-.task{background:var(--panel);border:1px solid #edca97a4;border-radius:18px;padding:10px 14px;text-align:center;box-shadow:0 3px 9px #24160f4e;font-size:clamp(17px,2.3vw,24px);line-height:1.15}
-.progress{display:flex;justify-content:center;gap:7px;min-height:16px}
-.dot{width:14px;height:14px;border-radius:999px;border:2px solid #f2ddac;background:#70503855}
-.dot.on{background:#f3d182}
-.fact{background:#355b44d8;border:1px solid #bde4c1aa;border-radius:16px;padding:8px 14px;text-align:center;color:#f4ffe8;font-size:clamp(15px,2vw,21px)}
-.controls{display:flex;justify-content:center;gap:10px;flex-wrap:wrap}
-.action{min-height:50px;padding:10px 18px;border-radius:20px;border:1px solid #f0d39d;background:#4a3022;color:#fff5d8;font-weight:700}
-.action.secondary{background:#7a5538}
-.hidden{display:none !important}
-.animal{position:absolute;filter:drop-shadow(0 4px 5px rgba(55,30,12,.25));user-select:none}
-.tap{position:absolute;border:none;background:transparent;padding:0;margin:0;border-radius:22px;-webkit-tap-highlight-color:transparent}
-.tap:hover{box-shadow:0 0 0 2px rgba(255,245,180,.5) inset}
-.tap.ok{animation:pop .32s ease}
-.tap.bad{animation:shake .35s ease}
-@keyframes pop{0%{transform:scale(.92)}60%{transform:scale(1.06)}100%{transform:scale(1)}}
-@keyframes shake{0%,100%{transform:translateX(0)}25%{transform:translateX(-4px)}75%{transform:translateX(4px)}}
-.bush,.reed,.rock,.burrow,.pool,.pad,.crate,.path-node,.groom,.panel-card,.sun{position:absolute}
-.reed{width:14%;height:28%;background:linear-gradient(180deg,#8bbc67 0 18%, transparent 19%), repeating-linear-gradient(90deg, transparent 0 10%, #6fa651 10% 18%, transparent 18% 30%);clip-path:polygon(48% 0,58% 16%,69% 0,71% 18%,87% 5%,79% 31%,96% 18%,86% 43%,100% 37%,84% 60%,95% 57%,72% 100%,27% 100%,6% 60%,15% 55%,0 37%,14% 42%,3% 17%,20% 30%,11% 7%,29% 19%,32% 0);opacity:.95}
-.pool{border-radius:50%;background:radial-gradient(circle at 35% 30%, #b8fbff, #57cfe7 45%, #2086a6 100%);box-shadow:inset 0 0 0 5px #eed9a4,0 3px 10px #3f250d4d}
-.pad{width:48px;height:48px;border-radius:50%;background:radial-gradient(circle at 35% 35%, #ffb7d7, #e26ca1 48%, #9c3a65 100%)}
-.rock{background:linear-gradient(160deg,#c7a272,#9b7245);border-radius:26px;box-shadow:inset -8px -8px 0 #8f653c3b, inset 10px 10px 0 #e7c5985e, 0 4px 8px #3c24144a}
-.burrow{background:radial-gradient(circle at 50% 30%, #87603e 0 22%, #452d1f 23% 65%, #24150d 66% 100%);border-radius:50%;box-shadow:0 3px 9px #30190d80}
-.burrow.sand{background:radial-gradient(circle at 50% 38%, #9b7148 0 12%, #5b3c26 13% 40%, #28170e 41% 100%), linear-gradient(#e3b66e,#dba459)}
-.crate{display:grid;place-items:center;background:linear-gradient(180deg,#d8b27f,#b98648);border:2px solid #8d5f34;color:#4e2c18;font-weight:700;border-radius:18px;box-shadow:0 5px 11px #3c24134d}
-.path-node{display:grid;place-items:center;border-radius:999px;border:2px solid #f3ddb0;background:#513623;color:#fff6db;font-weight:700;box-shadow:0 3px 8px #2f1a0e44}
-.path-node.done{background:#927141}
-.groom{display:grid;place-items:center;border-radius:50%;background:#6f8b53;border:2px solid #f2e6b9;color:#fff;box-shadow:0 3px 7px #27411c4f;font-size:clamp(22px,3vw,34px)}
-.panel-card{background:#3f281ccc;border:1px solid #f2d7a9af;border-radius:20px;padding:10px 14px;color:#fff3d5;box-shadow:0 3px 10px #24160f4d}
-.panel-card h2{font-size:clamp(18px,2.6vw,28px);margin:0 0 8px}
-.panel-card p{font-size:clamp(15px,2vw,20px);margin:0;line-height:1.2}
-.sun{width:74px;height:74px;border-radius:50%;background:radial-gradient(circle at 35% 35%, #fff7c1, #ffd560 55%, #f3a425);box-shadow:0 0 18px #ffd56588}
-.eyes{position:absolute;width:52px;height:22px}
-.eyes::before,.eyes::after{content:"";position:absolute;top:0;width:18px;height:18px;border-radius:50%;background:#f3fff6;border:2px solid #334528;box-shadow:inset 0 -4px 0 #89b896}
-.eyes::before{left:0}.eyes::after{right:0}
-.eyes span,.eyes em{position:absolute;top:5px;width:6px;height:6px;border-radius:50%;background:#171b10}.eyes span{left:6px}.eyes em{right:6px}
-.ripple{position:absolute;border-radius:50%;border:3px solid #c7f8ff88;animation:ripple 1.6s infinite ease-out}
-@keyframes ripple{0%{transform:scale(.75);opacity:.8}100%{transform:scale(1.22);opacity:0}}
-@media (max-width:720px){
-  header{padding:8px 8px 6px}
-  .title-wrap{padding:7px 12px}
-  .back{width:42px;height:42px}
-  .info-bar{padding:8px 8px 12px}
-  .task{padding:10px 12px}
-}
-
-/* Polished, responsive motion without extra dialog surfaces. */
-.animal{animation:zoo-bob 3.4s ease-in-out infinite;transform-origin:50% 90%}
-@keyframes zoo-bob{0%,100%{transform:translateY(0)}50%{transform:translateY(-7px)}}
-.zoo-trace::after{content:'🐾';font-size:clamp(19px,3.5vw,35px);display:grid;place-items:center;width:100%;height:100%;filter:drop-shadow(0 2px 2px #452b2a6b)}
-.zoo-target::after{position:absolute;inset:0;display:grid;place-items:center;font-size:clamp(32px,4vw,52px);text-shadow:0 2px 5px #21180caa}
-.zoo-target--water::after{content:'🌊'}
-.zoo-target--grass::after{content:'🌿'}
-body[data-animal="ibis"] .scene{background:url('images/egypt-zoo-ibis-marsh.webp') center center / cover no-repeat}
-body[data-animal="ibis"] .scene .sky,
-body[data-animal="ibis"] .scene .dunes,
-body[data-animal="ibis"] .scene .river{display:none}
-body[data-animal="ibis"] .scene .reed{opacity:.8}
-@media(prefers-reduced-motion:reduce){.animal,.ripple{animation:none!important}}
-/* Decoration never steals taps from the large interactive game targets. */
-.ripple,.eyes,.animal,.sun,.pool,.sky,.dunes,.river,.pad,.panel-card{pointer-events:none}
-
-/* Keep painted scenery behind controls but above the page background. */
-.scene{isolation:isolate}
-.zoo-ibis-spot{border:2px solid rgba(245,234,166,.35);background:radial-gradient(ellipse at 50% 55%,rgba(248,220,103,.28),transparent 68%);box-shadow:0 0 0 1px rgba(31,100,125,.2);animation:zoo-shimmer 2.8s ease-in-out infinite;border-radius:50%}
-@keyframes zoo-shimmer{0%,100%{opacity:.7}50%{opacity:1}}
-@media(prefers-reduced-motion:reduce){.zoo-ibis-spot{animation:none}}
+html,body{margin:0;min-height:100%;overflow-x:hidden}
+body{min-height:100svh;background:#45342c}
+button,a{font:inherit}a{color:inherit}
+a:focus-visible,button:focus-visible{outline:3px solid #fff1a8;outline-offset:3px}
+.game{min-height:100svh;height:100svh;display:flex;flex-direction:column;isolation:isolate;overflow:hidden}
+header{flex:0 0 auto;display:flex;align-items:center;gap:9px;padding:8px 10px;z-index:2;background:linear-gradient(90deg,#3b2a27f5,#3b2a27d0);box-shadow:0 1px 9px #24150a4a}
+.back{display:grid;place-items:center;flex:0 0 45px;width:45px;height:45px;border:1px solid #e6c58b;background:#69442c;border-radius:50%;text-decoration:none;font:700 28px system-ui,sans-serif;line-height:1}
+h1{font-size:clamp(22px,3vw,32px);line-height:1.05;margin:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.subtitle{font:500 clamp(11px,1.4vw,14px)/1.1 system-ui,sans-serif;color:#f4d9ae;margin-top:1px}
+.title-wrap{min-width:0}
+.scene{flex:1 1 auto;min-height:0;display:grid;place-items:center;position:relative;isolation:isolate;overflow:hidden;background:#7c6152}
+.scene::before{content:'';position:absolute;inset:-20px;background-image:var(--zoo-scene,none);background-position:center;background-size:cover;background-repeat:no-repeat;filter:blur(12px) brightness(.76);opacity:1;z-index:-1;pointer-events:none}
+.zoo-stage{width:min(100vw,calc((100svh - 160px) * 1672 / 941));aspect-ratio:1672/941;height:auto;max-height:100%;position:relative;background-position:center;background-size:100% 100%;background-repeat:no-repeat;overflow:hidden;box-shadow:0 1px 17px #21100e4c;isolation:isolate}
+.zoo-stage::after{content:'';inset:0;position:absolute;pointer-events:none;background:#081b4480;opacity:0;transition:opacity .4s}
+.zoo-stage--night::after{opacity:.55}
+.zoo-spot{position:absolute;z-index:3;display:block;border:0;margin:0;padding:0;background:transparent;cursor:pointer;border-radius:44%;touch-action:manipulation;-webkit-tap-highlight-color:transparent;outline:0}
+.zoo-spot:hover{box-shadow:inset 0 0 0 2px #ffedac85}
+.zoo-spot:focus-visible{outline:3px solid #fff4ad;outline-offset:-3px}
+.zoo-spot--hint::after,.zoo-spot--ripple::after{content:'';position:absolute;inset:15%;border:2px solid #ffe19e9c;border-radius:50%;box-shadow:0 0 24px #f7d17680;animation:zoo-cue 2.5s ease-in-out infinite;pointer-events:none}
+.zoo-spot--ripple::after{border-color:#b4edffd4;box-shadow:0 0 24px #5bcff9b3}
+.zoo-spot--collected::before{content:'✓';position:absolute;top:8%;right:7%;display:grid;place-items:center;background:#2f794cb8;border:1px solid #d6f8c8;color:white;border-radius:50%;width:clamp(22px,3vw,42px);height:clamp(22px,3vw,42px);font:bold clamp(15px,2vw,25px) system-ui,sans-serif}
+.zoo-spot.is-success{box-shadow:inset 0 0 0 4px #fce7a9,0 0 32px #ffdf91ad;animation:zoo-success .45s ease}
+.zoo-spot.is-wrong{animation:zoo-wrong .35s ease}
+.zoo-reward-flash{position:absolute;z-index:5;transform:translate(-50%,-50%);font:bold clamp(30px,5vw,58px) system-ui,sans-serif;color:#fff6c2;text-shadow:0 0 8px #e7a124,0 0 22px #e7a124;pointer-events:none;animation:zoo-flash .5s ease both}
+.zoo-crocodile-model{position:absolute;z-index:1;width:23%;height:auto;max-height:26%;object-fit:contain;opacity:0;transform:translateY(12px) scale(.92);transition:opacity .3s,transform .4s;pointer-events:none;filter:drop-shadow(0 4px 3px #0c3d3f99)}
+.zoo-crocodile-model.is-visible{opacity:1;transform:translateY(0) scale(1)}
+.info-bar{flex:0 0 auto;display:grid;gap:5px;padding:9px 12px 11px;background:#392b25f2;border-top:1px solid #b9956175}
+.task{font:700 clamp(17px,2.5vw,23px)/1.2 Georgia,serif;text-align:center;text-shadow:0 1px 2px #21130f;min-height:24px}
+.progress{display:flex;align-items:center;justify-content:center;gap:9px;height:16px}
+.dot{width:12px;height:12px;border:2px solid #eacc91;border-radius:50%;background:#1f160f6e}
+.dot.on{background:#fad37a;box-shadow:0 0 10px #ffcf75}
+.fact{font:600 clamp(13px,1.6vw,18px)/1.18 system-ui,sans-serif;text-align:center;color:#fff7df}
+.controls{display:flex;justify-content:center;align-items:center;gap:10px;flex-wrap:wrap}
+.action{background:#765238;border:1px solid #e8c995;color:#fff6db;text-decoration:none;border-radius:20px;padding:9px 17px;cursor:pointer;font:700 16px Georgia,serif;min-height:40px}
+.action.secondary{background:#493323}
+.hidden{display:none!important}
+#gameConnection:not(:empty){display:block!important;position:fixed;bottom:0;left:5px;z-index:20;background:#341e18e8;padding:6px 9px;border-radius:6px;font:13px system-ui;color:white}
+@keyframes zoo-cue{0%,100%{opacity:.4;transform:scale(.87)}50%{opacity:.96;transform:scale(1.02)}}
+@keyframes zoo-success{0%,100%{transform:scale(1)}45%{transform:scale(1.04)}}
+@keyframes zoo-wrong{0%,100%{transform:translateX(0)}30%{transform:translateX(-4px)}65%{transform:translateX(4px)}}
+@keyframes zoo-flash{from{opacity:0;transform:translate(-50%,-30%) scale(.7)}30%{opacity:1}to{opacity:0;transform:translate(-50%,-90%) scale(1.3)}}
+@media(max-width:650px){header{gap:7px;padding:5px 7px}.back{width:40px;height:40px;flex-basis:40px}.subtitle{font-size:11px}.info-bar{padding:7px 7px 9px}.task{font-size:clamp(16px,4vw,21px)}}
+@media(prefers-reduced-motion:reduce){.zoo-spot,.zoo-reward-flash,.zoo-stage::after,.zoo-crocodile-model{animation:none!important;transition:none!important}}
