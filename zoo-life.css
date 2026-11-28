@@ -1,0 +1,51 @@
+/* Tivvig zoo v6: living wildlife on the illustrated scenery + full-size real-photo reward. */
+.zoo-stage .zoo-visitor{position:absolute;z-index:2;width:clamp(36px,9%,118px);aspect-ratio:1;
+ transform:translate(-50%,-33%) scale(.75);opacity:0;pointer-events:none;user-select:none;
+ -webkit-user-select:none;filter:drop-shadow(0 4px 5px #162c237b);
+ transition:opacity .5s ease,transform .65s cubic-bezier(.22,.8,.31,1)}
+.zoo-stage .zoo-visitor svg{display:block;width:100%;height:auto;
+ animation:zoo-creature-float 2.7s ease-in-out infinite alternate}
+.zoo-stage .zoo-visitor--b svg{animation-delay:-1.3s}
+.zoo-stage .zoo-visitor--fish{width:9%;min-width:40px}
+.zoo-stage .zoo-visitor--bird{width:9%}
+.zoo-stage .zoo-visitor--mouse{width:8%}
+.zoo-stage .zoo-visitor--frog{width:7%}
+.zoo-stage .zoo-visitor--butterfly{width:7%}
+.zoo-stage .zoo-visitor--beetle{width:6%}
+.zoo-stage .zoo-visitor--dragonfly{width:7%}
+.zoo-stage .zoo-visitor.is-active{opacity:1;transform:translate(-50%,-50%) scale(1)}
+.zoo-stage .zoo-visitor.is-excited{opacity:1;
+ transform:translate(-50%,-60%) scale(1.1)}
+.zoo-photo-reward{position:relative;isolation:isolate;margin:0;
+ width:min(100%,calc((100svh - 155px) * 1.777));
+ aspect-ratio:16/9;max-height:100%;display:flex;align-items:flex-end;
+ background:#253c3a url('images/egypt-zoo-nafiri-map.webp') center/cover no-repeat;
+ overflow:hidden;box-shadow:0 0 25px #171b197a}
+.zoo-photo-reward::before{content:'';position:absolute;z-index:1;inset:35% 0 0;
+ background:linear-gradient(transparent,#101d20a9 40%,#101a1cf0)}
+.zoo-photo-image{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center;
+ animation:zoo-photo-reveal .6s ease both}
+.zoo-photo-caption{position:relative;z-index:2;padding:clamp(10px,2vw,22px);
+ display:flex;flex-direction:column;gap:4px;color:#fffaeb;max-width:96%;
+ text-shadow:0 2px 5px #142022}
+.zoo-photo-title{font:700 clamp(18px,2.6vw,33px)/1.13 Georgia,serif}
+.zoo-photo-fact{font:500 clamp(13px,1.8vw,21px)/1.3 system-ui,sans-serif}
+.zoo-photo-credits{font:500 clamp(9px,1vw,12px)/1.15 system-ui,sans-serif;opacity:.83}
+.zoo-photo-credits a{color:#fff2cb;text-decoration:underline;text-decoration-color:#e3d4b08a}
+.zoo-photo-credits a:focus-visible{outline:2px solid #ffe5a3}
+.zoo-photo-reward.is-missing .zoo-photo-caption::before{
+ content:'Фотография пока не загрузилась';font:600 14px system-ui,sans-serif;color:#ffdbac}
+@keyframes zoo-creature-float{from{transform:translateY(3px) rotate(-4deg)}
+ to{transform:translateY(-7px) rotate(4deg)}}
+@keyframes zoo-photo-reveal{from{opacity:0;transform:scale(1.025)}to{opacity:1;transform:scale(1)}}
+@media(max-width:650px){
+ .zoo-stage .zoo-visitor{min-width:20px}
+ .zoo-photo-caption{padding:9px 12px;gap:2px}
+ .zoo-photo-title{font-size:clamp(14px,4vw,22px)}
+ .zoo-photo-fact{font-size:clamp(11px,3vw,16px)}
+ .zoo-photo-credits{font-size:9px}
+}
+@media(prefers-reduced-motion:reduce){
+ .zoo-stage .zoo-visitor,.zoo-photo-image{transition:none!important;animation:none!important}
+ .zoo-stage .zoo-visitor svg{animation:none!important}
+}
