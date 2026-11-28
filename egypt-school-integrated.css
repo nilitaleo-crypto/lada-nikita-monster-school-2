@@ -196,3 +196,50 @@
 @media(prefers-reduced-motion:reduce){
  .school .room .board-art .school-character{animation:none!important}
 }
+
+
+/* One AI story per worksheet, displayed within the existing wall of Wednesday's class. */
+.school[data-phase="writing"] .room .board{top:13%;bottom:27%}
+.school[data-phase="writing"] .room .answer-grid{
+ grid-template-columns:repeat(2,minmax(0,1fr));width:min(100%,390px);margin:auto;
+}
+.school[data-phase="writing"] .room .answer{
+ min-height:42px;font:700 clamp(14px,1.3vw,19px)/1.08 Georgia,serif;
+}
+.school[data-phase="writing"] .room .board-art{min-height:100px;padding:2px}
+.school[data-phase="writing"] .room .school-writing-story{
+ position:relative;display:grid;place-items:center;
+ width:min(100%,490px);height:100%;min-height:102px;max-height:235px;overflow:hidden;
+ aspect-ratio:16/9;background-image:url('images/egypt-school-wednesday-stories.webp?v=1');
+ background-size:200% 200%;background-repeat:no-repeat;
+ box-shadow:inset 0 0 0 1px #cba9b557;filter:drop-shadow(0 3px 2px #1c13205a);
+ border-radius:4px;
+}
+.school[data-phase="writing"] .room .school-writing-story--0{background-position:0 0}
+.school[data-phase="writing"] .room .school-writing-story--1{background-position:100% 0}
+.school[data-phase="writing"] .room .school-writing-story--2{background-position:0 100%}
+.school[data-phase="writing"] .room .school-writing-story--3{background-position:100% 100%}
+.school[data-phase="writing"] .room .school-writing-story__ink{
+ display:block;max-width:95%;text-align:center;
+ color:#49291f;font:800 clamp(15px,2vw,26px)/1.28 Georgia,serif;
+ text-shadow:0 1px 2px #f8dfb6;letter-spacing:.015em;
+}
+.school[data-phase="writing"] .room .school-writing-story--2 .school-writing-story__ink{
+ align-self:center;transform:translateY(-5px);
+ color:#372924;letter-spacing:.07em;
+}
+.school[data-phase="writing"] .room .school-writing-story--3 .school-writing-story__ink{
+ align-self:center;font-size:clamp(13px,1.4vw,19px);
+ max-width:72%;color:#614322;
+}
+@media(max-width:850px){
+ .school[data-phase="writing"] .room .board{top:34%;bottom:4%}
+ .school[data-phase="writing"] .room .board-art{min-height:120px}
+ .school[data-phase="writing"] .room .school-writing-story{min-height:125px;max-height:245px}
+ .school[data-phase="writing"] .room .school-writing-story__ink{font-size:clamp(17px,4vw,25px)}
+ .school[data-phase="writing"] .room .school-writing-story--3 .school-writing-story__ink{font-size:clamp(12px,3vw,18px)}
+}
+@media(max-width:440px){
+ .school[data-phase="writing"] .room .board-art{min-height:105px}
+ .school[data-phase="writing"] .room .school-writing-story{min-height:105px;max-height:200px}
+}
