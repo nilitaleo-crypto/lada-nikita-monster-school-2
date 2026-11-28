@@ -43,6 +43,7 @@ async function walkthrough(browser,engine,profile,animal){
    assert.equal(await page.locator('#zoo-croc-eyes').count(),1);
    assert.equal(await page.locator('#zoo-croc-nose').count(),1);
   }
+  assert.ok(await page.locator('.zoo-visitor svg').count()>=1,'Illustrated wildlife visitors are present');
   if(animal==='hippo'){
    assert.equal(await page.locator('#hippoActor').count(),1,'Moving illustrated hippo exists');
    assert.equal(await page.locator('#hippoMoveRight').count(),1,'Navigation controls exist');
@@ -102,10 +103,15 @@ async function walkthrough(browser,engine,profile,animal){
     }
   }
   assert.equal(await page.evaluate(()=>window.TivvigZooDebug.state().finished),true,'Full game finishes');
+  await page.locator('#zooPhotoReward').waitFor({timeout:5000});
+  const photo=await page.locator('.zoo-photo-image').evaluate(im=>({complete:im.complete,width:im.naturalWidth,url:im.currentSrc}));
+  assert.ok(photo.complete&&photo.width>=650,'Real high-resolution animal photo loads after the enclosure');
+  assert.ok(photo.url.includes('zoo-reward-'+animal+'.webp'),'Real photograph cached locally');
+  assert.ok((await page.locator('.zoo-photo-credits a').count())>=2,'Author and license credited');
   assert.equal(await page.locator('#controls').isVisible(),true,'Map and replay unlocked');
   await page.locator('#restart').click();
   assert.deepEqual(await page.evaluate(()=>{
-   const {round,sub,finished,busy}=window.TivvigZooDebug.state();
+   const {round,sub=0,finished,busy}=window.TivvigZooDebug.state();
    return {round,sub,finished,busy};
   }),{round:0,sub:0,finished:false,busy:false},'Restart resets steps');
   assert.deepEqual(errors,[],'No browser JS exceptions');
