@@ -3,7 +3,7 @@
 .school .room .math-game{width:100%;flex:1;min-height:130px;position:relative;display:flex;flex-direction:column;align-items:center;justify-content:space-around;gap:3px;overflow:visible;isolation:isolate}
 .school .room .math-game[hidden]{display:none!important}
 .school .room .math-game__art{position:relative;width:100%;height:clamp(100px,13vw,166px);display:flex;align-items:center;justify-content:center;gap:4px}
-.school .room .math-sprite{display:block;background-image:url('images/egypt-school-math-props.webp');background-repeat:no-repeat;background-color:transparent;filter:drop-shadow(1px 3px 2px #3e251d61);pointer-events:none}
+.school .room .math-sprite{display:block;background-image:url('images/egypt-school-math-props.webp?v=2');background-repeat:no-repeat;background-color:transparent;filter:drop-shadow(1px 3px 2px #3e251d61);pointer-events:none}
 .school .room .math-sprite--scale{width:clamp(130px,21vw,264px);height:clamp(88px,12vw,150px);background-size:200% 150%;background-position:0 0}
 .school .room .math-sprite--chest{width:clamp(128px,18vw,225px);height:clamp(96px,13vw,165px);background-size:200% 150%;background-position:100% 0}
 .school .room .math-sprite--weight{width:39px;height:40px;flex:0 0 auto;background-size:600% 290%;background-position:0 100%;filter:drop-shadow(1px 2px 1px #3e251d75)}
@@ -55,3 +55,6 @@
  .school .room .math-game__choices{gap:3px}
 }
 @media(prefers-reduced-motion:reduce){.school .room .math-game__friend,.school .room .math-game__choice{transition:none!important;animation:none!important}}
+
+/* Room wall blends into the interactive floor: enough room for props without a modal panel. */
+@media(min-width:851px){.school[data-phase="math"] .room .board{top:13%;bottom:14%}}
