@@ -41,7 +41,7 @@ function draw(type){
  let html='<span class="math-game__round">'+(round+1)+' / '+rounds[type].length+'</span>';
  if(type==='mathScale'){
   title('Уравновесь весы');
-  html+='<div class="math-game__art"><span class="math-sprite math-sprite--scale" role="img" aria-label="Золотые весы"></span>'+
+  html+='<div class="math-game__art math-game__art--scale"><span class="math-sprite math-sprite--scale" role="img" aria-label="Золотые весы"></span>'+
    '<div class="math-game__sum">'+task.left+' + ? = '+task.total+'</div></div>'+
    '<div class="math-game__choices">'+task.values.map((v,i)=>button(i,'<span class="math-sprite math-sprite--weight" aria-hidden="true"></span><span>'+v+'</span>','math-game__choice--weight','Гиря '+v)).join('')+'</div>';
  }else if(type==='mathChest'){
