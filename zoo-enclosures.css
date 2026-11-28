@@ -45,3 +45,81 @@ h1{font-size:clamp(22px,3vw,32px);line-height:1.05;margin:0;white-space:nowrap;o
 @keyframes zoo-flash{from{opacity:0;transform:translate(-50%,-30%) scale(.7)}30%{opacity:1}to{opacity:0;transform:translate(-50%,-90%) scale(1.3)}}
 @media(max-width:650px){header{gap:7px;padding:5px 7px}.back{width:40px;height:40px;flex-basis:40px}.subtitle{font-size:11px}.info-bar{padding:7px 7px 9px}.task{font-size:clamp(16px,4vw,21px)}}
 @media(prefers-reduced-motion:reduce){.zoo-spot,.zoo-reward-flash,.zoo-stage::after,.zoo-crocodile-model{animation:none!important;transition:none!important}}
+
+/* v4: educational discoveries are drawn on top of the painted enclosure.
+   No modal panels. Touch targets always stay in the 16:9 art plane. */
+.info-bar{position:relative}
+.zoo-spot--search:hover,.zoo-spot--fennec-search:hover{box-shadow:inset 0 0 0 2px #f9e5b78c}
+.zoo-spot--hippo-path{border-radius:50%}
+.zoo-spot--hippo-breathe{border-radius:48%;box-shadow:inset 0 0 0 1px #d9f4f535}
+.zoo-spot--hippo-skin{border-radius:45%}
+.zoo-spot--hippo-undefined{border-radius:50%}
+.zoo-hippo-step{position:absolute;z-index:2;pointer-events:none;display:grid;place-items:center;
+ border-radius:50%;color:#e4f5e9;background:#1b5c62bd;border:2px solid #b5f4dd8c;
+ font:700 clamp(22px,3vw,40px) system-ui,sans-serif;text-shadow:0 2px 3px #072830;
+ transform:scale(.56);transition:transform .2s,background .2s}
+.zoo-hippo-step.is-done{transform:scale(.75);background:#367d52e6;color:#fff5d2}
+.zoo-hippo-sun{position:absolute;right:11%;top:5%;z-index:2;font-size:clamp(27px,4vw,66px);
+ color:#fff0b3;text-shadow:0 0 28px #fce7ac;pointer-events:none}
+.zoo-hippo-skin::before{content:'';position:absolute;z-index:2;left:29%;top:40%;width:34%;height:33%;
+ background:radial-gradient(ellipse,#d5756ca3,#e1847770 40%,transparent 75%);
+ border-radius:50%;pointer-events:none;animation:zoo-skin-glow .8s ease}
+.zoo-breath-surface{position:absolute;z-index:2;top:31%;left:39%;font:700 clamp(12px,1.6vw,17px) system-ui,sans-serif;
+ color:#eef9e9;text-shadow:0 2px 4px #112c3c,0 0 8px #112c3c;pointer-events:none}
+.zoo-hippo-breathe::before{content:'·  ·';position:absolute;left:42%;top:23%;color:#e1f8fa;font-size:38px;
+ text-shadow:0 0 7px #d7f9ff;pointer-events:none}
+.zoo-in-scene-fact{position:absolute;z-index:8;max-width:min(52%,490px);
+ transform:translateX(-50%);padding:10px 14px;border-radius:15px;
+ background:#352b24e6;color:#fff7dc;border:1px solid #fce7b578;
+ box-shadow:0 5px 18px #1e1b1a72;font:600 clamp(13px,1.8vw,19px)/1.28 system-ui,sans-serif;
+ text-align:center;pointer-events:none;animation:zoo-reveal-in .26s ease both}
+.zoo-croc-portrait{position:absolute;z-index:2;left:12%;top:17%;width:76%;height:70%;pointer-events:none}
+.zoo-croc-portrait-img{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;image-rendering:auto;
+ filter:drop-shadow(2px 7px 5px #173f3080)}
+.zoo-croc-water{position:absolute;left:-6%;right:-6%;bottom:0;height:25%;
+ background:linear-gradient(180deg,#a0d5d40e,#3a8a8a8a 50%,#17464fad);
+ border-top:2px solid #c3ecea83;border-radius:46% 50% 0 0;
+ transition:height .8s;pointer-events:none}
+.zoo-croc-portrait.is-submerged .zoo-croc-water{height:57%}
+.zoo-croc-portrait.is-diving .zoo-croc-water{height:80%}
+.zoo-croc-feature{position:absolute;z-index:4;transform:translate(-50%,-50%);
+ width:clamp(76px,10vw,138px);height:clamp(48px,7vw,80px);border:2px solid #f9e6b5;
+ border-radius:50%;background:radial-gradient(ellipse,#3e3823df,#221f17a8);
+ color:#fff4d6;font:800 clamp(13px,1.6vw,19px) system-ui,sans-serif;
+ letter-spacing:.03em;text-shadow:0 1px 4px #1f180f;box-shadow:0 0 0 5px #fff1c01a;
+ cursor:pointer;pointer-events:auto;touch-action:manipulation}
+.zoo-croc-feature.is-found{background:#275741dd;border-color:#c2f1d2}
+.zoo-croc-feature:focus-visible{outline:3px solid #fff4ad}
+.zoo-croc-caption{position:absolute;z-index:4;transform:translate(-50%,-50%);background:#214d3ddd;
+ border-radius:15px;padding:5px 10px;color:#ebffe6;font:700 clamp(10px,1.3vw,16px) system-ui,sans-serif;pointer-events:none}
+.zoo-fennec-thief{position:absolute;z-index:4;width:20%;height:29%;object-fit:contain;object-position:center;
+ transform:translate(-50%,-50%) scale(.62);opacity:0;pointer-events:none;
+ border-radius:50%;clip-path:ellipse(47% 47% at 50% 50%);filter:drop-shadow(0 3px 4px #29180b);
+ transition:opacity .25s,transform .4s}
+.zoo-fennec-thief.is-visible{opacity:1;transform:translate(-50%,-50%) scale(1)}
+.zoo-hear,.zoo-audio-enable{position:absolute;z-index:9;bottom:calc(100% + 8px);
+ border:1px solid #ffdeabaf;color:#fff6da;background:#392b25e6;
+ box-shadow:0 2px 9px #180e0970;border-radius:17px;min-height:44px;cursor:pointer;
+ font:700 16px system-ui,sans-serif;touch-action:manipulation}
+.zoo-hear{left:10px;padding:8px 14px}
+.zoo-audio-enable{left:122px;min-width:47px;padding:7px}
+.zoo-audio-enable.is-on{border-color:#b8efc4}
+.zoo-stage.zoo-listening::before{content:'♪  ♪';position:absolute;z-index:4;left:50%;top:11%;
+ transform:translateX(-50%);color:#f9efbb;font:700 clamp(22px,3vw,46px) system-ui,sans-serif;
+ text-shadow:0 3px 8px #513923;pointer-events:none;animation:zoo-music-fade .85s ease both}
+@keyframes zoo-reveal-in{from{opacity:0;transform:translate(-50%,5px)}to{opacity:1;transform:translate(-50%,0)}}
+@keyframes zoo-music-fade{0%{opacity:0}30%{opacity:1}100%{opacity:0}}
+@keyframes zoo-skin-glow{from{opacity:0;transform:scale(.7)}to{opacity:1;transform:scale(1)}}
+@media(max-width:650px){
+ .zoo-in-scene-fact{max-width:78%;padding:7px 9px;font-size:12px}
+ .zoo-croc-portrait{left:5%;width:90%;top:17%;height:70%}
+ .zoo-croc-feature{width:70px;height:48px;font-size:12px;border-width:1px}
+ .zoo-croc-caption{font-size:10px}
+ .zoo-hear,.zoo-audio-enable{bottom:calc(100% + 6px);min-height:42px;font-size:14px}
+ .zoo-hear{left:6px}.zoo-audio-enable{left:108px}
+ .zoo-breath-surface{font-size:10px}
+}
+@media(prefers-reduced-motion:reduce){
+ .zoo-in-scene-fact,.zoo-hippo-step,.zoo-hippo-skin::before,
+ .zoo-croc-water,.zoo-fennec-thief,.zoo-stage.zoo-listening::before{animation:none!important;transition:none!important}
+}
