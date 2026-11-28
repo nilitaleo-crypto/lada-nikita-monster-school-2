@@ -43,24 +43,63 @@ async function walkthrough(browser,engine,profile,animal){
    assert.equal(await page.locator('#zoo-croc-eyes').count(),1);
    assert.equal(await page.locator('#zoo-croc-nose').count(),1);
   }
-  if(animal==='hippo')assert.equal(await page.locator('.zoo-hippo-step').count(),3,'Riverbed footstep route exists');
+  if(animal==='hippo'){
+   assert.equal(await page.locator('#hippoActor').count(),1,'Moving illustrated hippo exists');
+   assert.equal(await page.locator('#hippoMoveRight').count(),1,'Navigation controls exist');
+   assert.equal(await page.locator('.hippo-air-bubble:not(.is-empty)').count(),4,'Air meter starts full');
+   assert.equal(await page.locator('.zoo-hippo-step').count(),0,'Old three-tap game removed');
+  }
   if(animal==='fennec'){
    await page.locator('#zoo-fennec-1').click();
    assert.equal(await page.evaluate(()=>window.TivvigZooDebug.state().round),0,'Wrong choice retryable');
   }
-  const instructions=await page.evaluate(()=>window.TivvigZooDebug.rounds);
-  for(let round=0;round<instructions.length;round++){
-   const target=instructions[round];
-   for(const choice of Array.isArray(target)?target:[target]){
-     let selector;
-     if(typeof choice==='string')selector='#zoo-croc-'+choice;
-     else selector='#zoo-'+animal+'-'+choice;
-     await page.locator(selector).click({timeout:5000});
-   }
-   await page.waitForFunction(n=>{
-    const state=window.TivvigZooDebug.state();
-    return state.round>n||state.finished;
-   },round,{timeout:5000});
+  if(animal==='hippo'){
+    await page.locator('#hippoMoveUp').click();
+    assert.equal(await page.evaluate(()=>window.TivvigZooDebug.state().bumps),0);
+    await page.locator('#hippoMoveRight').click();
+    assert.equal(await page.evaluate(()=>window.TivvigZooDebug.state().bumps),1,'Blocked vegetation detected');
+    await page.locator('#hippoMoveDown').click();
+    await page.locator('#hippoSurface').click();
+    for(const d of ['Right','Right','Up','Right'])await page.locator('#hippoMove'+d).click();
+    assert.equal(await page.evaluate(()=>window.TivvigZooDebug.state().air),0,'Four moves use up the air');
+    const before=await page.evaluate(()=>window.TivvigZooDebug.state());
+    await page.locator('#hippoMoveRight').click();
+    assert.deepEqual(await page.evaluate(()=>[window.TivvigZooDebug.state().row,window.TivvigZooDebug.state().col]),
+      [before.row,before.col],'Player cannot move without breathing');
+    await page.locator('#hippoSurface').click();
+    assert.equal(await page.evaluate(()=>window.TivvigZooDebug.state().air),4);
+    for(const d of ['Right','Up'])await page.locator('#hippoMove'+d).click();
+    await page.waitForFunction(()=>window.TivvigZooDebug.state().phase==='skin',{timeout:5000});
+    assert.equal(await page.locator('#hippoNext').isVisible(),false,'Must test both conditions');
+    await page.locator('#hippoHeat').click();
+    assert.equal(await page.evaluate(()=>window.TivvigZooDebug.state().skin.sun),true);
+    assert.equal(await page.locator('#hippoNext').isVisible(),false);
+    await page.locator('#hippoWater').click();
+    assert.equal(await page.locator('#hippoNext').isVisible(),true);
+    await page.locator('#hippoNext').click();
+    assert.equal(await page.evaluate(()=>window.TivvigZooDebug.state().phase),'night');
+    await page.locator('#hippoGrass0').click();
+    await page.locator('#hippoGrass2').click();
+    assert.equal(await page.evaluate(()=>window.TivvigZooDebug.state().grassTotal),4);
+    await page.locator('#hippoGrass1').click();
+    assert.equal(await page.evaluate(()=>window.TivvigZooDebug.state().grassTotal),6);
+    await page.locator('#hippoGrass0').click();
+    assert.equal(await page.evaluate(()=>window.TivvigZooDebug.state().grassTotal),5);
+  }else{
+    const instructions=await page.evaluate(()=>window.TivvigZooDebug.rounds);
+    for(let round=0;round<instructions.length;round++){
+      const target=instructions[round];
+      for(const choice of Array.isArray(target)?target:[target]){
+        let selector;
+        if(typeof choice==='string')selector='#zoo-croc-'+choice;
+        else selector='#zoo-'+animal+'-'+choice;
+        await page.locator(selector).click({timeout:5000});
+      }
+      await page.waitForFunction(n=>{
+        const state=window.TivvigZooDebug.state();
+        return state.round>n||state.finished;
+      },round,{timeout:5000});
+    }
   }
   assert.equal(await page.evaluate(()=>window.TivvigZooDebug.state().finished),true,'Full game finishes');
   assert.equal(await page.locator('#controls').isVisible(),true,'Map and replay unlocked');
@@ -88,6 +127,10 @@ async function coopContract(browser){
   document.body.append(frame);
  });
  const child=parent.frameLocator('#zooCoopFrame');
+ await parent.locator('#zooCoopFrame').evaluate(el=>{
+    // Render inside the visible viewport rather than behind the full-screen map.
+    el.style.cssText='position:fixed;z-index:2147483000;left:20px;top:20px;width:980px;height:600px;border:0;background:#fff';
+ });
  await child.locator('#zooAudioEnable').waitFor();
  await parent.waitForFunction(()=>window.zooMessages?.some(x=>x.type==='ready'),{timeout:10000});
  await child.locator('#zooAudioEnable').click();
@@ -96,7 +139,15 @@ async function coopContract(browser){
  await parent.waitForFunction(()=>window.zooMessages.some(x=>x.type==='click'&&x.value?.selector==='#zooHear'),{timeout:5000});
  await child.locator('#zoo-fennec-0').click();
  await parent.waitForFunction(()=>window.zooMessages.some(x=>x.type==='click'&&x.value?.selector==='#zoo-fennec-0'),{timeout:5000});
- console.log('PASS co-op sound separation and mirrored gameplay');
+ // The moving hippo must send the same reliable native-button selectors.
+ await parent.evaluate(()=>{
+    document.getElementById('zooCoopFrame').src='egypt-zoo-hippo.html?coop=1&role=student&seed=hippo-test';
+ });
+ const hippo=parent.frameLocator('#zooCoopFrame');
+ await hippo.locator('#hippoMoveRight').waitFor();
+ await hippo.locator('#hippoMoveRight').click();
+ await parent.waitForFunction(()=>window.zooMessages.some(x=>x.type==='click'&&x.value?.selector==='#hippoMoveRight'),{timeout:5000});
+ console.log('PASS co-op sound separation and native mirrored hippo gameplay');
  await ctx.close();
 }
 try{
