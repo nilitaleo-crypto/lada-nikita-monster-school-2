@@ -14,10 +14,10 @@ const math=[
  {q:'Построй мост для пёселя',art:'',type:'mathBridge'}
 ];
 const writing=[
- {q:'Найди дорогу для ибиса',art:'●  ─  ∿  ∧∧  ─  ★',detail:'Лист 1 · прямые, волны и углы'},
- {q:'Укрощение песчаной змеи',art:'〰️   〰️   ∿   ⟳',detail:'Лист 2 · петли и извилины'},
- {q:'Уэнсдей проверяет буквы',art:'Л   М   А   О   У',detail:'Лист 3 · крупные печатные буквы'},
- {q:'Расшифруй послание',art:'МА-МА   ЛУ-НА   ЛА-ДА',detail:'Лист 4 · короткие слова по слогам'}
+ {q:'Помоги ибису найти дом',art:'',detail:'Лист 1 · проведи дорожки к дому'},
+ {q:'Путь песчаной змейки',art:'',detail:'Лист 2 · волны и петли'},
+ {q:'Буквы на волшебных камнях',art:'',detail:'Лист 3 · Л, М, А, О, У'},
+ {q:'Тайное письмо',art:'',detail:'Лист 4 · прочти слова по слогам'}
 ];
 const reading=[
  {q:'Что получится из двух слогов?',art:'МА + МА',a:['ЛУНА','МАМА','МАША'],ok:1},
@@ -104,6 +104,21 @@ function portrait(id,className){
 }
 function renderScene(room,n,task){
  const visual=$('schoolVisual'),scene=scenes[room]?.[n];
+ // Each paper worksheet has its own AI-illustrated story, rather than random glyphs.
+ if(room==='writing'){
+  const story=document.createElement('div');
+  story.className='school-writing-story school-writing-story--'+n;
+  story.setAttribute('role','img');
+  story.setAttribute('aria-label',['Ибис ищет свой дом у Нила','Змейка ползёт по извилистому следу к оазису','Волшебная комната для письма букв Л, М, А, О, У','Тайный папирус с короткими словами'][n]);
+  if(n===2||n===3){
+   const inscription=document.createElement('span');
+   inscription.className='school-writing-story__ink';
+   inscription.textContent=n===2?'Л  М  А  О  У':'МА-МА   ЛУ-НА   ЛА-ДА';
+   story.appendChild(inscription);
+  }
+  visual.replaceChildren(story);
+  return;
+ }
  if(!scene){visual.textContent=task.art;return}
  const el=document.createElement('div');
  el.className='school-scene school-scene--'+(scene.kind|| (scene.partner?'duo':'single'));
