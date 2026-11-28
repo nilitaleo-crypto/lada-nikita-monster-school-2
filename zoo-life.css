@@ -49,3 +49,29 @@
  .zoo-stage .zoo-visitor,.zoo-photo-image{transition:none!important;animation:none!important}
  .zoo-stage .zoo-visitor svg{animation:none!important}
 }
+
+/* Different animals actually move differently; motion never changes hit targets. */
+.zoo-stage .zoo-visitor--fish svg{animation:zoo-fish-swim 3.5s ease-in-out infinite alternate}
+.zoo-stage .zoo-visitor--frog svg{animation:zoo-frog-hop 2.8s ease-in-out infinite}
+.zoo-stage .zoo-visitor--bird svg{animation:zoo-bird-glide 4.6s ease-in-out infinite alternate}
+.zoo-stage .zoo-visitor--lizard svg{animation:zoo-lizard-creep 3.2s ease-in-out infinite alternate}
+.zoo-stage .zoo-visitor--mouse svg{animation:zoo-mouse-peek 2.6s ease-in-out infinite alternate}
+.zoo-stage .zoo-visitor--butterfly svg,.zoo-stage .zoo-visitor--dragonfly svg{animation:zoo-butterfly-flutter 2.1s ease-in-out infinite alternate}
+.zoo-stage .zoo-visitor--beetle svg{animation:zoo-beetle-walk 3.4s ease-in-out infinite alternate}
+@keyframes zoo-fish-swim{from{transform:translateX(-13px) rotate(-6deg)}
+ to{transform:translateX(17px) rotate(6deg)}}
+@keyframes zoo-frog-hop{0%,35%,100%{transform:translateY(4px) scale(1)}
+ 52%{transform:translateY(-16px) scale(1.04)}}
+@keyframes zoo-bird-glide{from{transform:translate(-9px,4px) rotate(-5deg)}
+ to{transform:translate(14px,-11px) rotate(3deg)}}
+@keyframes zoo-lizard-creep{from{transform:translateX(-6px) rotate(-3deg)}
+ to{transform:translateX(15px) rotate(4deg)}}
+@keyframes zoo-mouse-peek{from{transform:translate(-4px,3px) scale(.91)}
+ to{transform:translate(10px,-3px) scale(1.04)}}
+@keyframes zoo-butterfly-flutter{from{transform:translate(-4px,5px) rotate(-10deg) scaleX(.91)}
+ to{transform:translate(9px,-12px) rotate(9deg) scaleX(1.04)}}
+@keyframes zoo-beetle-walk{from{transform:translateX(-10px) rotate(-5deg)}
+ to{transform:translateX(7px) rotate(8deg)}}
+@media(prefers-reduced-motion:reduce){
+ .zoo-stage .zoo-visitor svg{animation:none!important}
+}
