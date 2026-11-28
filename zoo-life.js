@@ -83,6 +83,7 @@ function reward({animal,scene,task,fact}){
  scene.replaceChildren();
  const wrap=document.createElement('figure');wrap.className='zoo-photo-reward';wrap.id='zooPhotoReward';
  wrap.setAttribute('role','group');wrap.setAttribute('aria-label','Награда — фотография настоящего животного');
+ wrap.style.setProperty('--zoo-photo-backdrop','url("images/zoo-reward-'+animal+'.webp")');
  const image=document.createElement('img');image.className='zoo-photo-image';
  image.alt=spec[0]+'. Настоящая фотография из Wikimedia Commons.';
  image.src='images/zoo-reward-'+animal+'.webp';
