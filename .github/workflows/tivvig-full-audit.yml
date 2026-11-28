@@ -8,6 +8,7 @@ on:
       - '*.css'
       - 'images/**'
       - 'tests/tivvig-full-audit.mjs'
+      - 'tests/egypt-zoo.spec.mjs'
       - 'tests/firebase-sync-contract.mjs'
       - 'firebase.database.rules.json'
       - '.github/workflows/tivvig-full-audit.yml'
@@ -36,6 +37,8 @@ jobs:
         run: npm install --no-save --package-lock=false playwright@1.57.0
       - name: Install Chromium and WebKit
         run: npx playwright install --with-deps chromium webkit
+      - name: Run full Egyptian zoo animal, sound and touch interaction tests
+        run: node tests/egypt-zoo.spec.mjs
       - name: Scan local assets, registry and smoke-test every page on desktop and tablet
         run: node tests/tivvig-full-audit.mjs
       - name: Save diagnostics
