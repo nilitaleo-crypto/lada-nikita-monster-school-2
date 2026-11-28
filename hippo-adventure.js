@@ -42,6 +42,7 @@ function resetStage(stageClass){
  scene.replaceChildren();area=el('div','zoo-stage hippo-world '+stageClass,scene);
  area.style.backgroundImage='url("'+ART+'")';
  area.setAttribute('role','group');area.setAttribute('aria-label','Бегемот в египетском зоопарке');
+ window.TivvigZooLife?.stage(area,'hippo',round);
  scene.style.setProperty('--zoo-scene','url("'+ART+'")');
  dots();
 }
@@ -101,6 +102,8 @@ function tryMove(dr,dc){
  const px=X[col],py=Y[row];
  row=nr;col=nc;air--;
  updateActor();updateMeter();burst(px,py,'bubbles');
+ if((row+col)%2===0 && area.querySelectorAll('.zoo-visitor').length<3)
+   window.TivvigZooLife?.react(area,'hippo',round);
  const trail=$('hippoTrail');
  if(trail){const dot=el('span','hippo-track-mark',trail);locate(dot,px,py);}
  if(row===0&&col===4){
@@ -173,6 +176,8 @@ function skinEffect(){
 function testSkin(which){
  if(phase!=='skin'||busy)return;
  skin[which]=true;
+ if(area.querySelectorAll('.zoo-visitor').length<3)
+   window.TivvigZooLife?.react(area,'hippo',round);
  burst(which==='sun'?37:51,which==='sun'?56:64,which==='sun'?'glow':'splash');
  skinEffect();
 }
@@ -220,6 +225,7 @@ function reflectGrass(){
   controls.classList.remove('hidden');dots();
   area.classList.add('hippo-world--victory');
   burst(78,45,'celebrate');
+  window.TivvigZooLife?.reward({animal:'hippo',scene,task,fact});
  }else if(sum>5){
   task.textContent='Получилось '+sum+', а нужно 5. Убери лишнюю полянку.';
  }else if(sum===0){
@@ -232,6 +238,8 @@ function toggleGrass(index){
  if(phase!=='night'||busy)return;
  if(grass.has(index))grass.delete(index);else grass.add(index);
  burst(GRASS[index].x,GRASS[index].y,'glow');
+ if(area.querySelectorAll('.zoo-visitor').length<3)
+   window.TivvigZooLife?.react(area,'hippo',round);
  reflectGrass();
 }
 function night(){
