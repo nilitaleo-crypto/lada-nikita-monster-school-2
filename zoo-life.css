@@ -75,3 +75,15 @@
 @media(prefers-reduced-motion:reduce){
  .zoo-stage .zoo-visitor svg{animation:none!important}
 }
+
+/* Keep the entire animal/family visible even on portrait photography. */
+.zoo-photo-reward{background:#253c3a;overflow:hidden}
+.zoo-photo-reward::before{content:'';position:absolute;z-index:0;inset:-20px;
+ background-image:var(--zoo-photo-backdrop);
+ background-size:cover;background-position:center;
+ filter:blur(18px) brightness(.53);transform:scale(1.05)}
+.zoo-photo-reward::after{content:'';position:absolute;z-index:2;inset:45% 0 0;
+ background:linear-gradient(transparent,#111a1ca0 55%,#111a1ce0);
+ pointer-events:none}
+.zoo-photo-image{z-index:1;object-fit:contain}
+.zoo-photo-caption{z-index:3}
