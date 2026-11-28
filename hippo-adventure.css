@@ -1,0 +1,152 @@
+/* Hippopotamus expedition: minimal, scene-integrated touchscreen controls. */
+.hippo-world{user-select:none;-webkit-user-select:none;touch-action:manipulation}
+.hippo-world button{font-family:system-ui,sans-serif;cursor:pointer;touch-action:manipulation;-webkit-tap-highlight-color:transparent}
+.hippo-world button:focus-visible{outline:3px solid #fff2a5;outline-offset:2px}
+.hippo-world [hidden]{display:none!important}
+.hippo-river-tint{
+ position:absolute;inset:0;z-index:1;pointer-events:none;
+ background:linear-gradient(180deg,#0e677c13 0%,#0c51659a 48%,#093944c9 100%);
+ box-shadow:inset 0 0 90px #082b378a;
+}
+.hippo-actor{
+ position:absolute;z-index:5;width:23%;height:30%;
+ transform:translate(-50%,-50%) scale(.78);
+ background:url("images/egypt-zoo-hippo-scene.webp") 60% 61%/435% 333% no-repeat;
+ -webkit-mask-image:radial-gradient(ellipse 54% 50% at 50% 51%,#000 53%,#000e 67%,transparent 92%);
+ mask-image:radial-gradient(ellipse 54% 50% at 50% 51%,#000 53%,#000e 67%,transparent 92%);
+ filter:drop-shadow(0 7px 6px #0b2229a0) saturate(1.12);
+ transition:left .42s ease,top .42s ease;
+ pointer-events:none
+}
+.hippo-actor::after{content:'';position:absolute;left:28%;right:28%;bottom:14%;height:16%;
+ border-top:2px solid #d7faf6ad;border-radius:50%;filter:blur(2px)}
+.hippo-actor.is-bumping{animation:hippo-bump .42s ease}
+.hippo-actor.is-breathing{animation:hippo-inhale .6s ease}
+.hippo-goal{position:absolute;z-index:2;transform:translate(-50%,-50%);width:14%;height:13%;
+ border:1px solid #efffbe84;border-radius:45% 55% 35% 40%;
+ box-shadow:0 0 25px #ddf6a678,inset 0 0 17px #95d39c80;
+ background:radial-gradient(ellipse at center,#b5eca25c,transparent 74%);pointer-events:none}
+.hippo-goal-label{position:absolute;left:50%;bottom:100%;transform:translateX(-50%);
+ font:800 clamp(10px,1.5vw,18px) system-ui,sans-serif;letter-spacing:.04em;
+ color:#fff8dc;text-shadow:0 2px 5px #173539,0 0 8px #173539;white-space:nowrap}
+.hippo-reeds{position:absolute;z-index:3;width:7%;height:15%;transform:translate(-50%,-50%);
+ pointer-events:none;border-radius:48% 48% 20% 20%;
+ background:linear-gradient(80deg,transparent 12%,#0e645c 20%,transparent 24%,#6d9f4a 30%,transparent 34%,#285e53 48%,transparent 52%,#8bb76d 63%,transparent 67%,#234d39 78%,transparent 83%);
+ filter:drop-shadow(1px 2px 2px #133e38b6)}
+.hippo-reeds::after{content:'';position:absolute;left:0;right:0;top:18%;bottom:0;
+ border-radius:30% 20% 40% 50%;
+ background:linear-gradient(150deg,transparent 22%,#4f9d79a3 33%,transparent 42%,#8baf6cba 62%,transparent 75%)}
+.hippo-track{position:absolute;inset:0;z-index:2;pointer-events:none}
+.hippo-track-mark{position:absolute;width:4%;height:5%;border:1px solid #d1eac65c;border-radius:50%;
+ background:radial-gradient(ellipse,#cbe8ce74,transparent 70%);
+ transform:translate(-50%,-50%);animation:hippo-track-appear .45s ease}
+.hippo-breath-widget{position:absolute;z-index:6;top:2.5%;left:3%;display:flex;align-items:center;
+ gap:clamp(4px,.8vw,9px);min-height:42px;border-radius:25px;
+ padding:3px 7px 3px 10px;background:#153b42b9;border:1px solid #a1e2e08c;
+ box-shadow:0 2px 10px #102b3380}
+.hippo-lung-icon{font:700 clamp(10px,1.3vw,16px) system-ui,sans-serif;color:#eaffef}
+.hippo-air-meter{display:flex;align-items:center;gap:4px;min-height:27px}
+.hippo-air-bubble{display:block;width:clamp(11px,1.7vw,21px);height:clamp(11px,1.7vw,21px);
+ border:2px solid #e1fffbdc;border-radius:50%;
+ box-shadow:inset -3px -3px 5px #2385ac75,0 0 7px #d3fbf899;
+ background:radial-gradient(circle at 29% 22%,#fff 1px,#bef1f8b8 35%,#66c8d98e 85%)}
+.hippo-air-bubble.is-empty{background:transparent;box-shadow:none;border-color:#7ea7a2ad;opacity:.7}
+.hippo-surface{border:1px solid #dfefb4ab;border-radius:17px;padding:5px 8px;
+ min-height:34px;color:#fff6dd;background:#34665cca;font:800 clamp(11px,1.3vw,16px) system-ui,sans-serif}
+.hippo-surface:disabled{opacity:.55;cursor:default}
+.hippo-surface.is-urgent{background:#a55537;border-color:#ffe3af;animation:hippo-pulse 1.5s ease-in-out infinite}
+.hippo-dpad{position:absolute;z-index:7;right:4%;bottom:6%;width:clamp(108px,14vw,150px);
+ height:clamp(108px,14vw,150px);pointer-events:none}
+.hippo-dir{position:absolute;display:grid;place-items:center;pointer-events:auto;
+ min-width:40px;min-height:40px;width:32%;height:32%;
+ border:1px solid #e0f2cbac;border-radius:50%;color:#fff9d9;
+ background:#214a4dc7;font:800 clamp(24px,3vw,38px) system-ui,sans-serif;
+ box-shadow:0 2px 7px #10323b97;text-shadow:0 1px 3px #092e38}
+.hippo-dir:active{background:#4e8d81;transform:scale(.93)}
+.hippo-dir--up{left:34%;top:0}
+.hippo-dir--left{left:0;top:34%}
+.hippo-dir--right{right:0;top:34%}
+.hippo-dir--down{left:34%;bottom:0}
+.hippo-effect{position:absolute;z-index:5;pointer-events:none;transform:translate(-50%,-50%);
+ width:5%;height:10%}
+.hippo-effect--ripple,.hippo-effect--breath,.hippo-effect--bubbles,.hippo-effect--splash{
+ border:2px solid #c3f7ebeb;border-radius:50%;
+ box-shadow:0 0 17px #8bffffab;
+ animation:hippo-ripple .6s ease-out both}
+.hippo-effect--breath{width:8%;height:16%;border-width:3px}
+.hippo-effect--splash{background:radial-gradient(ellipse,#c2f9f07a,transparent 65%)}
+.hippo-effect--glow,.hippo-effect--celebrate{width:12%;height:18%;
+ background:radial-gradient(circle,#ffedb7a3,#ffe5a720 45%,transparent 75%);
+ animation:hippo-glimmer .85s ease both}
+.hippo-world--skin .hippo-sunbeams{position:absolute;inset:0;z-index:2;pointer-events:none;
+ background:radial-gradient(ellipse at 25% 13%,#fff9cc66,transparent 38%);}
+.hippo-red-skin{position:absolute;z-index:3;left:29%;top:44%;width:21%;height:21%;opacity:0;
+ transform:rotate(-10deg);border-radius:50%;pointer-events:none;
+ background:radial-gradient(ellipse at 45% 50%,#c75c56b8 4%,#d57b7091 32%,#d78e776a 56%,transparent 75%);
+ filter:blur(7px);transition:opacity .8s}
+.hippo-world--skin-sun .hippo-red-skin{opacity:1}
+.hippo-world--skin-water .hippo-sunbeams{background:radial-gradient(ellipse at 73% 64%,#c7ffff7d,transparent 30%)}
+.hippo-natural-control{position:absolute;z-index:6;transform:translate(-50%,-50%);
+ display:grid;place-items:center;min-width:clamp(43px,6vw,75px);min-height:clamp(43px,6vw,75px);
+ border:2px solid #fff0bc;border-radius:50%;color:#fff4d3;
+ background:#684e36bf;font-size:clamp(25px,4vw,46px);text-shadow:0 2px 5px #4d3428;
+ box-shadow:0 0 15px #ffffac8c}
+.hippo-natural-control--water{background:#296882dc;border-color:#c9f9fc;
+ box-shadow:0 0 15px #8de8eb8c}
+.hippo-natural-control.is-done{border-color:#dbf5cf;box-shadow:0 0 0 4px #ccf4bf69,0 0 17px #def4b7ba}
+.hippo-scene-next{position:absolute;z-index:7;bottom:8%;right:8%;min-height:44px;
+ border:1px solid #f8daab;border-radius:21px;padding:7px 15px;
+ background:#513822df;color:#fff4cf;font:800 clamp(13px,2vw,21px) system-ui,sans-serif;
+ box-shadow:0 3px 10px #36241993}
+.hippo-world--night .hippo-moonlight{position:absolute;inset:0;z-index:2;pointer-events:none;
+ background:radial-gradient(ellipse at 52% 11%,#b8dcfc31,transparent 45%)}
+.hippo-grass{position:absolute;z-index:6;transform:translate(-50%,-50%);
+ display:flex;flex-direction:column;align-items:center;justify-content:center;
+ min-width:clamp(49px,8vw,112px);min-height:clamp(49px,8vw,97px);
+ border:1px solid #eee5a0a3;border-radius:38%;
+ padding:6px;background:radial-gradient(ellipse,#1d4e3699,#173c31a3);
+ box-shadow:0 3px 9px #0c2a2099}
+.hippo-grass-stalks{display:flex;white-space:nowrap;align-items:center;justify-content:center;
+ font:clamp(20px,2.3vw,35px)/1.1 sans-serif}
+.hippo-grass-stalk{display:inline-block;margin-left:-.13em;filter:drop-shadow(0 2px 2px #193622)}
+.hippo-grass-count{font:800 clamp(13px,1.8vw,23px)/1.1 system-ui,sans-serif;color:#fff3ce;
+ text-shadow:0 1px 3px #0c3928;margin-top:1px}
+.hippo-grass.is-picked{background:#477344de;border:3px solid #fff2b6}
+.hippo-grass.is-picked::after{content:'✓';position:absolute;right:-7px;top:-8px;
+ display:grid;place-items:center;width:25px;height:25px;border-radius:50%;
+ color:#fff6cd;background:#2f714a;font:bold 17px system-ui}
+.hippo-grass-total{position:absolute;z-index:6;left:5%;top:9%;display:flex;align-items:center;gap:10px;
+ color:#fff5d9;text-shadow:0 2px 5px #2a281b}
+.hippo-grass-total-caption{font:800 clamp(12px,1.7vw,21px) system-ui}
+.hippo-grass-total-count{font:900 clamp(20px,3vw,36px) system-ui;min-width:56px}
+.hippo-world--victory::before{content:'✦   ✦   ✦';position:absolute;z-index:5;left:46%;top:28%;
+ font:700 clamp(23px,3vw,45px) system-ui;color:#ffeac2;pointer-events:none;
+ text-shadow:0 0 16px #fff4a8;animation:hippo-glimmer 2s infinite}
+@keyframes hippo-ripple{from{opacity:.9;transform:translate(-50%,-50%) scale(.4)}to{opacity:0;transform:translate(-50%,-50%) scale(2)}}
+@keyframes hippo-glimmer{from{opacity:0;transform:translate(-50%,-50%) scale(.5)}40%{opacity:1}to{opacity:0;transform:translate(-50%,-50%) scale(1.6)}}
+@keyframes hippo-track-appear{from{opacity:0;transform:translate(-50%,-50%) scale(.5)}to{opacity:.8;transform:translate(-50%,-50%) scale(1)}}
+@keyframes hippo-bump{0%,100%{transform:translate(-50%,-50%) scale(.78)}40%{transform:translate(-54%,-50%) scale(.83)}}
+@keyframes hippo-inhale{0%,100%{transform:translate(-50%,-50%) scale(.78)}45%{transform:translate(-50%,-56%) scale(.86)}}
+@keyframes hippo-pulse{50%{box-shadow:0 0 15px #fbeaa9a8}}
+@media(max-width:650px){
+ .hippo-breath-widget{left:2%;top:2%;padding:2px 5px;gap:3px;min-height:32px}
+ .hippo-lung-icon{font-size:9px}
+ .hippo-air-bubble{width:10px;height:10px;border-width:1px}
+ .hippo-air-meter{gap:2px}
+ .hippo-surface{min-height:28px;font-size:10px;padding:4px 5px}
+ .hippo-dpad{right:2%;bottom:2%;width:105px;height:105px}
+ .hippo-dir{width:38%;height:38%;min-width:39px;min-height:39px;font-size:26px}
+ .hippo-dir--up{left:31%}.hippo-dir--left{top:31%}.hippo-dir--right{top:31%}.hippo-dir--down{left:31%}
+ .hippo-goal-label{font-size:9px}
+ .hippo-grass{padding:3px;min-width:45px;min-height:45px;border-width:1px}
+ .hippo-grass-stalks{font-size:18px}
+ .hippo-grass-count{font-size:14px}
+ .hippo-natural-control{min-width:39px;min-height:39px;font-size:25px}
+ .hippo-scene-next{right:4%;bottom:4%;min-height:38px;padding:5px 9px}
+}
+@media(prefers-reduced-motion:reduce){
+ .hippo-actor,.hippo-red-skin{transition:none!important}
+ .hippo-effect,.hippo-track-mark,.hippo-world--victory::before,
+ .hippo-surface.is-urgent,.hippo-actor.is-bumping,.hippo-actor.is-breathing{
+ animation:none!important}
+}
