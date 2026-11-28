@@ -104,8 +104,8 @@ async function walkthrough(browser,engine,profile,animal){
   }
   assert.equal(await page.evaluate(()=>window.TivvigZooDebug.state().finished),true,'Full game finishes');
   await page.locator('#zooPhotoReward').waitFor({timeout:5000});
-  const photo=await page.locator('.zoo-photo-image').evaluate(im=>({complete:im.complete,width:im.naturalWidth,url:im.currentSrc}));
-  assert.ok(photo.complete&&photo.width>=650,'Real high-resolution animal photo loads after the enclosure');
+  const photo=await page.locator('.zoo-photo-image').evaluate(im=>({complete:im.complete,width:im.naturalWidth,height:im.naturalHeight,url:im.currentSrc}));
+  assert.ok(photo.complete&&Math.max(photo.width,photo.height)>=850,'Real high-resolution animal photo loads after the enclosure');
   assert.ok(photo.url.includes('zoo-reward-'+animal+'.webp'),'Real photograph cached locally');
   assert.ok((await page.locator('.zoo-photo-credits a').count())>=2,'Author and license credited');
   assert.equal(await page.locator('#controls').isVisible(),true,'Map and replay unlocked');
