@@ -114,3 +114,12 @@
    width:clamp(71px,20vw,92px);height:112px;bottom:36%;left:calc(-3% + var(--steps,0) * 20%);
  }
 }
+
+
+/* Use the individually generated sandstone model; no atlas clipping at the ends. */
+.school[data-phase="math"] .room .math-game__choice--stone .math-sprite--stone{
+ background-image:url('images/egypt-school-bridge-stone.webp?v=1');
+ background-size:contain;
+ background-position:center center;
+ background-repeat:no-repeat;
+}
