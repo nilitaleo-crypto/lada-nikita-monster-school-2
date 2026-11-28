@@ -9,20 +9,9 @@ const $=id=>document.getElementById(id);
 if(!$('schoolStage')||window.TivvigSchoolDebug)return;
 const REWARD='tivvig_reward_egypt_school_v1';
 const math=[
- {q:'Открой сундук: 4 + ? = 9',art:'🪙 🪙 🪙 🪙  +  ?  =  9',a:['4','5','6','3'],ok:1},
- {q:'Равны ли чаши весов?',art:'3 + 2    ⚖️    4 + 1',a:['Левая тяжелее','Равны','Правая тяжелее'],ok:1},
- {q:'Построй ступени по порядку',art:'От меньшего к большему',type:'sequence',a:['6','8','2','4'],order:[2,3,0,1]},
- {q:'У жука 10 монет. 7 уже в сундуке.',art:'7 + ? = 10',a:['2','4','3','5'],ok:2},
- {q:'Укрась дверь пятью камнями',art:'Касайся камней на доске',type:'collect',target:5,a:['💎','💎','💎','💎','💎','💎']},
- {q:'Кто появится следующим?',art:'Пёсель · Нафири · Нафири',a:['Тутенштейн','Нафири','Пёсель'],ok:1},
- {q:'В пруду было 8 рыб. 3 уплыли.',art:'🐟   8 − 3 = ?',a:['6','4','5','3'],ok:2},
- {q:'Какой путь длиннее?',art:'3 + 4   ⚖️   6 + 2',a:['Первый','Одинаковы','Второй'],ok:2},
- {q:'Найди спрятанное число',art:'?  −  3  =  4',a:['7','6','8','5'],ok:0},
- {q:'Проведи лодку по нечётным числам',art:'От меньшего к большему',type:'sequence',a:['3','7','1','5'],order:[2,0,3,1]},
- {q:'На сколько 9 больше 6?',art:'9  −  6  =  ?',a:['2','3','4'],ok:1},
- {q:'Как завершить солнечный круг?',art:'7  +  2  =  ?',a:['8','10','9'],ok:2},
- {q:'В какой корзине больше плодов?',art:'ЛЕВАЯ: 5    ⚖️    ПРАВАЯ: 2 + 4',a:['Левая','Правая','Поровну'],ok:1},
- {q:'8 бусин. 5 синих. Сколько золотых?',art:'🔵🔵🔵🔵🔵  +  🟡 ?  =  8',a:['4','2','5','3'],ok:3}
+ {q:'Уравновесь весы',art:'',type:'mathScale'},
+ {q:'Сокровища Тутенштейна',art:'',type:'mathChest'},
+ {q:'Построй мост для пёселя',art:'',type:'mathBridge'}
 ];
 const writing=[
  {q:'Найди дорогу для ибиса',art:'●  ─  ∿  ∧∧  ─  ★',detail:'Лист 1 · прямые, волны и углы'},
@@ -187,7 +176,12 @@ function render(){
  $('schoolSubject').textContent=subject.label;
  $('schoolCounter').textContent=(n+1)+' / '+subject.data.length;
  $('schoolQuestion').textContent=task.q;
- renderScene(phase,n,task);
+ const mathGame=window.TivvigMathAdventure;
+ $('schoolMathGame').hidden=phase!=='math';
+ $('schoolVisual').hidden=phase==='math';
+ $('schoolAnswers').hidden=phase==='math';
+ if(phase==='math'&&mathGame)mathGame.draw(task.type);
+ else renderScene(phase,n,task);
  $('schoolTeacherFigure').dataset.mood=mood;
  $('schoolReaction').textContent=mood==='good'?subject.good:mood==='wrong'?subject.bad:'';
  $('schoolFeedback').dataset.mood=mood;
@@ -197,7 +191,7 @@ function render(){
  $('schoolSkip').hidden=answered;
  $('schoolNext').hidden=!answered;
  $('schoolNext').textContent=n===subject.data.length-1?'В холл →':'Дальше →';
- let opts=phase==='writing'?['Переделать','Лист готов!']:task.a;
+ let opts=phase==='writing'?['Переделать','Лист готов!']:phase==='math'?[]:task.a;
  for(let i=0;i<6;i++){
   const btn=$('schoolOpt'+i),has=i<opts.length;
   btn.hidden=!has;
@@ -207,7 +201,7 @@ function render(){
   btn.className='answer'+(selected.has(i)||answered&&phase!=='writing'&&i===task.ok?' hit':wrong===i?' missed':'');
  }
 }
-function resetFeedback(){answered=false;wrong=null;sequencePos=0;selected=new Set();mood='neutral'}
+function resetFeedback(){answered=false;wrong=null;sequencePos=0;selected=new Set();mood='neutral';window.TivvigMathAdventure?.reset()}
 function enter(room){
  if(!subjects[room])return;
  // Completed subjects are replayable without losing their earlier school stamp.
@@ -257,6 +251,15 @@ $('schoolGoWriting').addEventListener('click',()=>enter('writing'));
 $('schoolGoReading').addEventListener('click',()=>enter('reading'));
 $('schoolBack').addEventListener('click',leave);
 $('schoolSkip').addEventListener('click',skip);
+$('schoolMathGame').addEventListener('click',e=>{
+ const b=e.target.closest('button[data-math-choice]');if(!b||phase!=='math'||answered)return;
+ const result=window.TivvigMathAdventure?.hit(math[progress.math].type,Number(b.dataset.mathChoice));
+ if(!result?.changed)return;
+ if(result.complete){answered=true;mood='good';tone('success')}
+ else if(result.wrong){mood='wrong';tone('wrong')}
+ else {mood='neutral';tone(result.correct?'success':'tap')}
+ render();
+});
 $('schoolNext').addEventListener('click',advance);
 for(let i=0;i<6;i++)$('schoolOpt'+i).addEventListener('click',()=>choose(i));
 $('schoolAgain').addEventListener('click',()=>{for(const name of names)progress[name]=0;done.clear();phase='hall';resetFeedback();render();tone('tap')});
@@ -264,10 +267,10 @@ window.addEventListener('pageshow',dress);
 window.addEventListener('tivvig-inventory-changed',dress);
 window.addEventListener('tivvig-outfit-changed',dress);
 window.TivvigSchoolDebug=Object.freeze({
- state:()=>({phase,step:progress[phase]??0,progress:{...progress},done:[...done],answered,wrong,sequencePos,selected:[...selected],mood,lessonCount:subjects[phase]?.data.length??0}),
+ state:()=>({phase,step:progress[phase]??0,progress:{...progress},done:[...done],answered,wrong,sequencePos,selected:[...selected],mood,mathState:window.TivvigMathAdventure?.state(),lessonCount:subjects[phase]?.data.length??0}),
  getTask:(room,index)=>subjects[room]?.data[index]||null,
  answers:room=>subjects[room]?.data.map(x=>x.ok??null)||[],
- enter,choose,advance,leave,
+ enter,choose,advance,leave,mathClick:i=>{const result=window.TivvigMathAdventure?.hit(math[progress.math].type,i);if(result?.changed){answered=!!result.complete;mood=result.complete?'good':result.wrong?'wrong':'neutral';render()}return result},
  reset:()=>{for(const n of names)progress[n]=0;done.clear();phase='hall';resetFeedback();render()}
 });
 render();dress();
