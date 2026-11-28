@@ -104,6 +104,7 @@ async function walkthrough(browser,engine,profile,animal){
   }
   assert.equal(await page.evaluate(()=>window.TivvigZooDebug.state().finished),true,'Full game finishes');
   await page.locator('#zooPhotoReward').waitFor({timeout:5000});
+  await page.waitForFunction(()=>{const img=document.querySelector('.zoo-photo-image');return img&&img.complete&&img.naturalWidth>0;},{timeout:10000});
   const photo=await page.locator('.zoo-photo-image').evaluate(im=>({complete:im.complete,width:im.naturalWidth,height:im.naturalHeight,url:im.currentSrc}));
   assert.ok(photo.complete&&Math.max(photo.width,photo.height)>=850,'Real high-resolution animal photo loads after the enclosure');
   assert.ok(photo.url.includes('zoo-reward-'+animal+'.webp'),'Real photograph cached locally');
