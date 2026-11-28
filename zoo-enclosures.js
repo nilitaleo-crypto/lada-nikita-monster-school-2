@@ -1,102 +1,273 @@
-/* Тиввиг · seven illustrated zoo habitats.
- * The source art is generated at 1672×941; invisible, accessible native
- * buttons sit inside the SAME 16:9 coordinate plane as each painting.
- * No randomization: identical buttons / steps on both Firebase clients. */
+/* Тиввиг · Egyptian zoo v4.
+ * Native hotspot buttons, fixed story sequence, no random states.
+ * Keeping the same stable button IDs makes co-op mirrored taps reliable.
+ */
 (()=>{
- 'use strict';
- const $=id=>document.getElementById(id);
- const id=document.body.dataset.animal;
- const stageRoot=$('scene'),task=$('task'),fact=$('fact'),progress=$('progress'),controls=$('controls');
- const staticData={
-  ibis:{name:'Священный ибис',fact:'Ибис находит пищу длинным клювом в мелкой воде и иле.',rounds:[
-   {question:'Найди личинку в иле',target:0},
-   {question:'Теперь найди улитку',target:1},
-   {question:'Где спряталась рыбка?',target:2},
-   {question:'Найди рачка',target:3}],
-   spots:[[35,71,18,20],[64,53,14,16],[79,68,18,17],[68,84,20,15]]},
-  camel:{name:'Верблюд',fact:'Горб верблюда хранит жир, а не воду. Широкие ступни помогают ходить по песку.',rounds:[
-   {question:'Собери воду в дорогу',target:1},
-   {question:'Найди финики',target:2},
-   {question:'Возьми тёплый плед',target:0}],
-   spots:[[34,77,23,24],[53,77,14,25],[69,78,15,22],[84,79,19,22]]},
-  fennec:{name:'Фенек',fact:'Огромные уши помогают фенеку слышать добычу под песком и отдавать лишнее тепло.',rounds:[
-   {question:'Где шуршит песок?',target:2},
-   {question:'Слушай дальше: где шорох?',target:1},
-   {question:'Найди норку фенека',target:0},
-   {question:'Где снова шуршит?',target:2}],
-   spots:[[38,54,28,30],[71,38,19,18],[84,63,23,25]]},
-  baboon:{name:'Павиан',fact:'Павианы живут группами и заботятся друг о друге. Они часто чистят друг другу шерсть.',rounds:[
-   {question:'Найди большого павиана',target:0},
-   {question:'Кто сидит выше всех?',target:1},
-   {question:'Где пещера для малыша?',target:3},
-   {question:'Найди павиана на скале',target:2}],
-   spots:[[19,50,33,59],[30,15,17,23],[43,31,21,23],[87,38,22,24]]},
-  cobra:{name:'Египетская кобра',fact:'Кобра раскрывает капюшон для защиты. К змее нельзя приближаться, но за ней интересно наблюдать.',rounds:[
-   {question:'Найди кобру',target:0},
-   {question:'Где прохладная тень?',target:1},
-   {question:'Где песок согрет солнцем?',target:2}],
-   spots:[[66,51,24,42],[86,34,28,41],[55,80,25,22]]},
-  hippo:{name:'Бегемот',fact:'Днём бегемот много времени проводит в воде, а ночью выходит на сушу есть траву.',rounds:[
-   {question:'День: где отдыхает бегемот?',target:0},
-   {question:'Ночь: куда он идёт поесть?',target:1},
-   {question:'Где ему прохладнее днём?',target:0},
-   {question:'Где ночью растёт трава?',target:1}],
-   spots:[[45,62,49,39],[81,48,30,39]]},
-  crocodile:{name:'Нильский крокодил',fact:'Глаза и ноздри крокодила расположены высоко: он видит и дышит, почти целиком скрываясь в воде.',rounds:[
-   {question:'Где появились глаза?',target:1},
-   {question:'Смотри на рябь: где он?',target:2},
-   {question:'Крокодил снова спрятался',target:0},
-   {question:'Где он теперь?',target:1}],
-   spots:[[33,66,17,18],[55,59,17,18],[76,67,17,18]]}
- };
- const config=staticData[id];
- if(!config){if(task)task.textContent='Не найден вольер';return;}
- let round=0,finished=false,busy=false;
- const choices=new Set();
- function pic(url,klass){const img=document.createElement('img');img.src=url;img.className=klass;img.alt='';img.draggable=false;img.decoding='async';return img;}
- function drawProgress(){progress.replaceChildren();for(let i=0;i<config.rounds.length;i++){let marker=document.createElement('span');marker.className='dot'+(i<round?' on':'');progress.append(marker);}}
- function finish(){finished=true;controls.classList.remove('hidden');fact.classList.remove('hidden');fact.textContent=config.fact;task.textContent='Готово! Ты узнала тайну '+config.name.toLowerCase()+'.';}
- function render(){
-   if(finished)return;
-   const r=config.rounds[round];drawProgress();task.textContent=r.question;
-   stageRoot.replaceChildren();
-   const area=document.createElement('div');area.className='zoo-stage';area.setAttribute('role','group');area.setAttribute('aria-label',config.name+' — '+r.question);
-   const bgUrl=`url("images/egypt-zoo-${id}-scene.webp")`;
-   area.style.backgroundImage=bgUrl;
-   stageRoot.style.setProperty('--zoo-scene',bgUrl);
-   if(id==='hippo' && round%2===1)area.classList.add('zoo-stage--night');
-   if(id==='crocodile'){
-     const croc=pic('images/egypt-zoo-crocodile-cutout.webp','zoo-crocodile-model');
-     const target=config.spots[r.target];croc.style.left=(target[0]-12)+'%';croc.style.top=(target[1]-9)+'%';
-     croc.id='zooCrocModel';area.append(croc);
+'use strict';
+const $=id=>document.getElementById(id);
+const animal=document.body.dataset.animal;
+const scene=$('scene'),task=$('task'),fact=$('fact'),progress=$('progress'),controls=$('controls');
+const DATA={
+ ibis:{name:'Священный ибис',spots:[[35,71,18,20],[64,53,14,16],[79,68,18,17],[68,84,20,15]],steps:[
+  {prompt:'Ибис ищет корм не глазами, а длинным клювом. Ощупай мягкий ил.',target:0,note:'Длинный клюв помогает находить спрятанную в иле пищу.'},
+  {prompt:'В иле встретилась улитка. Найди её раковину.',target:1,note:'Ибисы едят моллюсков и других мелких животных.'},
+  {prompt:'Рыбка ускользает. Попробуй поймать её у кромки воды.',target:2,note:'В мелкой воде ибис может ловить небольшую рыбу.'},
+  {prompt:'Последняя добыча спряталась глубже. Исследуй дальний участок.',target:3,note:'Ибис добывает корм в разных местах влажного берега.'}
+ ]},
+ camel:{name:'Верблюд',spots:[[34,77,23,24],[53,77,14,25],[69,78,15,22],[84,79,19,22]],steps:[
+  {prompt:'Горб хранит жир, а не воду. Что возьмём для питья в пустыне?',target:1,note:'В горбе запасается жир. Воду для дороги нужно взять отдельно.'},
+  {prompt:'Ночью в пустыне бывает холодно. Что возьмём для ночёвки?',target:0,note:'В пустыне температура сильно меняется между днём и ночью.'},
+  {prompt:'После перехода нужен запас пищи. Что можно съесть в пути?',target:2,note:'Финики — питательные плоды финиковой пальмы.'}
+ ]},
+ fennec:{name:'Фенек',spots:[[36,55,25,26],[71,37,18,20],[84,62,20,22],[42,75,19,18],[59,65,20,19]],steps:[
+  {prompt:'Послушай! Жулик шуршит В НОРЕ. Покажи, где он.',target:0,speech:'Жулик в норе',pan:-.85,note:'В норе — значит внутри. Фенек прячется под землёй от жары.'},
+  {prompt:'Он выбрался и сидит НА КАМНЕ. Найди его новое место.',target:1,speech:'Жулик на камне',pan:.8,note:'НА камне — сверху. Большие уши фенека улавливают тихие звуки.'},
+  {prompt:'Теперь жулик ЗА КУСТОМ. Откуда шорох?',target:2,speech:'Жулик за кустом',pan:.9,note:'ЗА кустом — с дальней стороны, его почти не видно.'},
+  {prompt:'Он появился ПЕРЕД НОРОЙ. Найди его.',target:3,speech:'Жулик перед норой',pan:-.35,note:'ПЕРЕД норой — с ближней стороны входа.'},
+  {prompt:'Последний шорох МЕЖДУ КАМНЯМИ. Где он?',target:4,speech:'Жулик между камнями',pan:.2,note:'МЕЖДУ — посередине двух предметов. Ты нашла жулика!'}
+ ]},
+ baboon:{name:'Павиан',spots:[[19,50,33,59],[30,15,17,23],[43,31,21,23],[87,38,22,24]],steps:[
+  {prompt:'В стае нужен дозорный. С какого места виднее дальнюю тропу?',target:1,note:'С высоких мест легче замечать опасность.'},
+  {prompt:'Павианы живут стаями. Где малыш скорее найдёт взрослых?',target:0,note:'Детёныши держатся рядом с родными.'},
+  {prompt:'Они чистят друг другу шерсть. Найди место, где можно сидеть рядом.',target:2,note:'Чистка шерсти укрепляет связи в стае.'},
+  {prompt:'Приближается дождь. Найди укрытие для детёныша.',target:3,note:'Укрытие защищает от непогоды и помогает чувствовать себя в безопасности.'}
+ ]},
+ cobra:{name:'Египетская кобра',spots:[[66,51,24,42],[86,34,28,41],[55,80,25,22]],steps:[
+  {prompt:'Кобре жарко. Где она укроется от палящего солнца?',target:1,note:'Змеи меняют место, чтобы регулировать температуру тела.'},
+  {prompt:'Утром песок прогрелся. Где холоднокровной змее согреться?',target:2,note:'Солнце помогает змеям согреваться.'},
+  {prompt:'Кобра подняла капюшон — это предупреждение. Найди её, но не подходи.',target:0,note:'Капюшон — защитная демонстрация. Увидев змею в природе, держись подальше.'}
+ ]},
+ hippo:{name:'Бегемот',spots:[[38,78,20,15],[50,81,20,15],[62,76,20,15],[47,57,42,32],[49,40,30,15],[84,49,26,30]],steps:[
+  {kind:'walk',prompt:'Бегемот не плывёт как рыба: он шагает по дну. Пройди три следа.',note:'Бегемоты слишком тяжёлые, чтобы плавать как рыбы: они ходят и отталкиваются от дна.'},
+  {prompt:'На солнце бегемот выделяет красноватую защитную жидкость. Коснись его кожи.',target:3,kind:'skin',note:'Это не кровь! Красноватый секрет работает как природный солнцезащитный крем.'},
+  {prompt:'Под водой бегемот задерживает дыхание. Помоги ему поднять нос к поверхности.',target:4,kind:'breathe',note:'Под водой бегемот может задержать дыхание примерно на пять минут.'},
+  {prompt:'Вечером бегемот отправляется есть. Найди траву на берегу.',target:5,note:'Большую часть травы бегемоты поедают ночью, выходя из воды.'}
+ ]},
+ crocodile:{name:'Нильский крокодил',spots:[],steps:[
+  {kind:'eyes',prompt:'У крокодила над водой остаются глаза. Коснись ГЛАЗ на его голове.',note:'Глаза расположены высоко: крокодил видит, даже когда тело скрыто.'},
+  {kind:'nose',prompt:'А теперь найди НОЗДРИ на конце морды.',note:'Ноздри сверху морды позволяют дышать, пока тело под водой.'},
+  {kind:'both',prompt:'Помоги скрыться в воде: оставь над водой ГЛАЗА и НОЗДРИ.',note:'Вот секрет маскировки: видно только глаза и ноздри.'},
+  {kind:'nose',prompt:'Крокодил ныряет целиком. Коснись ноздрей, чтобы закрыть их.',note:'При полном погружении крокодил может закрывать ноздри.'}
+ ]}
+};
+const config=DATA[animal];
+if(!config){if(task)task.textContent='Вольер не найден';return;}
+let round=0,busy=false,finished=false,sub=0,wrong=0,unlocked=false;
+const found=new Set();
+let audioCtx=null,feedbackTimer=0;
+const spotNames={
+ ibis:['Ил у воды','Улитка','Рыба','Дальний участок берега'],
+ camel:['Плед','Фляга воды','Финики','Верёвка'],
+ fennec:['В норе','На камне','За кустом','Перед норой','Между камнями'],
+ baboon:['Группа павианов','Верхняя скала','Павиан на скале','Укрытие'],
+ cobra:['Кобра','Прохладная тень','Тёплый песок'],
+ hippo:['Первый след','Второй след','Третий след','Кожа бегемота','Поверхность воды','Трава на берегу']
+};
+const name=spotNames[animal]||[];
+const pic=(src,cls,alt='')=>{const img=document.createElement('img');img.src=src;img.className=cls;img.alt=alt;img.draggable=false;img.decoding='async';return img;};
+function pos(el,p){el.style.left=(p[0]-p[2]/2)+'%';el.style.top=(p[1]-p[3]/2)+'%';el.style.width=p[2]+'%';el.style.height=p[3]+'%';}
+function drawProgress(){progress.replaceChildren();for(let i=0;i<config.steps.length;i++){const dot=document.createElement('span');dot.className='dot'+(i<round?' on':'');progress.append(dot);}}
+function showFact(line,area,target){
+ fact.textContent=line;fact.classList.remove('hidden');
+ const note=document.createElement('div');note.className='zoo-in-scene-fact';
+ note.textContent=line;note.setAttribute('role','status');
+ const point=target||[50,48,0,0];
+ note.style.left=Math.min(78,Math.max(22,point[0]))+'%';
+ note.style.top=(point[1]>60? '26%' :'71%');
+ area.append(note);
+}
+function complete(area,target){
+ if(busy||finished)return;
+ busy=true;
+ const step=config.steps[round];
+ showFact(step.note,area,target);
+ drawProgress();
+ clearTimeout(feedbackTimer);
+ feedbackTimer=setTimeout(()=>{
+  round++;sub=0;wrong=0;found.clear();busy=false;
+  if(round>=config.steps.length){finish();}else render();
+ },1650);
+}
+function finish(){
+ finished=true;drawProgress();controls.classList.remove('hidden');
+ task.textContent='Все тайны раскрыты! Куда отправимся дальше?';
+ fact.textContent=config.steps.at(-1).note;
+ fact.classList.remove('hidden');
+ const note=scene.querySelector('.zoo-in-scene-fact');if(note)note.remove();
+}
+function spot(area,index,p,enabled,mode){
+ const b=document.createElement('button');b.type='button';b.id='zoo-'+animal+'-'+index;
+ b.className='zoo-spot'+(mode?' zoo-spot--'+mode:'');
+ pos(b,p);b.setAttribute('aria-label',name[index]||('Место '+(index+1)));
+ if(!enabled)b.disabled=true;
+ b.addEventListener('click',()=>choose(index,b,area));
+ area.append(b);return b;
+}
+function hitBad(b){
+ wrong++;b.classList.remove('is-wrong');void b.offsetWidth;b.classList.add('is-wrong');
+ if(wrong>=2){task.textContent=config.steps[round].prompt+' Присмотрись к окружению.';}
+}
+function visualFeedback(b){b.classList.add('is-success');const check=document.createElement('span');check.textContent='✓';check.className='zoo-reward-flash';check.style.left=(parseFloat(b.style.left)+parseFloat(b.style.width)/2)+'%';check.style.top=(parseFloat(b.style.top)+parseFloat(b.style.height)/2)+'%';b.parentElement.append(check);}
+function choose(i,b,area){
+ if(busy||finished)return;
+ const step=config.steps[round];
+ if(step.kind==='walk'){
+  if(i!==sub){hitBad(b);return;}
+  b.classList.add('is-success');sub++;
+  area.querySelectorAll('.zoo-hippo-step').forEach((x,n)=>x.classList.toggle('is-done',n<sub));
+  if(sub===3)complete(area,config.spots[i]);
+  else task.textContent='Шаг '+sub+' из 3. Найди следующий след на дне.';
+  return;
+ }
+ if(i!==step.target){hitBad(b);return;}
+ visualFeedback(b);
+ if(animal==='fennec'){
+   const thief=$('zoo-thief');
+   if(thief){thief.style.left=config.spots[i][0]+'%';thief.style.top=(config.spots[i][1]-3)+'%';thief.classList.add('is-visible');}
+ }
+ if(step.kind==='skin')area.classList.add('zoo-hippo-skin');
+ if(step.kind==='breathe')area.classList.add('zoo-hippo-breathe');
+ if(animal==='camel')b.classList.add('zoo-spot--collected');
+ complete(area,config.spots[i]);
+}
+function createCrocodile(area,step){
+ // Real illustrated crocodile, not a blinking ring or abstract stones.
+ const focus=document.createElement('div');focus.className='zoo-croc-portrait';
+ focus.append(pic('images/egypt-zoo-crocodile-cutout.webp','zoo-croc-portrait-img','Крокодил. На верхней части головы находятся глаза и ноздри.'));
+ const water=document.createElement('div');water.className='zoo-croc-water';focus.append(water);
+ const organs=[
+  {key:'eyes',text:'ГЛАЗА',caption:'ВИЖУ',x:42,y:31},
+  {key:'nose',text:'НОЗДРИ',caption:'ДЫШУ',x:81,y:47}
+ ];
+ organs.forEach(({key,text,caption,x,y})=>{
+  const b=document.createElement('button');b.type='button';b.id='zoo-croc-'+key;
+  b.className='zoo-croc-feature';b.style.left=x+'%';b.style.top=y+'%';
+  b.textContent=text;b.setAttribute('aria-label',text+' крокодила');
+  if(found.has(key))b.classList.add('is-found');
+  b.addEventListener('click',()=>{
+    if(busy||finished)return;
+    if(step.kind!=='both'&&step.kind!==key){hitBad(b);return;}
+    if(found.has(key))return;
+    found.add(key);b.classList.add('is-found');
+    const callout=document.createElement('span');callout.className='zoo-croc-caption';
+    callout.style.left=x+'%';callout.style.top=Math.min(90,y+14)+'%';callout.textContent=caption;focus.append(callout);
+    if(step.kind==='both'&&found.size<2){task.textContent='Отлично! Теперь найди вторую часть.';return;}
+    if(step.kind==='both')focus.classList.add('is-submerged');
+    else if(step.kind==='nose'&&round===3)focus.classList.add('is-diving');
+    complete(area,[50,50,0,0]);
+  });
+  focus.append(b);
+ });
+ area.append(focus);
+}
+function makeHippo(area,step){
+ if(step.kind==='walk'){
+   for(let i=0;i<3;i++){
+     const p=config.spots[i];
+     const mark=document.createElement('div');mark.className='zoo-hippo-step';
+     pos(mark,p);mark.textContent=String(i+1);area.append(mark);
+     spot(area,i,p,true,'hippo-path');
    }
-   config.spots.forEach((p,i)=>{
-     const b=document.createElement('button');b.type='button';b.className='zoo-spot';
-     b.id='zoo-'+id+'-'+i;
-     b.style.left=(p[0]-p[2]/2)+'%';b.style.top=(p[1]-p[3]/2)+'%';b.style.width=p[2]+'%';b.style.height=p[3]+'%';
-     b.setAttribute('aria-label',id==='camel'?['Одеяло','Фляга с водой','Финики','Верёвка'][i]:id==='fennec'?'Норка '+(i+1):id==='baboon'?['Большой павиан','Павиан наверху','Павиан на скале','Пещера'][i]:'Место '+(i+1));
-     if(id==='fennec' && i===r.target)b.classList.add('zoo-spot--hint');
-     if(id==='crocodile' && i===r.target)b.classList.add('zoo-spot--ripple');
-     if(choices.has(i) && id==='camel'){b.classList.add('zoo-spot--collected');b.disabled=true;}
-     b.addEventListener('click',()=>select(i,b,area));area.append(b);
-   });
-   stageRoot.append(area);
+ }else{
+  const i=step.target,p=config.spots[i];
+  const b=spot(area,i,p,true,'hippo-'+step.kind);
+  if(step.kind==='breathe'){
+    const level=document.createElement('div');level.className='zoo-breath-surface';level.textContent='ПОВЕРХНОСТЬ ВОДЫ';area.append(level);
+  }
+  if(step.kind==='skin'){const sun=document.createElement('div');sun.className='zoo-hippo-sun';sun.textContent='☀';sun.setAttribute('aria-hidden','true');area.append(sun);}
  }
- function select(i,b,area){
-   if(busy||finished)return;
-   const r=config.rounds[round];
-   if(i!==r.target){b.classList.remove('is-wrong');void b.offsetWidth;b.classList.add('is-wrong');return;}
-   busy=true;
-   if(id==='camel')choices.add(i);
-   b.classList.add('is-success');
-   if(id==='crocodile')area.querySelector('.zoo-crocodile-model')?.classList.add('is-visible');
-   if(id==='hippo' && round%2===1)area.classList.add('zoo-stage--night');
-   const badge=document.createElement('span');badge.className='zoo-reward-flash';badge.textContent='✓';badge.style.left=r.target===i?config.spots[i][0]+'%':'50%';badge.style.top=config.spots[i][1]+'%';area.append(badge);
-   setTimeout(()=>{round++;busy=false;if(round===config.rounds.length){drawProgress();finish();}else render();},510);
+}
+function fennecScene(area){
+ const thief=pic('images/egypt-fox-friend.webp','zoo-fennec-thief','Жулик-лисёнок');thief.id='zoo-thief';
+ thief.style.left=config.spots[config.steps[round].target][0]+'%';
+ thief.style.top=(config.spots[config.steps[round].target][1]-3)+'%';
+ area.append(thief);
+}
+function render(){
+ if(finished)return;
+ clearTimeout(feedbackTimer);fact.classList.add('hidden');
+ const step=config.steps[round];
+ drawProgress();task.textContent=step.prompt;scene.replaceChildren();
+ const area=document.createElement('div');area.className='zoo-stage';area.setAttribute('role','group');
+ area.setAttribute('aria-label',config.name+' — '+step.prompt);
+ const url='url("images/egypt-zoo-'+animal+'-scene.webp")';
+ area.style.backgroundImage=url;scene.style.setProperty('--zoo-scene',url);
+ if(animal==='hippo'&&round===3)area.classList.add('zoo-stage--night');
+ if(animal==='crocodile')createCrocodile(area,step);
+ else if(animal==='hippo')makeHippo(area,step);
+ else{
+  if(animal==='fennec')fennecScene(area);
+  config.spots.forEach((p,i)=>{
+   const btn=spot(area,i,p,true,animal==='fennec'?'fennec-search':'search');
+   // No target-specific blinking cue: find it by observation or the sound clue.
+   if(animal==='camel'&&i===3)btn.setAttribute('aria-label','Верёвка (запасной предмет)');
+  });
  }
- function restart(){round=0;finished=false;busy=false;choices.clear();controls.classList.add('hidden');fact.classList.add('hidden');render();}
- $('restart')?.addEventListener('click',restart);
- // A synchronous inspectable interface for regression tests; not game UI.
- window.TivvigZooDebug=Object.freeze({state:()=>({round,finished,busy,animal:id}),rounds:config.rounds.map(r=>r.target),restart});
+ scene.append(area);
+ if(animal==='fennec')showHear();
+}
+function getAudio(){
+ const C=window.AudioContext||window.webkitAudioContext;
+ if(!C)return null;
+ try{if(!audioCtx)audioCtx=new C();if(audioCtx.state==='suspended')audioCtx.resume().catch(()=>{});return audioCtx;}
+ catch{return null;}
+}
+function rustle(pan){
+ const ctx=getAudio();if(!ctx||ctx.state!=='running')return;
+ const t=ctx.currentTime;
+ const output=ctx.createGain();output.gain.setValueAtTime(.0001,t);
+ output.gain.exponentialRampToValueAtTime(.18,t+.04);output.gain.exponentialRampToValueAtTime(.0001,t+.65);
+ const stereo=typeof ctx.createStereoPanner==='function'?ctx.createStereoPanner():null;
+ if(stereo){stereo.pan.value=pan;output.connect(stereo);stereo.connect(ctx.destination);}else output.connect(ctx.destination);
+ // Three soft rustles, made locally. No downloaded sound file, no network latency.
+ for(let i=0;i<3;i++){
+  const o=ctx.createOscillator(),g=ctx.createGain(),start=t+i*.18;
+  o.type='triangle';o.frequency.setValueAtTime(170+i*22,start);
+  o.frequency.exponentialRampToValueAtTime(95+i*15,start+.11);
+  g.gain.setValueAtTime(.0001,start);g.gain.exponentialRampToValueAtTime(.16,start+.025);g.gain.exponentialRampToValueAtTime(.0001,start+.13);
+  o.connect(g);g.connect(output);o.start(start);o.stop(start+.14);
+ }
+}
+function speak(clue){
+ if(!('speechSynthesis' in window)||!('SpeechSynthesisUtterance' in window))return;
+ try{
+  window.speechSynthesis.cancel();
+  const u=new SpeechSynthesisUtterance(clue);u.lang='ru-RU';u.rate=.88;u.volume=.95;
+  window.speechSynthesis.speak(u);
+ }catch{}
+}
+let hearingButton=null;
+function showHear(){
+ if(!hearingButton){
+  hearingButton=document.createElement('button');hearingButton.type='button';hearingButton.id='zooHear';
+  hearingButton.className='zoo-hear';hearingButton.textContent='♪ Слушать';
+  hearingButton.setAttribute('aria-label','Услышать, где прячется жулик');
+  hearingButton.addEventListener('click',()=>{
+   if(finished||busy)return;
+   const s=config.steps[round];rustle(s.pan);if(unlocked)speak(s.speech);
+   const area=scene.querySelector('.zoo-stage');
+   if(area){area.classList.remove('zoo-listening');void area.offsetWidth;area.classList.add('zoo-listening');}
+  });
+  const enable=document.createElement('button');enable.type='button';enable.id='zooAudioEnable';
+  enable.className='zoo-audio-enable';enable.textContent='🔊';enable.dataset.tivvigLocalAudio='1';
+  enable.setAttribute('aria-label','Разрешить звук на этом устройстве');
+  enable.title='Включить звук на этом устройстве';
+  enable.addEventListener('click',()=>{getAudio();unlocked=true;enable.classList.add('is-on');enable.textContent='🔉';});
+  task.parentElement.append(hearingButton,enable);
+ }
+}
+function restart(){
+ clearTimeout(feedbackTimer);round=0;sub=0;wrong=0;busy=false;finished=false;
+ found.clear();controls.classList.add('hidden');fact.classList.add('hidden');
+ hearingButton?.remove();$('zooAudioEnable')?.remove();hearingButton=null;
  render();
+}
+$('restart')?.addEventListener('click',restart);
+window.addEventListener('pagehide',()=>{clearTimeout(feedbackTimer);if('speechSynthesis' in window)window.speechSynthesis.cancel();});
+window.TivvigZooDebug=Object.freeze({
+ state:()=>({round,sub,finished,busy,animal,unlocked}),
+ rounds:config.steps.map(s=>s.kind==='walk'?[0,1,2]:s.kind==='both'?['eyes','nose']:s.kind==='eyes'||s.kind==='nose'?s.kind:s.target),
+ restart
+});
+render();
 })();
